@@ -1,14 +1,12 @@
 {
-    "Path": "ccminer.exe",
-    "Uri": "https://github.com/tutulino/Software/releases/download/0/NVIDIA-Palgin.rar",
+    "Path": "rvnenemy\\ccminer.exe",
+    "Uri": "https://github.com/tutulino/Software/releases/download/0/rvnenemy.zip",
     "Type": "NVIDIA",
     "Arguments": "-o #PROTOCOL#://#SERVER#:#PORT# -u #LOGIN# -p #PASSWORD# -R 10 -r 4 -b #APIPORT# -d #DEVICES# #ALGORITHMPARAMETERS# ",
     "API": "Ccminer",
     "APIPort": 4068,
     "Algorithms": {
-        "Blakecoin": "-a blakecoin",
-        "Sib": "-a sib",
-        "X11evo": "-a x11evo",
+        "X16r": "-a x16r",
         "X17": "-a x17"
     }
 }
