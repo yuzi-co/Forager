@@ -19,7 +19,6 @@
         "Lyra2v2": "-a lyra2v2",
         "Lyra2z": "-a lyra2z",
         "NeoScrypt": "-a neoscrypt",
-		"Nist5": "-a nist5",
         "PHI": "-a phi",
 		"Skein": "-a skein",
         "Skunk": "-a skunk",

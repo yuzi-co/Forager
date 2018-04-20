@@ -14,7 +14,6 @@
         "Ethash": "daggerhashimoto",
         "Keccak": "keccak",
         "Lyra2v2": "lyra2rev2",
-        "Neoscrypt": "neoscrypt",
-		"Nist5": "nist5"
+        "Neoscrypt": "neoscrypt"
     }
 }

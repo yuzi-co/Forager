@@ -23,7 +23,6 @@
         "Luffa": "-a luffa",
         "Lyra2RE": "-a lyra2re",
         "Lyra2v2": "-a lyra2rev2",
-		"Nist5": "-a nist5",
         "Pentablake": "-a pentablake",
         "Pluck": "-a pluck",
         "SHAvite3": "-a shavite3",

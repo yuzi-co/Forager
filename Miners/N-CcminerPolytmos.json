@@ -9,7 +9,6 @@
         "Blake2s": "-a blake2s",
         "Keccak": "-a keccak -m 2",
         "Lyra2v2": "-a lyra2v2",
-		"Nist5": "-a nist5",
         "Polytimos": "-a poly",
 		"Skein": "-a skein",
         "Veltor": "-a veltor"

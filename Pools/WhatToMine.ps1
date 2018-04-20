@@ -134,7 +134,6 @@ if ($Querymode -eq "core" -or $Querymode -eq "Menu") {
             "Lyra2v2" {1000}
             "Lyra2z" { 1000 }
             "NeoScrypt" { 1000 }
-			"Nist5" { 1000000 }
             "PHI" { 1000000 }
             "Skunk" { 1000000 }
             "X16r" { 1000000 }

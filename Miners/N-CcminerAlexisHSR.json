@@ -10,7 +10,6 @@
         "HSR": "-a hsr",
         "Keccak": "-a keccak -m 2",
         "Lyra2v2": "-a lyra2v2",
-		"Nist5": "-a nist5",
         "Veltor": "-a veltor"
     }
 }
