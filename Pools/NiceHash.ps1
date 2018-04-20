@@ -32,7 +32,7 @@ if ($Querymode -eq "info") {
 
 
 if ($Querymode -eq "speed") {
-    $Info.user = ($Info.user -split '\.')[0]
+    $Info.user = $Info.user.split('.')[0]
     $Request = Invoke_APIRequest -Url $("https://api.nicehash.com/api?method=stats.provider.workers&addr=" + $Info.user) -Retry 1
 
     if ($Request.Result.Workers) {
@@ -75,7 +75,7 @@ if ($Querymode -eq "wallet") {
 if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
 
     if (!$CoinsWallets.BTC_NICE -and !$CoinsWallets.BTC) {
-        Write-Host $Name 'Requires BTC or BTC_NICE wallet in config.ini'
+        Write-Host "$Name BTC or BTC_NICE wallets not defined in config.ini"
         Exit
     }
 

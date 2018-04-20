@@ -414,7 +414,7 @@ Function Get_Mining_Types () {
     $OCLDevices = @()
 
     $Types0 = get_config_variable "GpuGroups"
-    if ($Types0) {$Types0 | ConvertFrom-Json}
+    if ($Types0) {$Types0 = $Types0 | ConvertFrom-Json}
 
     $OCLPlatforms = [OpenCl.Platform]::GetPlatformIDs()
     for ($i = 0; $i -lt $OCLPlatforms.length; $i++) {$OCLDevices += ([OpenCl.Device]::GetDeviceIDs($OCLPlatforms[$i], "ALL"))}
@@ -805,6 +805,7 @@ function Get_Live_HashRate {
                         "* - AEO" {$Multiplier = 1} #CryptoLight
                         "* - XMR" {$Multiplier = 1} #CryptoNight
                         "* - CN" {$Multiplier = 1} #CryptoNight
+                        "* - ZEC" {$Multiplier = 1} #Equihash
                         Default {$Multiplier = 1000}
                     }
                     $HashRate = [double]$Data.result[2].Split(";")[0] * $Multiplier
