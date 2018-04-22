@@ -1,6 +1,6 @@
 {
     "Path": "mkxminer.exe",
-    "Uri": "https://github.com/Fedeparma74/Miners/releases/download/1.0/mkxminer310.zip",
+    "Uri": "https://github.com/yuzi-co/miners/releases/download/1/mkxminer310.zip",
     "SHA256": "319bbb417675bc055067eec53e0f2590972d658c070ed9cd27da2747dd131d23",
     "Type": "AMD",
     "Arguments": "-o #PROTOCOL#://#SERVER#:#PORT# -u #LOGIN# -p #PASSWORD# -d #DEVICES# --exitsick --platform #GPUPLATFORM# #ALGORITHMPARAMETERS#",

@@ -6,8 +6,8 @@
     "API": "Ccminer",
     "APIPort": 4068,
     "Algorithms": {
-		"Bitcore": "-a bitcore",
-		"PHI": "-a phi",
+        "Bitcore": "-a bitcore",
+        "PHI": "-a phi",
         "X16r": "-a x16r",
         "X16s": "-a x16s"
     }

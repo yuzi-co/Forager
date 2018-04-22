@@ -8,7 +8,7 @@
     "APIPort": 4028,
     "SSL": true,
     "Algorithms": {
-        "CryptoNight": "",
+	    "CryptoLight": "-lite 1",
         "CryptoNightV7": "-pow7 1"
     }
 }
