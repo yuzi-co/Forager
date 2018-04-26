@@ -6,6 +6,6 @@
     "API": "Ccminer",
     "APIPort": 4068,
     "Algorithms": {
-        "Neoscrypt": ""
+        "Neoscrypt": "-i 16"
     }
 }
