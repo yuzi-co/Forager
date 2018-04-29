@@ -10,17 +10,17 @@ Add-Type -Path .\Includes\OpenCL\*.cs
 function set_Nvidia_Clocks ([int]$PowerLimitPercent, [string]$Devices) {
 
     $device = $Devices -split ','
-    $device |ForEach-Object {
+    $device | ForEach-Object {
 
-        $xpr = ".\bin\nvidia-smi.exe -i " + $_ + " --query-gpu=power.default_limit --format=csv,noheader"
-        $PowerDefaultLimit = [int]((invoke-expression $xpr) -replace 'W', '')
+        $xpr = ".\includes\nvidia-smi.exe -i " + $_ + " --query-gpu=power.default_limit --format=csv,noheader"
+        $PowerDefaultLimit = [int]((Invoke-Expression $xpr) -replace 'W', '')
 
         #powerlimit change must run in admin mode
-        $newProcess = New-Object System.Diagnostics.ProcessStartInfo ".\bin\nvidia-smi.exe"
+        $newProcess = New-Object System.Diagnostics.ProcessStartInfo ".\includes\nvidia-smi.exe"
         $newProcess.Verb = "runas"
         #$newProcess.UseShellExecute = $false
         $newProcess.Arguments = "-i " + $_ + " -pl " + [Math]::Floor([int]($PowerDefaultLimit -replace ' W', '') * ($PowerLimitPercent / 100))
-        [System.Diagnostics.Process]::Start($newProcess) | out-null
+        [System.Diagnostics.Process]::Start($newProcess) | Out-Null
     }
     Remove-Variable newprocess
 }
@@ -37,16 +37,16 @@ function set_Nvidia_Powerlimit ([int]$PowerLimitPercent, [string]$Devices) {
     $device = $Devices -split ','
     $device | ForEach-Object {
 
-        $xpr = ".\bin\nvidia-smi.exe -i " + $_ + " --query-gpu=power.default_limit --format=csv,noheader"
-        $PowerDefaultLimit = [int]((invoke-expression $xpr) -replace 'W', '')
+        $xpr = ".\includes\nvidia-smi.exe -i " + $_ + " --query-gpu=power.default_limit --format=csv,noheader"
+        $PowerDefaultLimit = [int]((Invoke-Expression $xpr) -replace 'W', '')
 
 
         #powerlimit change must run in admin mode
-        $newProcess = New-Object System.Diagnostics.ProcessStartInfo ".\bin\nvidia-smi.exe"
+        $newProcess = New-Object System.Diagnostics.ProcessStartInfo ".\includes\nvidia-smi.exe"
         $newProcess.Verb = "runas"
         #$newProcess.UseShellExecute = $false
         $newProcess.Arguments = "-i " + $_ + " -pl " + [Math]::Floor([int]($PowerDefaultLimit -replace ' W', '') * ($PowerLimitPercent / 100))
-        [System.Diagnostics.Process]::Start($newProcess) | out-null
+        [System.Diagnostics.Process]::Start($newProcess) | Out-Null
     }
     Remove-Variable newprocess
 }
@@ -216,7 +216,7 @@ function get_devices_information ($Types) {
     #NVIDIA
     if ($Types | Where-Object Type -eq 'NVIDIA') {
         $DeviceId = 0
-        Invoke-Expression ".\bin\nvidia-smi.exe --query-gpu=gpu_name,utilization.gpu,utilization.memory,temperature.gpu,power.draw,power.limit,fan.speed,pstate,clocks.current.graphics,clocks.current.memory,power.max_limit,power.default_limit --format=csv,noheader" | ForEach-Object {
+        Invoke-Expression ".\includes\nvidia-smi.exe --query-gpu=gpu_name,utilization.gpu,utilization.memory,temperature.gpu,power.draw,power.limit,fan.speed,pstate,clocks.current.graphics,clocks.current.memory,power.max_limit,power.default_limit --format=csv,noheader" | ForEach-Object {
             $SMIresultSplit = $_ -split (",")
             if ($SMIresultSplit.count -gt 10) {
                 #less is error or no NVIDIA gpu present
@@ -252,7 +252,37 @@ function get_devices_information ($Types) {
     if ($Types | Where-Object Type -eq 'AMD') {
         #ADL
         $DeviceId = 0
-        $AdlResult = invoke-expression ".\bin\OverdriveN.exe" | Where-Object {$_ -notlike "*&???" -and $_ -ne "ADL2_OverdriveN_Capabilities_Get is failed"}
+
+        if ((get_config_variable "Afterburner") -eq "Enabled") {
+
+            $abMonitor.ReloadAll()
+            $abControl.ReloadAll()
+
+            $Cards = @($abMonitor.GpuEntries | Where-Object Device -like "*Radeon*")
+
+            $Cards | ForEach-Object {
+                $CardData = $abMonitor.Entries | Where-Object GPU -eq $_.Index
+                $Group = ($Types | Where-Object type -eq 'AMD' | Where-Object DeviceArray -contains $DeviceId).groupname
+                $Card = [pscustomObject]@{
+                    Type                = 'AMD'
+                    Id                  = $DeviceId
+                    Group               = $Group
+                    AdapterId           = [int]$_.Index
+                    Utilization_Memory  = [int]($($CardData | Where-Object SrcName -match "^(GPU\d* )?memory usage").Data / $($CardData | Where-Object SrcName -match "^(GPU\d* )?memory usage").MaxLimit * 100)
+                    FanSpeed            = [int]$($CardData | Where-Object SrcName -match "^(GPU\d* )?fan speed").Data
+                    Clock               = [int]$($CardData | Where-Object SrcName -match "^(GPU\d* )?core clock").Data
+                    ClockMem            = [int]$($CardData | Where-Object SrcName -match "^(GPU\d* )?memory clock").Data
+                    Utilization         = [int]$($CardData | Where-Object SrcName -match "^(GPU\d* )?usage").Data
+                    Temperature         = [int]$($CardData | Where-Object SrcName -match "^(GPU\d* )?temperature").Data
+                    Power_Limit_Percent = [int]$abControl.GpuEntries[$_.Index].PowerLimitCur + 100
+                    Power_Draw          = [int]$($CardData | Where-Object SrcName -match "^(GPU\d* )?power").Data
+                    Name                = $_.Device
+                }
+                $Devices += $Card
+                $DeviceId++
+            }
+        } else {
+            $AdlResult = invoke-expression ".\includes\OverdriveN.exe" | Where-Object {$_ -notlike "*&???" -and $_ -ne "ADL2_OverdriveN_Capabilities_Get is failed"}
         $AmdCardsTDP = Get-Content .\Includes\amd-cards-tdp.json | ConvertFrom-Json
 
         if ($AdlResult -ne $null) {
@@ -261,7 +291,7 @@ function get_devices_information ($Types) {
                 $AdlResultSplit = $_ -split (",")
                 $Group = ($Types | Where-Object type -eq 'AMD' | Where-Object DeviceArray -contains $DeviceId).groupname
 
-                $Devices += [pscustomObject]@{
+                    $Card = [pscustomObject]@{
                     Type                = 'AMD'
                     Id                  = $DeviceId
                     Group               = $Group
@@ -276,36 +306,41 @@ function get_devices_information ($Types) {
                     Name                = $AdlResultSplit[8].Trim()
                     UDID                = $AdlResultSplit[9].Trim()
                 }
+                    $Devices += $Card
                 $DeviceId++
             }
-        } else {
-            # For older drivers
-            $AdlResult = invoke-expression ".\bin\adli.exe -n"
-            $AdlResult | ForEach-Object {
-
-                $AdlResultSplit = $_ -split (",")
-                $DeviceId = [int]$AdlResultSplit[0]
-                $Group = ($Types | Where-Object type -eq 'AMD' | Where-Object DeviceArray -contains $DeviceId ).groupname
-
-                $Devices += [pscustomObject]@{
-                    Type                = 'AMD'
-                    Id                  = $DeviceId
-                    Group               = $Group
-                    FanSpeed            = [int]$AdlResultSplit[3]
-                    Temperature         = [int]$AdlResultSplit[2]
-                    Utilization         = 100 #If we dont have real Utilization, at least make the watchdog happy
-                    Power_Limit_Percent = 100
-                    Power_Draw          = $AmdCardsTDP.$($AdlResultSplit[1].Trim())
-                    Name                = $AdlResultSplit[1].Trim()
                 }
-            }
-        }
         Clear-Variable AmdCardsTDP
+    }
     }
 
     # CPU
     if ($Types | Where-Object Type -eq 'CPU') {
-        $CpuResult = Get-CimInstance Win32_Processor
+
+        $CpuResult = @(Get-CimInstance Win32_Processor)
+
+        ### Not sure how Afterburner results look with more than 1 CPU
+        if ((get_config_variable "Afterburner") -eq "Enabled" -and $CpuResult.count -eq 1) {
+            $abMonitor.ReloadAll()
+            $CPUData = $abMonitor.Entries | Where-Object SrcName -like "CPU*"
+
+            $CpuResult | ForEach-Object {
+                $Devices += [PSCustomObject]@{
+                    Type        = 'CPU'
+                    Id          = $_.DeviceID
+                    Group       = 'CPU'
+                    Clock       = [int]$($CPUData | Where-Object SrcName -eq 'CPU clock').Data
+                    Utilization = [int]$($CPUData | Where-Object SrcName -eq 'CPU usage').Data
+                    CacheL3     = $_.L3CacheSize
+                    Cores       = $_.NumberOfCores
+                    Threads     = $_.NumberOfLogicalProcessors
+                    Power_Draw  = [int]$($CPUData | Where-Object SrcName -eq 'CPU power').Data
+                    Temperature = [int]$($CPUData | Where-Object SrcName -eq 'CPU temperature').Data
+                    Name        = $_.Name
+                }
+            }
+
+        } else {
         $CpuTDP = Get-Content ".\Includes\cpu-tdp.json" | ConvertFrom-Json
         # Get-Counter is more accurate and is preferable, but currently not available in Poweshell 6
         if (Get-Command "Get-Counter" -Type Cmdlet -errorAction SilentlyContinue) {
@@ -317,10 +352,10 @@ function get_devices_information ($Types) {
         }
 
         $CpuResult | ForEach-Object {
-            $Devices += [pscustomObject]@{
+                $Devices += [PSCustomObject]@{
                 Type        = 'CPU'
                 Id          = $_.DeviceID
-                Group       = "CPU"
+                    Group       = 'CPU'
                 Clock       = $_.MaxClockSpeed
                 Utilization = $_.LoadPercentage
                 CacheL3     = $_.L3CacheSize
@@ -331,6 +366,7 @@ function get_devices_information ($Types) {
             }
         }
         Clear-Variable CpuTDP
+    }
     }
     $Devices
 }
@@ -350,7 +386,7 @@ function print_devices_information ($Devices) {
             @{Label = "Mem"; Expression = {[string]$_.Utilization_Memory + "%"}; Align = 'right'},
             @{Label = "Temp"; Expression = {$_.Temperature}; Align = 'right'},
             @{Label = "Fan"; Expression = {[string]$_.FanSpeed + "%"}; Align = 'right'},
-            @{Label = "Power"; Expression = {[string]$_.Power_Draw + "W/" + [string]$_.Power_Limit + "W"}; Align = 'right'},
+            @{Label = "Power"; Expression = {[string]$_.Power_Draw + "W"}; Align = 'right'},
             @{Label = "PowLmt"; Expression = {[string]$_.Power_Limit_Percent + '%'}; Align = 'right'},
             @{Label = "Pstate"; Expression = {$_.pstate}; Align = 'right'},
             @{Label = "Clock"; Expression = {[string]$_.Clock + "Mhz"}; Align = 'right'},
@@ -367,6 +403,7 @@ function print_devices_information ($Devices) {
         @{Label = "CacheL3"; Expression = {[string]$_.CacheL3 + "kb"}; Align = 'right'},
         @{Label = "Clock"; Expression = {[string]$_.Clock + "Mhz"}; Align = 'right'},
         @{Label = "Load"; Expression = {[string]$_.Utilization + "%"}; Align = 'right'},
+        @{Label = "Temp"; Expression = {$_.Temperature}; Align = 'right'},
         @{Label = "Power*"; Expression = {[string]$_.Power_Draw + "W"}; Align = 'right'}
     )  -groupby Type | Out-Host
 }
@@ -489,7 +526,11 @@ Function Get_Mining_Types () {
             ($_.PowerLimits -split ',') | ForEach-Object {$Pl += [int]$_}
             $_.PowerLimits = $Pl | Sort-Object -Descending
 
-            if ($_.PowerLimits.Count -eq 0 -or $_.Type -in @('AMD', 'Intel')) {$_.PowerLimits = [array](0) }
+            if (
+                $_.PowerLimits.Count -eq 0 -or
+                $_.Type -in @('Intel') -or
+                ($_.Type -in @('AMD') -and (get_config_variable "Afterburner") -ne 'Enabled')
+            ) {$_.PowerLimits = [array](0) }
 
             $_ | Add-Member Algorithms ((get_config_variable ("Algorithms_" + $_.Type)) -split ',')
             $_ | Add-Member MinMemory (($_.OCLDevices | Measure-Object -Property GlobalMemSize -Minimum | Select-Object -ExpandProperty Minimum) / 1024 / 1024)
@@ -1045,7 +1086,7 @@ function Expand_WebRequest {
                 "File hash doesn't match. Skipping miner." | Write-Host -ForegroundColor Red
             } else {
                 $Command = 'x "' + $FilePath + '" -o"' + $DestinationFolder + '" -y -spe'
-                Start-Process ".\bin\7z.exe" $Command -Wait
+                Start-Process ".\includes\7z.exe" $Command -Wait
             }
         }
     } finally {
@@ -1375,24 +1416,23 @@ function Get_Hashrates {
 
 
     if ($AlgoLabel -eq "") {$AlgoLabel = 'X'}
-    $Pattern = $PSScriptRoot + "\Stats\" + $MinerName + "_" + $Algorithm + "_" + $GroupName + "_" + $AlgoLabel + "_PL" + $PowerLimit + "_HashRate.csv"
+    $Pattern = $PSScriptRoot + "\Stats\" + $MinerName + "_" + $Algorithm + "_" + $GroupName + "_" + $AlgoLabel + "_PL" + $PowerLimit + "_HashRate"
 
-    if (!(Test-Path -path $Pattern)) {
-        $PatternOld = $PSScriptRoot + "\Stats\" + $MinerName + "_" + $Algorithm + "_" + $GroupName + "_" + $AlgoLabel + "_PL" + $PowerLimit + "_HashRate.txt"
-        if (Test-Path -path $PatternOld) {
-            $Content = (Get-Content -path $PatternOld)
+    if (!(Test-Path -path "$Pattern.csv")) {
+        if (Test-Path -path "$Pattern.txt") {
+            $Content = (Get-Content -path "$Pattern.txt")
             try {$Content = $Content | ConvertFrom-Json} catch {
             } finally {
-                if ($Content) {$Content | ConvertTo-Csv | Set-Content -Path $Pattern}
-                Remove-Item -path $PatternOld
+                if ($Content) {$Content | ConvertTo-Csv | Set-Content -Path "$Pattern.csv"}
+                Remove-Item -path "$Pattern.txt"
             }
         }
     } else {
-        $Content = (Get-Content -path $Pattern)
+        $Content = (Get-Content -path "$Pattern.csv")
         try {$Content = $Content | ConvertFrom-Csv} catch {
             #if error from convert from json delete file
-            WriteLog ("Corrupted file $Pattern, deleting") $LogFile $true
-            Remove-Item -path $Pattern
+            WriteLog ("Corrupted file $Pattern.csv, deleting") $LogFile $true
+            Remove-Item -path "$Pattern.csv"
         }
     }
 
@@ -1450,17 +1490,16 @@ function Get_Stats {
     )
 
     if ($AlgoLabel -eq "") {$AlgoLabel = 'X'}
-    $Pattern = $PSScriptRoot + "\Stats\" + $MinerName + "_" + $Algorithm + "_" + $GroupName + "_" + $AlgoLabel + "_PL" + $PowerLimit + "_stats.json"
+    $Pattern = $PSScriptRoot + "\Stats\" + $MinerName + "_" + $Algorithm + "_" + $GroupName + "_" + $AlgoLabel + "_PL" + $PowerLimit + "_stats"
 
-    if (!(Test-Path -path $Pattern)) {
-        $PatternOld = $PSScriptRoot + "\Stats\" + $MinerName + "_" + $Algorithm + "_" + $GroupName + "_" + $AlgoLabel + "_PL" + $PowerLimit + "_stats.txt"
-        if (Test-Path -path $PatternOld) {Rename-Item -Path $PatternOld -NewName $Pattern}
+    if (!(Test-Path -path "$Pattern.json")) {
+        if (Test-Path -path "$Pattern.txt") {Rename-Item -Path "$Pattern.txt" -NewName "$Pattern.json"}
     } else {
-        $Content = (Get-Content -path $Pattern)
+        $Content = (Get-Content -path "$Pattern.json")
         try {$Content = $Content | ConvertFrom-Json} catch {
             #if error from convert from json delete file
-            writelog ("Corrupted file $Pattern, deleting") $LogFile $true
-            Remove-Item -path $Pattern
+            writelog ("Corrupted file $Pattern.json, deleting") $LogFile $true
+            Remove-Item -path "$Pattern.json"
         }
     }
     $Content

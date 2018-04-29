@@ -20,6 +20,10 @@ param(
 
 . .\Include.ps1
 
+if ((get_config_variable "Afterburner") -eq "Enabled") {
+    . .\Includes\afterburner.ps1
+}
+
 ##Parameters for testing, must be commented on real use
 
 
@@ -442,17 +446,18 @@ while ($Quit -eq $false) {
                 $Algorithms = $AlgoName + $(if ($AlgoNameDual) {"_$AlgoNameDual"})
 
                 # Check memory constraints on algos
-                switch -wildcard ($AlgoLabel) {
-                    '16gb*' { if ($TypeGroup.MinMemory -lt 16384) {$SkipLabel = $true} }
-                    '8gb*' { if ($TypeGroup.MinMemory -lt 8192) {$SkipLabel = $true} }
-                    '4gb*' { if ($TypeGroup.MinMemory -lt 4096) {$SkipLabel = $true} }
-                    '3gb*' { if ($TypeGroup.MinMemory -lt 3072) {$SkipLabel = $true} }
-                    '2gb*' { if ($TypeGroup.MinMemory -lt 2048) {$SkipLabel = $true} }
-                    default {$SkipLabel = $false}
+                if ($TypeGroup.MinMemory -gt 0) {
+                    if ($AlgoLabel -match '(?<mem>\d+)gb.*') {
+                        if ($TypeGroup.MinMemory -lt [int]$Matches.mem * 1024) {
+                            $SkipLabel = $true
+                        } else {
+                            $SkipLabel = $false
+                        }
                 }
                 if ($SkipLabel) {
                     Writelog ($MinerFile.BaseName + "/" + $Algorithms + "/" + $AlgoLabel + " skipped due to constraints") $LogFile $false
                     Continue
+                }
                 }
 
                 if ($TypeGroup.Algorithms -and $Algorithms -notin $TypeGroup.Algorithms) {continue} #check config has this algo as minable
@@ -492,26 +497,18 @@ while ($Quit -eq $false) {
                             '#GroupName#'           = $TypeGroup.GroupName
                         }
                         if ($enableSSL) {
-                            $Params += @{
-                                '#SSL#(.*)#SSL#'     = '$1'
-                                '#NoSSL#(.*)#NoSSL#' = ''
-                            }
+                            $Params.'#SSL#(.*)#SSL#' = '$1'
+                            $Params.'#NoSSL#(.*)#NoSSL#' = ''
                         } else {
-                            $Params += @{
-                                '#SSL#(.*)#SSL#'     = ''
-                                '#NoSSL#(.*)#NoSSL#' = '$1'
-                            }
+                            $Params.'#SSL#(.*)#SSL#' = ''
+                            $Params.'#NoSSL#(.*)#NoSSL#' = '$1'
                         }
                         if ($Pool.PoolName -eq 'Nicehash') {
-                            $Params += @{
-                                '#NH#(.*)#NH#'     = '$1'
-                                '#NoNH#(.*)#NoNH#' = ''
-                            }
+                            $Params.'#NH#(.*)#NH#' = '$1'
+                            $Params.'#NoNH#(.*)#NoNH#' = ''
                         } else {
-                            $Params += @{
-                                '#NH#(.*)#NH#'     = ''
-                                '#NoNH#(.*)#NoNH#' = '$1'
-                            }
+                            $Params.'#NH#(.*)#NH#' = ''
+                            $Params.'#NoNH#(.*)#NoNH#' = '$1'
                         }
 
                         $Arguments = $Miner.Arguments
@@ -960,12 +957,20 @@ while ($Quit -eq $false) {
             #something changes or some miner error
 
             if (
+                $false -and
                 $BestLast.IdF -eq $BestNow.IdF -and
                 $BestLast.Id -ne $BestNow.Id
             ) {
                 #Must launch other SubMiner
+                if ($config.Afterburner -eq 'Enabled' -and
+                    $ActiveMiners[$BestNow.IdF].DeviceGroup.Type -in @('AMD') -and
+                    $BestNow.PowerLimit -gt 0
+                ) {
+                    set_ab_powerlimit -PowerLimitPercent $BestNow.PowerLimit -Devices $ActiveMiners[$BestNow.IdF].DeviceGroup.Devices
+                } else {
                 if ($ActiveMiners[$BestNow.IdF].DeviceGroup.Type -eq 'NVIDIA' -and $BestNow.PowerLimit -gt 0) {set_Nvidia_PowerLimit $BestNow.PowerLimit $ActiveMiners[$BestNow.IdF].DeviceGroup.Devices}
                 if ($ActiveMiners[$BestNow.IdF].DeviceGroup.Type -eq 'AMD' -and $BestNow.PowerLimit -gt 0) {}
+                }
 
                 $ActiveMiners[$BestNow.IdF].SubMiners[$BestNow.Id].Best = $true
                 $ActiveMiners[$BestNow.IdF].SubMiners[$BestNow.Id].Status = "Running"
@@ -1023,8 +1028,15 @@ while ($Quit -eq $false) {
                 }
 
                 #Start New
+                if ($config.Afterburner -eq 'Enabled' -and
+                    $ActiveMiners[$BestNow.IdF].DeviceGroup.Type -in @('AMD') -and
+                    $BestNow.PowerLimit -gt 0
+                ) {
+                    set_ab_powerlimit -PowerLimitPercent $BestNow.PowerLimit -Devices $ActiveMiners[$BestNow.IdF].DeviceGroup.Devices
+                } else {
                 if ($ActiveMiners[$BestNow.IdF].DeviceGroup.Type -eq 'NVIDIA' -and $BestNow.PowerLimit -gt 0) {set_Nvidia_PowerLimit $BestNow.PowerLimit $ActiveMiners[$BestNow.IdF].DeviceGroup.Devices}
                 if ($ActiveMiners[$BestNow.IdF].DeviceGroup.Type -eq 'AMD' -and $BestNow.PowerLimit -gt 0) {}
+                }
 
                 $ActiveMiners[$BestNow.IdF].SubMiners[$BestNow.Id].Best = $true
 
