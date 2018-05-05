@@ -81,10 +81,10 @@ $culture.NumberFormat.NumberGroupSeparator = ","
 $ErrorActionPreference = "Continue"
 $Config = get_config
 
-$Release = "6.2"
+$Release = "1.0"
 WriteLog ("Release $Release") $LogFile $false
 
-if ($GroupNames -eq $null) {$Host.UI.RawUI.WindowTitle = "MegaMiner"}
+if ($GroupNames -eq $null) {$Host.UI.RawUI.WindowTitle = "Forager"}
 else {$Host.UI.RawUI.WindowTitle = "MM-" + ($GroupNames -join "/")}
 
 $env:CUDA_DEVICE_ORDER = 'PCI_BUS_ID' #This align cuda id with nvidia-smi order
@@ -192,10 +192,10 @@ if ($config.ApiPort -gt 0) {
     $APIprocess = Start-Process -FilePath "powershell.exe" -ArgumentList $command -Verb RunAs -PassThru -WindowStyle Minimized
 
     #open firewall port
-    $command = 'New-NetFirewallRule -DisplayName "Megaminer" -Direction Inbound -Action Allow -Protocol TCP -LocalPort ' + [string]$config.ApiPort
+    $command = 'New-NetFirewallRule -DisplayName "Forager" -Direction Inbound -Action Allow -Protocol TCP -LocalPort ' + [string]$config.ApiPort
     Start-Process -FilePath "powershell.exe" -ArgumentList $command -Verb RunAs -WindowStyle Minimized
 
-    $command = 'New-NetFirewallRule -DisplayName "Megaminer" -Direction Outbound -Action Allow -Protocol TCP -LocalPort ' + [string]$config.ApiPort
+    $command = 'New-NetFirewallRule -DisplayName "Forager" -Direction Outbound -Action Allow -Protocol TCP -LocalPort ' + [string]$config.ApiPort
     Start-Process -FilePath "powershell.exe" -ArgumentList $command -Verb RunAs -WindowStyle Minimized
 }
 
@@ -514,6 +514,10 @@ while ($Quit -eq $false) {
                             $ConfigFileArguments = replace_foreach_device (Get-Content $Miner.PatternConfigFile -raw) $TypeGroup.Devices
                             foreach ($P in $Params.Keys) {$ConfigFileArguments = $ConfigFileArguments -replace $P, $Params.$P}
                         }
+                        if ($Miner.PatternPoolsFile) {
+                            $PoolsFileArguments = Get-Content $Miner.PatternPoolsFile -raw
+                            foreach ($P in $Params.Keys) {$PoolsFileArguments = $PoolsFileArguments -replace $P, $Params.$P}
+                        }
 
                         #select correct price by mode
                         $Price = $Pool.$(if ($MiningMode -eq 'Automatic24h') {"Price24h"} else {"Price"})
@@ -547,6 +551,9 @@ while ($Quit -eq $false) {
                             foreach ($P in $Params.Keys) {$Arguments = $Arguments -replace $P, $Params.$P}
                             if ($Miner.PatternConfigFile) {
                                 foreach ($P in $Params.Keys) {$ConfigFileArguments = $ConfigFileArguments -replace $P, $Params.$P}
+                            }
+                            if ($Miner.PatternPoolsFile) {
+                                foreach ($P in $Params.Keys) {$PoolsFileArguments = $PoolsFileArguments -replace $P, $Params.$P}
                             }
                         } else {
                             $PoolDual = $null
@@ -637,7 +644,7 @@ while ($Quit -eq $false) {
                             $Stats = [PSCustomObject]@{
                                 BestTimes        = 0
                                 BenchmarkedTimes = 0
-                                LastTimeActive   = [TimeSpan]0
+                                LastTimeActive   = [DateTime]0
                                 ActivatedTimes   = 0
                                 ActiveTime       = [TimeSpan]0
                                 FailedTimes      = 0
@@ -685,8 +692,10 @@ while ($Quit -eq $false) {
                             Coin                = $Pool.Info
                             CoinDual            = $PoolDual.Info
                             ConfigFileArguments = $ConfigFileArguments
+                            PoolsFileArguments  = $PoolsFileArguments
                             ExtractionPath      = $(".\Bin\" + $MinerFile.BaseName + "\")
-                            GenerateConfigFile  = $(if ($Miner.GenerateConfigFile) {".\Bin\" + $MinerFile.BaseName + "\" + $Miner.GenerateConfigFile -replace '#GroupName#', $TypeGroup.GroupName})
+                            GenerateConfigFile  = $(if ($Miner.GenerateConfigFile) {".\Bin\" + $MinerFile.BaseName + "\" + $Miner.GenerateConfigFile -replace '#GroupName#', $TypeGroup.GroupName -replace '#Algorithm#', $AlgoName})
+                            GeneratePoolsFile   = $(if ($Miner.GeneratePoolsFile) {".\Bin\" + $MinerFile.BaseName + "\" + $Miner.GeneratePoolsFile -replace '#GroupName#', $TypeGroup.GroupName -replace '#Algorithm#', $AlgoName})
                             DeviceGroup         = $TypeGroup
                             Host                = $Pool.Host
                             Location            = $Pool.Location
@@ -825,7 +834,9 @@ while ($Quit -eq $false) {
                 Coin                = $Miner.Coin
                 CoinDual            = $Miner.CoinDual
                 ConfigFileArguments = $Miner.ConfigFileArguments
+                PoolsFileArguments  = $Miner.PoolsFileArguments
                 GenerateConfigFile  = $Miner.GenerateConfigFile
+                GeneratePoolsFile   = $Miner.GeneratePoolsFile
                 DeviceGroup         = $Miner.DeviceGroup
                 Host                = $Miner.Host
                 Id                  = $ActiveMiners.Count
@@ -954,19 +965,18 @@ while ($Quit -eq $false) {
             #something changes or some miner error
 
             if (
-                $false -and
+                $false -and ### Because not all miners live nicely with powerlimit changes during run
                 $BestLast.IdF -eq $BestNow.IdF -and
                 $BestLast.Id -ne $BestNow.Id
             ) {
                 #Must launch other SubMiner
-                if ($config.Afterburner -eq 'Enabled' -and
-                    $ActiveMiners[$BestNow.IdF].DeviceGroup.Type -in @('AMD') -and
-                    $BestNow.PowerLimit -gt 0
-                ) {
-                    set_ab_powerlimit -PowerLimitPercent $BestNow.PowerLimit -DeviceGroup $ActiveMiners[$BestNow.IdF].DeviceGroup
-                } else {
-                    if ($ActiveMiners[$BestNow.IdF].DeviceGroup.Type -eq 'NVIDIA' -and $BestNow.PowerLimit -gt 0) {set_Nvidia_PowerLimit $BestNow.PowerLimit $ActiveMiners[$BestNow.IdF].DeviceGroup.Devices}
-                    if ($ActiveMiners[$BestNow.IdF].DeviceGroup.Type -eq 'AMD' -and $BestNow.PowerLimit -gt 0) {}
+                if ($BestNow.PowerLimit -gt 0) {
+                    if ($config.Afterburner -eq 'Enabled') {
+                        set_ab_powerlimit -PowerLimitPercent $BestNow.PowerLimit -DeviceGroup $ActiveMiners[$BestNow.IdF].DeviceGroup
+                    } else {
+                        if ($ActiveMiners[$BestNow.IdF].DeviceGroup.Type -eq 'NVIDIA') {set_Nvidia_PowerLimit $BestNow.PowerLimit $ActiveMiners[$BestNow.IdF].DeviceGroup.Devices}
+                        if ($ActiveMiners[$BestNow.IdF].DeviceGroup.Type -eq 'AMD') {}
+                    }
                 }
 
                 $ActiveMiners[$BestNow.IdF].SubMiners[$BestNow.Id].Best = $true
@@ -1025,14 +1035,13 @@ while ($Quit -eq $false) {
                 }
 
                 #Start New
-                if ($config.Afterburner -eq 'Enabled' -and
-                    $ActiveMiners[$BestNow.IdF].DeviceGroup.Type -in @('AMD') -and
-                    $BestNow.PowerLimit -gt 0
-                ) {
-                    set_ab_powerlimit -PowerLimitPercent $BestNow.PowerLimit -DeviceGroup $ActiveMiners[$BestNow.IdF].DeviceGroup
-                } else {
-                    if ($ActiveMiners[$BestNow.IdF].DeviceGroup.Type -eq 'NVIDIA' -and $BestNow.PowerLimit -gt 0) {set_Nvidia_PowerLimit $BestNow.PowerLimit $ActiveMiners[$BestNow.IdF].DeviceGroup.Devices}
-                    if ($ActiveMiners[$BestNow.IdF].DeviceGroup.Type -eq 'AMD' -and $BestNow.PowerLimit -gt 0) {}
+                if ($BestNow.PowerLimit -gt 0) {
+                    if ($config.Afterburner -eq 'Enabled') {
+                        set_ab_powerlimit -PowerLimitPercent $BestNow.PowerLimit -DeviceGroup $ActiveMiners[$BestNow.IdF].DeviceGroup
+                    } else {
+                        if ($ActiveMiners[$BestNow.IdF].DeviceGroup.Type -eq 'NVIDIA') {set_Nvidia_PowerLimit $BestNow.PowerLimit $ActiveMiners[$BestNow.IdF].DeviceGroup.Devices}
+                        if ($ActiveMiners[$BestNow.IdF].DeviceGroup.Type -eq 'AMD') {}
+                    }
                 }
 
                 $ActiveMiners[$BestNow.IdF].SubMiners[$BestNow.Id].Best = $true
@@ -1043,6 +1052,9 @@ while ($Quit -eq $false) {
                 if ($ActiveMiners[$BestNow.IdF].GenerateConfigFile) {
                     $ActiveMiners[$BestNow.IdF].ConfigFileArguments = $ActiveMiners[$BestNow.IdF].ConfigFileArguments -replace '#APIPort#', $ActiveMiners[$BestNow.IdF].Port
                     $ActiveMiners[$BestNow.IdF].ConfigFileArguments | Set-Content ($ActiveMiners[$BestNow.IdF].GenerateConfigFile)
+                }
+                if ($ActiveMiners[$BestNow.IdF].GeneratePoolsFile) {
+                    $ActiveMiners[$BestNow.IdF].PoolsFileArguments | Set-Content ($ActiveMiners[$BestNow.IdF].GeneratePoolsFile)
                 }
 
                 if ($ActiveMiners[$BestNow.IdF].PrelaunchCommand) {Start-Process -FilePath $ActiveMiners[$BestNow.IdF].PrelaunchCommand}            #run prelaunch command
@@ -1162,7 +1174,7 @@ while ($Quit -eq $false) {
                 $_.RevenueLive = $_.SpeedLive * $ActiveMiners[$_.IdF].PoolPrice
                 $_.RevenueLiveDual = $_.SpeedLiveDual * $ActiveMiners[$_.IdF].PoolPriceDual
 
-                $_.PowerLive = ($Devices | Where-Object group -eq ($ActiveMiners[$_.IdF].DeviceGroup.GroupName) | Measure-Object -property power_draw -sum).sum
+                $_.PowerLive = ($Devices | Where-Object group -eq ($ActiveMiners[$_.IdF].DeviceGroup.GroupName) | Measure-Object -property PowerDraw -sum).sum
 
                 $_.ProfitsLive = (($_.RevenueLive * (1 - [double]$ActiveMiners[$_.IdF].PoolFee) + $_.RevenueLiveDual * (1 - [double]$ActiveMiners[$_.IdF].PoolFeeDual)) * $LocalBTCvalue)
                 $_.ProfitsLive -= ($ActiveMiners[$_.IdF].MinerFee * $_.ProfitsLive)
@@ -1186,7 +1198,7 @@ while ($Quit -eq $false) {
                         $_.SpeedReads += [PSCustomObject]@{
                             Speed                  = $_.SpeedLive
                             SpeedDual              = $_.SpeedLiveDual
-                            Activity               = ($Devices | Where-Object group -eq ($ActiveMiners[$_.IdF].DeviceGroup.GroupName) | Measure-Object -property utilization -average).average
+                            Activity               = ($Devices | Where-Object group -eq ($ActiveMiners[$_.IdF].DeviceGroup.GroupName) | Measure-Object -property Utilization -average).average
                             Power                  = $_.PowerLive
                             Date                   = (Get-Date).DateTime
                             Benchmarking           = $_.NeedBenchmark
@@ -1194,7 +1206,6 @@ while ($Quit -eq $false) {
                             BenchmarkIntervalTime  = $BenchmarkIntervalTime
                         }
                     }
-                    # if ($_.SpeedReads.Count -gt 2000) {$_.SpeedReads = $_.SpeedReads[1..($_.SpeedReads.length - 1)]} #if array is greater than X delete first element
                     if ($_.SpeedReads.Count -gt 2000) {
                         # Remove 10 percent of lowest and highest rate samples which may skew the average
                         $_.SpeedReads = $_.SpeedReads | Sort-Object Speed
@@ -1223,7 +1234,7 @@ while ($Quit -eq $false) {
                                 [math]::Abs($AvgPrev / $AvgCurr - 1) -le $SpeedDelta -and
                                 ($AvgPrevDual -eq 0 -or [math]::Abs($AvgPrevDual / $AvgCurrDual - 1) -le $SpeedDelta)
                             ) {
-                                $_.SpeedReads = $_.SpeedReads[$p20Index..($_.SpeedReads.count - 1)]
+                                $_.SpeedReads = $_.SpeedReads[($pIndex * 2)..($_.SpeedReads.count - 1)]
                                 $_.NeedBenchmark = $false
                             }
                         }
@@ -1245,13 +1256,13 @@ while ($Quit -eq $false) {
 
             $ActivityAverages += [pscustomobject]@{
                 DeviceGroup     = $ActiveMiners[$_.IdF].DeviceGroup.GroupName
-                Average         = ($GroupDevices | Measure-Object -property utilization -average).average
+                Average         = ($GroupDevices | Measure-Object -property Utilization -average).average
                 NumberOfDevices = $GroupDevices.count
             }
 
             if ($ActivityAverages.count -gt 20) {
                 $ActivityAverages = $ActivityAverages[($ActivityAverages.Count - 20)..($ActivityAverages.Count - 1)]
-                $ActivityAverage = ($ActivityAverages | Where-Object DeviceGroup -eq $ActiveMiners[$_.IdF].DeviceGroup.GroupName | Measure-Object -property average -maximum).maximum
+                $ActivityAverage = ($ActivityAverages | Where-Object DeviceGroup -eq $ActiveMiners[$_.IdF].DeviceGroup.GroupName | Measure-Object -property Average -maximum).maximum
                 $ActivityDeviceCount = ($ActivityAverages | Where-Object DeviceGroup -eq $ActiveMiners[$_.IdF].DeviceGroup.GroupName | Measure-Object -property NumberOfDevices -maximum).maximum
                 if ($DetailedLog) {WriteLog ("Last 20 reads maximum Device activity is $ActivityAverage for DeviceGroup $($ActiveMiners[$_.IdF].DeviceGroup.GroupName)") $LogFile $false}
             } else { $ActivityAverage = 100 } #only want watchdog works with at least 20 reads
@@ -1308,7 +1319,7 @@ while ($Quit -eq $false) {
         set_ConsolePosition 0 0
 
         #display header
-        Print_Horizontal_line "MegaMiner $Release"
+        Print_Horizontal_line "Forager $Release"
         Print_Horizontal_line
         "  (E)nd Interval  (P)rofits  (C)urrent  (H)istory  (W)allets  (S)tats  (Q)uit" | Out-Host
 
@@ -1393,18 +1404,18 @@ while ($Quit -eq $false) {
         }
 
         $ScreenOut | Format-Table (
-            @{Label = "GroupName"; Expression = {$_.GroupName}},
-            @{Label = "MMPowLmt"; Expression = {$_.MMPowLmt} ; Align = 'right'},
-            @{Label = "LocalSpeed"; Expression = {$_.LocalSpeed} ; Align = 'right'},
-            @{Label = "mBTC/Day"; Expression = {$_.mbtc_Day} ; Align = 'right'},
-            @{Label = "$LocalCurrency/Day"; Expression = {$_.Rev_Day} ; Align = 'right'},
-            @{Label = "Profit/Day"; Expression = {$_.Profit_Day} ; Align = 'right'},
+            @{Label = "Group"; Expression = {$_.GroupName}},
             @{Label = "Algorithm"; Expression = {$_.Algorithm}},
             @{Label = "Coin"; Expression = {$_.Coin}},
             @{Label = "Miner"; Expression = {$_.Miner}},
-            @{Label = "Power"; Expression = {$_.Power} ; Align = 'right'},
-            @{Label = "Hash/W"; Expression = {$_.EfficiencyH} ; Align = 'right'},
+            @{Label = "LocalSpeed"; Expression = {$_.LocalSpeed} ; Align = 'right'},
+            @{Label = "PwLim"; Expression = {$_.MMPowLmt} ; Align = 'right'},
+            @{Label = "Watt"; Expression = {$_.Power} ; Align = 'right'},
             @{Label = "$LocalCurrency/W"; Expression = {$_.EfficiencyW}  ; Align = 'right'},
+            @{Label = "mBTC/Day"; Expression = {$_.mbtc_Day} ; Align = 'right'},
+            @{Label = "$LocalCurrency/Day"; Expression = {$_.Rev_Day} ; Align = 'right'},
+            @{Label = "Profit/Day"; Expression = {$_.Profit_Day} ; Align = 'right'},
+            # @{Label = "Hash/W"; Expression = {$_.EfficiencyH} ; Align = 'right'},
             @{Label = "PoolSpeed"; Expression = {$_.PoolSpeed} ; Align = 'right'},
             @{Label = "Pool"; Expression = {$_.Pool} ; Align = 'right'},
             @{Label = "Workers"; Expression = {$_.Workers} ; Align = 'right'},
@@ -1496,8 +1507,8 @@ while ($Quit -eq $false) {
                 @{Label = "Algorithm"; Expression = {$_.Algorithms + $(if ($_.AlgoLabel) {"|$($_.AlgoLabel)"})}},
                 @{Label = "Coin"; Expression = {$_.Symbol + $(if ($_.AlgorithmDual) {"_$($_.SymbolDual)"})}},
                 @{Label = "Miner"; Expression = {$_.Name}},
-                @{Label = "PowLmt"; Expression = {if ($_.SubMiner.PowerLimit -gt 0) {$_.SubMiner.PowerLimit}}; align = 'right'},
                 @{Label = "StatsSpeed"; Expression = {if ($_.SubMiner.NeedBenchmark) {"Benchmarking"} else {"$(ConvertTo_Hash $_.SubMiner.HashRate)" + $(if ($_.AlgorithmDual) {"/$(ConvertTo_Hash $_.SubMiner.HashRateDual)"})}}; Align = 'right'},
+                @{Label = "PwLim"; Expression = {if ($_.SubMiner.PowerLimit -gt 0) {$_.SubMiner.PowerLimit}}; align = 'right'},
                 @{Label = "Watt"; Expression = {if ($_.SubMiner.PowerAvg -gt 0) {$_.SubMiner.PowerAvg.tostring("n0")} else {$null}}; Align = 'right'},
                 @{Label = "$LocalCurrency/W"; Expression = {if ($_.SubMiner.PowerAvg -gt 0) {($_.SubMiner.Profits / $_.SubMiner.PowerAvg).tostring("n4")} else {$null} }; Align = 'right'},
                 @{Label = "mBTC/Day"; Expression = {if ($_.SubMiner.Revenue) {((($_.SubMiner.Revenue + $_.SubMiner.RevenueDual) * 1000).tostring("n5"))} else {$null}} ; Align = 'right'},
@@ -1505,8 +1516,8 @@ while ($Quit -eq $false) {
                 @{Label = "Profit/Day"; Expression = {if ($_.SubMiner.Profits) {($_.SubMiner.Profits).tostring("n2") + " $LocalCurrency"} else {$null}}; Align = 'right'},
                 @{Label = "PoolFee"; Expression = {if ($_.PoolFee -ne $null) {"{0:p2}" -f $_.PoolFee}}; Align = 'right'},
                 @{Label = "MinerFee"; Expression = {if ($_.MinerFee -ne $null) {"{0:p2}" -f $_.MinerFee}}; Align = 'right'},
-                @{Label = "Loc."; Expression = {$_.Location}},
-                @{Label = "Pool"; Expression = {$_.PoolAbbName + $(if ($_.AlgorithmDual) {"/$($_.PoolAbbNameDual)"})}}
+                @{Label = "Pool"; Expression = {$_.PoolAbbName + $(if ($_.AlgorithmDual) {"/$($_.PoolAbbNameDual)"})}},
+                @{Label = "Loc."; Expression = {$_.Location}}
 
             ) -GroupBy GroupName | Out-Host
             Remove-Variable ProfitMiners

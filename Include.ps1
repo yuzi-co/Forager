@@ -213,6 +213,41 @@ function get_devices_information ($Types) {
 
     $Devices = @()
 
+    if ((get_config_variable "Afterburner") -eq "Enabled") {
+
+        $abMonitor.ReloadAll()
+        $abControl.ReloadAll()
+
+        foreach ($Type in @('AMD', 'NVIDIA', 'Intel')) {
+            $DeviceId = 0
+            $Pattern = @{
+                AMD    = '*Radeon*'
+                NVIDIA = '*GeForce*'
+                Intel  = '*Intel*'
+            }
+            @($abMonitor.GpuEntries | Where-Object Device -like $Pattern.$Type) | ForEach-Object {
+                $CardData = $abMonitor.Entries | Where-Object GPU -eq $_.Index
+                $Group = $($Types | Where-Object Type -eq $Type | Where-Object DeviceArray -contains $DeviceId).GroupName
+                $Card = @{
+                    Type              = $Type
+                    Id                = $DeviceId
+                    Group             = $Group
+                    AdapterId         = [int]$_.Index
+                    Name              = $_.Device
+                    Utilization       = [int]$($CardData | Where-Object SrcName -match "^(GPU\d* )?usage").Data
+                    UtilizationMem    = [int]$($mem = $CardData | Where-Object SrcName -match "^(GPU\d* )?memory usage"; if ($mem.MaxLimit) {$mem.Data / $mem.MaxLimit * 100})
+                    Clock             = [int]$($CardData | Where-Object SrcName -match "^(GPU\d* )?core clock").Data
+                    ClockMem          = [int]$($CardData | Where-Object SrcName -match "^(GPU\d* )?memory clock").Data
+                    FanSpeed          = [int]$($CardData | Where-Object SrcName -match "^(GPU\d* )?fan speed").Data
+                    Temperature       = [int]$($CardData | Where-Object SrcName -match "^(GPU\d* )?temperature").Data
+                    PowerDraw         = [int]$($CardData | Where-Object SrcName -match "^(GPU\d* )?power").Data
+                    PowerLimitPercent = [int]$($abControl.GpuEntries[$_.Index].PowerLimitCur + 100)
+                }
+                $Devices += [PSCustomObject]$Card
+                $DeviceId++
+            }
+        }
+    } else {
     #NVIDIA
     if ($Types | Where-Object Type -eq 'NVIDIA') {
         $DeviceId = 0
@@ -224,21 +259,21 @@ function get_devices_information ($Types) {
                 $Group = ($Types | Where-Object type -eq 'NVIDIA' | Where-Object DeviceArray -contains $DeviceId).groupname
 
                 $Card = [pscustomObject]@{
-                    Type               = 'NVIDIA'
-                    Id                 = $DeviceId
-                    Group              = $Group
-                    Name               = $SMIresultSplit[0]
-                    Utilization        = if ($SMIresultSplit[1] -like "*Supported*") {100} else {[int]($SMIresultSplit[1] -replace '%', '')} #If we dont have real Utilization, at least make the watchdog happy
-                    Utilization_Memory = if ($SMIresultSplit[2] -like "*Supported*") {$null} else {[int]($SMIresultSplit[2] -replace '%', '')}
-                    Temperature        = if ($SMIresultSplit[3] -like "*Supported*") {$null} else {[int]($SMIresultSplit[3] -replace '%', '')}
-                    Power_Draw         = if ($SMIresultSplit[4] -like "*Supported*") {$null} else {[int]($SMIresultSplit[4] -replace 'W', '')}
-                    Power_Limit        = if ($SMIresultSplit[5] -like "*Supported*" -or $SMIresultSplit[5] -like "*error*") {$null} else {[int]($SMIresultSplit[5] -replace 'W', '')}
-                    Pstate             = $SMIresultSplit[7]
-                    FanSpeed           = if ($SMIresultSplit[6] -like "*Supported*" -or $SMIresultSplit[6] -like "*error*") {$null} else {[int]($SMIresultSplit[6] -replace '%', '')}
-                    Clock              = if ($SMIresultSplit[8] -like "*Supported*") {$null} else {[int]($SMIresultSplit[8] -replace 'Mhz', '')}
-                    ClockMem           = if ($SMIresultSplit[9] -like "*Supported*") {$null} else {[int]($SMIresultSplit[9] -replace 'Mhz', '')}
-                    Power_MaxLimit     = if ($SMIresultSplit[10] -like "*Supported*") {$null} else { [int]($SMIresultSplit[10] -replace 'W', '')}
-                    Power_DefaultLimit = if ($SMIresultSplit[11] -like "*Supported*") {$null} else {[int]($SMIresultSplit[11] -replace 'W', '')}
+                        Type              = 'NVIDIA'
+                        Id                = $DeviceId
+                        Group             = $Group
+                        Name              = $SMIresultSplit[0]
+                        Utilization       = if ($SMIresultSplit[1] -like "*Supported*") {100} else {[int]($SMIresultSplit[1] -replace '%', '')} #If we dont have real Utilization, at least make the watchdog happy
+                        UtilizationMem    = if ($SMIresultSplit[2] -like "*Supported*") {$null} else {[int]($SMIresultSplit[2] -replace '%', '')}
+                        Temperature       = if ($SMIresultSplit[3] -like "*Supported*") {$null} else {[int]($SMIresultSplit[3] -replace '%', '')}
+                        PowerDraw         = if ($SMIresultSplit[4] -like "*Supported*") {$null} else {[int]($SMIresultSplit[4] -replace 'W', '')}
+                        PowerLimit        = if ($SMIresultSplit[5] -like "*Supported*" -or $SMIresultSplit[5] -like "*error*") {$null} else {[int]($SMIresultSplit[5] -replace 'W', '')}
+                        Pstate            = $SMIresultSplit[7]
+                        FanSpeed          = if ($SMIresultSplit[6] -like "*Supported*" -or $SMIresultSplit[6] -like "*error*") {$null} else {[int]($SMIresultSplit[6] -replace '%', '')}
+                        Clock             = if ($SMIresultSplit[8] -like "*Supported*") {$null} else {[int]($SMIresultSplit[8] -replace 'Mhz', '')}
+                        ClockMem          = if ($SMIresultSplit[9] -like "*Supported*") {$null} else {[int]($SMIresultSplit[9] -replace 'Mhz', '')}
+                        PowerMaxLimit     = if ($SMIresultSplit[10] -like "*Supported*") {$null} else { [int]($SMIresultSplit[10] -replace 'W', '')}
+                        PowerDefaultLimit = if ($SMIresultSplit[11] -like "*Supported*") {$null} else {[int]($SMIresultSplit[11] -replace 'W', '')}
                 }
                 if ($Card.Power_DefaultLimit -gt 0) { $Card | Add-Member Power_limit_percent ([math]::Floor(($Card.power_limit * 100) / $Card.Power_DefaultLimit))}
                 $Devices += $Card
@@ -253,35 +288,6 @@ function get_devices_information ($Types) {
         #ADL
         $DeviceId = 0
 
-        if ((get_config_variable "Afterburner") -eq "Enabled") {
-
-            $abMonitor.ReloadAll()
-            $abControl.ReloadAll()
-
-            $Cards = @($abMonitor.GpuEntries | Where-Object Device -like "*Radeon*")
-
-            $Cards | ForEach-Object {
-                $CardData = $abMonitor.Entries | Where-Object GPU -eq $_.Index
-                $Group = ($Types | Where-Object type -eq 'AMD' | Where-Object DeviceArray -contains $DeviceId).groupname
-                $Card = [pscustomObject]@{
-                    Type                = 'AMD'
-                    Id                  = $DeviceId
-                    Group               = $Group
-                    AdapterId           = [int]$_.Index
-                    Utilization_Memory  = [int]($($CardData | Where-Object SrcName -match "^(GPU\d* )?memory usage").Data / $($CardData | Where-Object SrcName -match "^(GPU\d* )?memory usage").MaxLimit * 100)
-                    FanSpeed            = [int]$($CardData | Where-Object SrcName -match "^(GPU\d* )?fan speed").Data
-                    Clock               = [int]$($CardData | Where-Object SrcName -match "^(GPU\d* )?core clock").Data
-                    ClockMem            = [int]$($CardData | Where-Object SrcName -match "^(GPU\d* )?memory clock").Data
-                    Utilization         = [int]$($CardData | Where-Object SrcName -match "^(GPU\d* )?usage").Data
-                    Temperature         = [int]$($CardData | Where-Object SrcName -match "^(GPU\d* )?temperature").Data
-                    Power_Limit_Percent = [int]$abControl.GpuEntries[$_.Index].PowerLimitCur + 100
-                    Power_Draw          = [int]$($CardData | Where-Object SrcName -match "^(GPU\d* )?power").Data
-                    Name                = $_.Device
-                }
-                $Devices += $Card
-                $DeviceId++
-            }
-        } else {
             $AdlResult = Invoke-Expression ".\Includes\OverdriveN.exe" | Where-Object {$_ -notlike "*&???" -and $_ -ne "ADL2_OverdriveN_Capabilities_Get is failed"}
         $AmdCardsTDP = Get-Content .\Includes\amd-cards-tdp.json | ConvertFrom-Json
 
@@ -292,19 +298,19 @@ function get_devices_information ($Types) {
                 $Group = ($Types | Where-Object type -eq 'AMD' | Where-Object DeviceArray -contains $DeviceId).groupname
 
                     $Card = [pscustomObject]@{
-                    Type                = 'AMD'
-                    Id                  = $DeviceId
-                    Group               = $Group
-                    AdapterId           = [int]$AdlResultSplit[0]
-                        FanSpeed            = [int]([int]$AdlResultSplit[1] / [int]$AdlResultSplit[2] * 100)
-                    Clock               = [int]([int]($AdlResultSplit[3] / 100))
-                    ClockMem            = [int]([int]($AdlResultSplit[4] / 100))
-                    Utilization         = [int]$AdlResultSplit[5]
-                    Temperature         = [int]$AdlResultSplit[6] / 1000
-                    Power_Limit_Percent = 100 + [int]$AdlResultSplit[7]
-                    Power_Draw          = $AmdCardsTDP.$($AdlResultSplit[8].Trim()) * ((100 + [double]$AdlResultSplit[7]) / 100) * ([double]$AdlResultSplit[5] / 100)
-                    Name                = $AdlResultSplit[8].Trim()
-                    UDID                = $AdlResultSplit[9].Trim()
+                        Type              = 'AMD'
+                        Id                = $DeviceId
+                        Group             = $Group
+                        AdapterId         = [int]$AdlResultSplit[0]
+                        FanSpeed          = [int]([int]$AdlResultSplit[1] / [int]$AdlResultSplit[2] * 100)
+                        Clock             = [int]([int]($AdlResultSplit[3] / 100))
+                        ClockMem          = [int]([int]($AdlResultSplit[4] / 100))
+                        Utilization       = [int]$AdlResultSplit[5]
+                        Temperature       = [int]$AdlResultSplit[6] / 1000
+                        PowerLimitPercent = 100 + [int]$AdlResultSplit[7]
+                        PowerDraw         = $AmdCardsTDP.$($AdlResultSplit[8].Trim()) * ((100 + [double]$AdlResultSplit[7]) / 100) * ([double]$AdlResultSplit[5] / 100)
+                        Name              = $AdlResultSplit[8].Trim()
+                        UDID              = $AdlResultSplit[9].Trim()
                 }
                     $Devices += $Card
                 $DeviceId++
@@ -334,7 +340,7 @@ function get_devices_information ($Types) {
                     CacheL3     = $_.L3CacheSize
                     Cores       = $_.NumberOfCores
                     Threads     = $_.NumberOfLogicalProcessors
-                    Power_Draw  = [int]$($CPUData | Where-Object SrcName -eq 'CPU power').Data
+                    PowerDraw   = [int]$($CPUData | Where-Object SrcName -eq 'CPU power').Data
                     Temperature = [int]$($CPUData | Where-Object SrcName -eq 'CPU temperature').Data
                     Name        = $_.Name
                 }
@@ -361,7 +367,7 @@ function get_devices_information ($Types) {
                 CacheL3     = $_.L3CacheSize
                 Cores       = $_.NumberOfCores
                 Threads     = $_.NumberOfLogicalProcessors
-                Power_Draw  = [int]($CpuTDP.($_.Name) * $CpuLoad)
+                    PowerDraw   = [int]($CpuTDP.($_.Name) * $CpuLoad)
                 Name        = $_.Name
             }
         }
@@ -383,11 +389,11 @@ function print_devices_information ($Devices) {
             @{Label = "Group"; Expression = {$_.Group}; Align = 'right'},
             @{Label = "Name"; Expression = {$_.Name}},
             @{Label = "Load"; Expression = {[string]$_.Utilization + "%"}; Align = 'right'},
-            @{Label = "Mem"; Expression = {[string]$_.Utilization_Memory + "%"}; Align = 'right'},
+            @{Label = "Mem"; Expression = {[string]$_.UtilizationMem + "%"}; Align = 'right'},
             @{Label = "Temp"; Expression = {$_.Temperature}; Align = 'right'},
             @{Label = "Fan"; Expression = {[string]$_.FanSpeed + "%"}; Align = 'right'},
-            @{Label = "Power"; Expression = {[string]$_.Power_Draw + "W"}; Align = 'right'},
-            @{Label = "PowLmt"; Expression = {[string]$_.Power_Limit_Percent + '%'}; Align = 'right'},
+            @{Label = "Power"; Expression = {[string]$_.PowerDraw + "W"}; Align = 'right'},
+            @{Label = "PwLim"; Expression = {[string]$_.PowerLimitPercent + '%'}; Align = 'right'},
             @{Label = "Pstate"; Expression = {$_.pstate}; Align = 'right'},
             @{Label = "Clock"; Expression = {[string]$_.Clock + "Mhz"}; Align = 'right'},
             @{Label = "ClkMem"; Expression = {[string]$_.ClockMem + "Mhz"}; Align = 'right'}
@@ -404,7 +410,7 @@ function print_devices_information ($Devices) {
         @{Label = "Clock"; Expression = {[string]$_.Clock + "Mhz"}; Align = 'right'},
         @{Label = "Load"; Expression = {[string]$_.Utilization + "%"}; Align = 'right'},
         @{Label = "Temp"; Expression = {$_.Temperature}; Align = 'right'},
-        @{Label = "Power*"; Expression = {[string]$_.Power_Draw + "W"}; Align = 'right'}
+        @{Label = "Power*"; Expression = {[string]$_.PowerDraw + "W"}; Align = 'right'}
     )  -groupby Type | Out-Host
 }
 
@@ -421,16 +427,16 @@ Function Get_Mining_Types () {
 
     if ($Filter -eq $null) {$Filter = @()} # to allow comparation after
 
-    $Types = @()
+    $OCLPlatforms = [OpenCl.Platform]::GetPlatformIDs()
+    $OCLDevices = @($OCLPlatforms | ForEach-Object { [OpenCl.Device]::GetDeviceIDs($_, "ALL") } | Where-Object Type -eq 'Gpu')
 
     $Types0 = get_config_variable "GpuGroups"
-    if ($Types0) {$Types0 = $Types0 | ConvertFrom-Json}
 
-    $OCLPlatforms = [OpenCl.Platform]::GetPlatformIDs()
-    $OCLDevices = @($OCLPlatforms | ForEach-Object { [OpenCl.Device]::GetDeviceIDs($_, "GPU") })
-
-    if (!$Types0) {
-        #Autodetection on, must add types manually
+    if ($Types0 -eq "") {
+        # Empty GpuGroups - don't autodetect, use cpu only
+        $Types0 = @()
+    } elseif ($Types0 -eq $null) {
+        # Autodetection on, must add types manually
         $Types0 = @()
 
         foreach ($Type in @('AMD', 'NVIDIA')) {
@@ -449,12 +455,16 @@ Function Get_Mining_Types () {
             }
         }
             }
+    } else {
+        # GpuGroups not empty - parse it
+        $Types0 = $Types0 | ConvertFrom-Json
         }
 
     #if cpu mining is enabled add a new group
     if (
-        ((get_config_variable "CPUMining") -eq 'ENABLED' -and !$Filter) -or
-        "CPU" -in $Filter
+        (!$Filter -and (get_config_variable "CPUMining") -eq 'ENABLED') -or
+        $Filter -contains "CPU" -or
+        $Types0.Length -eq 0
     ) {
         $Types0 += [PSCustomObject] @{
             GroupName   = "CPU"
@@ -464,6 +474,7 @@ Function Get_Mining_Types () {
         }
     }
 
+    $Types = @()
     $c = 0
     $Types0 | ForEach-Object {
         if (!$Filter -or (Compare-Object $_.GroupName $Filter -IncludeEqual -ExcludeDifferent)) {
@@ -481,11 +492,13 @@ Function Get_Mining_Types () {
             $_ | Add-Member Id $c
             $c++
 
-            $_ | Add-Member DevicesClayMode ($_.Devices -replace '10', 'A' -replace '11', 'B' -replace '12', 'C' -replace '13', 'D' -replace '14', 'E' -replace '15', 'F' -replace '16', 'G' -replace ',', '')
-            $_ | Add-Member DevicesETHMode ($_.Devices -replace ',', ' ')
-            $_ | Add-Member DevicesNsgMode ("-d " + $_.Devices -replace ',', ' -d ')
-            $_ | Add-Member DeviceArray ($_.Devices -split ',')
-            $_ | Add-Member DeviceCount ($_.Devices -split ',').count
+            $_ | Add-Member DeviceArray     @($_.Devices -split ',' | ForEach-Object {[int]$_})             # @(0,1,2,10,11,12)
+
+            $_ | Add-Member DevicesClayMode (($_.DeviceArray | ForEach-Object {'{0:X}' -f $_}) -join '')    # 012ABC
+            $_ | Add-Member DevicesETHMode  ($_.DeviceArray -join ' ')                                      # 0 1 2 10 11 12
+            $_ | Add-Member DevicesNsgMode  (($_.DeviceArray | ForEach-Object { "-d " + $_}) -join ' ')     # -d 0 -d 1 -d 2 -d 10 -d 11 -d 12
+            $_ | Add-Member DeviceCount     ($_.DeviceArray.count)                                          # 6
+
             $_ | Add-Member Platform (Get_Gpu_Platform $_.Type)
             $_.PowerLimits = $_.PowerLimits -split ',' | ForEach-Object {[int]$_} | Sort-Object -Descending -Unique
 
@@ -881,6 +894,16 @@ function Get_Live_HashRate {
                     elseif ([double]$Data.hashrate_10s -gt 0) {$HashRate = [double]$Data.hashrate_10s}
                 }
             }
+
+            "SRB" {
+                $Request = Invoke_httpRequest $Server $Port "" 5
+                if ($Request) {
+                    $Data = $Request | ConvertFrom-Json
+                    if ([double]$Data.hashrate_total_5min -gt 0) {$HashRate = [double]$Data.hashrate_total_5min}
+                    elseif ([double]$Data.hashrate_total_now -gt 0) {$HashRate = [double]$Data.hashrate_total_now}
+                }
+            }
+
         } #end switch
 
         $HashRates = @()
@@ -906,7 +929,7 @@ function ConvertTo_Hash {
     $Return = switch ([math]::truncate([math]::log($Hash, [math]::Pow(1000, 1)))) {
 
         "-Infinity" {"0 h"}
-        0 {"{0:g4}  h" -f ($Hash / [math]::Pow(1000, 0))}
+        0 {"{0:g4} h" -f ($Hash / [math]::Pow(1000, 0))}
         1 {"{0:g4} kh" -f ($Hash / [math]::Pow(1000, 1))}
         2 {"{0:g4} mh" -f ($Hash / [math]::Pow(1000, 2))}
         3 {"{0:g4} gh" -f ($Hash / [math]::Pow(1000, 3))}
@@ -1037,13 +1060,23 @@ function Expand_WebRequest {
 
     $DestinationFolder = $PSScriptRoot + $Path.Substring(1)
     $FileName = ([IO.FileInfo](Split-Path $Uri -Leaf)).name
-    $FilePath = $PSScriptRoot + '\' + $Filename
+    $CachePath = $PSScriptRoot + '\Downloads\'
+    $FilePath = $CachePath + $Filename
 
-    if (Test-Path $FileName) {Remove-Item $FileName}
+    if (!(Test-Path -Path $CachePath)) { New-Item -Path $CachePath -ItemType directory}
+
     try {
-        (New-Object System.Net.WebClient).DownloadFile($Uri, $FileName)
-        if (Test-Path $FileName) {
-            if ($SHA256 -and (Get-FileHash -Path $FileName -Algorithm SHA256).Hash -ne $SHA256) {
+        if (Test-Path $FilePath) {
+            if ($SHA256 -and (Get-FileHash -Path $FilePath -Algorithm SHA256).Hash -ne $SHA256) {
+                "Existing file hash doesn't match. Will re-download." | Write-Host -ForegroundColor Red
+                Remove-Item $FilePath
+            }
+        }
+        if (!(Test-Path $FilePath)) {
+            (New-Object System.Net.WebClient).DownloadFile($Uri, $FilePath)
+        }
+        if (Test-Path $FilePath) {
+            if ($SHA256 -and (Get-FileHash -Path $FilePath -Algorithm SHA256).Hash -ne $SHA256) {
                 "File hash doesn't match. Skipping miner." | Write-Host -ForegroundColor Red
             } else {
                 $Command = 'x "' + $FilePath + '" -o"' + $DestinationFolder + '" -y -spe'
@@ -1051,7 +1084,7 @@ function Expand_WebRequest {
             }
         }
     } finally {
-        if (Test-Path $FileName) {Remove-Item $FileName}
+        # if (Test-Path $FilePath) {Remove-Item $FilePath}
     }
 }
 
@@ -1518,8 +1551,8 @@ function Start_Downloader {
                 New-Item (Split-Path $Path) -ItemType "Directory" | Out-Null
                 (New-Object System.Net.WebClient).DownloadFile($URI, $Path)
                 if ($SHA256 -and (Get-FileHash -Path $Path -Algorithm SHA256).Hash -ne $SHA256) {
+                    "File hash doesn't match. Skipping miner." | Write-Host -ForegroundColor Red
                     Remove-Item $Path
-                    "File hash doesn't match. Skipping miner." | write-host -ForegroundColor Red
                 }
             } else {
                 $Message = "Downloading....$($URI)"
