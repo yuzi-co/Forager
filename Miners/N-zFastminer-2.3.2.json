@@ -1,6 +1,6 @@
 {
-    "Path": "zFastminer-v230.exe",
-    "Uri": "https://github.com/yuzi-co/miners/releases/download/1/zFastminer-v230.zip",
+    "Path": "zFastminer-v232.exe",
+    "Uri": "https://github.com/Fedeparma74/Miners/releases/download/1.0/zFastminer-v232.zip",
     "Type": "NVIDIA",
     "Arguments": "-o #PROTOCOL#://#SERVER#:#PORT# -u #LOGIN# -p #PASSWORD# -R 10 -r 4 -b #APIPORT# -d #DEVICES# #ALGORITHMPARAMETERS# -q",
     "API": "Ccminer",
