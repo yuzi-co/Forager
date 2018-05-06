@@ -28,7 +28,6 @@
         "ScryptN": "-a scrypt:2048",
         "ScryptJane16": "-a scryptjane:16",
         "S3": "-a s3",
-		"Skein": "-a skein",
         "Skein2": "-a skein2",
         "Timetravel": "-a timetravel",
         "Verium": "-a scrypt:1048576",

@@ -44,7 +44,6 @@
         "SHAvite3": "-a shavite3",
         "ScryptN": "-a scrypt:2048",
         "ScryptJane16": "-a scryptjane:16",
-		"Skein": "-a skein",
         "Skein2": "-a skein2",
         "Skunk": "-a skunk",
         "Timetravel": "-a timetravel",

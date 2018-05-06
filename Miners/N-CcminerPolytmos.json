@@ -10,7 +10,6 @@
         "Keccak": "-a keccak -m 2",
         "Lyra2v2": "-a lyra2v2",
         "Polytimos": "-a poly",
-		"Skein": "-a skein",
         "Veltor": "-a veltor"
     }
 }
