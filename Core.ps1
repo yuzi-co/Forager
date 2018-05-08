@@ -283,7 +283,7 @@ while ($Quit -eq $false) {
         $Algorithm = $null
         $PoolsName = ("MiningPoolHub", "NiceHash")
         $CoinsName = $null
-        $MiningMode = "Automatic"
+		$MiningMode = "Automatic"
 
         if ($ElapsedDonatedTime -ge $ConfigDonateTime) {"0_0" | Set-Content -Path 'Donation.ctr'}
         else {[string]$DonationPastTime + "_" + [string]$ElapsedDonatedTime | Set-Content -Path 'Donation.ctr'}

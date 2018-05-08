@@ -4,4 +4,4 @@ cd /d %~dp0
 
 timeout /t 180
 
-AutoStart.bat
+AutoStart24h.bat
