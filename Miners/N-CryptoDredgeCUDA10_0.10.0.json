@@ -21,17 +21,17 @@
     "Algorithms": {
         "Allium": "-a allium",
         "Blake2s": "-a blake2s",
-		"BCD": "-a bcd",
-		"C11": "-a c11",
+        "BCD": "-a bcd",
+        "C11": "-a c11",
         "CnFast": "-a cryptonightfast",
         "CnHaven": "-a cryptonighthaven",
         "CnHeavy": "-a cryptonightheavy",
         "CnLiteV7": "-a cryptolightv7",
         "CnSaber": "-a cryptonightsaber",
         "CnV7": "-a cryptonightv7",
-		"CnV8": "-a cryptonightv8",
+        "CnV8": "-a cryptonightv8",
         "CnXTL": "-a stellite",
-		"Exosis": "-a exosis",
+        "Exosis": "-a exosis",
         "Lbk3": "-a lbk3",
         "Lyra2v2": "-a lyra2v2",
         "Lyra2v2|old": "-a lyra2v2-old",
@@ -39,11 +39,11 @@
         "NeoScrypt": "-a neoscrypt",
         "Phi": "-a phi",
         "Phi2": "-a phi2",
-		"Polytimos": "-a polytimos",
+        "Polytimos": "-a polytimos",
         "Skunk": "-a skunk",
         "Tribus": "-a tribus",
-		"X17": "-a x17",
-		"X22i": "-a x22i",
-		"HMQ1725": "-a hmq1725"
+        "X17": "-a x17",
+        "X22i": "-a x22i",
+        "HMQ1725": "-a hmq1725"
     }
 }

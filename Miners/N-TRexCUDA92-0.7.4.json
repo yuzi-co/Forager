@@ -32,7 +32,7 @@
         "X16r": "-a x16r",
         "X16s": "-a x16s",
         "X17": "-a x17",
-		"X22i": "-a x22i",
-		"Timetravel": "-a timetravel"
+        "X22i": "-a x22i",
+        "Timetravel": "-a timetravel"
     }
 }

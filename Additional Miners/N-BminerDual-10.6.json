@@ -1,7 +1,7 @@
 {
-    "Path": "bminer-lite-v10.4.0-b73432a\\bminer.exe",
-    "Uri": "https://www.bminercontent.com/releases/bminer-lite-v10.4.0-b73432a-amd64.zip",
-    "SHA256": "6c6e5983686af056c89ad292ba3a2a5c840516fc0ed0c8857d74fc0d4176f1cd",
+    "Path": "bminer-lite-v10.6.0-36a62b2-CUDA-None\\bminer.exe",
+    "Uri": "https://www.bminercontent.com/releases/bminer-lite-v10.6.0-36a62b2-CUDA-9.2-amd64.zip",
+    "SHA256": "d710c73926a6c66e3100e5a0ddb38fc625ec415c1e5f0727884037ce7292e022",
     "Type": "NVIDIA",
     "Arguments": [
         "-uri ethstratum$(if($enableSSL){'+ssl'})://$([System.Web.HttpUtility]::UrlEncode('#Login#')):$([System.Web.HttpUtility]::UrlEncode('#Password#'))@#Server#:#Port#",
