@@ -1,7 +1,7 @@
 {
     "Path": "xmrig-nvidia.exe",
-    "Uri": "https://github.com/xmrig/xmrig-nvidia/releases/download/v2.7.0-beta/xmrig-nvidia-2.7.0-beta-cuda8-win64.zip",
-    "SHA256": "73AB64871B3E6DE8D47CD38C0D173F13727282E2B6EC62E840B654FFF7E28E60",
+    "Uri": "https://github.com/xmrig/xmrig-nvidia/releases/download/v2.8.4/xmrig-nvidia-2.8.4-cuda-8_0-win64.zip",
+    "SHA256": "A2045D824036F7C7133AC1F81A0D9A966FC3F6A12880BA90945C5A907DF267CA",
     "Type": "NVIDIA",
     "Arguments": [
         "-o #Protocol#://#Server#:#Port#",
@@ -26,6 +26,7 @@
         "CnLiteV7": "-a  cn-lite/1",
         "CnSaber": "-a cn-heavy/tube",
         "CnV7": "-a cn/1",
+        "CnV8": "-a cn/2",
         "CnXTL": "-a cn/xtl"
     }
 }
