@@ -28,6 +28,7 @@
         "Hex": "--algo hex --opencl-threads 2 --opencl-launch 23x0",
         "HMQ1725": "--algo hmq1725 --opencl-threads 2 --opencl-launch 21x128",
         "Phi": "--algo phi --opencl-threads 3 --opencl-launch 20x0",
+        "Polytimos": "--algo polytimos --opencl-threads 2 --opencl-launch 19x0",
         "Renesis": "--algo renesis --opencl-threads 3 --opencl-launch 20x128",
         "Skunk": "--algo skunkhash --opencl-threads 3 --opencl-launch 19x0",
         "SonoA": "--algo sonoa --opencl-threads 2 --opencl-launch 19x0",
