@@ -983,7 +983,13 @@ while ($Quit -eq $false) {
         ## Select top miner that need Benchmark, or if running in Manual mode, or highest Profit above zero.
         $BestNow = $Candidates.SubMiners |
             Where-Object Status -ne 'Failed' |
-            Where-Object {$_.NeedBenchmark -or $MiningMode -eq "Manual" -or $_.Profits -gt $Config.('MinProfit_' + $DeviceGroup.GroupName) -or $Interval.Current -eq "Donate"} |
+            Where-Object {
+                $_.NeedBenchmark -or
+                $_.Profits -gt $Config.('MinProfit_' + $DeviceGroup.GroupName) -or
+                -not $LocalBTCvalue -gt 0 -or
+                $MiningMode -eq "Manual" -or
+                $Interval.Current -eq "Donate"
+            } |
             Sort-Object -Descending NeedBenchmark, {$(if ($MiningMode -eq "Manual") {$_.HashRate} else {$_.Profits})}, {$ActiveMiners[$_.IdF].PoolPrice}, {$ActiveMiners[$_.IdF].PoolPriceDual}, PowerLimit |
             Select-Object -First 1
 

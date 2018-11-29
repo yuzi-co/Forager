@@ -1,7 +1,7 @@
 {
     "Path": "jce_cn_cpu_miner$(if($DeviceGroup.Features.'64bit'){'64'}else{'32'}).exe",
-    "Uri": "https://github.com/jceminer/cn_cpu_miner/raw/master/jce_cn_cpu_miner.windows.033a.zip",
-    "SHA256": "3B447E254BD0D834DF9EAB2DCB4C8D5514CAE3A08B90BF99C6993469F0D00943",
+    "Uri": "https://github.com/jceminer/cn_cpu_miner/raw/master/jce_cn_cpu_miner.windows.033g.zip",
+    "SHA256": "7A0CE4AFED478240B5C4BCCCE84DA210C2D7C29D9B924652454E393583469E1E",
     "Type": "CPU",
     "Arguments": [
         "-o #Server#:#Port#",
@@ -24,7 +24,9 @@
     "Algorithms": {
         "CnAlloy": "--variation 8 --auto",
         "CnArto": "--variation 10 --auto",
+        "CnDark": "--variation 17 --auto",
         "CnFast": "--variation 11 --auto",
+        "CnFreeHaven": "--variation 18 --auto",
         "CnHaven": "--variation 12 --auto",
         "CnHaven|dh": "--variation 12 -c config-CnHaven.txt",
         "CnHeavy": "--variation 5 --auto",

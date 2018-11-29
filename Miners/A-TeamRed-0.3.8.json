@@ -1,7 +1,7 @@
 {
-    "Path": "teamredminer-v0.3.6-win\\teamredminer.exe",
-    "Uri": "https://github.com/todxx/teamredminer/releases/download/v0.3.6/teamredminer-v0.3.6-win.zip",
-    "SHA256": "7E1847022F9900542496F6F5BDE8E475502B7CFDD349808A7BFDFA0DF7B2CE27",
+    "Path": "teamredminer-v0.3.8-win\\teamredminer.exe",
+    "Uri": "https://github.com/todxx/teamredminer/releases/download/v0.3.8/teamredminer-v0.3.8-win.zip",
+    "SHA256": "8A59FC821A11C4249BC7C28C756FABBBE03C14B845393C1DAC47936B4C225F50",
     "Type": "AMD",
     "Arguments": [
         "-o #Protocol#://#Server#:#Port#",

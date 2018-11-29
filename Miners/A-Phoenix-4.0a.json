@@ -1,7 +1,7 @@
 {
-    "Path": "PhoenixMiner.exe",
-    "Uri": "https://github.com/yuzi-co/miners/releases/download/2018.9/PhoenixMiner_3.5d_Windows.7z",
-    "SHA256": "6BB350BD4B2EC1F3D0E3CD6A53FCD118B7ADE33D22FDEFF8358751D093248DB7",
+    "Path": "PhoenixMiner_4.0a_Windows\\PhoenixMiner.exe",
+    "Uri": "https://github.com/yuzi-co/miners/releases/download/2018.11/PhoenixMiner_4.0a_Windows.zip",
+    "SHA256": "82C0045FCF2454B72E33B583CE0FFECEB91D69015E46F4EB88FB2D1E12DB3F39",
     "Type": "AMD",
     "Arguments": [
         "-pool #Protocol#://#Server#:#Port#",
@@ -26,6 +26,7 @@
     "Algorithms": {
         "Ethash": "",
         "Ethash|cl2": "-clkernel 2",
-        "Ethash|green": "-clgreen 1"
+        "Ethash|green": "-clgreen 1",
+        "Ethash_Blake2s": "-dcoin blake2s -dpool #ProtocolDual#://#ServerDual#:#PortDual# -dwal #LoginDual# -dpass #PasswordDual#"
     }
 }
