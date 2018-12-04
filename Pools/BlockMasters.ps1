@@ -14,8 +14,10 @@ $ActiveOnAutomatic24hMode = $true
 $AbbName = 'BM'
 $WalletMode = 'WALLET'
 $ApiUrl = 'http://blockmasters.co/api'
-$MineUrl = 'blockmasters.co'
-$Location = 'US'
+$Locations = @{
+    'US' = 'blockmasters.co'
+    'EU' = 'eu.blockmasters.co'
+}
 $RewardType = "PPS"
 $Result = @()
 
@@ -97,29 +99,32 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
 
         $Divisor = 1000000 * $Algo.mbtc_mh_factor
 
-        $Result += [PSCustomObject]@{
-            Algorithm             = $Pool_Algo
-            Info                  = $Pool_Algo
-            Price                 = [decimal]$Algo.estimate_current / $Divisor
-            Price24h              = [decimal]$Algo.estimate_last24h / $Divisor
-            Protocol              = "stratum+tcp"
-            Host                  = $MineUrl
-            Port                  = $Algo.port
-            User                  = $CoinsWallets.$Currency
-            Pass                  = "c=$Currency,ID=#WorkerName#"
-            Location              = $Location
-            SSL                   = $false
-            Symbol                = Get-CoinSymbol -Coin $Pool_Algo
-            AbbName               = $AbbName
-            ActiveOnManualMode    = $ActiveOnManualMode
-            ActiveOnAutomaticMode = $ActiveOnAutomaticMode
-            PoolWorkers           = $Algo.workers
-            PoolHashRate          = $Algo.HashRate
-            WalletMode            = $WalletMode
-            WalletSymbol          = $Currency
-            PoolName              = $Name
-            Fee                   = $Algo.fees / 100
-            RewardType            = $RewardType
+        foreach ($Location in $Locations.Keys) {
+
+            $Result += [PSCustomObject]@{
+                Algorithm             = $Pool_Algo
+                Info                  = $Pool_Algo
+                Price                 = [decimal]$Algo.estimate_current / $Divisor
+                Price24h              = [decimal]$Algo.estimate_last24h / $Divisor
+                Protocol              = "stratum+tcp"
+                Host                  = $Locations.$Location
+                Port                  = $Algo.port
+                User                  = $CoinsWallets.$Currency
+                Pass                  = "c=$Currency,ID=#WorkerName#"
+                Location              = $Location
+                SSL                   = $false
+                Symbol                = Get-CoinSymbol -Coin $Pool_Algo
+                AbbName               = $AbbName
+                ActiveOnManualMode    = $ActiveOnManualMode
+                ActiveOnAutomaticMode = $ActiveOnAutomaticMode
+                PoolWorkers           = $Algo.workers
+                PoolHashRate          = $Algo.HashRate
+                WalletMode            = $WalletMode
+                WalletSymbol          = $Currency
+                PoolName              = $Name
+                Fee                   = $Algo.fees / 100
+                RewardType            = $RewardType
+            }
         }
     }
     Remove-Variable Request

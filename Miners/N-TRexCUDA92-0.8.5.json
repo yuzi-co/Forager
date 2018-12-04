@@ -18,6 +18,22 @@
     "Fee": 0.01,
     "CUDA": 9.2,
     "Algorithms": {
+        "Balloon": "-a balloon",
+        "BCD": "-a bcd",
+        "Bitcore": "-a bitcore",
+        "C11": "-a c11",
+        "Dedal": "-a dedal",
+        "HMQ1725": "-a hmq1725",
+        "HSR": "-a hsr",
+        "Polytimos": "-a polytimos",
+        "Renesis": "-a renesis",
+        "Skunk": "-a skunk",
+        "SonoA": "-a sonoa",
+        "Timetravel": "-a timetravel",
+        "Tribus": "-a tribus",
+        "X16r": "-a x16r",
+        "X16s": "-a x16s",
+        "X17": "-a x17",
         "X22i": "-a x22i"
     }
 }

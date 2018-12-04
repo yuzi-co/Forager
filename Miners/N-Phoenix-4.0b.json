@@ -1,7 +1,7 @@
 {
-    "Path": "PhoenixMiner.exe",
-    "Uri": "https://github.com/yuzi-co/miners/releases/download/2018.9/PhoenixMiner_3.5d_Windows.7z",
-    "SHA256": "6BB350BD4B2EC1F3D0E3CD6A53FCD118B7ADE33D22FDEFF8358751D093248DB7",
+    "Path": "PhoenixMiner_4.0b_Windows\\PhoenixMiner.exe",
+    "Uri": "https://github.com/yuzi-co/miners/releases/download/2018.11/PhoenixMiner_4.0b_Windows.zip",
+    "SHA256": "b77ff5410e5b3f343900c4f2a52257e1836fb718d048f838b5b97235943b2ee0",
     "Type": "NVIDIA",
     "Arguments": [
         "-pool #Protocol#://#Server#:#Port#",
@@ -24,6 +24,8 @@
     "Fee": 0.0065,
     "SSL": true,
     "Algorithms": {
-        "Ethash": ""
+        "Ethash": "",
+        "Ethash_Blake2s": "-dcoin blake2s -dpool #ProtocolDual#://#ServerDual#:#PortDual# -dwal #LoginDual# -dpass #PasswordDual#",
+        "Ubqhash": "-coin ubq"
     }
 }
