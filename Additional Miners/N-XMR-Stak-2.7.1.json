@@ -1,0 +1,33 @@
+{
+    "Path": "xmr-stak-win64-2.7.1\\xmr-stak.exe",
+    "Uri": "https://github.com/fireice-uk/xmr-stak/releases/download/2.7.1/xmr-stak-win64-2.7.1.7z",
+    "SHA256": "81B2BB0FF23C145A539C288BBDD2E262C6807FCCF65CCEF4C5B539F127F0DCEC",
+    "Type": "NVIDIA",
+    "Arguments": [
+        "$(if ($enableSSL){'-O'}else{'-o'}) #Server#:#Port#",
+        "-u #Login#",
+        "-p #Password#",
+        "-r #WorkerName#",
+        "--noCPU",
+        "--noAMD",
+        "--noUAC",
+        "$(if ($Nicehash){'--use-nicehash'})",
+        "--httpd #APIPort#",
+        "--nvidia #GroupName#-#Algorithm#.txt",
+        "#AlgorithmParameters#"
+    ],
+    "API": "XMRig",
+    "APIPort": 4068,
+    "Fee": 0.02,
+    "SSL": true,
+    "Algorithms": {
+        "CnFast": "--currency cryptonight_masari",
+        "CnHaven": "--currency cryptonight_haven",
+        "CnHeavy": "--currency cryptonight_heavy",
+        "CnLiteV7": "--currency cryptonight_lite_v7",
+        "CnSaber": "--currency cryptonight_bittube2",
+        "CnV7": "--currency cryptonight_v7",
+        "CnV8": "--currency cryptonight_v8",
+        "CnXTL": "--currency stellite"
+    }
+}
