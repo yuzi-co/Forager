@@ -1,7 +1,7 @@
 {
     "Path": "t-rex.exe",
-    "Uri": "https://github.com/trexminer/T-Rex/releases/download/0.8.5/t-rex-0.8.5-win-cuda9.1.zip",
-    "SHA256": "C2835444500E72AD5ABEBE9ED1D589CDD01DAEAEA25364E12BBF3C072D5A9F12",
+    "Uri": "https://github.com/trexminer/T-Rex/releases/download/0.8.8/t-rex-0.8.8-win-cuda10.0.zip",
+    "SHA256": "AA6C6B29F4679E001DFDC7687DE63B3AA4A252CDDA3388BC95A643EEF281BB83",
     "Type": "NVIDIA",
     "Arguments": [
         "-o #Protocol#://#Server#:#Port#",
@@ -16,7 +16,7 @@
     "API": "Ccminer",
     "APIPort": 4068,
     "Fee": 0.01,
-    "CUDA": 9.1,
+    "CUDA": 10.0,
     "Algorithms": {
         "Balloon": "-a balloon",
         "BCD": "-a bcd",

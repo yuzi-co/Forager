@@ -1,7 +1,7 @@
 {
-    "Path": "xmr-stak-win64-2.7.0\\xmr-stak.exe",
-    "Uri": "https://github.com/fireice-uk/xmr-stak/releases/download/2.7.0/xmr-stak-win64-2.7.0.7z",
-    "SHA256": "01FC35C1661A7414EE3CFBA993EA6C8513AD739B9825C8F777879DD5E960C7AA",
+    "Path": "xmr-stak-win64-2.7.1\\xmr-stak.exe",
+    "Uri": "https://github.com/fireice-uk/xmr-stak/releases/download/2.7.1/xmr-stak-win64-2.7.1.7z",
+    "SHA256": "81B2BB0FF23C145A539C288BBDD2E262C6807FCCF65CCEF4C5B539F127F0DCEC",
     "Type": "NVIDIA",
     "Arguments": [
         "$(if ($enableSSL){'-O'}else{'-o'}) #Server#:#Port#",
