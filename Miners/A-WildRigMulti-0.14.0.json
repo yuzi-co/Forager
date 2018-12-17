@@ -1,7 +1,7 @@
 ﻿{
     "Path": "wildrig.exe",
-    "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.13.4/wildrig-multi-0.13.4-beta.7z",
-    "SHA256": "3F3CB9A9465F15439E0E0E45E88D976AFB34D1B2626E5315873BBA96893EFE0B",
+    "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.14.0/wildrig-multi-0.14.0-beta.7z",
+    "SHA256": "DFB194E44DBA02765A1E4BC1E3E18D274435A17B57BD206A2D17B756CCCA9F19",
     "Type": "AMD",
     "Arguments": [
         "-o #Server#:#Port#",
@@ -26,8 +26,11 @@
         "C11": "--algo c11 --opencl-threads 2 --opencl-launch 19x0",
         "Dedal": "--algo dedal --opencl-threads 2 --opencl-launch 20x0",
         "Geek": "--algo geek --opencl-threads 2 --opencl-launch 20x128",
+        "Exosis": "--algo exosis",
         "Hex": "--algo hex --opencl-threads 2 --opencl-launch 23x0",
         "HMQ1725": "--algo hmq1725 --opencl-threads 2 --opencl-launch 20x128",
+        "Lyra2v3": "--algo lyra2v3 --opencl-threads 1 --opencl-launch 23x0",
+        "Lyra2vc0ban": "--algo lyra2vc0ban --opencl-threads 1 --opencl-launch 23x0",
         "Phi": "--algo phi --opencl-threads 3 --opencl-launch 19x0",
         "Polytimos": "--algo polytimos --opencl-threads 2 --opencl-launch 19x0",
         "Renesis": "--algo renesis --opencl-threads 3 --opencl-launch 18x128",
@@ -39,6 +42,7 @@
         "X16s": "--algo x16s --opencl-threads 2 --opencl-launch 20x0",
         "X17": "--algo x17 --opencl-threads 2 --opencl-launch 20x0",
         "X18": "--algo x18 --opencl-threads 2 --opencl-launch 20x0",
+        "X20r": "--algo x20r",
         "X21s": "--algo x21s --opencl-threads 2 --opencl-launch 20x0",
         "X22i": "--algo x22i --opencl-threads 2 --opencl-launch 18x0"
     }
