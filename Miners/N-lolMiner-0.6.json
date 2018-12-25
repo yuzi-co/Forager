@@ -1,0 +1,38 @@
+{
+    "Path": "lolMiner.exe",
+    "Uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.6/lolMiner_v06_Win64.zip",
+    "SHA256": "CD3A6649333446BA41CC4B173B7735FEE63829480D7669623D81AD1EEE357C1D",
+    "Type": "NVIDIA",
+    "Arguments": [
+        "--pool #Server#",
+        "--port #Port#",
+        "--user #Login#",
+        "--pass #Password#",
+        "--devices NVIDIA",
+        "--apiport #ApiPort#",
+        "--digits 2",
+        "--longstats 60",
+        "--shortstats 5",
+        "--connectattempts 3",
+        "#AlgorithmParameters#"
+    ],
+    "API": "LOL",
+    "APIPort": 4068,
+    "Algorithms": {
+        "Equihash144|3gb": "--coin AUTO144_5",
+        "Equihash192|4gb": "--coin AUTO192_7",
+        "EquihashAION": "--coin AION",
+        "EquihashANON": "--coin ANON",
+        "EquihashASF": "--coin ASF",
+        "EquihashBTCZ": "--coin BTCZ",
+        "EquihashBTG": "--coin BTG",
+        "EquihashBTH": "--coin ZEL",
+        "EquihashGENX": "--coin ZEL",
+        "EquihashHEPTA": "--coin HEPTA",
+        "EquihashLTZ": "--coin LTZ",
+        "EquihashSAFE": "--coin SAFE",
+        "EquihashSCash|4gb": "--coin SCASH",
+        "EquihashXSG": "--coin XSG",        
+        "Zero|4gb": "--coin ZER"
+    }
+}
