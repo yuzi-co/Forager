@@ -955,6 +955,14 @@ function Get-LiveHashRate {
                 }
             }
 
+            "LOL6" {
+                $Request = Invoke-HTTPRequest $Server $Port "/summary" 5
+                if ($Request) {
+                    $Data = $Request | ConvertFrom-Json
+                    $HashRate = [double]$Data.'Session'.'Performance_Summary'
+                }
+            }
+
         } #end switch
 
         $HashRate
