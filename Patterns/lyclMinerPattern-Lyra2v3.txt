@@ -20,7 +20,8 @@
 
 <Connection Url = "#Protocol#://#Server#:#Port#"
             Username = "#Login#"
-            Password = "#Password#">
+            Password = "#Password#"
+            Algorithm = "Lyra2REv3">
 
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 # Device config:
