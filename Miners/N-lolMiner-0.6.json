@@ -32,7 +32,7 @@
         "EquihashLTZ": "--coin LTZ",
         "EquihashSAFE": "--coin SAFE",
         "EquihashSCash|4gb": "--coin SCASH",
-        "EquihashXSG": "--coin XSG",        
+        "EquihashXSG": "--coin XSG",
         "Zero|4gb": "--coin ZER"
     }
 }
