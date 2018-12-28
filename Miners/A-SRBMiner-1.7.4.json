@@ -1,7 +1,7 @@
 {
     "Path": "SRBMiner-CN.exe",
-    "Uri": "https://github.com/yuzi-co/miners/releases/download/2018.12/SRBMiner-CN-V1-7-3.7z",
-    "SHA256": "95D186FBD7FA01FED62359CC2ADBE0E18731981085D9E3AABB78F44DAC02CB45",
+    "Uri": "https://github.com/yuzi-co/miners/releases/download/2018.12/SRBMiner-CN-V1-7-4.7z",
+    "SHA256": "997F8E9C826B6C7AB6AF1A74622EE61D892897E2A8FCC149A23421E611677449",
     "Type": "AMD",
     "GenerateConfigFile": "config-#GroupName#-#Algorithm#.txt",
     "PatternConfigFile": ".\\Patterns\\SRBMinerConfig-Pattern.txt",
