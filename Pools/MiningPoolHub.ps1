@@ -85,7 +85,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
 
     $Locations = "EU", "US", "Asia"
 
-    $MiningPoolHub_Request.return | Where-Object time_since_last_block -gt 0 | ForEach-Object {
+    $MiningPoolHub_Request.return | Where-Object time_since_last_block -gt 0 | Where-Object profit -gt 0 | ForEach-Object {
 
         $MiningPoolHub_Algorithm = Get-AlgoUnifiedName $_.algo
         $MiningPoolHub_Coin = Get-CoinUnifiedName $_.coin_name
@@ -99,15 +99,9 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
 
         $MiningPoolHub_Price = [double]($_.profit / $Divisor)
 
-        # fix for equihash btg
-        if ($_.coin_name -eq 'electroneum') {
-            $MiningPoolHub_Algorithm = 'Cn'
-        }
         foreach ($Location in $Locations) {
 
             $Server = $MiningPoolHub_Hosts | Sort-Object {$_ -like "$Location*"} -Descending | Select-Object -First 1
-
-            $enableSSL = (('CnV8', 'Equihash') -contains $MiningPoolHub_Algorithm)
 
             $Result += [PSCustomObject]@{
                 Algorithm             = $MiningPoolHub_Algorithm
@@ -115,15 +109,11 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
                 Price                 = [decimal]$MiningPoolHub_Price
                 Price24h              = [decimal]$MiningPoolHub_Price #MPH doesnt send this on api
                 Protocol              = "stratum+tcp"
-                ProtocolSSL           = "ssl"
                 Host                  = $Server
-                HostSSL               = $Server
                 Port                  = $MiningPoolHub_Port
-                PortSSL               = $MiningPoolHub_Port
                 User                  = "$UserName.#WorkerName#"
                 Pass                  = "x"
                 Location              = $Location
-                SSL                   = $enableSSL
                 Symbol                = Get-CoinSymbol -Coin $MiningPoolHub_Coin
                 AbbName               = $AbbName
                 ActiveOnManualMode    = $ActiveOnManualMode
