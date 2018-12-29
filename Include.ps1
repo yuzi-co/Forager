@@ -963,6 +963,14 @@ function Get-LiveHashRate {
                 }
             }
 
+            "MiniZ" {
+                $Message = '{"id":"0", "method":"getstat"}'
+                $Request = Invoke-TCPRequest $Server $port $message 5
+                if ($Request) {
+                    $Data = $Request | ConvertFrom-Json
+                    $HashRate = [double](($Data.result.speed_sps) | Measure-Object -Sum).Sum
+                }
+
         } #end switch
 
         $HashRate
