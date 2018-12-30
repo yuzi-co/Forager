@@ -970,6 +970,7 @@ function Get-LiveHashRate {
                     $Data = $Request | ConvertFrom-Json
                     $HashRate = [double](($Data.result.speed_sps) | Measure-Object -Sum).Sum
                 }
+            }
 
         } #end switch
 
