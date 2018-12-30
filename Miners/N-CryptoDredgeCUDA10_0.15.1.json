@@ -17,6 +17,7 @@
     ],
     "API": "Ccminer",
     "APIPort": 4068,
+    "Fee": "$(if ($AlgoName -eq 'MTP'){0.02}else{0.01})",
     "CUDA": 10.0,
     "Algorithms": {
         "Allium": "-a allium",
