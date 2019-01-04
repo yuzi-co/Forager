@@ -1,0 +1,20 @@
+﻿{
+    "Path": "cpuminer.exe",
+    "Uri": "https://github.com/binariumpay/cpuminer-easy/releases/download/0.2/cpuminer-easy_win_64.7z",
+    "SHA256": "4F75A75E1E926C474E2C39A91270E6395348949A8C72FAFF6E7125074E3845B4",
+    "Type": "CPU",
+    "Arguments": [
+        "-o #Protocol#://#Server#:#Port#",
+        "-u #Login#",
+        "-p #Password#",
+        "-R 10",
+        "-r 4",
+        "-b #APIPort#",
+        "#AlgorithmParameters#"
+    ],
+    "API": "Ccminer",
+    "APIPort": 4048,
+    "Algorithms": {
+        "BinariumV1": "-a Binarium_hash_v1"
+    }
+}
