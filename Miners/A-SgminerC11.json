@@ -16,6 +16,6 @@
     "API": "Xgminer",
     "APIPort": 4028,
     "Algorithms": {
-        "C11": "-k chaincoin -I 18 -g 4 -w 128"
+        "C11": "-k chaincoin -I 18 -w 128"
     }
 }
