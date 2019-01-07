@@ -1,7 +1,7 @@
 {
     "Path": "mkxminer.exe",
-    "Uri": "https://github.com/yuzi-co/miners/releases/download/2018.9/mkxminer400b.zip",
-    "SHA256": "1C31B37EF7ED547295B902171BFC5EF1B123170098DC4BE35D38A73E6D31DC46",
+    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.01/mkxminer420.zip",
+    "SHA256": "3C6F4170AA3A340C853E01745974BE0444EC061D945C938092528673C009F816",
     "Type": "AMD",
     "Arguments": [
         "--url #Protocol#://#Server#:#Port#",
