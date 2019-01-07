@@ -1,7 +1,7 @@
 {
-    "Path": "CryptoDredge_0.15.1\\CryptoDredge.exe",
-    "Uri": "https://github.com/technobyl/CryptoDredge/releases/download/v0.15.1/CryptoDredge_0.15.1_cuda_9.1_windows.zip",
-    "SHA256": "B696C0DAEDDA79C88419501E166D63225339BDBE08DEF93BDC3351C7D00EEAC9",
+    "Path": "CryptoDredge_0.16.0\\CryptoDredge.exe",
+    "Uri": "https://github.com/technobyl/CryptoDredge/releases/download/v0.16.0/CryptoDredge_0.16.0_cuda_10.0_windows.zip",
+    "SHA256": "2E0EC3A24EF90CC2FA82B3435972C2EB26011E23A674E727AAE62A5480167D85",
     "Type": "NVIDIA",
     "Arguments": [
         "-o #Protocol#://#Server#:#Port#",
@@ -18,7 +18,7 @@
     "API": "Ccminer",
     "APIPort": 4068,
     "Fee": "$(if ($AlgoName -eq 'MTP'){0.02}else{0.01})",
-    "CUDA": 9.1,
+    "CUDA": 10.0,
     "Algorithms": {
         "Allium": "-a allium",
         "BCD": "-a bcd",
@@ -40,6 +40,7 @@
         "Lyra2v3": "-a lyra2rev3",
         "Lyra2vc0banHash": "-a lyra2vc0banhash",
         "Lyra2z": "-a lyra2z",
+        "Lyra2zz": "-a lyra2zz",
         "MTP": "-a mtp",
         "NeoScrypt": "-a neoscrypt",
         "Phi": "-a phi",
@@ -49,6 +50,7 @@
         "Skunk": "-a skunk",
         "Tribus": "-a tribus",
         "X16r": "-a x16r",
+        "X16rt": "-a x16rt",
         "X16s": "-a x16s",
         "X17": "-a x17",
         "X21s": "-a x21s",
