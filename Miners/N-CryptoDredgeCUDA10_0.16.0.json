@@ -40,7 +40,7 @@
         "Lyra2v3": "-a lyra2rev3",
         "Lyra2vc0banHash": "-a lyra2vc0banhash",
         "Lyra2z": "-a lyra2z",
-		"Lyra2zz": "-a Lyra2zz",
+        "Lyra2zz": "-a Lyra2zz",
         "MTP": "-a mtp",
         "NeoScrypt": "-a neoscrypt",
         "Phi": "-a phi",
@@ -51,7 +51,7 @@
         "Tribus": "-a tribus",
         "X16r": "-a x16r",
         "X16s": "-a x16s",
-		"X16rt": "-a x16rt",
+        "X16rt": "-a x16rt",
         "X17": "-a x17",
         "X21s": "-a x21s",
         "X22i": "-a x22i"
