@@ -16,7 +16,7 @@
         "--connectattempts 3",
         "#AlgorithmParameters#"
     ],
-    "API": "LOL",
+    "API": "LOL6",
     "APIPort": 4068,
     "Algorithms": {
         "Equihash144|3gb": "--coin AUTO144_5",
@@ -32,7 +32,7 @@
         "EquihashLTZ": "--coin LTZ",
         "EquihashSAFE": "--coin SAFE",
         "EquihashSCash|4gb": "--coin SCASH",
-        "EquihashXSG": "--coin XSG",        
+        "EquihashXSG": "--coin XSG",
         "Zero|4gb": "--coin ZER"
     }
 }

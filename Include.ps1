@@ -955,6 +955,23 @@ function Get-LiveHashRate {
                 }
             }
 
+            "LOL6" {
+                $Request = Invoke-HTTPRequest $Server $Port "/summary" 5
+                if ($Request) {
+                    $Data = $Request | ConvertFrom-Json
+                    $HashRate = [double]$Data.'Session'.'Performance_Summary'
+                }
+            }
+
+            "MiniZ" {
+                $Message = '{"id":"0", "method":"getstat"}'
+                $Request = Invoke-TCPRequest $Server $port $message 5
+                if ($Request) {
+                    $Data = $Request | ConvertFrom-Json
+                    $HashRate = [double](($Data.result.speed_sps) | Measure-Object -Sum).Sum
+                }
+            }
+
         } #end switch
 
         $HashRate

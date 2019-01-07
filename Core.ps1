@@ -79,7 +79,7 @@ $ErrorActionPreference = "Continue"
 $Config = Get-Config
 
 $Application = "Forager"
-$Release = "18.10"
+$Release = "18.12"
 Log-Message "$Application v$Release"
 
 $Host.UI.RawUI.WindowTitle = "$Application v$Release"
@@ -304,7 +304,7 @@ while ($Quit -eq $false) {
         $DonateInterval = ($ConfigDonateTime - $ElapsedDonatedTime) * 60
 
         $Algorithm = $null
-        $PoolsName = ("MiningPoolHub", "NiceHash")
+        $PoolsName = ("NiceHash")
         $CoinsName = $null
         $MiningMode = "Automatic"
 

@@ -1,0 +1,29 @@
+{
+    "Path": "bminer-lite-v11.2.0-a1b8f66-CUDA-9.2\\bminer.exe",
+    "Uri": "https://www.bminercontent.com/releases/bminer-lite-v11.2.0-a1b8f66-CUDA-9.2-amd64.zip",
+    "SHA256": "628942ea3bbaa778e0e888d074b6197aa3740484f5c130925972d870840489b1",
+    "Type": "NVIDIA",
+    "Arguments": [
+        "#AlgorithmParameters#$(if($enableSSL){'+ssl'})://$([System.Web.HttpUtility]::UrlEncode('#Login#')):$([System.Web.HttpUtility]::UrlEncode('#Password#'))@#Server#:#Port#",
+        "-devices #Devices#",
+        "-watchdog",
+        "-api 127.0.0.1:#APIPort#"
+    ],
+    "API": "BMiner",
+    "APIPort": 4068,
+    "SSL": true,
+    "Fee": 0.02,
+    "CUDA": 9.2,
+    "Algorithms": {
+        "Aeternity": "-uri aeternity",
+        "Beam": "-uri beam",
+        "Equihash144": "-pers auto -uri equihash1445",
+        "EquihashBTCZ": "-pers BitcoinZ -uri equihash1445",
+        "EquihashBTG": "-uri zhash",
+        "EquihashLTZ": "-pers ZcashPoW -uri equihash1445",
+        "EquihashSafe": "-pers Safecoin -uri equihash1445",
+        "EquihashXSG": "-pers sngemPoW -uri equihash1445",
+        "EquihashZEL": "-pers ZelProof -uri equihash1445",
+        "Tensority": "-uri tensority"
+    }
+}

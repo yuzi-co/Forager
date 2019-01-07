@@ -1,0 +1,42 @@
+{
+    "Path": "jce_cn_cpu_miner$(if($DeviceGroup.Features.'64bit'){'64'}else{'32'}).exe",
+    "Uri": "https://github.com/jceminer/cn_cpu_miner/raw/master/jce_cn_cpu_miner.windows.033k.zip",
+    "SHA256": "EE11BDF2797E5D8387CD0D69E56CAE839893C765BB1A6F8089D6870FDBE0F54F",
+    "Type": "CPU",
+    "Arguments": [
+        "-o #Server#:#Port#",
+        "-u #Login#",
+        "-p #Password#",
+        "$(if ($enableSSL){'--ssl'})",
+        "$(if ($Nicehash){'--nicehash'})",
+        "--low",
+        "--any",
+        "--auto",
+        "--mport #APIPort#",
+        "--stakjson",
+        "#AlgorithmParameters#"
+    ],
+    "GenerateConfigFile": "config-#Algorithm#.txt",
+    "PatternConfigFile": ".\\Patterns\\JCE-#Algorithm#-Pattern.txt",
+    "API": "XMRig",
+    "APIPort": 4048,
+    "Fee": "$(if($DeviceGroup.Features.aes -and $DeviceGroup.Features.'64bit'){0.015}else{0.03})",
+    "SSL": true,
+    "Algorithms": {
+        "CnAlloy": "--variation 8",
+        "CnArto": "--variation 10",
+        "CnDark": "--variation 17",
+        "CnFast": "--variation 11",
+        "CnFreeHaven": "--variation 18",
+        "CnHaven": "--variation 12",
+        "CnHeavy": "--variation 5",
+        "CnLiteV7": "--variation 4",
+        "CnMkt": "--variation 9",
+        "CnRed": "--variation 14",
+        "CnSaber": "--variation 13",
+        "CnUplexa": "--variation 19",
+        "CnV7": "--variation 3",
+        "CnV8": "--variation 15",
+        "CnXTL": "--variation 7"
+    }
+}

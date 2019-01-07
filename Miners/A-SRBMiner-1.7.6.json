@@ -1,7 +1,7 @@
 {
     "Path": "SRBMiner-CN.exe",
-    "Uri": "https://github.com/yuzi-co/miners/releases/download/2018.11/SRBMiner-CN-V1-7-2.7z",
-    "SHA256": "7AEF1621A4A67F59E7ADA2F803F51206C53EA02F781519021A7B7D7760BF3BCD",
+    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.01/SRBMiner-CN-V1-7-6.7z",
+    "SHA256": "8326047E155B63FEE254D910233242F40F981087B381C054AA2F6D2FDE9C6C54",
     "Type": "AMD",
     "GenerateConfigFile": "config-#GroupName#-#Algorithm#.txt",
     "PatternConfigFile": ".\\Patterns\\SRBMinerConfig-Pattern.txt",
@@ -24,17 +24,26 @@
     "Algorithms": {
         "CnAlloy": "alloy",
         "CnArto": "artocash",
+        "CnB2N": "b2n",
         "CnDark": "dark",
         "CnFast": "fast",
         "CnFest": "festival",
         "CnFreeHaven": "freehaven",
         "CnHaven": "haven",
         "CnHeavy": "heavy",
+        "CnHycon": "hycon",
+        "CnItalo": "italo",
         "CnLiteV7": "litev7",
-        "CnMkt": "marketcash",
-        "CnMox": "mox",
+        "CnMarketCash": "marketcash",
+        "CnRed": "mox",
         "CnSaber": "bittubev2",
+        "CnStelliteV4": "stellitev4",
+        "CnStelliteV8": "stellitev8",
+        "CnSwap": "swap",
+        "CnTurtle": "turtle",
+        "CnUpx": "upx",
         "CnV7": "normalv7",
-        "CnV8": "normalv8"
+        "CnV8": "normalv8",
+        "CnWebchain": "webchain"
     }
 }

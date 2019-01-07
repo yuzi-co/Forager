@@ -1,7 +1,7 @@
 {
     "Path": "EthDcrMiner64.exe",
-    "Uri": "https://github.com/yuzi-co/miners/releases/download/2018.7/ClaymoreDual11.9.7z",
-    "SHA256": "D0B97F7F14B719F7ECE050597024D0D46A1BBA3F4139A8C4ADF133793A735A3F",
+    "Uri": "https://github.com/yuzi-co/miners/releases/download/2018.12/ClaymoreDual12.0.7z",
+    "SHA256": "6CBF0C6F587ABB8A865EB45C3AEE0274B2B6F354F895DFA941978E585CA5F216",
     "Type": "NVIDIA",
     "Arguments": [
         "-epool #Protocol#://#Server#:#Port#",
@@ -23,7 +23,7 @@
     ],
     "API": "Claymore",
     "APIPort": 4068,
-    "Fee": "$(if ($DeviceGroup.MemoryGB -gt 3){0.015}else{0})",
+    "Fee": "$(if ($DeviceGroup.MemoryGB -gt 3){0.01}else{0})",
     "SSL": true,
     "Algorithms": {
         "Ethash_Blake2s|40": "-dcoin blake2s -dcri 40",

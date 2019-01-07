@@ -25,7 +25,6 @@
     "SSL": true,
     "Algorithms": {
         "Ethash": "",
-        "Ethash_Blake2s": "-dcoin blake2s -dpool #ProtocolDual#://#ServerDual#:#PortDual# -dwal #LoginDual# -dpass #PasswordDual#",
         "Ubqhash": "-coin ubq"
     }
 }
