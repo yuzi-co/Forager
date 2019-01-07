@@ -72,13 +72,6 @@ if (@("Core", "Menu") -contains $Querymode) {
         switch ($Coin.Name) {
             'PURK' {$Coin.Algorithm = 'WildKeccakPurk'}
             'Boolberry' {$Coin.Algorithm = 'WildKeccakBbr'}
-
-            'BitcoinGold' {$Coin.Algorithm = 'EquihashBTG'}
-            'BitcoinZ' {$Coin.Algorithm = 'EquihashBTCZ'}
-            'LitecoinZ' {$Coin.Algorithm = 'EquihashLTZ'}
-            'SafeCoin' {$Coin.Algorithm = 'EquihashSafe'}
-            'SnowGem' {$Coin.Algorithm = 'EquihashXSG'}
-            'Zelcash' {$Coin.Algorithm = 'EquihashZEL'}
         }
         $Coin.Algorithm = Get-AlgoUnifiedName $Coin.Algorithm
     }
