@@ -1,7 +1,7 @@
 {
     "Path": "t-rex.exe",
-    "Uri": "https://github.com/trexminer/T-Rex/releases/download/0.8.9/t-rex-0.8.9-win-cuda9.2.zip",
-    "SHA256": "4987461A729A94578F24F23F59B2C4D485A8132EB4E95F99309917D4180CB30C",
+    "Uri": "https://github.com/trexminer/T-Rex/releases/download/0.9.1/t-rex-0.9.1-win-cuda10.0.zip",
+    "SHA256": "B2C4A6B78EEFFC63643626CD0967A698CD7D29F3713875B1261F91B6933BE6BA",
     "Type": "NVIDIA",
     "Arguments": [
         "-o #Protocol#://#Server#:#Port#",
@@ -16,7 +16,7 @@
     "API": "Ccminer",
     "APIPort": 4068,
     "Fee": 0.01,
-    "CUDA": 9.2,
+    "CUDA": 10.0,
     "Algorithms": {
         "Astralhash": "-a astralhash",
         "Balloon": "-a balloon",
@@ -31,11 +31,13 @@
         "Pawelhash": "-a pawelhash",
         "Polytimos": "-a polytimos",
         "Renesis": "-a renesis",
+        "SHA256q": "-a sha256q",
         "Skunk": "-a skunk",
         "SonoA": "-a sonoa",
         "Timetravel": "-a timetravel",
         "Tribus": "-a tribus",
         "X16r": "-a x16r",
+        "X16rt": "-a x16rt",
         "X16s": "-a x16s",
         "X17": "-a x17",
         "X22i": "-a x22i"
