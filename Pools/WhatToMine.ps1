@@ -120,20 +120,19 @@ if ($Querymode -eq "core" -or $Querymode -eq "Menu") {
         $HPool.Algorithm = Get-AlgoUnifiedName $HPool.Algorithm
         $HPool.Info = Get-CoinUnifiedName $HPool.Info
 
-        switch ($HPool.Info) {
-            'BitcoinZ' {$HPool.Algorithm = 'EquihashBTCZ'}
-            'BitcoinGold' {$HPool.Algorithm = 'EquihashBTG'}
-        }
-
         #we must add units for each algo, this value must be filled if we want a coin to be selected
         $WTMFactor = switch ($HPool.Algorithm) {
             "Bitcore" { 1000000 }
+            "BCD" { 1000000 }
             "Blake2s" { 1000000 }
-            "CnLiteV7" { 1 }
-            "CnV7" { 1 }
+            "CnFast" { 1 }
             "CnHeavy" { 1 }
-            "EquihashBTG" { 1 }
-            "EquihashBTCZ" { 1 }
+            "CnLiteV7" { 1 }
+            "CnSaber" { 1 }
+            "CnV7" { 1 }
+            "Equihash144" { 1 }
+            "Equihash192" { 1 }
+            "Equihash210" { 1 }
             "Ethash" { 1000000 }
             "Keccak" { 1000000 }
             "KeccakC" { 1000000 }
@@ -142,14 +141,14 @@ if ($Querymode -eq "core" -or $Querymode -eq "Menu") {
             "NeoScrypt" { 1000 }
             "Phi" { 1000000 }
             "Phi2" { 1000000 }
+            "ProgPOW" { 1000000 }
             "Skunk" { 1000000 }
             "Tensority" { 1 }
             "X16r" { 1000000 }
             "X16s" { 1000000 }
             "X17" { 1000 }
+            "X22i" { 1000000 }
             "Yescrypt" { 1 }
-            "Zero" { 1 }
-            "Zhash" { 1 }
             default { $null }
         }
 

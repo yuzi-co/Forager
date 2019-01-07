@@ -1,7 +1,7 @@
 {
-    "Path": "bminer-lite-v11.0.0\\bminer.exe",
-    "Uri": "https://github.com/webgkv/miners/releases/download/2018.12/bminer-lite-v11.0.0.7z",
-    "SHA256": "FDF2E93E0B0319B9DB8693A95DB24E233AE5B05C63A6C251D914F7ECDDF98487",
+    "Path": "bminer-lite-v11.3.0-92cace8-CUDA-9.2\\bminer.exe",
+    "Uri": "https://www.bminercontent.com/releases/bminer-lite-v11.3.0-92cace8-cuda-9.2-amd64.zip",
+    "SHA256": "488edf8a0da5a5f0035e55964cd479db0fc04c12e734467d6dbea0600fadd3dd",
     "Type": "NVIDIA",
     "Arguments": [
         "-uri ethstratum$(if($enableSSL){'+ssl'})://$([System.Web.HttpUtility]::UrlEncode('#Login#')):$([System.Web.HttpUtility]::UrlEncode('#Password#'))@#Server#:#Port#",

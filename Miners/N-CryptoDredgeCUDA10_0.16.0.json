@@ -17,8 +17,8 @@
     ],
     "API": "Ccminer",
     "APIPort": 4068,
-    "CUDA": 10.0,
     "Fee": "$(if ($AlgoName -eq 'MTP'){0.02}else{0.01})",
+    "CUDA": 10.0,
     "Algorithms": {
         "Allium": "-a allium",
         "BCD": "-a bcd",
@@ -40,7 +40,7 @@
         "Lyra2v3": "-a lyra2rev3",
         "Lyra2vc0banHash": "-a lyra2vc0banhash",
         "Lyra2z": "-a lyra2z",
-        "Lyra2zz": "-a Lyra2zz",
+        "Lyra2zz": "-a lyra2zz",
         "MTP": "-a mtp",
         "NeoScrypt": "-a neoscrypt",
         "Phi": "-a phi",
@@ -50,8 +50,8 @@
         "Skunk": "-a skunk",
         "Tribus": "-a tribus",
         "X16r": "-a x16r",
-        "X16s": "-a x16s",
         "X16rt": "-a x16rt",
+        "X16s": "-a x16s",
         "X17": "-a x17",
         "X21s": "-a x21s",
         "X22i": "-a x22i"
