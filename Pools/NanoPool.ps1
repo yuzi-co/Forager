@@ -54,13 +54,13 @@ if ($Querymode -eq "WALLET") {
 if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
 
     $PrePools = @()
-    $PrePools += [PSCustomObject]@{coin = "EthereumClassic"; algo = "Ethash"; symbol = "ETC"; port = 19999; fee = 0.01; divisor = 1000000; protocol = "stratum+tcp"};
     $PrePools += [PSCustomObject]@{coin = "Ethereum"; algo = "Ethash"; symbol = "ETH"; port = 9999; fee = 0.01; divisor = 1000000; protocol = "stratum+tcp"};
-    $PrePools += [PSCustomObject]@{coin = "Zcash"; algo = "Equihash"; symbol = "ZEC"; port = 6666; fee = 0.01; divisor = 1; protocol = "stratum+ssl"};
-    $PrePools += [PSCustomObject]@{coin = "Monero"; algo = "CnV7"; symbol = "XMR"; port = 14444; fee = 0.01; divisor = 1; protocol = "stratum+ssl"};
-    $PrePools += [PSCustomObject]@{coin = "Electroneum"; algo = "Cn"; symbol = "ETN"; port = 13333; fee = 0.02; divisor = 1; protocol = "stratum+ssl"};
+    $PrePools += [PSCustomObject]@{coin = "EthereumClassic"; algo = "Ethash"; symbol = "ETC"; port = 19999; fee = 0.01; divisor = 1000000; protocol = "stratum+tcp"};
+    $PrePools += [PSCustomObject]@{coin = "Monero"; algo = "CnV8"; symbol = "XMR"; port = 14444; fee = 0.01; divisor = 1; protocol = "stratum+ssl"};
+    $PrePools += [PSCustomObject]@{coin = "Pascal"; algo = "RandomHash"; symbol = "PASC"; port = 15556; fee = 0.02; divisor = 1; protocol = "stratum+tcp"};
+    $PrePools += [PSCustomObject]@{coin = "Raven"; algo = "X16r"; symbol = "RVN"; port = 12222; fee = 0.01; divisor = 1; protocol = "stratum+tcp"};
 
-    $Pools = @() #generate a pool for each location and add API data
+    #generate a pool for each location and add API data
     $PrePools | ForEach-Object {
         $RequestW = Invoke-APIRequest -Url $("https://api.nanopool.org/v1/" + $_.symbol.ToLower() + "/pool/activeworkers") -Retry 1
         $RequestP = Invoke-APIRequest -Url $("https://api.nanopool.org/v1/" + $_.symbol.ToLower() + "/approximated_earnings/1000") -Retry 1 |
