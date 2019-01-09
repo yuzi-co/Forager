@@ -1,0 +1,37 @@
+{
+    "Path": "PhoenixMiner_4.1a_Windows\\PhoenixMiner.exe",
+    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.01/PhoenixMiner_4.1a_Windows.zip",
+    "SHA256": "9940a8644293a73aa2d4f75152a3a5fde95610d2d168bcf882aff6f06af4beeb",
+    "Type": "AMD",
+    "Arguments": [
+        "-pool #Protocol#://#Server#:#Port#",
+        "-wal #Login#",
+        "-pass #Password#",
+        "-esm #EthStMode#",
+        "-mi 12",
+        "-wd 1",
+        "-r -1",
+        "-logfile #GroupName#_log.txt",
+        "-logsmaxsize 10",
+        "-amd",
+        "-di #DevicesClayMode#",
+        "-cdmport #APIPort#",
+        "-cdm 1",
+        "#AlgorithmParameters#"
+    ],
+    "API": "Claymore",
+    "APIPort": 4028,
+    "Fee": "$(if($AlgoNameDual){0.009}else{0.0065})",
+    "SSL": true,
+    "Algorithms": {
+        "Ethash_Blake2s|20": "-dcoin blake2s -dpool #ProtocolDual#://#ServerDual#:#PortDual# -dwal #LoginDual# -dpass #PasswordDual# -sci 20",
+        "Ethash_Blake2s|30": "-dcoin blake2s -dpool #ProtocolDual#://#ServerDual#:#PortDual# -dwal #LoginDual# -dpass #PasswordDual# -sci 30",
+        "Ethash_Blake2s|40": "-dcoin blake2s -dpool #ProtocolDual#://#ServerDual#:#PortDual# -dwal #LoginDual# -dpass #PasswordDual# -sci 40",
+        "Ethash": "",
+        "Ethash|8gb": "-clKernel 3",
+        "Ethash|green": "-clGreen 1",
+        "Ubqhash": "-coin ubq",
+        "Ubqhash|8gb": "-coin ubq -clKernel 3",
+        "Ubqhash|green": "-coin ubq -clGreen 1"
+    }
+}
