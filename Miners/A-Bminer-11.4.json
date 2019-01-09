@@ -1,0 +1,20 @@
+{
+    "Path": "bminer-lite-v11.4.0-5d7c753-CUDA-9.2\\bminer.exe",
+    "Uri": "https://www.bminercontent.com/releases/bminer-lite-v11.4.0-5d7c753-CUDA-9.2-amd64.zip",
+    "SHA256": "F30D705FBC59CC1BA4CF1F23577183F998D2BB82C0AB81EB8D6AB5A3FE88AAE6",
+    "Type": "AMD",
+    "Arguments": [
+        "#AlgorithmParameters#$(if($enableSSL){'+ssl'})://$([System.Web.HttpUtility]::UrlEncode('#Login#')):$([System.Web.HttpUtility]::UrlEncode('#Password#'))@#Server#:#Port#",
+        "-devices amd:#Devices#",
+        "-max-network-failures=0",
+        "-watchdog=false",
+        "-api 127.0.0.1:#APIPort#"
+    ],
+    "API": "BMiner",
+    "APIPort": 4028,
+    "SSL": true,
+    "Fee": 0.02,
+    "Algorithms": {
+        "Beam": "-uri beam"
+    }
+}
