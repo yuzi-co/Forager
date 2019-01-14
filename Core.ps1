@@ -320,7 +320,7 @@ while ($Quit -eq $false) {
         $PoolsName = $ParamPoolsNameBCK
         $CoinsName = $ParamCoinsNameBCK
         $MiningMode = $ParamMiningModeBCK
-        if (!$Config.WorkerName) {$Config.WorkerName = $env:COMPUTERNAME}
+        if (!$Config.WorkerName) {$Config.WorkerName = (Get-Culture).TextInfo.ToTitleCase(($env:COMPUTERNAME).ToLower())}
 
         $CoinsWallets = @{}
         switch -regex -file config.ini {
@@ -504,7 +504,7 @@ while ($Quit -eq $false) {
                         #Replace wildcards patterns
                         if ($Pool.PoolName -eq 'Nicehash') {$Nicehash = $true} else {$Nicehash = $false}
                         if ($Nicehash) {
-                            $WorkerName2 = $WorkerName + $DeviceGroup.GroupName #Nicehash requires alphanumeric WorkerNames
+                            $WorkerName2 = $WorkerName + '-' + $DeviceGroup.GroupName #Nicehash requires alphanumeric WorkerNames
                         } else {
                             $WorkerName2 = $WorkerName + '_' + $DeviceGroup.GroupName
                         }
