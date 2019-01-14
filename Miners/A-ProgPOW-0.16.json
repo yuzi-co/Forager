@@ -1,0 +1,19 @@
+{
+    "Path": "progpowminer-amd-windows-0.16_final\\progpowminer-amd.exe",
+    "Uri": "https://github.com/BitcoinInterestOfficial/BitcoinInterest/releases/download/2.1/progpowminer-amd-windows-0.16_final.zip",
+    "SHA256": "2BA7F003CBA5D81D69B63D45CF8C65F099A7D77BF04AA398524CEF294754FE91",
+    "Type": "AMD",
+    "Arguments": [
+        "-P stratum+tcp://#Login#:#Password#@#Server#:#Port#",
+        "--opencl",
+        "--opencl-platform #GPUPlatform#",
+        "--opencl-devices #DevicesETHMode#",
+        "--api-port -#APIPort#",
+        "#AlgorithmParameters#"
+    ],
+    "API": "Claymore",
+    "APIPort": 4028,
+    "Algorithms": {
+        "ProgPOW": ""
+    }
+}
