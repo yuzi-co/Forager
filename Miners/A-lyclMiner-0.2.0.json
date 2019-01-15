@@ -4,16 +4,11 @@
     "SHA256": "BC632A55D178ECC191339B044C2407D34A0507D7F6A113E0A66477A9A43F9D37",
     "Type": "AMD",
     "GenerateConfigFile": "lyclMiner-0.2.0-windows\\#GroupName#-#Algorithm#.conf",
-    "PatternConfigFile": ".\\Patterns\\lyclMinerPattern-#Algorithm#.txt",
+    "PatternConfigFile": ".\\Patterns\\lyclMinerPattern.txt",
     "Arguments": "#GroupName#-#Algorithm#.conf",
     "API": "wrapper",
     "APIPort": 4028,
     "Algorithms": {
-        "Lyra2v2|1": "1048576",
-        "Lyra2v2|2": "2097152",
-        "Lyra2v2|4": "4194304",
-        "Lyra2v2|8": "8388608",
-        "Lyra2v3|1": "1048576",
         "Lyra2v3|2": "2097152",
         "Lyra2v3|4": "4194304",
         "Lyra2v3|8": "8388608"
