@@ -21,7 +21,7 @@
     "Algorithms": {
         "Equihash144|3gb": "--coin AUTO144_5",
         "Equihash192|4gb": "--coin AUTO192_7",
-        "EquihashAION": "--coin AION",
+        "Equihash210": "--coin AION",
         "EquihashANON": "--coin ANON",
         "EquihashASF": "--coin ASF",
         "EquihashBTCZ": "--coin BTCZ",
