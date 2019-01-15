@@ -69,9 +69,9 @@ if (@("Core", "Menu") -contains $Querymode) {
         $Coin.Name = Get-CoinUnifiedName $Coin.Name
 
         # Algo fixes
-        switch ($Coin.Name) {
-            'PURK' {$Coin.Algorithm = 'WildKeccakPurk'}
-            'Boolberry' {$Coin.Algorithm = 'WildKeccakBbr'}
+        switch ($Coin.Algorithm) {
+            'WildKeccak' {$Coin.Algorithm += $Coin.Symbol }
+            'Argon2d' {$Coin.Algorithm += $Coin.Symbol }
         }
         $Coin.Algorithm = Get-AlgoUnifiedName $Coin.Algorithm
     }
