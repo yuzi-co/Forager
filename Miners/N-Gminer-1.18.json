@@ -1,0 +1,34 @@
+{
+    "Path": "miner.exe",
+    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.01/gminer_1_18_minimal_windows64.zip",
+    "SHA256": "0B549E0054493DC63D2AFF079B4B7080BC30BC93EC77BEF88B4C02477FCD6E8D",
+    "Type": "NVIDIA",
+    "Arguments": [
+        "--server #Server#",
+        "--port #Port#",
+        "--user #Login#",
+        "--pass #Password#",
+        "--api #APIPort#",
+        "$(if($enableSSL){'--ssl 1'})",
+        "--devices #Devices#",
+        "#AlgorithmParameters#"
+    ],
+    "API": "GMiner",
+    "APIPort": 4068,
+    "Fee": 0.02,
+    "CUDA": 9.0,
+    "SSL": true,
+    "Algorithms": {
+        "Aion": "--algo 210_9 --pers AION0PoW",
+        "Beam": "--algo 150_5",
+        "Equihash144": "--algo 144_5 --pers auto",
+        "Equihash150": "--algo 150_5 --pers auto",
+        "Equihash192": "--algo 192_7 --pers auto",
+        "Equihash210": "--algo 210_9 --pers auto",
+        "Equihash96": "--algo 96_5 --pers auto",
+        "EquihashBTCZ": "--algo 144_5 --pers BitcoinZ",
+        "EquihashBTG": "--algo 144_5 --pers BgoldPoW",
+        "Mars": "--algo 96_5 --pers ZcashPoW",
+        "Zero": "--algo 192_7 --pers ZERO_PoW"
+    }
+}

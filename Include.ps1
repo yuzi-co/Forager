@@ -859,6 +859,14 @@ function Get-LiveHashRate {
                 }
             }
 
+            "GMiner" {
+                $Request = Invoke-HTTPRequest -Port $Port -Path "/api/v1/status"
+                if ($Request) {
+                    $Data = $Request | ConvertFrom-Json
+                    $HashRate = [double]$Data.miner.total_hashrate
+                }
+            }
+
         } #end switch
 
         $HashRate
