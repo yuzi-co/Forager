@@ -1,0 +1,32 @@
+{
+    "Path": "PhoenixMiner_4.1c_Windows\\PhoenixMiner.exe",
+    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.01/PhoenixMiner_4.1c_Windows.zip",
+    "SHA256": "93c3678a324fe677076cd746222dfec8e26be0fc758f0df080e14d6a5c8c4b91",
+    "Type": "AMD",
+    "Arguments": [
+        "-pool #Protocol#://#Server#:#Port#",
+        "-wal #Login#",
+        "-pass #Password#",
+        "-esm #EthStMode#",
+        "-mi 12",
+        "-wd 1",
+        "-r -1",
+        "-logfile #GroupName#_log.txt",
+        "-logsmaxsize 10",
+        "-amd",
+        "-di #DevicesClayMode#",
+        "-cdmport #APIPort#",
+        "-cdm 1",
+        "#AlgorithmParameters#"
+    ],
+    "API": "Claymore",
+    "APIPort": 4028,
+    "Fee": 0.0065,
+    "SSL": true,
+    "Algorithms": {
+        "Ethash": "",
+        "Ethash|8gb": "-clKernel 3",
+        "Ubqhash": "-coin ubq",
+        "Ubqhash|8gb": "-coin ubq -clKernel 3"
+    }
+}
