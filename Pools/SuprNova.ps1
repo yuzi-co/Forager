@@ -91,7 +91,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
     $Pools += [PSCustomObject]@{coin = "SafeCoin"; algo = "Equihash144"; symbol = "SAFE"; server = "safe.suprnova.cc"; port = 3131; location = "US"};
     $Pools += [PSCustomObject]@{coin = "Straks"; algo = "Lyra2v2"; symbol = "STAK"; server = "stak.suprnova.cc"; port = 7706; location = "US"; portSSL = 7710; SSL = $true};
     $Pools += [PSCustomObject]@{coin = "UBIQ"; algo = "Ethash"; symbol = "UBQ"; server = "ubiq.suprnova.cc"; port = 3030; location = "US"; walletSymbol = "UBIQ"};
-    $Pools += [pscustomobject]@{coin = "VeilCoin"; algo = "X16rt"; symbol = "VEIL"; server = "veil.suprnova.cc"; port = 7220; location = "US"};
+    $Pools += [pscustomobject]@{coin = "Veil"; algo = "X16rt"; symbol = "VEIL"; server = "veil.suprnova.cc"; port = 7220; location = "US"};
     $Pools += [pscustomobject]@{coin = "Verge"; algo = "Lyra2v2"; symbol = "XVG"; server = "xvg-lyra.suprnova.cc"; port = 2595; location = "US"; walletSymbol = "XVG-LYRA"};
     $Pools += [pscustomobject]@{coin = "Verge"; algo = "X17"; symbol = "XVG"; server = "xvg-x17.suprnova.cc"; port = 7477; location = "US"; walletSymbol = "XVG-17"};
     $Pools += [PSCustomObject]@{coin = "Vertcoin"; algo = "Lyra2v2"; symbol = "VTC"; server = "vtc.suprnova.cc"; port = 5678; location = "US"; portSSL = 5676; SSL = $true};
