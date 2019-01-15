@@ -75,7 +75,7 @@ if ($Querymode -eq "core" -or $Querymode -eq "Menu") {
     'eqa=true&factor[eqa_hr]=10&factor[eqa_p]=0&' + #AION (Equihash210)
     'eth=true&factor[eth_hr]=10&factor[eth_p]=0&' + #Ethash
     'grof=true&factor[gro_hr]=10&factor[gro_p]=0&' + #Groestl
-    'hx=true&factor[hz_hr]=10&factor[hz_p]=0&' + #Hex
+    'hx=true&factor[hx_hr]=10&factor[hx_p]=0&' + #Hex
     'l2z=true&factor[l2z_hr]=10&factor[l2z_p]=0&' + #Lyra2z
     'lbry=true&factor[lbry_hr]=10&factor[lbry_p]=0&' + #Lbry
     'lre=true&factor[lrev2_hr]=10&factor[lrev2_p]=0&' + #Lyra2v2
@@ -84,9 +84,9 @@ if ($Querymode -eq "core" -or $Querymode -eq "Menu") {
     'pas=true&factor[pas_hr]=10&factor[pas_p]=0&' + #Pascal
     'phi=true&factor[phi_hr]=10&factor[phi_p]=0&' + #PHI
     'phi2=true&factor[phi2_hr]=10&factor[phi2_p]=0&' + #PHI2
-    'ppw=true&factor[ppw_hr]=10&factor[ppw_p]=0' #ProgPOW
+    'ppw=true&factor[ppw_hr]=10&factor[ppw_p]=0&' #ProgPOW
     'skh=true&factor[skh_hr]=10&factor[skh_p]=0&' + #Skunk
-    'tt10=true&factor[tt10_hr]=10&factor[tt10_p]=0' #TimeTravel10
+    'tt10=true&factor[tt10_hr]=10&factor[tt10_p]=0&' #TimeTravel10
     'x11gf=true&factor[x11g_hr]=10&factor[x11g_p]=0&' + #X11gost
     'x16r=true&factor[x16r_hr]=10&factor[x16r_p]=0&' + #X16r
     'x22i=true&factor[x22i_hr]=10&factor[x22i_p]=0&' + #X22i
