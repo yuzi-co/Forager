@@ -1,7 +1,7 @@
 {
-    "Path": "bminer-lite-v11.4.1-c19297e-CUDA-9.2\\bminer.exe",
-    "Uri": "htthttps://www.bminercontent.com/releases/bminer-lite-v11.4.1-c19297e-CUDA-9.2-amd64.zip",
-    "SHA256": "8ebb577adfd64e457b9b84183381340fda662e5b0e2334a7a5d208a8c2ba54da",
+    "Path": "bminer-lite-v12.0.1-eab048c-CUDA-9.2\\bminer.exe",
+    "Uri": "https://www.bminercontent.com/releases/bminer-lite-v12.0.1-eab048c-CUDA-9.2-amd64.zip",
+    "SHA256": "edfb59ab2e2627676d49dd54e7779b47d5a9d3e501b21e13af874e60bc884f70",
     "Type": "AMD",
     "Arguments": [
         "#AlgorithmParameters#$(if($enableSSL){'+ssl'})://$([System.Web.HttpUtility]::UrlEncode('#Login#')):$([System.Web.HttpUtility]::UrlEncode('#Password#'))@#Server#:#Port#",
