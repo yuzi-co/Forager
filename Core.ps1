@@ -504,12 +504,12 @@ while ($Quit -eq $false) {
                         #Replace wildcards patterns
                         if ($Pool.PoolName -eq 'Nicehash') {$Nicehash = $true} else {$Nicehash = $false}
                         if ($Nicehash) {
-                            $WorkerName2 = $WorkerName + '-' + $DeviceGroup.GroupName #Nicehash requires alphanumeric WorkerNames
+                            $WorkerNameMain = $WorkerName + '-' + $DeviceGroup.GroupName #Nicehash requires alphanumeric WorkerNames
                         } else {
-                            $WorkerName2 = $WorkerName + '_' + $DeviceGroup.GroupName
+                            $WorkerNameMain = $WorkerName + '_' + $DeviceGroup.GroupName
                         }
-                        $PoolUser = $Pool.User -replace '#WorkerName#', $WorkerName2
-                        $PoolPass = $Pool.Pass -replace '#WorkerName#', $WorkerName2
+                        $PoolUser = $Pool.User -replace '#WorkerName#', $WorkerNameMain
+                        $PoolPass = $Pool.Pass -replace '#WorkerName#', $WorkerNameMain
 
                         $Params = @{
                             '#Protocol#'            = $(if ($enableSSL) {$Pool.ProtocolSSL} else {$Pool.Protocol})
@@ -520,7 +520,7 @@ while ($Quit -eq $false) {
                             '#GPUPlatform#'         = $DeviceGroup.Platform
                             '#Algorithm#'           = $AlgoName
                             '#AlgorithmParameters#' = $Algo.Value
-                            '#WorkerName#'          = $WorkerName2
+                            '#WorkerName#'          = $WorkerNameMain
                             '#Devices#'             = $DeviceGroup.Devices
                             '#DevicesClayMode#'     = $DeviceGroup.DevicesClayMode
                             '#DevicesETHMode#'      = $DeviceGroup.DevicesETHMode
@@ -554,9 +554,14 @@ while ($Quit -eq $false) {
                             $enableDualSSL = ($Miner.SSL -and $PoolDual.SSL)
 
                             #Replace wildcards patterns
-                            $WorkerName3 = $WorkerName2 + 'D'
-                            $PoolUserDual = $PoolDual.User -replace '#WorkerName#', $WorkerName3
-                            $PoolPassDual = $PoolDual.Pass -replace '#WorkerName#', $WorkerName3
+                            if ($PoolDual.PoolName -eq 'Nicehash') {
+                                $WorkerNameDual = $WorkerName + '-' + $DeviceGroup.GroupName + 'D' #Nicehash requires alphanumeric WorkerNames
+                            } else {
+                                $WorkerNameDual = $WorkerName + '_' + $DeviceGroup.GroupName + 'D'
+                            }
+
+                            $PoolUserDual = $PoolDual.User -replace '#WorkerName#', $WorkerNameDual
+                            $PoolPassDual = $PoolDual.Pass -replace '#WorkerName#', $WorkerNameDual
 
                             $Params = @{
                                 '#PortDual#'      = $(if ($enableDualSSL) {$PoolDual.PortSSL} else {$PoolDual.Port})
@@ -565,7 +570,7 @@ while ($Quit -eq $false) {
                                 '#LoginDual#'     = $PoolUserDual
                                 '#PasswordDual#'  = $PoolPassDual
                                 '#AlgorithmDual#' = $AlgoNameDual
-                                '#WorkerName#'    = $WorkerName3
+                                '#WorkerName#'    = $WorkerNameDual
                             }
                             foreach ($P in $Params.Keys) {$Arguments = $Arguments -replace $P, $Params.$P}
                             if ($PatternConfigFile -and (Test-Path -Path $PatternConfigFile)) {
@@ -734,8 +739,8 @@ while ($Quit -eq $false) {
                             WalletModeDual      = $PoolDual.WalletMode
                             WalletSymbol        = $Pool.WalletSymbol
                             WalletSymbolDual    = $PoolDual.WalletSymbol
-                            WorkerName          = $WorkerName2
-                            WorkerNameDual      = $WorkerName3
+                            WorkerName          = $WorkerNameMain
+                            WorkerNameDual      = $WorkerNameDual
                         }
                     } #dualmining
                 } #end foreach pool
