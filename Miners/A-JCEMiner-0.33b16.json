@@ -20,7 +20,7 @@
     ],
     "API": "XMRig",
     "APIPort": 4028,
-    "Fee": 0.021,
+    "Fee": 0.009,
     "SSL": true,
     "Algorithms": {
         "CnAlloy": "--variation 8",
