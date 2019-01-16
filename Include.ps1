@@ -798,18 +798,6 @@ function Get-LiveHashRate {
             }
 
             "BMiner" {
-                $Request = Invoke-HTTPRequest -Port $Port -Path "/api/status"
-                if ($Request) {
-                    $Data = $Request | ConvertFrom-Json
-                    $HashRate = $Data.miners |
-                        Get-Member -MemberType NoteProperty |
-                        ForEach-Object {$Data.miners.($_.name).solver.solution_rate} |
-                        Measure-Object -Sum |
-                        Select-Object -ExpandProperty Sum
-                }
-            }
-
-            "BMiner8" {
                 $Request = Invoke-HTTPRequest -Port $Port -Path "/api/v1/status/solver"
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
@@ -818,11 +806,14 @@ function Get-LiveHashRate {
                         ForEach-Object {$Data.devices.($_.name).solvers} |
                         Group-Object algorithm |
                         ForEach-Object {
-                        $_.group.speed_info.hash_rate |
-                            Measure-Object -Sum |
-                            Select-Object -ExpandProperty Sum
+                            $(if ($_.group.speed_info.hash_rate -ne $null) {
+                                $_.group.speed_info.hash_rate
+                            } elseif ($_.group.speed_info.solution_rate -ne $null) {
+                                $_.group.speed_info.solution_rate
+                            }) | Measure-Object -Sum | Select-Object -ExpandProperty Sum
                     }
                 }
+            }
             }
 
             "SRB" {

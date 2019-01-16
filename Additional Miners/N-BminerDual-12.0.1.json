@@ -1,7 +1,7 @@
 {
-    "Path": "bminer-lite-v11.4.0-5d7c753-CUDA-9.2\\bminer.exe",
-    "Uri": "https://www.bminercontent.com/releases/bminer-lite-v11.4.0-5d7c753-CUDA-9.2-amd64.zip",
-    "SHA256": "F30D705FBC59CC1BA4CF1F23577183F998D2BB82C0AB81EB8D6AB5A3FE88AAE6",
+    "Path": "bminer-lite-v12.0.1-eab048c-CUDA-9.2\\bminer.exe",
+    "Uri": "https://www.bminercontent.com/releases/bminer-lite-v12.0.1-eab048c-CUDA-9.2-amd64.zip",
+    "SHA256": "edfb59ab2e2627676d49dd54e7779b47d5a9d3e501b21e13af874e60bc884f70",
     "Type": "NVIDIA",
     "Arguments": [
         "-uri ethstratum$(if($enableSSL){'+ssl'})://$([System.Web.HttpUtility]::UrlEncode('#Login#')):$([System.Web.HttpUtility]::UrlEncode('#Password#'))@#Server#:#Port#",
@@ -11,10 +11,10 @@
         "-watchdog=false",
         "-api 127.0.0.1:#APIPort#"
     ],
-    "API": "BMiner8",
+    "API": "BMiner",
     "APIPort": 4068,
-    "Fee": 0.02,
     "SSL": true,
+    "Fee": 0.02,
     "CUDA": 9.2,
     "Algorithms": {
         "Ethash_Blake2s": "blake2s",
