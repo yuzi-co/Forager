@@ -1,7 +1,7 @@
 {
     "Path": "xmrig-nvidia.exe",
-    "Uri": "https://github.com/xmrig/xmrig-nvidia/releases/download/v2.8.4/xmrig-nvidia-2.8.4-cuda-9_2-win64.zip",
-    "SHA256": "1E4245A1C54345AB65C6BA2C6C2E97CC079E02126AA79F3E5DADE71C402D0DD5",
+    "Uri": "https://github.com/xmrig/xmrig-nvidia/releases/download/v2.9.1/xmrig-nvidia-2.9.1-cuda10-win64.zip",
+    "SHA256": "57DDBE16F26280AC5A55B0C2A862BE05AAC7CBBA3F1BCF70262F7877BA97179A",
     "Type": "NVIDIA",
     "Arguments": [
         "-o #Protocol#://#Server#:#Port#",
@@ -16,11 +16,12 @@
     "API": "XMRig",
     "APIPort": 4068,
     "Fee": 0.01,
-    "CUDA": 9.2,
+    "CUDA": 10,
     "Algorithms": {
         "CnAlloy": "-a cn/xao",
         "CnArto": "-a cn/rto",
         "CnFast": "-a cn/msr",
+        "CnHalf": "-a cn/half",
         "CnHaven": "-a cn-heavy/xhv",
         "CnHeavy": "-a cn-heavy",
         "CnLiteV7": "-a  cn-lite/1",
