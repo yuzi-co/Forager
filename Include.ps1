@@ -616,8 +616,8 @@ function Get-TCPResponse {
         $Client.SendTimeout = $Timeout * 1000
         $Client.ReceiveTimeout = $Timeout * 1000
         if ($Request) {
-        $Writer.AutoFlush = $true
-        $Writer.Write($Request)
+            $Writer.AutoFlush = $true
+            $Writer.Write($Request)
         }
 
         $Response = $Reader.ReadToEnd()
@@ -806,14 +806,13 @@ function Get-LiveHashRate {
                         ForEach-Object {$Data.devices.($_.name).solvers} |
                         Group-Object algorithm |
                         ForEach-Object {
-                            $(if ($_.group.speed_info.hash_rate -ne $null) {
+                        $(if ($_.group.speed_info.hash_rate -ne $null) {
                                 $_.group.speed_info.hash_rate
                             } elseif ($_.group.speed_info.solution_rate -ne $null) {
                                 $_.group.speed_info.solution_rate
                             }) | Measure-Object -Sum | Select-Object -ExpandProperty Sum
                     }
                 }
-            }
             }
 
             "SRB" {
