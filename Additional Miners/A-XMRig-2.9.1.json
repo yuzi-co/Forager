@@ -1,7 +1,7 @@
 ﻿{
-    "Path": "xmrig-amd-2.8.6\\xmrig-amd.exe",
-    "Uri": "https://github.com/xmrig/xmrig-amd/releases/download/v2.8.6/xmrig-amd-2.8.6-msvc-win64.zip",
-    "SHA256": "D261A4F6096B956C7F6DCFA25AAB98ADA6E1D7A0AC64F217F896EF0440B7B9A3",
+    "Path": "xmrig-amd-2.9.1\\xmrig-amd.exe",
+    "Uri": "https://github.com/xmrig/xmrig-amd/releases/download/v2.9.1/xmrig-amd-2.9.1-msvc-win64.zip",
+    "SHA256": "CFB80CB05A40D67CE437B455E84586644E2F2791C04F1D3A44CB8F33B8FC0DDE",
     "Type": "AMD",
     "Arguments": [
         "-o #Protocol#://#Server#:#Port#",
@@ -20,6 +20,7 @@
         "CnAlloy": "-a cn/xao",
         "CnArto":  "-a cn/rto",
         "CnFast":  "-a cn/msr",
+        "CnHalf":  "-a cn/half",
         "CnHaven": "-a cn-heavy/xhv",
         "CnHeavy": "-a cn-heavy",
         "CnLiteV7": "-a  cn-lite/1",
