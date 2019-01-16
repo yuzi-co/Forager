@@ -7,12 +7,14 @@
         "-epool #Protocol#://#Server#:#Port#",
         "-ewal #Login#",
         "-epsw #Password#",
+        "-dpool #ProtocolDual#://#ServerDual#:#PortDual#",
+        "-dwal #LoginDual#",
+        "-dpsw #PasswordDual#",
         "-esm #EthStMode#",
         "-wd 1",
         "-r -1",
         "-logfile #GroupName#_log.txt",
         "-logsmaxsize 10",
-        "-mode 1",
         "-platform 2",
         "-di #DevicesClayMode#",
         "-allpools 1",
@@ -24,6 +26,20 @@
     "Fee": "$(if ($DeviceGroup.MemoryGB -gt 3){0.01}else{0})",
     "SSL": true,
     "Algorithms": {
-        "Ethash": ""
+        "Ethash_Blake2s|40": "-dcoin blake2s -dcri 40 -mode 0",
+        "Ethash_Blake2s|60": "-dcoin blake2s -dcri 60 -mode 0",
+        "Ethash_Blake2s|80": "-dcoin blake2s -dcri 80 -mode 0",
+        "Ethash_Blake2s|100": "-dcoin blake2s -dcri 100 -mode 0",
+        "Ethash_Blake2s|120": "-dcoin blake2s -dcri 120 -mode 0",
+        "Ethash_Blake2s|140": "-dcoin blake2s -dcri 140 -mode 0",
+        "Ethash_Blake2s|160": "-dcoin blake2s -dcri 160 -mode 0",
+        "Ethash_Keccak|40": "-dcoin Keccak -dcri 40 -mode 0",
+        "Ethash_Keccak|60": "-dcoin Keccak -dcri 60 -mode 0",
+        "Ethash_Keccak|80": "-dcoin Keccak -dcri 80 -mode 0",
+        "Ethash_Keccak|100": "-dcoin Keccak -dcri 100 -mode 0",
+        "Ethash_Keccak|120": "-dcoin Keccak -dcri 120 -mode 0",
+        "Ethash_Keccak|140": "-dcoin Keccak -dcri 140 -mode 0",
+        "Ethash_Keccak|160": "-dcoin Keccak -dcri 160 -mode 0",
+        "Ethash": "-mode 1"
     }
 }
