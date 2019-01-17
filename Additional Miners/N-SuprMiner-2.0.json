@@ -1,7 +1,7 @@
 {
-    "Path": "suprminer-1.6\\ccminer.exe",
-    "Uri": "https://github.com/ocminer/suprminer/releases/download/1.6/suprminer-1.6.7z",
-    "SHA256": "18228f4ae3857cde703c501d6c829959b20e634067a070fd13bd46b4f53a5a76",
+    "Path": "suprminer-2.0\\ccminer.exe",
+    "Uri": "https://github.com/ocminer/suprminer/releases/download/2.0/suprminer-2.0.7z",
+    "SHA256": "C95D7987A005EB8564FA502CA36C82BF7D7ECD56B7D662242CF35C94E29AEFDF",
     "Type": "NVIDIA",
     "Arguments": [
         "-o #Protocol#://#Server#:#Port#",
@@ -14,7 +14,9 @@
     "API": "Ccminer",
     "APIPort": 4068,
     "Algorithms": {
+        "Lyra2z": "-a lyra2z",
         "X16r": "-a x16r",
+        "X16rt": "-a x16rt",
         "X16s": "-a x16s"
     }
 }
