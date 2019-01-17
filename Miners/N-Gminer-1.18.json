@@ -24,7 +24,6 @@
         "Equihash150": "--algo 150_5 --pers auto",
         "Equihash192": "--algo 192_7 --pers auto",
         "Equihash210": "--algo 210_9 --pers AION0PoW",
-        "Equihash96": "--algo 96_5 --pers auto",
         "EquihashBTCZ": "--algo 144_5 --pers BitcoinZ",
         "EquihashBTG": "--algo 144_5 --pers BgoldPoW",
         "Mars": "--algo 96_5 --pers ZcashPoW",
