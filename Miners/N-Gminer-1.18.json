@@ -10,7 +10,7 @@
         "--pass #Password#",
         "--api #APIPort#",
         "$(if($enableSSL){'--ssl 1'})",
-        "--devices #Devices#",
+        "--devices #DevicesETHMode#",
         "#AlgorithmParameters#"
     ],
     "API": "GMiner",
