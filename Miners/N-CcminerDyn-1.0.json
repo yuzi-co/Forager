@@ -1,0 +1,21 @@
+{
+    "Path": "ccminer.exe",
+    "Uri": "https://github.com/duality-solutions/Dynamic-GPU-Miner-Nvidia/releases/download/v1.0.0/ccminer-dyn-1.0.0.rar",
+    "SHA256": "2AC2D3F88EA89D7DAED326CEC8A449B26DADC6BB81D14A6319787C87152EB543",
+    "Type": "NVIDIA",
+    "Arguments": [
+        "-o #Protocol#://#Server#:#Port#",
+        "-u #Login#",
+        "-p #Password#",
+        "-R 10",
+        "-r 4",
+        "-d #Devices#",
+        "-b #APIPort#",
+        "#AlgorithmParameters#"
+    ],
+    "API": "Ccminer",
+    "APIPort": 4068,
+    "Algorithms": {
+        "Argon2d500": "-a argon2d"
+    }
+}
