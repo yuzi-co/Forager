@@ -1,0 +1,22 @@
+{
+    "Path": "sgminer.exe",
+    "Uri": "https://github.com/duality-solutions/Dynamic-GPU-Miner-AMD/releases/download/v1.0.0/sgminer-dyn-1.0.0-windows-x64.zip",
+    "SHA256": "FB18668CC766B3F08417A1C435188788A9E96B6586716DC295738A890B5C9A8B",
+    "Type": "AMD",
+    "Arguments": [
+        "-o #Protocol#://#Server#:#Port#",
+        "-u #Login#",
+        "-p #Password#",
+        "--gpu-platform #GPUPlatform#",
+        "--device #Devices#",
+        "--api-listen",
+        "--api-port #APIPort#",
+        "--extranonce",
+        "#AlgorithmParameters#"
+    ],
+    "API": "Xgminer",
+    "APIPort": 4028,
+    "Algorithms": {
+        "Argon2d500": "-k argon2d -g 4 -w 64 -I 2"
+    }
+}
