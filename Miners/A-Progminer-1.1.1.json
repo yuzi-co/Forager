@@ -1,0 +1,19 @@
+{
+    "Path": "bin\\progminer.exe",
+    "Uri": "https://github.com/gangnamtestnet/progminer/releases/download/v1.1.1-opencl/progminer-1.1.1-opencl-opencl-windows-amd64.zip",
+    "SHA256": "FD83C34742E4B958BDAC5370010883046B5725BF583EAB3EB25F755B673B51EE",
+    "Type": "AMD",
+    "Arguments": [
+        "-P stratum+tcp://#Login#:#Password#@#Server#:#Port#",
+        "--opencl",
+        "--opencl-platform #GPUPlatform#",
+        "--opencl-devices #DevicesETHMode#",
+        "--api-port -#APIPort#",
+        "#AlgorithmParameters#"
+    ],
+    "API": "Claymore",
+    "APIPort": 4028,
+    "Algorithms": {
+        "ProgPOWEth": ""
+    }
+}

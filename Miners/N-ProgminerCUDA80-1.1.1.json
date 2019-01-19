@@ -1,0 +1,19 @@
+{
+    "Path": "bin\\progminer.exe",
+    "Uri": "https://github.com/gangnamtestnet/progminer/releases/download/v1.1.1/progminer-1.1.1-cuda8.0-windows-amd64.zip",
+    "SHA256": "151CBA11D1739654C4AA626BC04BA7E42566926C99E6DB2C87ED2AF2DEDAA56A",
+    "Type": "NVIDIA",
+    "Arguments": [
+        "-P stratum2+tcp://#Login#:#Password#@#Server#:#Port#",
+        "--cuda",
+        "--cuda-devices #DevicesETHMode#",
+        "--api-port #APIPort#",
+        "#AlgorithmParameters#"
+    ],
+    "API": "Claymore",
+    "APIPort": 4028,
+    "CUDA": 8.0,
+    "Algorithms": {
+        "ProgPOWEth": ""
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "Path": "bin\\progminer.exe",
+    "Uri": "https://github.com/gangnamtestnet/progminer/releases/download/v1.1.1/progminer-1.1.1-cuda9.2-windows-amd64.zip",
+    "SHA256": "D40ECFE96D0A9F649B72D752AA1119EB84BAE16F6BA3B51766E6B38874AE7F84",
+    "Type": "NVIDIA",
+    "Arguments": [
+        "-P stratum2+tcp://#Login#:#Password#@#Server#:#Port#",
+        "--cuda",
+        "--cuda-devices #DevicesETHMode#",
+        "--api-port #APIPort#",
+        "#AlgorithmParameters#"
+    ],
+    "API": "Claymore",
+    "APIPort": 4028,
+    "CUDA": 9.2,
+    "Algorithms": {
+        "ProgPOWEth": ""
+    }
+}
