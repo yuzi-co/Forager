@@ -1,0 +1,28 @@
+{
+    "Path": "wildrig.exe",
+    "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.14.0/wildrig-multi-0.14.0-beta.7z",
+    "SHA256": "DFB194E44DBA02765A1E4BC1E3E18D274435A17B57BD206A2D17B756CCCA9F19",
+    "Type": "AMD",
+    "Arguments": [
+        "-o #Server#:#Port#",
+        "-u #Login#",
+        "-p #Password#",
+        "-r 4",
+        "-R 10",
+        "--opencl-platform #GpuPlatform#",
+        "--opencl-devices #Devices#",
+        "--send-stale",
+        "--donate-level 1",
+        "--api-port #ApiPort#",
+        "#AlgorithmParameters#"
+    ],
+    "API": "XMRig",
+    "APIPort": 4028,
+    "Fee": 0.01,
+    "Algorithms": {
+        "Astralhash": "--algo glt-astralhash",
+        "Jeonghash": "--algo glt-jeonghash",
+        "Padihash": "--algo glt-padihash",
+        "Pawelhash": "--algo glt-pawelhash"
+    }
+}
