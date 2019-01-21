@@ -1,0 +1,19 @@
+{
+    "Path": "zjazz_amd_win64_1.2\\zjazz_amd.exe",
+    "Uri": "https://github.com/zjazz/zjazz_amd_miner/releases/download/v1.2/zjazz_amd_win64_1.2.zip",
+    "SHA256": "5FFDEE4285823648B1DFA788BB452ED8F142A140A0BB32473E1F4B4D6EE8E240",
+    "Type": "AMD",
+    "Arguments": [
+        "-o #Protocol#://#Server#:#Port#",
+        "-u #Login#",
+        "-p #Password#",
+        "#DevicesNsgMode#",
+        "--api-bind #APIPort#",
+        "#AlgorithmParameters#"
+    ],
+    "API": "Ccminer",
+    "APIPort": 4028,
+    "Algorithms": {
+        "X22i": "-a x22i -g 2"
+    }
+}
