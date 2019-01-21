@@ -54,8 +54,8 @@ function Set-AfterburnerPowerLimit ([int]$PowerLimitPercent, $DeviceGroup) {
             if ($abControl.GpuEntries[$device].PowerLimitCur -ne $PowerLimit) {
 
                 # Stay within HW limitations
-                if ($PowerLimit -gt $abControl.GpuEntries[$device].PowerLimitMax) {$PowerLimit = $abControl.GpuEntries[$device].PowerLimitMax}
-                if ($PowerLimit -lt $abControl.GpuEntries[$device].PowerLimitMin) {$PowerLimit = $abControl.GpuEntries[$device].PowerLimitMin}
+                $PowerLimit = [math]::Min($abControl.GpuEntries[$device].PowerLimitMax, $PowerLimit)
+                $PowerLimit = [math]::Max($abControl.GpuEntries[$device].PowerLimitMin, $PowerLimit)
 
                 $abControl.GpuEntries[$device].PowerLimitCur = $PowerLimit
             }

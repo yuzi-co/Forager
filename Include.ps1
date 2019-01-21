@@ -1502,15 +1502,16 @@ function Get-CoinSymbol ([string]$Coin) {
     switch -wildcard ($Coin) {
         "adzcoin" { "ADZ" }
         "auroracoin" { "AUR" }
+        "bitcoin" { "BTC" }
         "bitcoincash" { "BCH" }
         "bitcoingold" { "BTG" }
-        "bitcoin" { "BTC" }
+        "bitcoinz" { "BTCZ" }
         "dash" { "DASH" }
         "decred" { "DCR" }
         "digibyte" { "DGB" }
         "electroneum" { "ETN" }
-        "ethereumclassic" { "ETC" }
         "ethereum" { "ETH" }
+        "ethereumclassic" { "ETC" }
         "expanse" { "EXP" }
         "feathercoin" { "FTC" }
         "gamecredits" { "GAME" }
@@ -1518,15 +1519,19 @@ function Get-CoinSymbol ([string]$Coin) {
         "globalboosty" { "BSTY" }
         "groestlcoin" { "GRS" }
         "litecoin" { "LTC" }
+        "litecoinz" { "LTZ" }
         "maxcoin" { "MAX" }
+        "minex" { "MNX" }
         "monacoin" { "MONA" }
         "monero" { "XMR" }
         "musicoin" { "MUSIC" }
         "myriad" { "XMY" }
         "pascal" { "PASC" }
         "polytimos" { "POLY" }
+        "safecoin" { "SAFE" }
         "sexcoin" { "SXC" }
         "siacoin" { "SC" }
+        "snowgem" { "XSG" }
         "startcoin" { "START" }
         "verge" { "XVG" }
         "vertcoin" { "VTC" }
@@ -1534,6 +1539,7 @@ function Get-CoinSymbol ([string]$Coin) {
         "zclassic" { "ZCL" }
         "zcoin" { "XZC" }
         "zencash" { "ZEN" }
+        "zero" { "ZER" }
         Default { $Coin }
     }
 }

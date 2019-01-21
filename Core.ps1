@@ -55,7 +55,7 @@ Import-Module "$env:Windir\System32\WindowsPowerShell\v1.0\Modules\Defender\Defe
 
 #Start log file
 
-$LogPath = '.\Logs\'
+$LogPath = "$PSScriptRoot\Logs\"
 if (!(Test-Path -Path $LogPath)) { New-Item -Path $LogPath -ItemType directory | Out-Null }
 $LogName = $LogPath + "$(Get-Date -Format "yyyy-MM-dd_HH-mm-ss").log"
 Start-Transcript $LogName   #for start log msg
@@ -1080,7 +1080,10 @@ while ($Quit -eq $false) {
                 #Start New
                 if ($BestNow) {
 
-                    if ($BestNow.PowerLimit -ne $BestLast.PowerLimit) {
+                    if (
+                        $BestNow.PowerLimit -gt 0 -and
+                        $BestNow.PowerLimit -ne $BestLast.PowerLimit
+                        ) {
                         if ($abControl) {
                             Set-AfterburnerPowerLimit -PowerLimitPercent $BestNow.PowerLimit -DeviceGroup $ActiveMiners[$BestNow.IdF].DeviceGroup
                         } elseif ($BestNow.PowerLimit -gt 0) {
