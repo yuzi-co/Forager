@@ -20,12 +20,6 @@
         "Beam": "-uri beam",
         "Cuckaroo29": "-uri cuckaroo29",
         "Equihash144": "-pers auto -uri equihash1445",
-        "EquihashBTCZ": "-pers BitcoinZ -uri equihash1445",
-        "EquihashBTG": "-uri zhash",
-        "EquihashLTZ": "-pers ZcashPoW -uri equihash1445",
-        "EquihashSafe": "-pers Safecoin -uri equihash1445",
-        "EquihashXSG": "-pers sngemPoW -uri equihash1445",
-        "EquihashZEL": "-pers ZelProof -uri equihash1445",
         "Tensority": "-uri tensority"
     }
 }

@@ -18,13 +18,6 @@
     "Fee": 0.02,
     "CUDA": 8.0,
     "Algorithms": {
-        "Equihash144": "--par=144,5 --pers auto",
-        "EquihashBTCZ": "--par=144,5 --pers BitcoinZ",
-        "EquihashBTG": "--par=144,5 --pers BgoldPoW",
-        "EquihashLTZ": "--par=144,5 --pers ZcashPoW",
-        "EquihashSafe": "--par=144,5 --pers Safecoin",
-        "EquihashXSG": "--par=144,5 --pers sngemPoW",
-        "EquihashZEL": "--par=144,5 --pers ZelProof"
-
+        "Equihash144": "--par=144,5 --pers auto"
     }
 }

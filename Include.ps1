@@ -832,7 +832,7 @@ function Get-LiveHashRate {
                 }
             }
 
-            "LOL6" {
+            "LOL" {
                 $Request = Invoke-HTTPRequest -Port $Port -Path "/summary"
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json

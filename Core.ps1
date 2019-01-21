@@ -701,7 +701,7 @@ while ($Quit -eq $false) {
                             Algorithms          = $Algorithms
                             API                 = $ExecutionContext.InvokeCommand.ExpandString($Miner.API)
                             Arguments           = $ExecutionContext.InvokeCommand.ExpandString($Arguments)
-                            BenchmarkArg        = $Miner.BenchmarkArg
+                            BenchmarkArg        = $ExecutionContext.InvokeCommand.ExpandString($Miner.BenchmarkArg)
                             Coin                = $Pool.Info
                             CoinDual            = $PoolDual.Info
                             ConfigFileArguments = $ExecutionContext.InvokeCommand.ExpandString($ConfigFileArguments)

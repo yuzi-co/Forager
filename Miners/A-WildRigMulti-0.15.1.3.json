@@ -16,7 +16,7 @@
         "--api-port #ApiPort#",
         "#AlgorithmParameters#"
     ],
-    "BenchmarkArg": "--benchmark",
+    "BenchmarkArg": "$(if ($AlgoName -in @('bitcore', 'x16r', 'x16rt', 'x16s', 'hex', 'timetravel')){'--benchmark'})",
     "API": "XMRig",
     "APIPort": 4028,
     "Fee": 0.01,
@@ -32,7 +32,7 @@
         "HMQ1725": "--algo hmq1725 --opencl-threads 2 --opencl-launch 20x128",
         "Lyra2v3": "--algo lyra2v3 --opencl-threads 1 --opencl-launch 23x0",
         "Lyra2vc0ban": "--algo lyra2vc0ban --opencl-threads 1 --opencl-launch 23x0",
-        "MTP": "--algo mtp --opencl-threads 1 --opencl-launch 16x0",
+        "MTP|8gb": "--algo mtp --opencl-threads 1 --opencl-launch 16x0",
         "Phi": "--algo phi --opencl-threads 3 --opencl-launch 19x0",
         "Polytimos": "--algo polytimos --opencl-threads 2 --opencl-launch 19x0",
         "Renesis": "--algo renesis --opencl-threads 3 --opencl-launch 18x128",

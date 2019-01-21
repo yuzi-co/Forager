@@ -145,6 +145,7 @@ if ($Querymode -eq "core" -or $Querymode -eq "Menu") {
             "Equihash144" { 1 }
             "Equihash192" { 1 }
             "Equihash210" { 1 }
+            "Equihash96" { 1e3 }
             "Ethash" { 1e6 }
             "Hex" { 1e6 }
             "Keccak" { 1e6 }
@@ -154,7 +155,6 @@ if ($Querymode -eq "core" -or $Querymode -eq "Menu") {
             "Lyra2v3" {1e3}
             "Lyra2z" { 1e6 }
             "M7M" { 1e3 }
-            "Mars" { 1e3 }
             "MTP" { 1e3 }
             "NeoScrypt" { 1e3 }
             "Phi" { 1e6 }
