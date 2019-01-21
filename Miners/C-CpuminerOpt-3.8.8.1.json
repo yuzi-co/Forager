@@ -12,7 +12,7 @@
         "-b #APIPort#",
         "#AlgorithmParameters#"
     ],
-    "#BenchmarkArg": "--benchmark",
+    "BenchmarkArg": "$(if ($AlgoName -in @('bitcore', 'x16r', 'x16s', 'timetravel')){'--benchmark'})",
     "API": "Ccminer",
     "APIPort": 4048,
     "Algorithms": {

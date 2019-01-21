@@ -1,6 +1,7 @@
 {
     "Path": "sgminer-MK_1_0_7\\sgminer.exe",
     "Uri": "https://github.com/Enoch72/sgminer-MK/releases/download/MK-1.0.7/sgminer-MK_1_0_7.zip",
+    "SHA256": "86503DE8B044B369B715B98B1E8756B99548CC37643246FBAF0C6A733C46DF33",
     "Type": "AMD",
     "Arguments": [
         "-o #Protocol#://#Server#:#Port#",
@@ -10,9 +11,10 @@
         "--device #Devices#",
         "--api-listen",
         "--api-port #APIPort#",
+        "--extranonce",
         "#AlgorithmParameters#"
     ],
-    "BenchmarkArg": "--benchmark",
+    "BenchmarkArg": "$(if ($AlgoName -in @('x16r', 'x16s')){'--benchmark'})",
     "API": "Xgminer",
     "APIPort": 4028,
     "Algorithms": {

@@ -12,7 +12,6 @@
         "-b #APIPort#",
         "#AlgorithmParameters#"
     ],
-    "#BenchmarkArg": "--benchmark",
     "API": "Ccminer",
     "APIPort": 4048,
     "Algorithms": {
