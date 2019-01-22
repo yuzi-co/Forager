@@ -160,6 +160,7 @@ if ($Querymode -eq "core" -or $Querymode -eq "Menu") {
             "Phi" { 1e6 }
             "Phi2" { 1e6 }
             "ProgPOW" { 1e6 }
+            "RandomHash" { 1e3 }
             "Skunk" { 1e6 }
             "SonoA" { 1e3 }
             "Tensority" { 1 }

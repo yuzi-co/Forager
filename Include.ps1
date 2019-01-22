@@ -1,4 +1,4 @@
-Add-Type -Path .\Includes\OpenCL\*.cs
+Add-Type -Path $PSScriptRoot\Includes\OpenCL\*.cs
 
 function Set-NvidiaPowerLimit ([int]$PowerLimitPercent, [string]$Devices) {
 

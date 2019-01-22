@@ -18,8 +18,6 @@ param(
     [string]$PercentToSwitch = $null
 )
 
-. .\Include.ps1
-
 ##Parameters for testing, must be commented on real use
 
 # $MiningMode='Automatic'
@@ -47,15 +45,12 @@ param(
 # $GroupNames=('rx580')
 
 $error.clear()
-$currentDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-Import-Module NetSecurity -ErrorAction SilentlyContinue
-Import-Module Defender -ErrorAction SilentlyContinue
-Import-Module "$env:Windir\System32\WindowsPowerShell\v1.0\Modules\NetSecurity\NetSecurity.psd1" -ErrorAction SilentlyContinue
-Import-Module "$env:Windir\System32\WindowsPowerShell\v1.0\Modules\Defender\Defender.psd1" -ErrorAction SilentlyContinue
+$ScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+. $ScriptRoot\Include.ps1
 
 #Start log file
 
-$LogPath = "$PSScriptRoot\Logs\"
+$LogPath = "$ScriptRoot\Logs\"
 if (!(Test-Path -Path $LogPath)) { New-Item -Path $LogPath -ItemType directory | Out-Null }
 $LogName = $LogPath + "$(Get-Date -Format "yyyy-MM-dd_HH-mm-ss").log"
 Start-Transcript $LogName   #for start log msg
@@ -94,10 +89,15 @@ $env:GPU_SINGLE_ALLOC_PERCENT = 100 #For AMD
 $progressPreference = 'silentlyContinue' #No progress message on web requests
 #$progressPreference = 'Stop'
 
-Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
+Set-Location $ScriptRoot
 
 #Set process priority to BelowNormal to avoid hash rate drops on systems with weak CPUs
 (Get-Process -Id $PID).PriorityClass = "BelowNormal"
+
+Import-Module NetSecurity -ErrorAction SilentlyContinue
+Import-Module Defender -ErrorAction SilentlyContinue
+Import-Module "$env:Windir\System32\WindowsPowerShell\v1.0\Modules\NetSecurity\NetSecurity.psd1" -ErrorAction SilentlyContinue
+Import-Module "$env:Windir\System32\WindowsPowerShell\v1.0\Modules\Defender\Defender.psd1" -ErrorAction SilentlyContinue
 
 if (Get-Command "Unblock-File" -ErrorAction SilentlyContinue) {Get-ChildItem . -Recurse | Unblock-File}
 if ((Get-Command "Get-MpPreference" -ErrorAction SilentlyContinue) -and (Get-MpComputerStatus -ErrorAction SilentlyContinue) -and (Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) {
@@ -184,8 +184,8 @@ if ($config.ApiPort -gt 0) {
 
     Log-Message "Starting API on port $($config.ApiPort)" -Severity Debug
 
-    $ApiSharedFile = $currentDir + "\ApiShared" + [string](Get-Random -minimum 0 -maximum 99999999) + ".tmp"
-    $command = "-WindowStyle minimized  -noExit -executionpolicy bypass -file $currentDir\Includes\ApiListener.ps1 -port " + [string]$config.ApiPort + " -SharedFile $ApiSharedFile "
+    $ApiSharedFile = "$ScriptRoot\ApiShared" + [string](Get-Random -minimum 0 -maximum 99999999) + ".tmp"
+    $command = "-WindowStyle minimized  -noExit -executionpolicy bypass -file $ScriptRoot\Includes\ApiListener.ps1 -port " + [string]$config.ApiPort + " -SharedFile $ApiSharedFile "
     $APIprocess = Start-Process -FilePath "powershell.exe" -ArgumentList $command -Verb RunAs -PassThru -WindowStyle Minimized
 
     #open firewall port
@@ -232,7 +232,7 @@ while ($Quit -eq $false) {
     try {
         $Request = Invoke-APIRequest -Url "https://api.github.com/repos/yuzi-co/$Application/releases/latest" -Age 60
         $RemoteVersion = ($Request.tag_name -replace '[^\d.]')
-        $Uri = $Request.assets | Where-Object Name -eq "$($Application)-$($RemoteVersion).7z" | Select-Object -ExpandProperty browser_download_url
+        $Uri = $Request.assets | Where-Object Name -eq "$Application-$RemoteVersion.7z" | Select-Object -ExpandProperty browser_download_url
 
         if ([version]$RemoteVersion -gt [version]$Release) {
             Log-Message "$Application is out of date. There is an updated version available at $URI" -Severity Warn
@@ -1127,7 +1127,7 @@ while ($Quit -eq $false) {
                     $CommonParams = @{
                         WorkingDirectory = Split-Path $ActiveMiners[$BestNow.IdF].Path
                         MinerWindowStyle = $MinerWindowStyle
-                        Priority         = if ($ActiveMiners[$BestNow.IdF].DeviceGroup.Type -eq "CPU") {-2} else {-1}
+                        Priority         = if ($ActiveMiners[$BestNow.IdF].DeviceGroup.Type -eq "CPU") { -2 } else { 0 }
                     }
                     $ActiveMiners[$BestNow.IdF].Process = Start-SubProcess @ProcessParams @CommonParams
 
