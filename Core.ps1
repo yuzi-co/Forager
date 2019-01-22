@@ -527,6 +527,7 @@ while ($Quit -eq $false) {
                             '#DevicesNsgMode#'      = $DeviceGroup.DevicesNsgMode
                             '#EthStMode#'           = $Pool.EthStMode
                             '#GroupName#'           = $DeviceGroup.GroupName
+                            '#EMail#'               = $Config.EMail
                         }
 
                         $Arguments = $Miner.Arguments -join " "

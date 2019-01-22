@@ -1,0 +1,10 @@
+mport=-#APIPort#
+port=1#APIPort#
+
+[#AlgorithmParameters#]
+wallet = #Login#
+paymentId = 0
+rigName = #WorkerName#
+rigPassword = #Password#
+email = #EMail#
+pool1 = #Server#:#Port#

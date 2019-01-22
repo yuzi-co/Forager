@@ -768,6 +768,7 @@ function Get-LiveHashRate {
                         "* - Monero" {$Multiplier = 1} #CryptoNight
                         "* - cryptonight*" {$Multiplier = 1} #CryptoNight
                         "* - ethash*" {$Multiplier = 1000} #Ethash
+                        "* - PascalCoin*" {$Multiplier = 1} #Ethash
                         Default {$Multiplier = 1000}
                     }
                     [double[]]$HashRate = [double]$Data.result[2].Split(";")[0] * $Multiplier
