@@ -1,7 +1,7 @@
 {
     "Path": "miner.exe",
-    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.01/gminer_1_20_minimal_windows64.zip",
-    "SHA256": "D6A659681D4495526B26FD5AD18DB2B48572E4D6249C07B53BF039D468A0C4BE",
+    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.01/gminer_1_21_minimal_windows64.zip",
+    "SHA256": "7674238299E8BA1CFBE8823665A90EB31727A60E09D15D10A8ECB6321BBAAC9E",
     "Type": "NVIDIA",
     "Arguments": [
         "--server #Server#",
@@ -19,7 +19,6 @@
     "CUDA": 9.0,
     "SSL": true,
     "Algorithms": {
-        "Beam": "--algo 150_5",
         "Cuckaroo29|8gb": "--algo grin29",
         "Equihash144": "--algo 144_5 --pers auto",
         "Equihash150": "--algo 150_5 --pers auto",
