@@ -8,3 +8,4 @@ rigName = #WorkerName#
 rigPassword = #Password#
 email = #EMail#
 pool1 = #Server#:#Port#
+devices = #Devices#
