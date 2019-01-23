@@ -711,6 +711,7 @@ while ($Quit -eq $false) {
                             DeviceGroup         = $DeviceGroup
                             Host                = $Pool.Host
                             Location            = $Pool.Location
+                            LocationDual        = $PoolDual.Location
                             MinerFee            = $MinerFee
                             Name                = $MinerFile.BaseName
                             Path                = $(".\Bin\" + $MinerFile.BaseName + "\" + $ExecutionContext.InvokeCommand.ExpandString($Miner.Path))
@@ -863,6 +864,7 @@ while ($Quit -eq $false) {
                 Id                  = $ActiveMiners.Count
                 IsValid             = $true
                 Location            = $Miner.Location
+                LocationDual        = $Miner.LocationDual
                 MinerFee            = $Miner.MinerFee
                 Name                = $Miner.Name
                 Path                = Convert-Path $Miner.Path
@@ -1458,9 +1460,8 @@ while ($Quit -eq $false) {
                 EfficiencyH = if (!($ActiveMiners[$_.IdF].AlgorithmDual) -and $_.PowerLive -gt 0) {ConvertTo-Hash ($_.SpeedLive / $_.PowerLive)} else {$null}
                 EfficiencyW = if ($_.PowerLive -gt 0) {($_.ProfitsLive / $_.PowerLive).tostring("n4")} else {$null}
                 PoolSpeed   = "$(ConvertTo-Hash $ActiveMiners[$_.IdF].PoolHashRate)" + $(if ($ActiveMiners[$_.IdF].AlgorithmDual) {"/$(ConvertTo-Hash $ActiveMiners[$_.IdF].PoolHashRateDual)"})
-                Pool        = $ActiveMiners[$_.IdF].PoolName + $(if ($ActiveMiners[$_.IdF].AlgorithmDual) {"|$($ActiveMiners[$_.IdF].PoolNameDual)"})
+                Pool        = $ActiveMiners[$_.IdF].PoolName + '-' + $ActiveMiners[$_.IdF].Location + $(if ($ActiveMiners[$_.IdF].AlgorithmDual) {"|($ActiveMiners[$_.IdF].PoolNameDual)-$($ActiveMiners[$_.IdF].LocationDual)"})
                 Workers     = $ActiveMiners[$_.IdF].PoolWorkers
-                Location    = $ActiveMiners[$_.IdF].Location
             }
         }
 
@@ -1477,11 +1478,9 @@ while ($Quit -eq $false) {
                 @{Label = "mBTC/Day"; Expression = {$_.mbtcDay} ; Align = 'right'},
                 @{Label = "$LocalCurrency/Day"; Expression = {$_.RevDay} ; Align = 'right'},
                 @{Label = "Profit/Day"; Expression = {$_.ProfitDay} ; Align = 'right'},
-                # @{Label = "Hash/W"; Expression = {$_.EfficiencyH} ; Align = 'right'},
                 @{Label = "PoolSpeed"; Expression = {$_.PoolSpeed} ; Align = 'right'},
-                @{Label = "Pool"; Expression = {$_.Pool} ; Align = 'right'},
-                @{Label = "Workers"; Expression = {$_.Workers} ; Align = 'right'},
-                @{Label = "Loc."; Expression = {$_.Location} ; Align = 'right'}
+                @{Label = "Pool"; Expression = {$_.Pool} ; Align = 'left'},
+                @{Label = "Workers"; Expression = {$_.Workers} ; Align = 'right'}
             ) | Out-Host
         } else {
             Write-Warning "No miners above MinProfit"
@@ -1585,8 +1584,7 @@ while ($Quit -eq $false) {
                 @{Label = "Profit/Day"; Expression = {if ($_.SubMiner.Profits) {($_.SubMiner.Profits).tostring("n2") + " $LocalCurrency"} else {$null}}; Align = 'right'},
                 @{Label = "PoolFee"; Expression = {if ($_.PoolFee -gt 0) {"{0:p2}" -f $_.PoolFee}}; Align = 'right'},
                 @{Label = "MinerFee"; Expression = {if ($_.MinerFee -gt 0) {"{0:p2}" -f $_.MinerFee}}; Align = 'right'},
-                @{Label = "Pool"; Expression = {$_.PoolName + $(if ($_.AlgorithmDual) {"/$($_.PoolNameDual)"})}},
-                @{Label = "Loc."; Expression = {$_.Location}}
+                @{Label = "Pool"; Expression = {$_.PoolName + '-' + $_.Location + $(if ($_.AlgorithmDual) {"/$($_.PoolNameDual)-$($_.LocationDual)"})}}
 
             ) -GroupBy GroupName | Out-Host
             Remove-Variable ProfitMiners
