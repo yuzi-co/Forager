@@ -1,7 +1,7 @@
 {
-    "Path": "xmrig-2.9.4\\xmrig.exe",
-    "Uri": "https://github.com/xmrig/xmrig/releases/download/v2.9.4/xmrig-2.9.4-gcc-win64.zip",
-    "SHA256": "C5875A13677D57A8FCA4C577037B6AC508C8B56EC0A40AE2476886E9D7E94AE9",
+    "Path": "xmrig-2.10.0\\xmrig.exe",
+    "Uri": "https://github.com/xmrig/xmrig/releases/download/v2.10.0/xmrig-2.10.0-msvc-win64.zip",
+    "SHA256": "BD7D7C7EB29728D7546FF578CDA6BC8995BA2BFCA724A406EAC56D99CA86E1FF",
     "Type": "CPU",
     "Arguments": [
         "-o #Protocol#://#Server#:#Port#",
@@ -24,6 +24,7 @@
         "CnHeavy": "-a cn-heavy",
         "CnLiteV7": "-a cn-lite/1",
         "CnSaber": "-a cn-heavy/tube",
+        "CnTrtl": "-a cn-pico/trtl",
         "CnV7": "-a cn/1",
         "CnV8": "-a cn/2",
         "CnXTL": "-a cn/xtl"
