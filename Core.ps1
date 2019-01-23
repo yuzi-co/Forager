@@ -596,8 +596,8 @@ while ($Quit -eq $false) {
                                 $_.Algorithm -eq $AlgoName -and
                                 $_.CoinDual -eq $PoolDual.Info -and
                                 $_.AlgorithmDual -eq $AlgoNameDual -and
-                                $_.PoolAbbName -eq $Pool.AbbName -and
-                                $_.PoolAbbNameDual -eq $PoolDual.AbbName -and
+                                $_.PoolName -eq $Pool.Name -and
+                                $_.PoolNameDual -eq $PoolDual.Name -and
                                 $_.DeviceGroup.Id -eq $DeviceGroup.Id -and
                                 $_.AlgoLabel -eq $AlgoLabel }
 
@@ -714,8 +714,6 @@ while ($Quit -eq $false) {
                             MinerFee            = $MinerFee
                             Name                = $MinerFile.BaseName
                             Path                = $(".\Bin\" + $MinerFile.BaseName + "\" + $ExecutionContext.InvokeCommand.ExpandString($Miner.Path))
-                            PoolAbbName         = $Pool.AbbName
-                            PoolAbbNameDual     = $PoolDual.AbbName
                             PoolFee             = [double]$Pool.Fee
                             PoolFeeDual         = [double]$PoolDual.Fee
                             PoolName            = $Pool.PoolName
@@ -791,8 +789,8 @@ while ($Quit -eq $false) {
             $_.Algorithm -eq $ActiveMiner.Algorithm -and
             $_.CoinDual -eq $ActiveMiner.CoinDual -and
             $_.AlgorithmDual -eq $ActiveMiner.AlgorithmDual -and
-            $_.PoolAbbName -eq $ActiveMiner.PoolAbbName -and
-            $_.PoolAbbNameDual -eq $ActiveMiner.PoolAbbNameDual -and
+            $_.PoolName -eq $ActiveMiner.PoolName -and
+            $_.PoolNameDual -eq $ActiveMiner.PoolNameDual -and
             $_.DeviceGroup.Id -eq $ActiveMiner.DeviceGroup.Id -and
             $_.AlgoLabel -eq $ActiveMiner.AlgoLabel }
 
@@ -841,8 +839,8 @@ while ($Quit -eq $false) {
             $_.Algorithm -eq $Miner.Algorithm -and
             $_.CoinDual -eq $Miner.CoinDual -and
             $_.AlgorithmDual -eq $Miner.AlgorithmDual -and
-            $_.PoolAbbName -eq $Miner.PoolAbbName -and
-            $_.PoolAbbNameDual -eq $Miner.PoolAbbNameDual -and
+            $_.PoolName -eq $Miner.PoolName -and
+            $_.PoolNameDual -eq $Miner.PoolNameDual -and
             $_.DeviceGroup.Id -eq $Miner.DeviceGroup.Id -and
             $_.AlgoLabel -eq $Miner.AlgoLabel}
 
@@ -868,8 +866,6 @@ while ($Quit -eq $false) {
                 MinerFee            = $Miner.MinerFee
                 Name                = $Miner.Name
                 Path                = Convert-Path $Miner.Path
-                PoolAbbName         = $Miner.PoolAbbName
-                PoolAbbNameDual     = $Miner.PoolAbbNameDual
                 PoolFee             = $Miner.PoolFee
                 PoolFeeDual         = $Miner.PoolFeeDual
                 PoolName            = $Miner.PoolName
@@ -1385,7 +1381,7 @@ while ($Quit -eq $false) {
         if ($CurrentInterval -eq "Donate") {" THIS INTERVAL YOU ARE DONATING, YOU CAN INCREASE OR DECREASE DONATION ON config.ini, THANK YOU FOR YOUR SUPPORT !!!!"}
 
         #write speed
-        Log-Message ($ActiveMiners | Where-Object Best | Select-Object id, process.Id, GroupName, name, poolabbname, Algorithm, AlgorithmDual, SpeedLive, ProfitsLive, location, port, arguments | ConvertTo-Json) -Severity Debug
+        Log-Message ($ActiveMiners | Where-Object Best | Select-Object id, process.Id, GroupName, name, poolname, Algorithm, AlgorithmDual, SpeedLive, ProfitsLive, location, port, arguments | ConvertTo-Json) -Severity Debug
 
         #get pool reported speed (1 or each 10 executions to not saturate pool)
         if ($SwitchLoop -eq 0) {
@@ -1462,7 +1458,7 @@ while ($Quit -eq $false) {
                 EfficiencyH = if (!($ActiveMiners[$_.IdF].AlgorithmDual) -and $_.PowerLive -gt 0) {ConvertTo-Hash ($_.SpeedLive / $_.PowerLive)} else {$null}
                 EfficiencyW = if ($_.PowerLive -gt 0) {($_.ProfitsLive / $_.PowerLive).tostring("n4")} else {$null}
                 PoolSpeed   = "$(ConvertTo-Hash $ActiveMiners[$_.IdF].PoolHashRate)" + $(if ($ActiveMiners[$_.IdF].AlgorithmDual) {"/$(ConvertTo-Hash $ActiveMiners[$_.IdF].PoolHashRateDual)"})
-                Pool        = $ActiveMiners[$_.IdF].PoolAbbName + $(if ($ActiveMiners[$_.IdF].AlgorithmDual) {"|$($ActiveMiners[$_.IdF].PoolAbbNameDual)"})
+                Pool        = $ActiveMiners[$_.IdF].PoolName + $(if ($ActiveMiners[$_.IdF].AlgorithmDual) {"|$($ActiveMiners[$_.IdF].PoolNameDual)"})
                 Workers     = $ActiveMiners[$_.IdF].PoolWorkers
                 Location    = $ActiveMiners[$_.IdF].Location
             }
@@ -1589,7 +1585,7 @@ while ($Quit -eq $false) {
                 @{Label = "Profit/Day"; Expression = {if ($_.SubMiner.Profits) {($_.SubMiner.Profits).tostring("n2") + " $LocalCurrency"} else {$null}}; Align = 'right'},
                 @{Label = "PoolFee"; Expression = {if ($_.PoolFee -gt 0) {"{0:p2}" -f $_.PoolFee}}; Align = 'right'},
                 @{Label = "MinerFee"; Expression = {if ($_.MinerFee -gt 0) {"{0:p2}" -f $_.MinerFee}}; Align = 'right'},
-                @{Label = "Pool"; Expression = {$_.PoolAbbName + $(if ($_.AlgorithmDual) {"/$($_.PoolAbbNameDual)"})}},
+                @{Label = "Pool"; Expression = {$_.PoolName + $(if ($_.AlgorithmDual) {"/$($_.PoolNameDual)"})}},
                 @{Label = "Loc."; Expression = {$_.Location}}
 
             ) -GroupBy GroupName | Out-Host
@@ -1757,7 +1753,7 @@ while ($Quit -eq $false) {
                 Format-Table -Wrap -GroupBy @{Label = "Group"; Expression = {$ActiveMiners[$_.IdF].DeviceGroup.GroupName}}(
                 @{Label = "Algorithm"; Expression = {$ActiveMiners[$_.IdF].Algorithms + $(if ($ActiveMiners[$_.IdF].AlgoLabel) {"|$($ActiveMiners[$_.IdF].AlgoLabel)"})}},
                 @{Label = "Coin"; Expression = {$ActiveMiners[$_.IdF].Symbol + $(if ($ActiveMiners[$_.IdF].AlgorithmDual) {"_$($ActiveMiners[$_.IdF].SymbolDual)"})}},
-                @{Label = "Pool"; Expression = {$ActiveMiners[$_.IdF].PoolAbbName + $(if ($ActiveMiners[$_.IdF].AlgorithmDual) {"/$($ActiveMiners[$_.IdF].PoolAbbNameDual)"})}},
+                @{Label = "Pool"; Expression = {$ActiveMiners[$_.IdF].PoolName + $(if ($ActiveMiners[$_.IdF].AlgorithmDual) {"/$($ActiveMiners[$_.IdF].PoolNameDual)"})}},
                 @{Label = "Miner"; Expression = {$ActiveMiners[$_.IdF].Name}},
                 @{Label = "PwLmt"; Expression = {if ($_.PowerLimit -gt 0) {$_.PowerLimit}}},
                 @{Label = "Launch"; Expression = {$_.Stats.ActivatedTimes}},

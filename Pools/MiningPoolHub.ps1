@@ -11,7 +11,6 @@ $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 $ActiveOnManualMode = $true
 $ActiveOnAutomaticMode = $true
 $ActiveOnAutomatic24hMode = $true
-$AbbName = "MPH"
 $WalletMode = "APIKEY"
 $RewardType = "PPLS"
 $Result = @()
@@ -22,7 +21,6 @@ if ($Querymode -eq "info") {
         ActiveOnManualMode       = $ActiveOnManualMode
         ActiveOnAutomaticMode    = $ActiveOnAutomaticMode
         ActiveOnAutomatic24hMode = $ActiveOnAutomatic24hMode
-        AbbName                  = $AbbName
         WalletMode               = $WalletMode
         RewardType               = $RewardType
     }
@@ -115,7 +113,6 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
                 Pass                  = "x"
                 Location              = $Location
                 Symbol                = Get-CoinSymbol -Coin $MiningPoolHub_Coin
-                AbbName               = $AbbName
                 ActiveOnManualMode    = $ActiveOnManualMode
                 ActiveOnAutomaticMode = $ActiveOnAutomaticMode
                 WalletMode            = $WalletMode

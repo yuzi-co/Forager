@@ -11,7 +11,6 @@ $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 $ActiveOnManualMode = $true
 $ActiveOnAutomaticMode = $false
 $ActiveOnAutomatic24hMode = $false
-$AbbName = 'BSOD'
 $WalletMode = 'WALLET'
 $ApiUrl = 'http://api.bsod.pw/api'
 $MineUrl = 'pool.bsod.pw'
@@ -26,7 +25,6 @@ if ($Querymode -eq "info") {
         ActiveOnAutomaticMode    = $ActiveOnAutomaticMode
         ActiveOnAutomatic24hMode = $ActiveOnAutomatic24hMode
         ApiData                  = $True
-        AbbName                  = $AbbName
         WalletMode               = $WalletMode
         RewardType               = $RewardType
     }
@@ -108,7 +106,6 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
             Location              = $Location
             SSL                   = $false
             Symbol                = $Pool_Symbol
-            AbbName               = $AbbName
             ActiveOnManualMode    = $ActiveOnManualMode
             ActiveOnAutomaticMode = $ActiveOnAutomaticMode
             PoolWorkers           = [int]$Coin.workers

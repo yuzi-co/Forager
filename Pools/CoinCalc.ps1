@@ -28,7 +28,6 @@ if ($Querymode -eq "info") {
         ActiveOnAutomaticMode    = $ActiveOnAutomaticMode
         ActiveOnAutomatic24hMode = $ActiveOnAutomatic24hMode
         ApiData                  = $true
-        AbbName                  = 'CC'
         WalletMode               = $WalletMode
         RewardType               = $RewardType
     }
@@ -103,11 +102,10 @@ if (@("Core", "Menu") -contains $Querymode) {
                     Pass                  = $Pool.Pass
                     Protocol              = $Pool.Protocol
                     ProtocolSSL           = $Pool.ProtocolSSL
-                    AbbName               = "CC-" + $Pool.AbbName
                     WalletMode            = $Pool.WalletMode
                     EthStMode             = $Pool.EthStMode
                     WalletSymbol          = $Pool.WalletSymbol
-                    PoolName              = $Pool.PoolName
+                    PoolName              = "CC-" + $Pool.PoolName
                     PoolWorkers           = $Pool.PoolWorkers
                     PoolHashRate          = $Pool.PoolHashRate
                     RewardType            = $Pool.RewardType

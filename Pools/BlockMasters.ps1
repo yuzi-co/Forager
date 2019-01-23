@@ -11,7 +11,6 @@ $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 $ActiveOnManualMode = $true
 $ActiveOnAutomaticMode = $true
 $ActiveOnAutomatic24hMode = $true
-$AbbName = 'BM'
 $WalletMode = 'WALLET'
 $ApiUrl = 'http://blockmasters.co/api'
 $Locations = @{
@@ -28,7 +27,6 @@ if ($Querymode -eq "info") {
         ActiveOnAutomaticMode    = $ActiveOnAutomaticMode
         ActiveOnAutomatic24hMode = $ActiveOnAutomatic24hMode
         ApiData                  = $True
-        AbbName                  = $AbbName
         WalletMode               = $WalletMode
         RewardType               = $RewardType
     }
@@ -114,7 +112,6 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
                 Location              = $Location
                 SSL                   = $false
                 Symbol                = Get-CoinSymbol -Coin $Pool_Algo
-                AbbName               = $AbbName
                 ActiveOnManualMode    = $ActiveOnManualMode
                 ActiveOnAutomaticMode = $ActiveOnAutomaticMode
                 PoolWorkers           = $Algo.workers

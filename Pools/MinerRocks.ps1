@@ -8,7 +8,6 @@ param(
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 $ActiveOnManualMode = $true
 $ActiveOnAutomaticMode = $true
-$AbbName = 'MROCKS'
 $WalletMode = "WALLET"
 $RewardType = "PPLS"
 $Result = @()
@@ -19,7 +18,6 @@ if ($Querymode -eq "info") {
         ActiveOnManualMode    = $ActiveOnManualMode
         ActiveOnAutomaticMode = $ActiveOnAutomaticMode
         ApiData               = $true
-        AbbName               = $AbbName
         WalletMode            = $WalletMode
         RewardType            = $RewardType
     }
@@ -103,7 +101,6 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
                     Location              = "EU"
                     SSL                   = $false
                     Symbol                = $PoolResponse.config.symbol
-                    AbbName               = $AbbName
                     ActiveOnManualMode    = $ActiveOnManualMode
                     ActiveOnAutomaticMode = $ActiveOnAutomaticMode
                     PoolName              = $Name

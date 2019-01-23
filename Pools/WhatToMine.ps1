@@ -28,7 +28,6 @@ if ($Querymode -eq "info") {
         ActiveOnAutomaticMode    = $ActiveOnAutomaticMode
         ActiveOnAutomatic24hMode = $ActiveOnAutomatic24hMode
         ApiData                  = $true
-        AbbName                  = 'WTM'
         WalletMode               = $WalletMode
         RewardType               = $RewardType
     }
@@ -222,11 +221,10 @@ if ($Querymode -eq "core" -or $Querymode -eq "Menu") {
                     Pass                  = $HPool.Pass
                     Protocol              = $HPool.Protocol
                     ProtocolSSL           = $HPool.ProtocolSSL
-                    AbbName               = "W-" + $HPool.AbbName
                     WalletMode            = $HPool.WalletMode
                     EthStMode             = $HPool.EthStMode
                     WalletSymbol          = $HPool.WalletSymbol
-                    PoolName              = $HPool.PoolName
+                    PoolName              = "W-" + $HPool.PoolName
                     PoolWorkers           = $HPool.PoolWorkers
                     PoolHashRate          = $HPool.PoolHashRate
                     RewardType            = $HPool.RewardType

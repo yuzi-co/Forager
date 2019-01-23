@@ -11,7 +11,6 @@ $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 $ActiveOnManualMode = $true
 $ActiveOnAutomaticMode = $true
 $ActiveOnAutomatic24hMode = $true
-$AbbName = 'NP'
 $WalletMode = "WALLET"
 $RewardType = "PPLS"
 $Result = @()
@@ -23,7 +22,6 @@ if ($Querymode -eq "info") {
         ActiveOnAutomaticMode    = $ActiveOnAutomaticMode
         ActiveOnAutomatic24hMode = $ActiveOnAutomatic24hMode
         ApiData                  = $true
-        AbbName                  = $AbbName
         WalletMode               = $WalletMode
         RewardType               = $RewardType
     }
@@ -85,7 +83,6 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
                 Location              = $loc.location
                 SSL                   = $false
                 Symbol                = $_.symbol
-                AbbName               = $AbbName
                 ActiveOnManualMode    = $ActiveOnManualMode
                 ActiveOnAutomaticMode = $ActiveOnAutomaticMode
                 PoolWorkers           = $RequestW.Data

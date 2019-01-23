@@ -8,7 +8,6 @@ param(
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 $ActiveOnManualMode = $true
 $ActiveOnAutomaticMode = $false
-$AbbName = 'MY'
 $WalletMode = "NONE"
 $RewardType = "PPLS"
 $Result = @()
@@ -19,7 +18,6 @@ if ($Querymode -eq "info") {
         ActiveOnManualMode    = $ActiveOnManualMode
         ActiveOnAutomaticMode = $ActiveOnAutomaticMode
         ApiData               = $true
-        AbbName               = $AbbName
         WalletMode            = $WalletMode
         RewardType            = $RewardType
     }
@@ -28,10 +26,10 @@ if ($Querymode -eq "info") {
 if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
     $Pools = @()
 
-      $Pools += [PSCustomObject]@{coin = "Aeon"; algo = "CnLiteV7"; symbol = "AEON"; server = "mine.aeon-pool.com"; port = 5555; fee = 0.01; user = $CoinsWallets.AEON}
-      $Pools += [PSCustomObject]@{coin = "HPPcoin"; algo = "Lyra2h"; symbol = "HPP"; server = "pool.hppcoin.com"; port = 3008; fee = 0.02; user = "$UserName.#WorkerName#"}
-      $Pools += [PSCustomObject]@{coin = "Dallar"; algo = "Throestl"; symbol = "DAL"; server = "pool.dallar.org"; port = 3032; fee = 0.01; user = $CoinsWallets.DAL}
-      $Pools += [PSCustomObject]@{coin = "Cryply"; algo = "YesPower"; symbol = "CRP"; server = "cryply.luckypool.org"; port = 9997; fee = 0; user = "$UserName.#WorkerName#"}
+    # $Pools += [PSCustomObject]@{coin = "HPPcoin"; algo = "Lyra2h"; symbol = "HPP"; server = "pool.hppcoin.com"; port = 3008; fee = 0.02; user = "$UserName.#WorkerName#"}
+    # $Pools += [PSCustomObject]@{coin = "HPPcoin"; algo = "Lyra2h"; symbol = "HPP"; server = "pool.hppcoin.com"; port = 3008; fee = 0.02; user = "$UserName.#WorkerName#"}
+    $Pools += [PSCustomObject]@{coin = "Dallar"; algo = "Throestl"; symbol = "DAL"; server = "pool.dallar.org"; port = 3032; fee = 0.01; user = $CoinsWallets.DAL}
+    $Pools += [PSCustomObject]@{coin = "Pascalcoin"; algo = "RandomHash"; symbol = "PASC"; server = "mine.pool.pascalpool.org"; port = 3333; fee = 0.01; user = $CoinsWallets.PASC}
 
     $Pools | ForEach-Object {
         $Result += [PSCustomObject]@{
@@ -45,7 +43,6 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
             Location              = "EU"
             SSL                   = $false
             Symbol                = $_.symbol
-            AbbName               = $AbbName
             ActiveOnManualMode    = $ActiveOnManualMode
             ActiveOnAutomaticMode = $ActiveOnAutomaticMode
             PoolName              = $Name
