@@ -15,6 +15,6 @@
     "API": "Ccminer",
     "APIPort": 4048,
     "Algorithms": {
-        "BinariumV1": "-a Binarium_hash_v1"
+        "Binarium": "-a Binarium_hash_v1"
     }
 }
