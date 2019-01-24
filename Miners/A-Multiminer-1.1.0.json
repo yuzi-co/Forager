@@ -1,0 +1,25 @@
+{
+    "Path": "multiminer_v1.1.0_24.01.2019\\multiminer.exe",
+    "Uri": "https://github.com/bogdanadnan/multiminer/releases/download/v1.1.0/multiminer_v1.1.0_24.01.2019.zip",
+    "SHA256": "8C021634C2319F3253832FF3B2A413B849DACBC89D555FB287C5C772D7F0C0F1",
+    "Type": "AMD",
+    "Arguments": [
+        "-o #Protocol#://#Server#:#Port#",
+        "-u #Login#",
+        "-p #Password#",
+        "-R 10",
+        "-r 4",
+        "--use-gpu=OPENCL",
+        "--gpu-id=$(('#Devices#' -split ',' | % {[int]$_+1}) -join ',')",
+        "-b #APIPort#",
+        "#AlgorithmParameters#"
+    ],
+    "API": "Ccminer",
+    "APIPort": 4028,
+    "PreventCPUMining": true,
+    "Algorithms": {
+        "Argon2d250": "-a argon2d250 --gpu-batchsize=2048 -t 4",
+        "Argon2d500": "-a argon2d500 --gpu-batchsize=1024 -t 2",
+        "Argon2d4096": "-a argon2d4096 --gpu-batchsize=256 -t 2"
+    }
+}
