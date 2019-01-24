@@ -85,9 +85,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
     }
 
     $Request | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | Where-Object {
-        $Request.$_.actual_last24h -gt 0 -and
-        $Request.$_.HashRate -gt 0 -and
-        $Request.$_.workers -gt 0
+        $Request.$_.HashRate -gt 0
     } | ForEach-Object {
 
         $Algo = $Request.$_
@@ -100,6 +98,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
             Info                  = $Pool_Algo
             Price                 = [decimal]$Algo.estimate_current / $Divisor
             Price24h              = [decimal]$Algo.estimate_last24h / $Divisor
+            Actual24h             = [decimal]$Algo.actual_last24h / 1000 / $Divisor
             Protocol              = "stratum+tcp"
             Host                  = $Algo.name + '.' + $MineUrl
             Port                  = $Algo.port

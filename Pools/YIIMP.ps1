@@ -65,15 +65,14 @@ if ($Querymode -eq "wallet") {
 if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
     $Request = Invoke-APIRequest -Url $($ApiUrl + "/status") -Retry 3
     $RequestCurrencies = Invoke-APIRequest -Url $($ApiUrl + "/currencies") -Retry 3
-    if (-not $RequestCurrencies) {
+    if (-not $RequestCurrencies -or -not $Request) {
         Write-Warning "$Name API NOT RESPONDING...ABORTING"
         Exit
     }
 
     $RequestCurrencies | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | Where-Object {
         $RequestCurrencies.$_.'24h_blocks' -gt 0 -and
-        $RequestCurrencies.$_.HashRate -gt 0 -and
-        $RequestCurrencies.$_.workers -gt 0
+        $RequestCurrencies.$_.HashRate -gt 0
     } | ForEach-Object {
 
         $Coin = $RequestCurrencies.$_
@@ -81,15 +80,8 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
         $Pool_Coin = Get-CoinUnifiedName $Coin.name
         $Pool_Symbol = $_
 
-        $Divisor = 1000000
-
-        switch ($Pool_Algo) {
-            "blake2s" {$Divisor *= 1000}
-            "blakecoin" {$Divisor *= 1000}
-            "equihash" {$Divisor /= 1000}
-            "scrypt" {$Divisor *= 1000}
-            "sha256" {$Divisor *= 1000}
-        }
+        $Algo = $Request.($Coin.algo)
+        $Divisor = 1000000 * $Algo.mbtc_mh_factor
 
         $Result += [PSCustomObject]@{
             Algorithm             = $Pool_Algo
@@ -106,12 +98,12 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
             Symbol                = $Pool_Symbol
             ActiveOnManualMode    = $ActiveOnManualMode
             ActiveOnAutomaticMode = $ActiveOnAutomaticMode
-            PoolWorkers           = [int]$Coin.workers
-            PoolHashRate          = [decimal]$Coin.HashRate
+            PoolWorkers           = $Coin.workers
+            PoolHashRate          = $Coin.HashRate
             WalletMode            = $WalletMode
             Walletsymbol          = $Pool_Symbol
             PoolName              = $Name
-            Fee                   = $Request.($Coin.algo).fees / 100
+            Fee                   = $Algo.fees / 100
             RewardType            = $RewardType
         }
     }

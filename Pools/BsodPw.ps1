@@ -13,8 +13,11 @@ $ActiveOnAutomaticMode = $false
 $ActiveOnAutomatic24hMode = $false
 $WalletMode = 'WALLET'
 $ApiUrl = 'http://api.bsod.pw/api'
-$MineUrl = 'pool.bsod.pw'
-$Location = 'EU'
+$Locations = @{
+    'US'   = 'us.bsod.pw'
+    'EU'   = 'eu.bsod.pw'
+    'ASIA' = 'asia.bsod.pw'
+}
 $RewardType = "PPS"
 $Result = @()
 
@@ -72,8 +75,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
 
     $RequestCurrencies | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | Where-Object {
         $RequestCurrencies.$_.'24h_blocks' -gt 0 -and
-        $RequestCurrencies.$_.HashRate -gt 0 -and
-        $RequestCurrencies.$_.workers -gt 0
+        $RequestCurrencies.$_.HashRate -gt 0
     } | ForEach-Object {
 
         $Coin = $RequestCurrencies.$_
@@ -84,37 +86,40 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
         $Divisor = 1000000
 
         switch ($Pool_Algo) {
-            "skein" {$Divisor *= 1000}
-            "equihash" {$Divisor /= 1000}
+            "blake14r" {$Divisor *= 1000}
             "blake2s" {$Divisor *= 1000}
             "blakecoin" {$Divisor *= 1000}
-            "blake14r" {$Divisor *= 1000}
+            "equihash" {$Divisor /= 1000}
             "keccakc" {$Divisor *= 1000}
+            "skein" {$Divisor *= 1000}
+            "x16r" {$Divisor *= 1000}
             "yescrypt" {$Divisor /= 1000}
         }
 
-        $Result += [PSCustomObject]@{
-            Algorithm             = $Pool_Algo
-            Info                  = $Pool_Coin
-            Price                 = [decimal]$Coin.estimate / $Divisor
-            Price24h              = [decimal]$Coin.'24h_btc' / $Divisor
-            Protocol              = "stratum+tcp"
-            Host                  = $MineUrl
-            Port                  = [int]$Coin.port
-            User                  = $CoinsWallets.$Pool_Symbol
-            Pass                  = "c=$Pool_Symbol,ID=#WorkerName#"
-            Location              = $Location
-            SSL                   = $false
-            Symbol                = $Pool_Symbol
-            ActiveOnManualMode    = $ActiveOnManualMode
-            ActiveOnAutomaticMode = $ActiveOnAutomaticMode
-            PoolWorkers           = [int]$Coin.workers
-            PoolHashRate          = [decimal]$Coin.HashRate
-            WalletMode            = $WalletMode
-            Walletsymbol          = $Pool_Symbol
-            PoolName              = $Name
-            Fee                   = $Request.($Coin.algo).fees / 100
-            RewardType            = $RewardType
+        foreach ($Location in $Locations.Keys) {
+            $Result += [PSCustomObject]@{
+                Algorithm             = $Pool_Algo
+                Info                  = $Pool_Coin
+                Price                 = [decimal]$Coin.estimate / $Divisor
+                Price24h              = [decimal]$Coin.'24h_btc' / $Divisor
+                Protocol              = "stratum+tcp"
+                Host                  = $Locations.$Location
+                Port                  = [int]$Coin.port
+                User                  = $CoinsWallets.$Pool_Symbol
+                Pass                  = "c=$Pool_Symbol,ID=#WorkerName#"
+                Location              = $Location
+                SSL                   = $false
+                Symbol                = $Pool_Symbol
+                ActiveOnManualMode    = $ActiveOnManualMode
+                ActiveOnAutomaticMode = $ActiveOnAutomaticMode
+                PoolWorkers           = [int]$Coin.workers
+                PoolHashRate          = [decimal]$Coin.HashRate
+                WalletMode            = $WalletMode
+                Walletsymbol          = $Pool_Symbol
+                PoolName              = $Name
+                Fee                   = $Coin.fees / 100
+                RewardType            = $RewardType
+            }
         }
     }
     Remove-Variable Request

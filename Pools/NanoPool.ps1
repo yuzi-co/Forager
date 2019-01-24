@@ -55,8 +55,8 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
     $PrePools += [PSCustomObject]@{coin = "Ethereum"; algo = "Ethash"; symbol = "ETH"; port = 9999; fee = 0.01; divisor = 1000000; protocol = "stratum+tcp"};
     $PrePools += [PSCustomObject]@{coin = "EthereumClassic"; algo = "Ethash"; symbol = "ETC"; port = 19999; fee = 0.01; divisor = 1000000; protocol = "stratum+tcp"};
     $PrePools += [PSCustomObject]@{coin = "Monero"; algo = "CnV8"; symbol = "XMR"; port = 14444; fee = 0.01; divisor = 1; protocol = "stratum+ssl"};
-    $PrePools += [PSCustomObject]@{coin = "Pascal"; algo = "RandomHash"; symbol = "PASC"; port = 15556; fee = 0.02; divisor = 1; protocol = "stratum+tcp"};
-    $PrePools += [PSCustomObject]@{coin = "Raven"; algo = "X16r"; symbol = "RVN"; port = 12222; fee = 0.01; divisor = 1; protocol = "stratum+tcp"};
+    $PrePools += [PSCustomObject]@{coin = "Pascalcoin"; algo = "RandomHash"; symbol = "PASC"; port = 15556; fee = 0.02; divisor = 1; protocol = "stratum+tcp"};
+    $PrePools += [PSCustomObject]@{coin = "Raven"; algo = "X16r"; symbol = "RVN"; port = 12222; fee = 0.01; divisor = 1000000; protocol = "stratum+tcp"};
 
     #generate a pool for each location and add API data
     $PrePools | ForEach-Object {

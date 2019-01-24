@@ -13,7 +13,7 @@ $ActiveOnAutomaticMode = $false
 $ActiveOnAutomatic24hMode = $false
 $WalletMode = 'WALLET'
 $ApiUrl = 'https://pool.unimining.net/api'
-$MineUrl = 'pool.unimining.net'
+$MineUrl = 'eu1.unimining.net'
 $Location = 'US'
 $RewardType = "PPS"
 $Result = @()
@@ -65,15 +65,14 @@ if ($Querymode -eq "wallet") {
 if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
     $Request = Invoke-APIRequest -Url $($ApiUrl + "/status") -Retry 3
     $RequestCurrencies = Invoke-APIRequest -Url $($ApiUrl + "/currencies") -Retry 3
-    if (-not $RequestCurrencies) {
+    if (-not $RequestCurrencies -or -not $Request) {
         Write-Warning "$Name API NOT RESPONDING...ABORTING"
         Exit
     }
 
     $RequestCurrencies | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | Where-Object {
         $RequestCurrencies.$_.'24h_blocks' -gt 0 -and
-        $RequestCurrencies.$_.HashRate -gt 0 -and
-        $RequestCurrencies.$_.workers -gt 0
+        $RequestCurrencies.$_.HashRate -gt 0
     } | ForEach-Object {
 
         $Coin = $RequestCurrencies.$_
@@ -81,32 +80,8 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
         $Pool_Coin = Get-CoinUnifiedName $Coin.name
         $Pool_Symbol = $_
 
-        $Divisor = 1000000
-
-        switch ($Pool_Algo) {
-            "blake2s" {$Divisor *= 1000}
-            "blakecoin" {$Divisor *= 1000}
-            "sha256" {$Divisor *= 1000}
-        }
-
-        if ($Pool_Symbol -eq 'XVG' -and $Pool_Algo -eq 'Blake2s') {$Server = "xvg.eu1.unimining.net"} else {$Server = $MineUrl}
-        $Port = switch ($Pool_Symbol) {
-            "RVN" {3638}
-            "MTN" {3637}
-            "SGL" {4241}
-            "DSR" {4234}
-            "DIN" {4245}
-            "GOA" {4240}
-            "FTC" {4246}
-            "TZC" {4237}
-            "CBS" {4244}
-            "CRC" {4238}
-            "RAP" {4242}
-            "INN" {4235}
-            "GBX" {4236}
-            "LBC" {3334}
-            default {$Coin.port}
-        }
+        $Algo = $Request.($Coin.algo)
+        $Divisor = 1000000 * $Algo.mbtc_mh_factor
 
         $Result += [PSCustomObject]@{
             Algorithm             = $Pool_Algo
@@ -114,8 +89,8 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
             Price                 = [decimal]$Coin.estimate / $Divisor
             Price24h              = [decimal]$Coin.'24h_btc' / $Divisor
             Protocol              = "stratum+tcp"
-            Host                  = $Server
-            Port                  = $Port
+            Host                  = $Coin.algo + '.' + $MineUrl
+            Port                  = [int]$Coin.port
             User                  = $CoinsWallets.$Pool_Symbol
             Pass                  = "c=$Pool_Symbol,ID=#WorkerName#"
             Location              = $Location
@@ -128,7 +103,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
             WalletMode            = $WalletMode
             Walletsymbol          = $Pool_Symbol
             PoolName              = $Name
-            Fee                   = $Request.($Coin.algo).fees / 100
+            Fee                   = $Algo.fees / 100
             RewardType            = $RewardType
         }
     }
