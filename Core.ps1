@@ -725,6 +725,7 @@ while ($Quit -eq $false) {
                             PoolWorkers         = $Pool.PoolWorkers
                             PoolWorkersDual     = $PoolDual.PoolWorkers
                             Port                = $(if (($DeviceGroups | Where-Object type -eq $DeviceGroup.type).Count -le 1 -and $DelayCloseMiners -eq 0 -and $config.ForceDynamicPorts -ne "Enabled") { $Miner.ApiPort })
+                            PreventCPUMining    = $Miner.PreventCPUMining
                             PrelaunchCommand    = $ExecutionContext.InvokeCommand.ExpandString($Miner.PrelaunchCommand)
                             PrerequisitePath    = $Miner.PrerequisitePath
                             PrerequisiteURI     = $Miner.PrerequisiteURI
@@ -880,6 +881,7 @@ while ($Quit -eq $false) {
                 PoolRewardType      = $Miner.PoolRewardType
                 Port                = $Miner.Port
                 PrelaunchCommand    = $Miner.PrelaunchCommand
+                PreventCPUMining    = $Miner.PreventCPUMining
                 Process             = $null
                 SubMiners           = $Miner.SubMiners
                 Symbol              = $Miner.Symbol
@@ -918,13 +920,36 @@ while ($Quit -eq $false) {
         }) | ConvertTo-Json
     Log-Message $Msg -Severity Debug
 
+    $BestLastMiners = $ActiveMiners.SubMiners | Where-Object {@("Running", "PendingCancellation") -contains $_.Status}
+
+    ## Select top miner that need Benchmark, or if running in Manual mode, or highest Profit above zero.
+    $BestNowMiners = $ActiveMiners | Where-Object {$_.IsValid -and $_.UserName} |
+        Group-Object {$_.DeviceGroup.GroupName} | ForEach-Object {
+        $_.Group.Subminers | Where-Object {
+            $_.Status -ne 'Failed' -and
+            (
+                $_.NeedBenchmark -or
+                $MiningMode -eq "Manual" -or
+                $Interval.Current -eq "Donate" -or
+                $_.Profits -gt $Config.('MinProfit_' + $DeviceGroup.GroupName) -or
+                -not $LocalBTCvalue -gt 0
+            )
+        } | Sort-Object -Descending NeedBenchmark, {$(if ($MiningMode -eq "Manual") {$_.HashRate} else {$_.Profits})}, {$ActiveMiners[$_.IdF].PoolPrice}, {$ActiveMiners[$_.IdF].PoolPriceDual}, PowerLimit | Select-Object -First 1
+    }
+
+    # No CPU mining if GPU miner prevents it
+    if ($BestNowMiners | Where-Object {$ActiveMiners[$_.IdF].PreventCPUMining}) {
+        $BestNowMiners = $BestNowMiners | Where-Object {$ActiveMiners[$_.IdF].DeviceGroup.Type -ne 'CPU'}
+        Log-Message "Miner prevents CPU mining" -Severity Warn
+    }
+
     #For each type, select most profitable miner, not benchmarked has priority, new miner is only lauched if new profit is greater than old by percenttoswitch
     #This section changes SubMiner
     foreach ($DeviceGroup in $DeviceGroups) {
 
         #look for last round best
-        $Candidates = $ActiveMiners | Where-Object {$_.DeviceGroup.Id -eq $DeviceGroup.Id}
-        $BestLast = $Candidates.SubMiners | Where-Object {@("Running", "PendingCancellation") -contains $_.Status}
+        $BestLast = $BestLastMiners | Where-Object { $ActiveMiners[$_.IdF].DeviceGroup.GroupName -eq $DeviceGroup.GroupName }
+
         if ($BestLast) {
             $ProfitLast = $BestLast.Profits
             $BestLastLogMsg = $(
@@ -982,20 +1007,7 @@ while ($Quit -eq $false) {
         }
 
         # look for best for next round
-        $Candidates = $ActiveMiners | Where-Object {$_.DeviceGroup.Id -eq $DeviceGroup.Id -and $_.IsValid -and $_.UserName}
-
-        ## Select top miner that need Benchmark, or if running in Manual mode, or highest Profit above zero.
-        $BestNow = $Candidates.SubMiners |
-            Where-Object Status -ne 'Failed' |
-            Where-Object {
-                $_.NeedBenchmark -or
-                $_.Profits -gt $Config.('MinProfit_' + $DeviceGroup.GroupName) -or
-                -not $LocalBTCvalue -gt 0 -or
-                $MiningMode -eq "Manual" -or
-                $Interval.Current -eq "Donate"
-            } |
-            Sort-Object -Descending NeedBenchmark, {$(if ($MiningMode -eq "Manual") {$_.HashRate} else {$_.Profits})}, {$ActiveMiners[$_.IdF].PoolPrice}, {$ActiveMiners[$_.IdF].PoolPriceDual}, PowerLimit |
-            Select-Object -First 1
+        $BestNow = $BestNowMiners | Where-Object { $ActiveMiners[$_.IdF].DeviceGroup.GroupName -eq $DeviceGroup.GroupName }
 
         if ($BestNow) {
             $BestNowLogMsg = $(
