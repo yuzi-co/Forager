@@ -922,8 +922,8 @@ while ($Quit -eq $false) {
 
     $BestLastMiners = $ActiveMiners.SubMiners | Where-Object {@("Running", "PendingCancellation") -contains $_.Status}
 
-    ## Select top miner that need Benchmark, or if running in Manual mode, or highest Profit above zero.
-    $BestNowMiners = $ActiveMiners | Where-Object {$_.IsValid -and $_.UserName} |
+    ## Select miners that need Benchmark, or if running in Manual mode, or highest Profit above zero.
+    $BestNowCandidates = $ActiveMiners | Where-Object {$_.IsValid -and $_.UserName} |
         Group-Object {$_.DeviceGroup.GroupName} | ForEach-Object {
         $_.Group.Subminers | Where-Object {
             $_.Status -ne 'Failed' -and
@@ -934,13 +934,31 @@ while ($Quit -eq $false) {
                 $_.Profits -gt $Config.('MinProfit_' + $DeviceGroup.GroupName) -or
                 -not $LocalBTCvalue -gt 0
             )
-        } | Sort-Object -Descending NeedBenchmark, {$(if ($MiningMode -eq "Manual") {$_.HashRate} else {$_.Profits})}, {$ActiveMiners[$_.IdF].PoolPrice}, {$ActiveMiners[$_.IdF].PoolPriceDual}, PowerLimit | Select-Object -First 1
+        } | Sort-Object -Descending NeedBenchmark, {$(if ($MiningMode -eq "Manual") {$_.HashRate} elseif ($LocalBTCvalue) {$_.Profits} else {$_.Revenue + $_.RevenueDual})}, {$ActiveMiners[$_.IdF].PoolPrice}, {$ActiveMiners[$_.IdF].PoolPriceDual}, PowerLimit
     }
 
-    # No CPU mining if GPU miner prevents it
-    if ($BestNowMiners | Where-Object {$ActiveMiners[$_.IdF].PreventCPUMining}) {
+    $BestNowMiners = $BestNowCandidates | Group-Object {
+        $ActiveMiners[$_.IdF].DeviceGroup.GroupName
+    } | ForEach-Object { $_.Group | Select-Object -First 1 }
+
+    # If GPU miner prevents CPU mining
+    if ($DeviceGroups.Type -contains 'CPU' -and ($BestNowMiners | Where-Object {$ActiveMiners[$_.IdF].PreventCPUMining})) {
+        $AltBestNowMiners = $BestNowCandidates | Where-Object {
+            $ActiveMiners[$_.IdF].PreventCPUMining -ne $true
+        } | Group-Object {
+            $ActiveMiners[$_.IdF].DeviceGroup.GroupName
+        } | ForEach-Object { $_.Group | Select-Object -First 1 }
+
+        $BestNowProfits = ($BestNowMiners | Where-Object {$ActiveMiners[$_.IdF].DeviceGroup.Type -ne 'CPU'}).Profits | Measure-Object -Sum | Select-Object -ExpandProperty Sum
+        $AltBestNowProfits = $AltBestNowMiners.Profits | Measure-Object -Sum | Select-Object -ExpandProperty Sum
+
+        if ($AltBestNowMiners.NeedBenchmark -contains $true -or $AltBestNowProfits -gt $BestNowProfits) {
+            $BestNowMiners = $AltBestNowMiners
+            Log-Message "Skipping Miner that prevents CPU mining" -Severity Warn
+        } else {
         $BestNowMiners = $BestNowMiners | Where-Object {$ActiveMiners[$_.IdF].DeviceGroup.Type -ne 'CPU'}
-        Log-Message "Miner prevents CPU mining" -Severity Warn
+            Log-Message "Miner prevents CPU mining. Will not mine CPU" -Severity Warn
+    }
     }
 
     #For each type, select most profitable miner, not benchmarked has priority, new miner is only lauched if new profit is greater than old by percenttoswitch
@@ -1048,7 +1066,8 @@ while ($Quit -eq $false) {
                 -not $ActiveMiners[$BestLast.IdF].IsValid -or
                 $BestNow.NeedBenchmark -or
                 @('PendingCancellation', 'Failed') -contains $BestLast.Status -or
-                (@('Running') -contains $BestLast.Status -and $ProfitNow -gt ($ProfitLast * (1 + ($PercentToSwitch2 / 100))))
+                (@('Running') -contains $BestLast.Status -and $ProfitNow -gt ($ProfitLast * (1 + ($PercentToSwitch2 / 100)))) -or
+                (($ActiveMiners[$BestLast.IdF].PreventCPUMining -or $ActiveMiners[$BestNow.IdF].PreventCPUMining) -and $BestLast -ne $BestNow)
             ) {
                 #Must launch other miner and/or stop actual
 
