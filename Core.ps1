@@ -1569,6 +1569,7 @@ while ($Quit -eq $false) {
                         $ProfitMiner | Add-Member GroupName $ProfitMiner.DeviceGroup.GroupName #needed for groupby
                         $ProfitMiner | Add-Member NeedBenchmark $ProfitMiner.SubMiner.NeedBenchmark #needed for sort
                         $ProfitMiner | Add-Member Profits $ProfitMiner.SubMiner.Profits #needed for sort
+                        $ProfitMiner | Add-Member Revenue ($ProfitMiner.SubMiner.Revenue + $ProfitMiner.SubMiner.RevenueDual) #needed for sort
                         $ProfitMiner | Add-Member Status $ProfitMiner.SubMiner.Status #needed for sort
                         $ProfitMiners += $ProfitMiner
                     }
@@ -1580,6 +1581,7 @@ while ($Quit -eq $false) {
                     $ProfitMiner | Add-Member GroupName $ProfitMiner.DeviceGroup.GroupName #needed for groupby
                     $ProfitMiner | Add-Member NeedBenchmark $ProfitMiner.SubMiner.NeedBenchmark #needed for sort
                     $ProfitMiner | Add-Member Profits $ProfitMiner.SubMiner.Profits #needed for sort
+                    $ProfitMiner | Add-Member Revenue ($ProfitMiner.SubMiner.Revenue + $ProfitMiner.SubMiner.RevenueDual) #needed for sort
                     $ProfitMiner | Add-Member Status $ProfitMiner.SubMiner.Status #needed for sort
                     $ProfitMiners += $ProfitMiner
                 }
@@ -1588,7 +1590,7 @@ while ($Quit -eq $false) {
             $ProfitMiners2 = @()
             foreach ($DeviceGroupId in $DeviceGroups.Id) {
                 $inserted = 1
-                $ProfitMiners | Where-Object {$_.DeviceGroup.Id -eq $DeviceGroupId} | Sort-Object -Descending GroupName, NeedBenchmark, Profits | ForEach-Object {
+                $ProfitMiners | Where-Object {$_.DeviceGroup.Id -eq $DeviceGroupId} | Sort-Object -Descending GroupName, NeedBenchmark, @{expression = {if ($LocalBTCvalue) {$_.Profits} else {$_.Revenue}}; Descending = $true} | ForEach-Object {
                     if ($inserted -le $ProfitsScreenLimit) {$ProfitMiners2 += $_; $inserted++} #this can be done with Select-Object -first but then memory leak happens, ¿why?
                 }
             }
@@ -1599,14 +1601,14 @@ while ($Quit -eq $false) {
             @{expression = "GroupName"; Ascending = $true},
             @{expression = "Status"; Descending = $true},
             @{expression = "NeedBenchmark"; Descending = $true},
-            @{expression = "Profits"; Descending = $true},
+            @{expression = {if ($LocalBTCvalue) {$_.Profits} else {$_.Revenue}}; Descending = $true},
             @{expression = "HashRate"; Descending = $true},
             @{expression = "HashRateDual"; Descending = $true} |
                 Format-Table (
                 @{Label = "Algorithm"; Expression = {$_.Algorithms + $(if ($_.AlgoLabel) {"|$($_.AlgoLabel)"})}},
                 @{Label = "Coin"; Expression = {$_.Symbol + $(if ($_.AlgorithmDual) {"_$($_.SymbolDual)"})}},
                 @{Label = "Miner"; Expression = {$_.Name}},
-                @{Label = "StatsSpeed"; Expression = {if ($_.SubMiner.NeedBenchmark) {"Benchmarking"} else {"$(ConvertTo-Hash $_.SubMiner.HashRate)" + $(if ($_.AlgorithmDual) {"/$(ConvertTo-Hash $_.SubMiner.HashRateDual)"})}}; Align = 'right'},
+                @{Label = "StatsSpeed"; Expression = {if ($_.SubMiner.NeedBenchmark) {"Bench"} else {"$(ConvertTo-Hash $_.SubMiner.HashRate)" + $(if ($_.AlgorithmDual) {"/$(ConvertTo-Hash $_.SubMiner.HashRateDual)"})}}; Align = 'right'},
                 @{Label = "PwLim"; Expression = {if ($_.SubMiner.PowerLimit -ne 0) {$_.SubMiner.PowerLimit}}; align = 'right'},
                 @{Label = "Watt"; Expression = {if ($_.SubMiner.PowerAvg -gt 0) {$_.SubMiner.PowerAvg.tostring("n0")} else {$null}}; Align = 'right'},
                 @{Label = "$LocalCurrency/W"; Expression = {if ($_.SubMiner.PowerAvg -gt 0) {($_.SubMiner.Profits / $_.SubMiner.PowerAvg).tostring("n4")} else {$null} }; Align = 'right'},
