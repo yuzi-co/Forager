@@ -952,13 +952,13 @@ while ($Quit -eq $false) {
         $BestNowProfits = ($BestNowMiners | Where-Object {$ActiveMiners[$_.IdF].DeviceGroup.Type -ne 'CPU'}).Profits | Measure-Object -Sum | Select-Object -ExpandProperty Sum
         $AltBestNowProfits = $AltBestNowMiners.Profits | Measure-Object -Sum | Select-Object -ExpandProperty Sum
 
-        if ($AltBestNowMiners.NeedBenchmark -contains $true -or $AltBestNowProfits -gt $BestNowProfits) {
+        if ($AltBestNowMiners.NeedBenchmark -contains $true -or ($AltBestNowProfits -gt $BestNowProfits -and $BestNowMiners.NeedBenchmark -notcontains $true)) {
             $BestNowMiners = $AltBestNowMiners
-            Log-Message "Skipping Miner that prevents CPU mining" -Severity Warn
+            Log-Message "Skipping miner that prevents CPU mining" -Severity Warn
         } else {
-        $BestNowMiners = $BestNowMiners | Where-Object {$ActiveMiners[$_.IdF].DeviceGroup.Type -ne 'CPU'}
-            Log-Message "Miner prevents CPU mining. Will not mine CPU" -Severity Warn
-    }
+            $BestNowMiners = $BestNowMiners | Where-Object {$ActiveMiners[$_.IdF].DeviceGroup.Type -ne 'CPU'}
+            Log-Message "Miner prevents CPU mining. Will not mine on CPU" -Severity Warn
+        }
     }
 
     #For each type, select most profitable miner, not benchmarked has priority, new miner is only lauched if new profit is greater than old by percenttoswitch
@@ -1113,7 +1113,7 @@ while ($Quit -eq $false) {
                     if (
                         $BestNow.PowerLimit -gt 0 -and
                         $BestNow.PowerLimit -ne $BestLast.PowerLimit
-                        ) {
+                    ) {
                         if ($abControl) {
                             Set-AfterburnerPowerLimit -PowerLimitPercent $BestNow.PowerLimit -DeviceGroup $ActiveMiners[$BestNow.IdF].DeviceGroup
                         } elseif ($BestNow.PowerLimit -gt 0) {
