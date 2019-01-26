@@ -1,0 +1,21 @@
+{
+    "Path": "ccminer.exe",
+    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.01/ccminerMTP-1.1.13.7z",
+    "SHA256": "b1553f909753fb859bca0ce0bfb5200a34e678396f884419e914131940f78c30",
+    "Type": "NVIDIA",
+    "Arguments": [
+        "-o #Protocol#://#Server#:#Port#",
+        "-u #Login#",
+        "-p #Password#",
+        "-R 10",
+        "-r 4",
+        "-d #Devices#",
+        "-b #APIPort#",
+        "#AlgorithmParameters#"
+    ],
+    "API": "Ccminer",
+    "APIPort": 4068,
+    "Algorithms": {
+        "MTP|6gb": "-a mtp"
+    }
+}
