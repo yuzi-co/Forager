@@ -1,7 +1,7 @@
 {
     "Path": "ccminer.exe",
     "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.01/ccminerMTP-1.1.13.7z",
-    "SHA256": "b1553f909753fb859bca0ce0bfb5200a34e678396f884419e914131940f78c30",
+    "SHA256": "781520C0344F9DCC872D678E7F700C71B4E31C59D1D87933695AB2419E31835B",
     "Type": "NVIDIA",
     "Arguments": [
         "-o #Protocol#://#Server#:#Port#",
