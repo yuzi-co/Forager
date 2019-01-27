@@ -19,10 +19,8 @@
     "API": "XMRig",
     "APIPort": 4028,
     "Fee": 0.01,
+    "PrelaunchCommand": "setx GPU_MAX_WORKGROUP_SIZE 256",
     "Algorithms": {
-        "Astralhash": "--algo glt-astralhash",
-        "Jeonghash": "--algo glt-jeonghash",
-        "Padihash": "--algo glt-padihash",
-        "Pawelhash": "--algo glt-pawelhash"
+        "Astralhash": "--algo glt-astralhash --opencl-threads 2 --opencl-launch 17x0"
     }
 }
