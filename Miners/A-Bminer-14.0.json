@@ -1,7 +1,7 @@
 {
-    "Path": "bminer-lite-v13.2.0-2caa8fc\\bminer.exe",
-    "Uri": "https://www.bminercontent.com/releases/bminer-lite-v13.2.0-2caa8fc-amd64.zip",
-    "SHA256": "37DE99353A6DCC7229EFC04F91115FFF6435E60A60AFC13AA3AD5596D2BB3959",
+    "Path": "bminer-lite-v14.0.0-41bef22\\bminer.exe",
+    "Uri": "https://www.bminercontent.com/releases/bminer-lite-v14.0.0-41bef22-amd64.zip",
+    "SHA256": "DBCE1ACECB075DD7473072BA2164FB606B4437EC6CF984F36A3E29C60E8E9A2C",
     "Type": "AMD",
     "Arguments": [
         "#AlgorithmParameters#$(if($enableSSL){'+ssl'})://$([System.Web.HttpUtility]::UrlEncode('#Login#')):$([System.Web.HttpUtility]::UrlEncode('#Password#'))@#Server#:#Port#",
