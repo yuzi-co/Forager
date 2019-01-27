@@ -74,19 +74,19 @@ $ErrorActionPreference = "Continue"
 $Config = Get-Config
 
 $Application = "Forager"
-$Release = "19.01"
+$Release = "19.01.1"
 Log-Message "$Application v$Release"
 
 $Host.UI.RawUI.WindowTitle = "$Application v$Release"
 
 if ($env:CUDA_DEVICE_ORDER -ne 'PCI_BUS_ID') { setx CUDA_DEVICE_ORDER PCI_BUS_ID } #This align cuda id with nvidia-smi order
 
-if ($env:GPU_FORCE_64BIT_PTR -ne 0)          { setx GPU_FORCE_64BIT_PTR 0 }        #For AMD
-if ($env:GPU_MAX_HEAP_SIZE -ne 100)          { setx GPU_MAX_HEAP_SIZE 100 }        #For AMD
-if ($env:GPU_USE_SYNC_OBJECTS -ne 1)         { setx GPU_USE_SYNC_OBJECTS 1 }       #For AMD
-if ($env:GPU_MAX_ALLOC_PERCENT -ne 100)      { setx GPU_MAX_ALLOC_PERCENT 100 }    #For AMD
-if ($env:GPU_SINGLE_ALLOC_PERCENT -ne 100)   { setx GPU_SINGLE_ALLOC_PERCENT 100 } #For AMD
-if ($env:GPU_MAX_WORKGROUP_SIZE -ne 256)     { setx GPU_MAX_WORKGROUP_SIZE 256 }   #For AMD
+if ($env:GPU_FORCE_64BIT_PTR -ne 0) { setx GPU_FORCE_64BIT_PTR 0 }        #For AMD
+if ($env:GPU_MAX_HEAP_SIZE -ne 100) { setx GPU_MAX_HEAP_SIZE 100 }        #For AMD
+if ($env:GPU_USE_SYNC_OBJECTS -ne 1) { setx GPU_USE_SYNC_OBJECTS 1 }       #For AMD
+if ($env:GPU_MAX_ALLOC_PERCENT -ne 100) { setx GPU_MAX_ALLOC_PERCENT 100 }    #For AMD
+if ($env:GPU_SINGLE_ALLOC_PERCENT -ne 100) { setx GPU_SINGLE_ALLOC_PERCENT 100 } #For AMD
+if ($env:GPU_MAX_WORKGROUP_SIZE -ne 256) { setx GPU_MAX_WORKGROUP_SIZE 256 }   #For AMD
 
 $progressPreference = 'silentlyContinue' #No progress message on web requests
 #$progressPreference = 'Stop'
@@ -234,10 +234,12 @@ while ($Quit -eq $false) {
     try {
         $Request = Invoke-APIRequest -Url "https://api.github.com/repos/yuzi-co/$Application/releases/latest" -Age 60
         $RemoteVersion = ($Request.tag_name -replace '[^\d.]')
-        $Uri = $Request.assets | Where-Object Name -eq "$Application-$RemoteVersion.7z" | Select-Object -ExpandProperty browser_download_url
+        $Uri = $Request.assets | Where-Object Name -eq "$Application-v$RemoteVersion.7z" | Select-Object -ExpandProperty browser_download_url
 
         if ([version]$RemoteVersion -gt [version]$Release) {
-            Log-Message "$Application is out of date. There is an updated version available at $URI" -Severity Warn
+            Log-Message "$Application is out of date. There is an updated version available at $Uri" -Severity Warn
+        } elseif ([version]$RemoteVersion -lt [version]$Release) {
+            Log-Message "$Application is pre-release version. Use at your own risk" -Severity Warn
         }
     } catch {
         Log-Message "Failed to get $Application updates." -Severity Warn
