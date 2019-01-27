@@ -83,7 +83,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
 
     $Locations = "EU", "US", "Asia"
 
-    $MiningPoolHub_Request.return | Where-Object time_since_last_block -gt 0 | Where-Object profit -gt 0 | ForEach-Object {
+    $MiningPoolHub_Request.return | Where-Object time_since_last_block -gt 0 | ForEach-Object {
 
         $MiningPoolHub_Algorithm = Get-AlgoUnifiedName $_.algo
         $MiningPoolHub_Coin = Get-CoinUnifiedName $_.coin_name
@@ -91,7 +91,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
         $MiningPoolHub_OriginalCoin = $_.coin_name
 
         $MiningPoolHub_Hosts = $_.host_list -split ";"
-        $MiningPoolHub_Port = $_.direct_mining_algo_port
+        $MiningPoolHub_Port = $_.port
 
         $MiningPoolHub_Price = [double]($_.profit / 1e9)
 
