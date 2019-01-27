@@ -1,0 +1,24 @@
+{
+    "Path": "lolMiner.exe",
+    "Uri": "https://github.com/Lolliedieb/lolMiner-preview/releases/download/0.7_a4/lolMiner_v07_alpha4_Win64.zip",
+    "SHA256": "33D8D7B54BC53C8550B19417CABA9F98938F42FF07AF30762BD4D336B7F597D1",
+    "Type": "AMD",
+    "Arguments": [
+        "--pool #Server#",
+        "--port #Port#",
+        "--user #Login#",
+        "--pass #Password#",
+        "--devices AMD",
+        "--apiport #ApiPort#",
+        "--digits 2",
+        "--longstats 60",
+        "--shortstats 5",
+        "--connectattempts 3",
+        "#AlgorithmParameters#"
+    ],
+    "API": "LOL",
+    "APIPort": 4028,
+    "Algorithms": {
+        "Equihash150|4gb": "--coin BEAM"
+    }
+}
