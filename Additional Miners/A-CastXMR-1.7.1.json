@@ -1,7 +1,7 @@
 {
     "Path": "cast_xmr-vega.exe",
-    "Uri": "http://www.gandalph3000.com/download/cast_xmr-vega-win64_160.zip",
-    "SHA256": "ECC857C039DABF648FE6E823069CFCAA3988A20BA41E35057A3EE47640F04B9A",
+    "Uri": "http://www.gandalph3000.com/download/cast_xmr-vega-win64_171.zip",
+    "SHA256": "2347F1DBFEEF00BEF72416F5BC3F20DE3A3414E2F734AF6606E6B77C95CE60A3",
     "Type": "AMD",
     "Arguments": [
         "--pool #Server#:#Port#",
@@ -20,13 +20,15 @@
     "Fee": 0.015,
     "Algorithms": {
         "CnFast": "--algo=8",
+        "CnFast2": "--algo=11",
         "CnFеst": "--algo=9",
+        "CnHalf": "--algo=6",
         "CnHaven": "--algo=7",
         "CnHeavy": "--algo=2",
         "CnLiteV7": "--algo=4",
         "CnSaber": "--algo=5",
+        "CnTurtle": "--algo=9",
         "CnV7": "--algo=1",
-        "CnV8": "--algo=-1",
-        "CnXTL": "--algo=6"
+        "CnV8": "--algo=10"
     }
 }
