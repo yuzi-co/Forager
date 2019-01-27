@@ -20,6 +20,9 @@
     "APIPort": 4028,
     "Fee": 0.01,
     "Algorithms": {
-        "Astralhash": "--algo glt-astralhash --opencl-threads 2 --opencl-launch 17x256"
+        "Astralhash": "--algo glt-astralhash",
+        "Jeonghash": "--algo glt-jeonghash",
+        "Padihash": "--algo glt-padihash",
+        "Pawelhash": "--algo glt-pawelhash"
     }
 }
