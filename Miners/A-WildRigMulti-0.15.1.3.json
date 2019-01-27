@@ -20,7 +20,7 @@
     "API": "XMRig",
     "APIPort": 4028,
     "Fee": 0.01,
-    "PrelaunchCommand": "setx GPU_MAX_WORKGROUP_SIZE 256",
+    "PrelaunchCommand": "if ($env:GPU_MAX_WORKGROUP_SIZE -ne 256) { setx GPU_MAX_WORKGROUP_SIZE 256 }",
     "Algorithms": {
         "Aergo": "--algo aergo --opencl-threads 2 --opencl-launch 17x0",
         "BCD": "--algo bcd --opencl-threads 2 --opencl-launch 20x0",
