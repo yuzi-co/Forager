@@ -4,17 +4,16 @@
     "SHA256": "DBCE1ACECB075DD7473072BA2164FB606B4437EC6CF984F36A3E29C60E8E9A2C",
     "Type": "AMD",
     "Arguments": [
-        "#AlgorithmParameters#$(if($enableSSL){'+ssl'})://$([System.Web.HttpUtility]::UrlEncode('#Login#')):$([System.Web.HttpUtility]::UrlEncode('#Password#'))@#Server#:#Port#",
+        "#AlgorithmParameters#://$([System.Web.HttpUtility]::UrlEncode('#Login#')):$([System.Web.HttpUtility]::UrlEncode('#Password#'))@#Server#:#Port#",
         "-devices amd:#Devices#",
-        "-max-network-failures=0",
+        "-max-network-failures=3",
         "-watchdog=false",
         "-api 127.0.0.1:#APIPort#"
     ],
     "API": "BMiner",
     "APIPort": 4028,
-    "SSL": true,
     "Fee": 0.02,
     "Algorithms": {
-        "Equihash150|8gb": "-uri beam"
+        "Equihash150|8gb": "-uri beam+ssl"
     }
 }
