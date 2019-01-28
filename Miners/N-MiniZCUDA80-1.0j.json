@@ -10,6 +10,7 @@
         "--pass #Password#",
         "--gpu-line",
         "--extra",
+        "-cd #Devices#",
         "--telemetry 0.0.0.0:#APIPort#",
         "#AlgorithmParameters#"
     ],
