@@ -759,16 +759,14 @@ function Get-LiveHashRate {
                 $Request = Invoke-TCPRequest -Port $Miner.Port -Request $Message
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
-                    $Multiplier = switch -wildcard ($Miner.Algorithm) {
-                        Cn* { 1 }
-                        Equihash* { 1 }
-                        Ethash { 1000 }
-                        MTP { 1 }
-                        NeoScrypt { 1000 }
-                        ProgPOW* { 1000 }
-                        RandomHash { 1 }
-                        Ubqhash { 1000 }
-                        Default { 1 }
+                    $Multiplier = 1
+                    if ($Data.result[0] -notmatch "^TT-Miner") {
+                        switch -wildcard ($Miner.Algorithm) {
+                            Ethash* { $Multiplier *= 1000 }
+                            NeoScrypt* { $Multiplier *= 1000 }
+                            ProgPOW* { $Multiplier *= 1000 }
+                            Ubqhash* { $Multiplier *= 1000 }
+                        }
                     }
                     [double[]]$HashRate = [double]$Data.result[2].Split(";")[0] * $Multiplier
                     $HashRate += [double]$Data.result[4].Split(";")[0] * $Multiplier
