@@ -439,14 +439,15 @@ while ($Quit -eq $false) {
     #Load information about the Miner asociated to each Coin-Algo-Miner
     $Miners = @()
 
-    $MinersFolderContent = (Get-ChildItem "Miners" -Filter "*.json")
+    $MinersFolderContent = (Get-ChildItem "$ScriptRoot\Miners\*" -Include "*.json")
 
     Log-Message "Files in miner folder: $($MinersFolderContent.count)" -Severity Debug
     Log-Message "Number of device groups: $($DeviceGroups.count)" -Severity Debug
 
     foreach ($MinerFile in $MinersFolderContent) {
-        try { $Miner = $MinerFile | Get-Content | ConvertFrom-Json }
-        catch {
+        try {
+            $Miner = $MinerFile | Get-Content | ConvertFrom-Json
+        } catch {
             Log-Message "Badly formed JSON: $MinerFile" -Severity Warn
             Exit
         }
@@ -600,8 +601,8 @@ while ($Quit -eq $false) {
                                 $_.Algorithm -eq $AlgoName -and
                                 $_.CoinDual -eq $PoolDual.Info -and
                                 $_.AlgorithmDual -eq $AlgoNameDual -and
-                                $_.PoolName -eq $Pool.Name -and
-                                $_.PoolNameDual -eq $PoolDual.Name -and
+                                $_.PoolName -eq $Pool.PoolName -and
+                                $_.PoolNameDual -eq $PoolDual.PoolName -and
                                 $_.DeviceGroup.Id -eq $DeviceGroup.Id -and
                                 $_.AlgoLabel -eq $AlgoLabel }
 
@@ -704,7 +705,8 @@ while ($Quit -eq $false) {
                             Algorithm           = $AlgoName
                             AlgorithmDual       = $AlgoNameDual
                             Algorithms          = $Algorithms
-                            API                 = $ExecutionContext.InvokeCommand.ExpandString($Miner.API)
+                            Api                 = $ExecutionContext.InvokeCommand.ExpandString($Miner.API)
+                            ApiPort             = $(if (($DeviceGroups | Where-Object type -eq $DeviceGroup.type).Count -le 1 -and $DelayCloseMiners -eq 0 -and $config.ForceDynamicPorts -ne "Enabled") { $Miner.ApiPort })
                             Arguments           = $ExecutionContext.InvokeCommand.ExpandString($Arguments)
                             BenchmarkArg        = $ExecutionContext.InvokeCommand.ExpandString($Miner.BenchmarkArg)
                             Coin                = $Pool.Info
@@ -728,7 +730,6 @@ while ($Quit -eq $false) {
                             PoolRewardType      = $Pool.RewardType
                             PoolWorkers         = $Pool.PoolWorkers
                             PoolWorkersDual     = $PoolDual.PoolWorkers
-                            Port                = $(if (($DeviceGroups | Where-Object type -eq $DeviceGroup.type).Count -le 1 -and $DelayCloseMiners -eq 0 -and $config.ForceDynamicPorts -ne "Enabled") { $Miner.ApiPort })
                             PreventCPUMining    = $Miner.PreventCPUMining
                             PrelaunchCommand    = $ExecutionContext.InvokeCommand.ExpandString($Miner.PrelaunchCommand)
                             PrerequisitePath    = $Miner.PrerequisitePath
@@ -752,6 +753,9 @@ while ($Quit -eq $false) {
             } #end foreach algo
         } # end if types
     } #end foreach miner
+
+    $Miners | ConvertTo-Json | Set-Content _miners.json
+    $Pools | ConvertTo-Json | Set-Content _pools.json
 
     Log-Message "Miners/Pools combinations detected: $($Miners.Count)"
 
@@ -857,7 +861,8 @@ while ($Quit -eq $false) {
                 Algorithm           = $Miner.Algorithm
                 AlgorithmDual       = $Miner.AlgorithmDual
                 Algorithms          = $Miner.Algorithms
-                API                 = $Miner.API
+                Api                 = $Miner.Api
+                ApiPort             = $Miner.ApiPort
                 Arguments           = $Miner.Arguments
                 BenchmarkArg        = $Miner.BenchmarkArg
                 Coin                = $Miner.Coin
@@ -883,7 +888,6 @@ while ($Quit -eq $false) {
                 PoolHashRate        = $null
                 PoolHashRateDual    = $null
                 PoolRewardType      = $Miner.PoolRewardType
-                Port                = $Miner.Port
                 PrelaunchCommand    = $Miner.PrelaunchCommand
                 PreventCPUMining    = $Miner.PreventCPUMining
                 Process             = $null
@@ -1130,11 +1134,11 @@ while ($Quit -eq $false) {
 
                     $ActiveMiners[$BestNow.IdF].SubMiners[$BestNow.Id].Best = $true
 
-                    if ($null -eq $ActiveMiners[$BestNow.IdF].Port) { $ActiveMiners[$BestNow.IdF].Port = Get-NextFreePort (Get-Random -minimum 2000 -maximum 48000)}
-                    $ActiveMiners[$BestNow.IdF].Arguments = $ActiveMiners[$BestNow.IdF].Arguments -replace '#APIPort#', $ActiveMiners[$BestNow.IdF].Port
+                    if ($null -eq $ActiveMiners[$BestNow.IdF].ApiPort) { $ActiveMiners[$BestNow.IdF].ApiPort = Get-NextFreePort (Get-Random -minimum 2000 -maximum 48000)}
+                    $ActiveMiners[$BestNow.IdF].Arguments = $ActiveMiners[$BestNow.IdF].Arguments -replace '#APIPort#', $ActiveMiners[$BestNow.IdF].ApiPort
 
                     if ($ActiveMiners[$BestNow.IdF].GenerateConfigFile) {
-                        $ActiveMiners[$BestNow.IdF].ConfigFileArguments = $ActiveMiners[$BestNow.IdF].ConfigFileArguments -replace '#APIPort#', $ActiveMiners[$BestNow.IdF].Port
+                        $ActiveMiners[$BestNow.IdF].ConfigFileArguments = $ActiveMiners[$BestNow.IdF].ConfigFileArguments -replace '#APIPort#', $ActiveMiners[$BestNow.IdF].ApiPort
                         $ActiveMiners[$BestNow.IdF].ConfigFileArguments | Set-Content ($ActiveMiners[$BestNow.IdF].GenerateConfigFile)
                     }
 
@@ -1149,7 +1153,7 @@ while ($Quit -eq $false) {
                     if ($ActiveMiners[$BestNow.IdF].Api -eq "Wrapper") {
                         $ProcessParams = @{
                             FilePath     = (Get-Process -Id $Global:PID).Path
-                            ArgumentList = "-executionpolicy bypass -command . '$(Convert-Path ".\Wrapper.ps1")' -ControllerProcessID $PID -Id '$($ActiveMiners[$BestNow.IdF].Port)' -FilePath '$($ActiveMiners[$BestNow.IdF].Path)' -ArgumentList '$($Arguments)' -WorkingDirectory '$(Split-Path $ActiveMiners[$BestNow.IdF].Path)'"
+                            ArgumentList = "-executionpolicy bypass -command . '$(Convert-Path ".\Wrapper.ps1")' -ControllerProcessID $PID -Id '$($ActiveMiners[$BestNow.IdF].ApiPort)' -FilePath '$($ActiveMiners[$BestNow.IdF].Path)' -ArgumentList '$($Arguments)' -WorkingDirectory '$(Split-Path $ActiveMiners[$BestNow.IdF].Path)'"
                         }
                     } else {
                         $ProcessParams = @{

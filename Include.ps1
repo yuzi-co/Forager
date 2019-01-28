@@ -694,60 +694,60 @@ function Invoke-APIRequest {
 
 function Get-LiveHashRate {
     param(
-        [Parameter(Mandatory = $false)]
-        [String]$Api,
-        [Parameter(Mandatory = $false)]
-        [Int]$Port,
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $true)]
         [Object]$Miner
     )
-    if ($Miner) {
-        $Port = $Miner.Port
-    }
-
-    $Server = "localhost"
 
     try {
         switch ($Miner.Api) {
 
             "xgminer" {
                 $Message = @{command = "summary"; parameter = ""} | ConvertTo-Json -Compress
-                $Request = Invoke-TCPRequest -Port $Miner.Port -Request $Message
+                $Request = Invoke-TCPRequest -Port $Miner.ApiPort -Request $Message
 
                 if ($Request) {
                     $Data = $Request.Substring($Request.IndexOf("{"), $Request.LastIndexOf("}") - $Request.IndexOf("{") + 1) -replace " ", "_" | ConvertFrom-Json
 
-                    $HashRate = [double]$Data.SUMMARY.HS_5s
-                    if (-not $HashRate) {$HashRate = [double]$Data.SUMMARY.KHS_5s * [math]::Pow(1000, 1)}
-                    if (-not $HashRate) {$HashRate = [double]$Data.SUMMARY.MHS_5s * [math]::Pow(1000, 2)}
-                    if (-not $HashRate) {$HashRate = [double]$Data.SUMMARY.GHS_5s * [math]::Pow(1000, 3)}
-                    if (-not $HashRate) {$HashRate = [double]$Data.SUMMARY.THS_5s * [math]::Pow(1000, 4)}
-                    if (-not $HashRate) {$HashRate = [double]$Data.SUMMARY.PHS_5s * [math]::Pow(1000, 5)}
-                    if (-not $HashRate) {$HashRate = [double]$Data.SUMMARY.HS_av}
-                    if (-not $HashRate) {$HashRate = [double]$Data.SUMMARY.KHS_av * [math]::Pow(1000, 1)}
-                    if (-not $HashRate) {$HashRate = [double]$Data.SUMMARY.MHS_av * [math]::Pow(1000, 2)}
-                    if (-not $HashRate) {$HashRate = [double]$Data.SUMMARY.GHS_av * [math]::Pow(1000, 3)}
-                    if (-not $HashRate) {$HashRate = [double]$Data.SUMMARY.THS_av * [math]::Pow(1000, 4)}
-                    if (-not $HashRate) {$HashRate = [double]$Data.SUMMARY.PHS_av * [math]::Pow(1000, 5)}
+                    $HashRate = @(
+                        [double]$Data.SUMMARY.HS_5s
+                        [double]$Data.SUMMARY.KHS_5s * 1e3
+                        [double]$Data.SUMMARY.MHS_5s * 1e6
+                        [double]$Data.SUMMARY.GHS_5s * 1e9
+                        [double]$Data.SUMMARY.THS_5s * 1e12
+                        [double]$Data.SUMMARY.PHS_5s * 1e15
+                    ) | Where-Object {$_ -gt 0} | Select-Object -First 1
+
+                    if (-not $HashRate) {
+                        $HashRate = @(
+                            [double]$Data.SUMMARY.HS_av
+                            [double]$Data.SUMMARY.KHS_av * 1e3
+                            [double]$Data.SUMMARY.MHS_av * 1e6
+                            [double]$Data.SUMMARY.GHS_av * 1e9
+                            [double]$Data.SUMMARY.THS_av * 1e12
+                            [double]$Data.SUMMARY.PHS_av * 1e15
+                        ) | Where-Object {$_ -gt 0} | Select-Object -First 1
+                    }
                 }
             }
 
             "ccminer" {
-                $Request = Invoke-TCPRequest -Port $Miner.Port -Request "summary"
+                $Request = Invoke-TCPRequest -Port $Miner.ApiPort -Request "summary"
                 if ($Request) {
                     $Data = $Request -split ";" | ConvertFrom-StringData
-                    $HashRate = [double]$Data.HS
-                    if (-not $HashRate) {$HashRate = [double]$Data.KHS * [math]::Pow(1000, 1)}
-                    if (-not $HashRate) {$HashRate = [double]$Data.MHS * [math]::Pow(1000, 2)}
-                    if (-not $HashRate) {$HashRate = [double]$Data.GHS * [math]::Pow(1000, 3)}
-                    if (-not $HashRate) {$HashRate = [double]$Data.THS * [math]::Pow(1000, 4)}
-                    if (-not $HashRate) {$HashRate = [double]$Data.PHS * [math]::Pow(1000, 5)}
+                    $HashRate = @(
+                        [double]$Data.HS
+                        [double]$Data.KHS * 1e3
+                        [double]$Data.MHS * 1e6
+                        [double]$Data.GHS * 1e9
+                        [double]$Data.THS * 1e12
+                        [double]$Data.PHS * 1e15
+                    ) | Where-Object {$_ -gt 0} | Select-Object -First 1
                 }
             }
 
             "ewbf" {
                 $Message = @{id = 1; method = "getstat"} | ConvertTo-Json -Compress
-                $Request = Invoke-TCPRequest -Port $Miner.Port -Request $Message
+                $Request = Invoke-TCPRequest -Port $Miner.ApiPort -Request $Message
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
                     $HashRate = [double](($Data.result.speed_sps) | Measure-Object -Sum).Sum
@@ -756,7 +756,7 @@ function Get-LiveHashRate {
 
             "Claymore" {
                 $Message = @{id = 0; jsonrpc = "2.0"; method = "miner_getstat1"} | ConvertTo-Json -Compress
-                $Request = Invoke-TCPRequest -Port $Miner.Port -Request $Message
+                $Request = Invoke-TCPRequest -Port $Miner.ApiPort -Request $Message
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
                     $Multiplier = 1
@@ -768,19 +768,21 @@ function Get-LiveHashRate {
                             Ubqhash* { $Multiplier *= 1000 }
                         }
                     }
-                    [double[]]$HashRate = [double]$Data.result[2].Split(";")[0] * $Multiplier
-                    $HashRate += [double]$Data.result[4].Split(";")[0] * $Multiplier
+
+                    $HashRate = @(
+                        [double]$Data.result[2].Split(";")[0] * $Multiplier
+                        [double]$Data.result[4].Split(";")[0] * $Multiplier
+                    )
                 }
             }
 
             "wrapper" {
-                $HashRate = ""
-                $wrpath = ".\Wrapper_$($Miner.Port).txt"
+                $wrpath = ".\Wrapper_$($Miner.ApiPort).txt"
                 $HashRate = [double]$(if (Test-Path -path $wrpath) {Get-Content $wrpath} else {0})
             }
 
             "castXMR" {
-                $Request = Invoke-HTTPRequest -Port $Miner.Port
+                $Request = Invoke-HTTPRequest -Port $Miner.ApiPort
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
                     $HashRate = [double]($Data.devices.hash_rate | Measure-Object -Sum).Sum / 1000
@@ -788,7 +790,7 @@ function Get-LiveHashRate {
             }
 
             "XMrig" {
-                $Request = Invoke-HTTPRequest -Port $Miner.Port -Path "/api.json"
+                $Request = Invoke-HTTPRequest -Port $Miner.ApiPort -Path "/api.json"
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
                     $HashRate = [double]$Data.HashRate.total[0]
@@ -796,7 +798,7 @@ function Get-LiveHashRate {
             }
 
             "BMiner" {
-                $Request = Invoke-HTTPRequest -Port $Miner.Port -Path "/api/v1/status/solver"
+                $Request = Invoke-HTTPRequest -Port $Miner.ApiPort -Path "/api/v1/status/solver"
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
                     $HashRate = $Data.devices |
@@ -804,26 +806,28 @@ function Get-LiveHashRate {
                         ForEach-Object {$Data.devices.($_.name).solvers} |
                         Group-Object algorithm |
                         ForEach-Object {
-                        $(if ($_.group.speed_info.hash_rate -ne $null) {
-                                $_.group.speed_info.hash_rate
-                            } elseif ($_.group.speed_info.solution_rate -ne $null) {
-                                $_.group.speed_info.solution_rate
-                            }) | Measure-Object -Sum | Select-Object -ExpandProperty Sum
+                        @(
+                            $_.group.speed_info.hash_rate | Measure-Object -Sum | Select-Object -ExpandProperty Sum
+                            $_.group.speed_info.solution_rate | Measure-Object -Sum | Select-Object -ExpandProperty Sum
+                        ) | Where-Object {$_ -gt 0}
                     }
                 }
             }
 
+
             "SRB" {
-                $Request = Invoke-HTTPRequest -Port $Miner.Port
+                $Request = Invoke-HTTPRequest -Port $Miner.ApiPort
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
-                    $HashRate = [double]$Data.HashRate_total_5min
-                    if (-not $HashRate) {$HashRate = [double]$Data.HashRate_total_now}
+                    $HashRate = @(
+                        [double]$Data.HashRate_total_now
+                        [double]$Data.HashRate_total_5min
+                    ) | Where-Object {$_ -gt 0} | Select-Object -First 1
                 }
             }
 
             "JCE" {
-                $Request = Invoke-HTTPRequest -Port $Miner.Port
+                $Request = Invoke-HTTPRequest -Port $Miner.ApiPort
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
                     $HashRate = [double]$Data.HashRate.total
@@ -831,7 +835,7 @@ function Get-LiveHashRate {
             }
 
             "LOL" {
-                $Request = Invoke-HTTPRequest -Port $Miner.Port -Path "/summary"
+                $Request = Invoke-HTTPRequest -Port $Miner.ApiPort -Path "/summary"
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
                     $HashRate = [double]$Data.'Session'.'Performance_Summary'
@@ -839,8 +843,8 @@ function Get-LiveHashRate {
             }
 
             "MiniZ" {
-                $Message = '{"id":"0", "method":"getstat"}'
-                $Request = Invoke-TCPRequest -Port $Miner.Port -Request $Message
+                $Message = @{id = 0; method = "getstat"} | ConvertTo-Json -Compress
+                $Request = Invoke-TCPRequest -Port $Miner.ApiPort -Request $Message
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
                     $HashRate = [double](($Data.result.speed_sps) | Measure-Object -Sum).Sum
@@ -848,7 +852,7 @@ function Get-LiveHashRate {
             }
 
             "GMiner" {
-                $Request = Invoke-HTTPRequest -Port $Miner.Port -Path "/api/v1/status"
+                $Request = Invoke-HTTPRequest -Port $Miner.ApiPort -Path "/api/v1/status"
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
                     $HashRate = [double]$Data.miner.total_hashrate
