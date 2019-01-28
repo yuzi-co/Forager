@@ -1255,7 +1255,7 @@ while ($Quit -eq $false) {
             $_.RevenueLiveDual = 0
 
             $Miner_HashRates = $null
-            $Miner_HashRates = Get-LiveHashRate $ActiveMiners[$_.IdF].API $ActiveMiners[$_.IdF].Port
+            $Miner_HashRates = Get-LiveHashRate -Miner $ActiveMiners[$_.IdF]
 
             if ($Miner_HashRates) {
                 $_.SpeedLive = [double]($Miner_HashRates[0])
