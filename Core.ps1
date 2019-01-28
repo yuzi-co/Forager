@@ -754,8 +754,8 @@ while ($Quit -eq $false) {
         } # end if types
     } #end foreach miner
 
-    $Miners | ConvertTo-Json | Set-Content _miners.json
-    $Pools | ConvertTo-Json | Set-Content _pools.json
+    # $Miners | ConvertTo-Json | Set-Content _miners.json
+    # $Pools | ConvertTo-Json | Set-Content _pools.json
 
     Log-Message "Miners/Pools combinations detected: $($Miners.Count)"
 
