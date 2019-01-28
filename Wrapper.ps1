@@ -36,6 +36,7 @@ do {
             $Line -like ">*Rej*" -or
             $Line -like "*overall*" -or
             $Line -like "*Average*" -or
+            $Line -like "*Speed*" -or
             $Line -like "*Total*"
         ) {
             $Line = $Line  `
@@ -72,7 +73,7 @@ do {
 
             $HashRate -replace ',', '.' | Set-Content ".\Wrapper_$Id.txt"
         }
-        $Line
+        Write-Host $Line -NoNewLine
     }
 
     if ((Get-Process | Where-Object Id -EQ $ControllerProcessID) -eq $null) {$PowerShell.Stop() | Out-Null}
