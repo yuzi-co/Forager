@@ -4,7 +4,7 @@
     "SHA256": "B889D41D2DD1057A5A4EB770ADD157DBE2ECC2833EFC26C865201621F0DF8E95",
     "Type": "NVIDIA",
     "Arguments": [
-        "-uri ethstratum://$([System.Web.HttpUtility]::UrlEncode('#Login#')):$([System.Web.HttpUtility]::UrlEncode('#Password#'))@#Server#:#Port#",
+        "-uri ethstratum$(if($enableSSL){'+ssl'})://$([System.Web.HttpUtility]::UrlEncode('#Login#')):$([System.Web.HttpUtility]::UrlEncode('#Password#'))@#Server#:#Port#",
         "-uri2 #AlgorithmParameters#$(if($enableDualSSL){'+ssl'})://$([System.Web.HttpUtility]::UrlEncode('#LoginDual#')):$([System.Web.HttpUtility]::UrlEncode('#PasswordDual#'))@#ServerDual#:#PortDual#",
         "-devices #Devices#",
         "-max-network-failures=3",
@@ -13,6 +13,7 @@
     ],
     "API": "BMiner",
     "APIPort": 4068,
+    "SSL": true,
     "Fee": 0.02,
     "CUDA": 9.2,
     "Algorithms": {
