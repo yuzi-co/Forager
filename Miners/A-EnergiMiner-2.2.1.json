@@ -8,7 +8,7 @@
         "--opencl",
         "--opencl-platform #GPUPlatform#",
         "--opencl-devices #DevicesETHMode#",
-        "--nocolor",
+        "--syslog",
         "#AlgorithmParameters#"
     ],
     "API": "Wrapper",
