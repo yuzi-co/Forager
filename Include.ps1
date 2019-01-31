@@ -1156,11 +1156,11 @@ function Get-Pools {
                     elseif ($Pool.Location -eq 'EU' -and $Location -eq 'US') {$Pool.LocationPriority = 2}
                     elseif ($Pool.Location -eq 'US' -and $Location -eq 'EU') {$Pool.LocationPriority = 2}
 
-                    ## factor actual24h
-                    $factor = 0.8
-                    if ($Pool.Actual24h) {
-                        if ($Pool.Price) {$Pool.Price = $Pool.Price * $factor + $Pool.Actual24h * (1 - $factor)}
-                        if ($Pool.Price24h) {$Pool.Price24h = $Pool.Price24h * $factor + $Pool.Actual24h * (1 - $factor)}
+                    ## factor actual24h if price differs by factor of 10
+                    if ($Pool.Actual24h -gt 0) {
+                        $factor = 0.2
+                        if ($Pool.Price -gt ($Pool.Actual24h * 10)) {$Pool.Price = $Pool.Price * $factor + $Pool.Actual24h * (1 - $factor)}
+                        if ($Pool.Price24h -gt ($Pool.Actual24h * 10)) {$Pool.Price24h = $Pool.Price24h * $factor + $Pool.Actual24h * (1 - $factor)}
                     }
                     ## Apply pool fees and pool factors
                     if ($Pool.Price) {
