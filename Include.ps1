@@ -859,6 +859,13 @@ function Get-LiveHashRate {
                 }
             }
 
+            "Mkx" {
+                $Request = Get-TCPResponse -Port $Miner.ApiPort -Request 'stats'
+                if ($Request) {
+                    $Data = $Request.Substring($Request.IndexOf("{"), $Request.LastIndexOf("}") - $Request.IndexOf("{") + 1) | ConvertFrom-Json
+                    $HashRate = [double]$Data.gpus.hashrate * 1e6
+                }
+            }
         } #end switch
 
         $HashRate

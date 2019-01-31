@@ -10,9 +10,10 @@
         "--platform #GPUPlatform#",
         "--device #Devices#",
         "--exitsick",
+        "--api #ApiPort#",
         "#AlgorithmParameters#"
     ],
-    "API": "wrapper",
+    "API": "Mkx",
     "APIPort": 4028,
     "SSL": true,
     "Algorithms": {
