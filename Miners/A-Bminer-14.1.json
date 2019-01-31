@@ -5,7 +5,7 @@
     "Type": "AMD",
     "Arguments": [
         "#AlgorithmParameters#$(if($enableSSL){'+ssl'})://$([System.Web.HttpUtility]::UrlEncode('#Login#')):$([System.Web.HttpUtility]::UrlEncode('#Password#'))@#Server#:#Port#",
-        "-devices amd:#Devices#",
+        "-devices amd:$('#Devices#' -replace ',',',amd:')",
         "-max-network-failures=3",
         "-watchdog=false",
         "-api 127.0.0.1:#APIPort#"
