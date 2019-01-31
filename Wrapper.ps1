@@ -34,11 +34,11 @@ do {
 
         $HashRate = 0
         if (
-            $_ -match "Speed\s([0-9.]+)\s?([kmgtp]?h/s)" -or # EnergiMiner
-            $_ -match "Accepted.*\s([0-9.]+)\s([kmgtp]?h/s)" -or # lyclMiner
+            $_ -match "Speed\s([0-9.,]+)\s?([kmgtp]?h/s)" -or # EnergiMiner
+            $_ -match "Accepted.*\s([0-9.,]+)\s([kmgtp]?h/s)" -or # lyclMiner
             $false
         ) {
-            $HashRate = [decimal]$Matches[1]
+            $HashRate = [decimal]($Matches[1] -replace ',','.')
             $Units = $Matches[2]
 
             if ($HashRate -gt 0) {
