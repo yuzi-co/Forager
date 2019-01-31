@@ -11,6 +11,12 @@
     [String]$WorkingDirectory = ""
 )
 
+# Force Culture to en-US
+$culture = [System.Globalization.CultureInfo]::CreateSpecificCulture("en-US")
+$culture.NumberFormat.NumberDecimalSeparator = "."
+$culture.NumberFormat.NumberGroupSeparator = ","
+[System.Threading.Thread]::CurrentThread.CurrentCulture = $culture
+
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 
 0 | Set-Content ".\Wrapper_$Id.txt"
