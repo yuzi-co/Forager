@@ -1,0 +1,20 @@
+{
+    "Path": "bin\\energiminer.exe",
+    "Uri": "https://github.com/energicryptocurrency/energiminer/releases/download/v2.2.1-signed/energiminer-2.2.1-Windows.zip",
+    "SHA256": "70C237927298637B5E36A91261888470F5873B65BB3069608FC377DBEAB57B48",
+    "Type": "NVIDIA",
+    "Arguments": [
+        "-P stratum://#Login#:#Password#@#Server#:#Port#",
+        "--cuda",
+        "--cuda-parallel-hash 8",
+        "--cuda-block-size 256",
+        "--cuda-devices #DevicesETHMode#",
+        "--syslog",
+        "#AlgorithmParameters#"
+    ],
+    "API": "Wrapper",
+    "APIPort": 4068,
+    "Algorithms": {
+        "Energi": ""
+    }
+}
