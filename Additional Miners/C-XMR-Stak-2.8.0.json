@@ -1,34 +1,35 @@
 {
-    "Path": "xmr-stak-win64-2.7.1\\xmr-stak.exe",
-    "Uri": "https://github.com/fireice-uk/xmr-stak/releases/download/2.7.1/xmr-stak-win64-2.7.1.7z",
-    "SHA256": "81B2BB0FF23C145A539C288BBDD2E262C6807FCCF65CCEF4C5B539F127F0DCEC",
-    "Type": "AMD",
+    "Path": "xmr-stak-win64-2.8.0\\xmr-stak.exe",
+    "Uri": "https://github.com/fireice-uk/xmr-stak/releases/download/2.8.0/xmr-stak-win64-2.8.0.7z",
+    "SHA256": "28C1F4C38EFD8797287A2205473678F7399F8EB42769891C9CA27923E5790D12",
+    "Type": "CPU",
     "Arguments": [
         "$(if ($enableSSL){'-O'}else{'-o'}) #Server#:#Port#",
         "-u #Login#",
         "-p #Password#",
         "-r #WorkerName#",
         "--noNVIDIA",
-        "--noCPU",
+        "--noAMD",
         "--noUAC",
-        "--noAMDCache",
         "$(if ($Nicehash){'--use-nicehash'})",
         "--httpd #APIPort#",
-        "--amd #GroupName#-#Algorithm#.txt",
+        "--cpu #GroupName#-#Algorithm#.txt",
         "#AlgorithmParameters#"
     ],
     "API": "XMRig",
-    "APIPort": 4028,
+    "APIPort": 4048,
     "Fee": 0.02,
     "SSL": true,
     "Algorithms": {
         "CnFast": "--currency cryptonight_masari",
+        "CnGpu": "--currency cryptonight_gpu",
         "CnHaven": "--currency cryptonight_haven",
         "CnHeavy": "--currency cryptonight_heavy",
         "CnLiteV7": "--currency cryptonight_lite_v7",
         "CnSaber": "--currency cryptonight_bittube2",
+        "CnTrtl": "--currency cryptonight_turtle",
         "CnV7": "--currency cryptonight_v7",
         "CnV8": "--currency cryptonight_v8",
-        "CnXTL": "--currency stellite"
+        "CnXTL": "--currency cryptonight_v7_stellite"
     }
 }
