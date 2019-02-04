@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <PrimaryConnection>
+    <ConnectionAddress>#Server#</ConnectionAddress>
+    <ConnectionPort>#Port#</ConnectionPort>
+    <Ssl>$(if ($EnableSSL){'true'}else{'false'})</Ssl>
+    <Login>#Login#</Login>
+    <Password>#Password#</Password>
+  </PrimaryConnection>
+  <SecondaryConnection>
+    <ConnectionAddress>backup_pooladdress</ConnectionAddress>
+    <ConnectionPort>13416</ConnectionPort>
+    <Ssl>false</Ssl>
+    <Login>login</Login>
+    <Password>password</Password>
+  </SecondaryConnection>
+  <LogOptions>
+    <FileMinimumLogLevel>WARNING</FileMinimumLogLevel>
+    <ConsoleMinimumLogLevel>INFO</ConsoleMinimumLogLevel>
+    <KeepDays>1</KeepDays>
+    <DisableLogging>false</DisableLogging>
+  </LogOptions>
+  <CPUOffloadValue>0</CPUOffloadValue>
+  <GPUOptions>#ForEachDevice#
+    <GPUOption>
+      <GPUName>#GroupName#</GPUName>
+      <GPUType>$($DeviceGroup.Type)</GPUType>
+      <DeviceID>#DeviceID#</DeviceID>
+      <PlatformID>#GPUPlatform#</PlatformID>
+      <Enabled>true</Enabled>
+    </GPUOption>#EndForEachDevice#
+  </GPUOptions>
+</Config>

@@ -866,6 +866,14 @@ function Get-LiveHashRate {
                     $HashRate = [double]$Data.gpus.hashrate * 1e6
                 }
             }
+
+            "GrinPro" {
+                $Request = Invoke-HTTPRequest -Port $Miner.ApiPort -Path "/api/status"
+                if ($Request) {
+                    $Data = $Request | ConvertFrom-Json
+                    $HashRate = [double](($Data.workers.graphsPerSecond) | Measure-Object -Sum).Sum
+                }
+            }
         } #end switch
 
         $HashRate
