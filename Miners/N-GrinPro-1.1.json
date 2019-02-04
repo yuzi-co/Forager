@@ -9,7 +9,7 @@
         "api-port=#ApiPort#"
     ],
     "API": "GrinPro",
-    "APIPort": 4028,
+    "APIPort": 4068,
     "Fee": 0.02,
     "SSL": true,
     "Pools": "$(if ($Pool.PoolName -eq 'NiceHash'){$false}else{$true})",
