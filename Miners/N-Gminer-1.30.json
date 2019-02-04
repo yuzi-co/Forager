@@ -1,7 +1,7 @@
 {
     "Path": "miner.exe",
-    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.02/gminer_1_28_minimal_windows64.zip",
-    "SHA256": "0CDD8C548C5CC3C04AE79E1A49F2EE7B9498E39D3BABB6A6B6FC49FBA3CA97D9",
+    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.02/gminer_1_30_minimal_windows64.zip",
+    "SHA256": "12C9F913187526A368D1D6517D9A51A9622D9785DE18AC59FD28BF77FCD2311C",
     "Type": "NVIDIA",
     "Arguments": [
         "--server #Server#",
