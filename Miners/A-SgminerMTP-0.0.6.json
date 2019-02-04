@@ -1,0 +1,23 @@
+{
+    "Path": "sgminer.exe",
+    "Uri": "https://github.com/zcoinofficial/sgminer/releases/download/0.0.6/sgminer.zip",
+    "SHA256": "658620341EC9460429CB04015AC33717E68A2C8396DF4D6E387367C993CEF730",
+    "Type": "AMD",
+    "Arguments": [
+        "-o #Protocol#://#Server#:#Port#",
+        "-u #Login#",
+        "-p #Password#",
+        "--gpu-platform #GPUPlatform#",
+        "--device #Devices#",
+        "--api-listen",
+        "--text-only",
+        "--api-port #APIPort#",
+        "#AlgorithmParameters#"
+    ],
+    "API": "Xgminer",
+    "APIPort": 4028,
+    "Algorithms": {
+        "MTP": "-k mtp -w 64 -I 20",
+        "MTP|vega": "-k mtp_vega -w 64 -I 20"
+    }
+}
