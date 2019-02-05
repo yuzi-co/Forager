@@ -1,6 +1,6 @@
 {
     "Path": "GrinProMiner.exe",
-    "Uri": "https://grinpro.io/download/GrinPro_1_1.zip",
+    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.02/GrinPro_1_1.zip",
     "SHA256": "B0D3300D32725F66D1728A7B666BB27B40D3AE2DF19C01CE70A5C49EDC6D7BC3",
     "Type": "AMD",
     "GenerateConfigFile": "config.xml",
