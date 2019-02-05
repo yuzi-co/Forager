@@ -843,7 +843,7 @@ function Get-LiveHashRate {
             }
 
             "MiniZ" {
-                $Message = @{id = 0; method = "getstat"} | ConvertTo-Json -Compress
+                $Message = '{"id":"0", "method":"getstat"}'
                 $Request = Invoke-TCPRequest -Port $Miner.ApiPort -Request $Message
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
@@ -852,10 +852,10 @@ function Get-LiveHashRate {
             }
 
             "GMiner" {
-                $Request = Invoke-HTTPRequest -Port $Miner.ApiPort -Path "/api/v1/status"
+                $Request = Invoke-HTTPRequest -Port $Miner.ApiPort -Path "/stat"
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
-                    $HashRate = [double]$Data.miner.total_hashrate
+                    $HashRate = [double](($Data.devices.speed) | Measure-Object -Sum).Sum
                 }
             }
 

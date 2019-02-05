@@ -17,7 +17,7 @@
     "API": "Ccminer",
     "APIPort": 4028,
     "Fee": 0.01,
-    "PreventCPUMining": true,
+    "NoCPUMining": true,
     "Algorithms": {
         "Argon2ad": "-a argon2ad --gpu-batchsize=512 -t 4",
         "Argon2d250": "-a argon2d250 --gpu-batchsize=2048 -t 4",

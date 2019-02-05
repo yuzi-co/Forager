@@ -13,7 +13,7 @@
     "Fee": 0.02,
     "SSL": true,
     "Pools": "$(if ($Pool.PoolName -eq 'NiceHash'){$false}else{$true})",
-    "PreventCPUMining": true,
+    "NoCPUMining": true,
     "Algorithms": {
         "Cuckaroo29": ""
     }

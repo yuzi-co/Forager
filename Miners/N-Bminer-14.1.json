@@ -15,11 +15,12 @@
     "SSL": true,
     "Fee": 0.02,
     "CUDA": 9.2,
+    "NoCPUMining": "$(if ($AlgoName -in @('Cuckaroo29', 'Aeternity')){$true}else{$false})",
     "Algorithms": {
         "Aeternity": "-uri aeternity",
-        "Cuckaroo29|8gb": "-uri cuckaroo29",
+        "Cuckaroo29|6gb": "-uri cuckaroo29",
         "Equihash144": "-pers auto -uri equihash1445",
-        "Equihash150|4gb": "-uri beam",
+        "Equihash150|8gb": "-uri beam",
         "Tensority": "-uri tensority"
     }
 }

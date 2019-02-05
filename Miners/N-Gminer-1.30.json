@@ -18,6 +18,7 @@
     "SSL": true,
     "Fee": 0.02,
     "CUDA": 9.0,
+    "NoCPUMining": "$(if ($AlgoName -in @('Cuckaroo29', 'Aeternity')){$true}else{$false})",
     "Algorithms": {
         "Aeternity": "--algo aeternity",
         "Cuckaroo29|6gb": "--algo grin29",

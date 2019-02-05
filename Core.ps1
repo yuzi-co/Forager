@@ -705,7 +705,7 @@ while ($Quit -eq $false) {
                             Algorithm           = $AlgoName
                             AlgorithmDual       = $AlgoNameDual
                             Algorithms          = $Algorithms
-                            Api                 = $ExecutionContext.InvokeCommand.ExpandString($Miner.API)
+                            Api                 = $Miner.Api
                             ApiPort             = $(if (($DeviceGroups | Where-Object type -eq $DeviceGroup.type).Count -le 1 -and $DelayCloseMiners -eq 0 -and $config.ForceDynamicPorts -ne "Enabled") { $Miner.ApiPort })
                             Arguments           = $ExecutionContext.InvokeCommand.ExpandString($Arguments)
                             BenchmarkArg        = $ExecutionContext.InvokeCommand.ExpandString($Miner.BenchmarkArg)
@@ -720,6 +720,7 @@ while ($Quit -eq $false) {
                             LocationDual        = $PoolDual.Location
                             MinerFee            = $MinerFee
                             Name                = $MinerFile.BaseName
+                            NoCPUMining         = $ExecutionContext.InvokeCommand.ExpandString($Miner.NoCPUMining)
                             Path                = $(".\Bin\" + $MinerFile.BaseName + "\" + $ExecutionContext.InvokeCommand.ExpandString($Miner.Path))
                             PoolFee             = [double]$Pool.Fee
                             PoolFeeDual         = [double]$PoolDual.Fee
@@ -730,7 +731,6 @@ while ($Quit -eq $false) {
                             PoolRewardType      = $Pool.RewardType
                             PoolWorkers         = $Pool.PoolWorkers
                             PoolWorkersDual     = $PoolDual.PoolWorkers
-                            PreventCPUMining    = $Miner.PreventCPUMining
                             PrelaunchCommand    = $ExecutionContext.InvokeCommand.ExpandString($Miner.PrelaunchCommand)
                             PrerequisitePath    = $Miner.PrerequisitePath
                             PrerequisiteURI     = $Miner.PrerequisiteURI
@@ -877,6 +877,7 @@ while ($Quit -eq $false) {
                 LocationDual        = $Miner.LocationDual
                 MinerFee            = $Miner.MinerFee
                 Name                = $Miner.Name
+                NoCPUMining         = $Miner.NoCPUMining
                 Path                = Convert-Path $Miner.Path
                 PoolFee             = $Miner.PoolFee
                 PoolFeeDual         = $Miner.PoolFeeDual
@@ -889,7 +890,6 @@ while ($Quit -eq $false) {
                 PoolHashRateDual    = $null
                 PoolRewardType      = $Miner.PoolRewardType
                 PrelaunchCommand    = $Miner.PrelaunchCommand
-                PreventCPUMining    = $Miner.PreventCPUMining
                 Process             = $null
                 SubMiners           = $Miner.SubMiners
                 Symbol              = $Miner.Symbol
@@ -950,9 +950,9 @@ while ($Quit -eq $false) {
     } | ForEach-Object { $_.Group | Select-Object -First 1 }
 
     # If GPU miner prevents CPU mining
-    if ($DeviceGroups.Type -contains 'CPU' -and ($BestNowMiners | Where-Object {$ActiveMiners[$_.IdF].PreventCPUMining})) {
+    if ($DeviceGroups.Type -contains 'CPU' -and ($BestNowMiners | Where-Object {$ActiveMiners[$_.IdF].NoCPUMining})) {
         $AltBestNowMiners = $BestNowCandidates | Where-Object {
-            $ActiveMiners[$_.IdF].PreventCPUMining -ne $true
+            $ActiveMiners[$_.IdF].NoCPUMining -ne $true
         } | Group-Object {
             $ActiveMiners[$_.IdF].DeviceGroup.GroupName
         } | ForEach-Object { $_.Group | Select-Object -First 1 }
@@ -962,7 +962,7 @@ while ($Quit -eq $false) {
 
         if ($AltBestNowMiners.NeedBenchmark -contains $true -or ($AltBestNowProfits -gt $BestNowProfits -and $BestNowMiners.NeedBenchmark -notcontains $true)) {
             $BestNowMiners = $AltBestNowMiners
-            Log-Message "Skipping miner that prevents CPU mining" -Severity Warn
+            Log-Message "Skipping miners that prevents CPU mining" -Severity Warn
         } else {
             $BestNowMiners = $BestNowMiners | Where-Object {$ActiveMiners[$_.IdF].DeviceGroup.Type -ne 'CPU'}
             Log-Message "Miner prevents CPU mining. Will not mine on CPU" -Severity Warn
@@ -1075,7 +1075,7 @@ while ($Quit -eq $false) {
                 $BestNow.NeedBenchmark -or
                 @('PendingCancellation', 'Failed') -contains $BestLast.Status -or
                 (@('Running') -contains $BestLast.Status -and $ProfitNow -gt ($ProfitLast * (1 + ($PercentToSwitch2 / 100)))) -or
-                (($ActiveMiners[$BestLast.IdF].PreventCPUMining -or $ActiveMiners[$BestNow.IdF].PreventCPUMining) -and $BestLast -ne $BestNow)
+                (($ActiveMiners[$BestLast.IdF].NoCPUMining -or $ActiveMiners[$BestNow.IdF].NoCPUMining) -and $BestLast -ne $BestNow)
             ) {
                 #Must launch other miner and/or stop actual
 
