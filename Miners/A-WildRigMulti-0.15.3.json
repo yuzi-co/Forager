@@ -1,7 +1,7 @@
 {
     "Path": "wildrig.exe",
-    "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.15.2/wildrig-multi-windows-0.15.2.2-beta.7z",
-    "SHA256": "C0E61A73129505B65AFD347CF6C47AA6452B1067100D919680439700EAEFDC48",
+    "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.15.3/wildrig-multi-windows-0.15.3-beta.7z",
+    "SHA256": "5B03C5F3D39DF704250C7367126DA0AD977ABBA28F8C0C8531700F63CD45C008",
     "Type": "AMD",
     "Arguments": [
         "-o #Server#:#Port#",
@@ -26,6 +26,7 @@
         "Astralhash": "--algo glt-astralhash --opencl-threads auto --opencl-launch auto",
         "BCD": "--algo bcd --opencl-threads auto --opencl-launch auto",
         "Bitcore": "--algo bitcore --opencl-threads auto --opencl-launch auto",
+        "BMW512": "--algo bmw512 --opencl-threads auto --opencl-launch auto",
         "C11": "--algo c11 --opencl-threads auto --opencl-launch auto",
         "Dedal": "--algo dedal --opencl-threads auto --opencl-launch auto",
         "Exosis": "--algo exosis --opencl-threads auto --opencl-launch auto",
