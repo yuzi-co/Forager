@@ -9,6 +9,7 @@
         "-p #Password#",
         "-w #WorkerName#",
         "--nvidia",
+        "-d #Devices#",
         "-rate",
         "-b 127.0.0.1:#APIPort#",
         "#AlgorithmParameters#"
