@@ -1,7 +1,7 @@
 {
     "Path": "lolMiner.exe",
-    "Uri": "https://github.com/Lolliedieb/lolMiner-preview/releases/download/0.7_a4/lolMiner_v07_alpha4_Win64.zip",
-    "SHA256": "33D8D7B54BC53C8550B19417CABA9F98938F42FF07AF30762BD4D336B7F597D1",
+    "Uri": "https://github.com/Lolliedieb/lolMiner-preview/releases/download/0.7_a5/lolMiner_v07_alpha5_Win64.zip",
+    "SHA256": "E268899ED4A66E5643FCA53E7AC6742B6970F7AF4C2247CDE073C1901E1C7780",
     "Type": "NVIDIA",
     "Arguments": [
         "--pool #Server#",
