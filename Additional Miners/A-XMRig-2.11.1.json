@@ -1,7 +1,7 @@
 {
-    "Path": "xmrig-amd-2.11.0\\xmrig-amd.exe",
-    "Uri": "https://github.com/xmrig/xmrig-amd/releases/download/v2.11.0/xmrig-amd-2.11.0-msvc-win64.zip",
-    "SHA256": "B670B0B6B2D2AF81DC15A984517D354695FE940F8690C783ED4FFE20D480DF0C",
+    "Path": "xmrig-amd-2.11.1\\xmrig-amd.exe",
+    "Uri": "https://github.com/xmrig/xmrig-amd/releases/download/v2.11.1/xmrig-amd-2.11.1-msvc-win64.zip",
+    "SHA256": "5009B8682CA847F7F3B0DBE77143265862132AFBEBAB918CD0265169E2ABB95F",
     "Type": "AMD",
     "Arguments": [
         "-o #Protocol#://#Server#:#Port#",
