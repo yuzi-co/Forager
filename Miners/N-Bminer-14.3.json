@@ -1,7 +1,7 @@
 {
-    "Path": "bminer-lite-v14.1.0-373029c\\bminer.exe",
-    "Uri": "https://www.bminercontent.com/releases/bminer-lite-v14.1.0-373029c-amd64.zip",
-    "SHA256": "B889D41D2DD1057A5A4EB770ADD157DBE2ECC2833EFC26C865201621F0DF8E95",
+    "Path": "bminer-lite-v14.3.0-cbb8683\\bminer.exe",
+    "Uri": "https://www.bminercontent.com/releases/bminer-lite-v14.3.0-cbb8683-amd64.zip",
+    "SHA256": "E0B9B3BADB20344B629D8D8F0EAB81143DDC8579E392C5458C425696C08A8D3C",
     "Type": "NVIDIA",
     "Arguments": [
         "#AlgorithmParameters#$(if($enableSSL){'+ssl'})://$([System.Web.HttpUtility]::UrlEncode('#Login#')):$([System.Web.HttpUtility]::UrlEncode('#Password#'))@#Server#:#Port#",
@@ -15,10 +15,11 @@
     "SSL": true,
     "Fee": 0.02,
     "CUDA": 9.2,
-    "NoCPUMining": "$(if ($AlgoName -in @('Cuckaroo29', 'Aeternity')){$true}else{$false})",
+    "NoCPUMining": "$(if ($AlgoName -in @('Aeternity', 'Cuckaroo29', 'Cuckatoo31')){$true}else{$false})",
     "Algorithms": {
         "Aeternity": "-uri aeternity",
         "Cuckaroo29|6gb": "-uri cuckaroo29",
+        "Cuckatoo31|11gb": "-uri cuckattoo31",
         "Equihash144": "-pers auto -uri equihash1445",
         "Equihash150|8gb": "-uri beam",
         "Tensority": "-uri tensority"
