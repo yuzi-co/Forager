@@ -14,10 +14,12 @@
         "--longstats 60",
         "--shortstats 5",
         "--connectattempts 3",
+        "--tls $(if($enableSSL){1}{0})",
         "#AlgorithmParameters#"
     ],
     "API": "LOL",
     "APIPort": 4028,
+    "SSL": true,
     "Algorithms": {
         "Equihash150|4gb": "--coin BEAM"
     }
