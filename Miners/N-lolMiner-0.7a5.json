@@ -14,7 +14,7 @@
         "--longstats 60",
         "--shortstats 5",
         "--connectattempts 3",
-        "--tls $(if($enableSSL){1}{0})",
+        "--tls $(if($enableSSL){1}else{0})",
         "#AlgorithmParameters#"
     ],
     "API": "LOL",
