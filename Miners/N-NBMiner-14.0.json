@@ -1,0 +1,25 @@
+{
+    "Path": "NBMiner_Win\\nbminer.exe",
+    "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v14.0/NBMiner_14.0_Win.zip",
+    "SHA256": "6F147B1748B59207FEB121FAF03F6577314C09B350DE3D48EF74964F24B6F14A",
+    "Type": "NVIDIA",
+    "Arguments": [
+        "-o #Protocol#://#Server#:#Port#",
+        "-u #Login#",
+        "-o #Protocol#://#Server#:#Port#",
+        "-d #Devices#",
+        "--api 127.0.0.1:#ApiPort#",
+        "#AlgorithmParameters#"
+    ],
+    "API": "NBMiner",
+    "APIPort": 4068,
+    "SSL": true,
+    "Fee": "$(if ($AlgoDual -eq 'Ethash') {0.03} elseif ($AlgoName -in @('Tensority', 'Cuckaroo29')) {0.02} elseif {$AlgoName -eq 'Ethash'} {0.0065})",
+    "NoCPUMining": "$(if ($AlgoName -in @(Cuckaroo29')){$true}else{$false})",
+    "Algorithms": {
+        "Cuckaroo29|6gb": "-a cuckaroo",
+        "Ethash": "-a ethash",
+        "Tensority_Ethash": "-a tensority_ethash -do $(if ($NiceHash){'ethnh'}else{'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#",
+        "Tensority": "-a tensority"
+    }
+}

@@ -874,6 +874,17 @@ function Get-LiveHashRate {
                     $HashRate = [double](($Data.workers.graphsPerSecond) | Measure-Object -Sum).Sum
                 }
             }
+
+            "NBMiner" {
+                $Request = Invoke-HTTPRequest -Port $Miner.ApiPort -Path "/api/v1/status"
+                if ($Request) {
+                    $Data = $Request | ConvertFrom-Json
+                    $HashRate = @(
+                        [double]$Data.miner.total_hashrate_raw
+                        [double]$Data.miner.total_hashrate2_raw
+                    )
+                }
+            }
         } #end switch
 
         $HashRate
