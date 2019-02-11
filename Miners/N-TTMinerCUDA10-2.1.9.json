@@ -7,7 +7,7 @@
         "-o #Protocol#://#Server#:#Port#",
         "-u #Login#",
         "-p #Password#",
-        "-w #WorkerName#",
+        "-worker #WorkerName#",
         "--nvidia",
         "-d #Devices#",
         "-rate",
