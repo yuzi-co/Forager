@@ -14,12 +14,13 @@
     "API": "NBMiner",
     "APIPort": 4068,
     "SSL": true,
-    "Fee": "$(if ($AlgoDual -eq 'Ethash') {0.03} elseif ($AlgoName -in @('Tensority', 'Cuckaroo29')) {0.02} elseif ($AlgoName -eq 'Ethash') {0.0065})",
-    "NoCPUMining": "$(if ($AlgoName -in @(Cuckaroo29')) {$true} else {$false})",
+    "Fee": "$(if ($AlgoNameDual -eq 'Ethash') {0.03} elseif ($AlgoName -in @('Tensority', 'Cuckaroo29')) {0.02} elseif ($AlgoName -eq 'Ethash') {0.0065})",
+    "NoCPUMining": "$(if ($AlgoName -in @('Cuckaroo29')) {$true} else {$false})",
+    "Pools": "$(if ($AlgoName -in @('Cuckaroo29') -and $NiceHash) {$false} else {$true})",
     "Algorithms": {
         "Cuckaroo29|6gb": "-a cuckaroo",
         "Ethash": "-a ethash",
-        "Tensority_Ethash": "-a tensority_ethash -do $(if ($NiceHash){'ethnh'}else{'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#",
+        "Tensority_Ethash": "-a tensority_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'ethnh'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#",
         "Tensority": "-a tensority"
     }
 }
