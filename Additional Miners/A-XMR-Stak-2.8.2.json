@@ -1,7 +1,7 @@
 {
-    "Path": "xmr-stak-win64-2.8.0\\xmr-stak.exe",
-    "Uri": "https://github.com/fireice-uk/xmr-stak/releases/download/2.8.0/xmr-stak-win64-2.8.0.7z",
-    "SHA256": "28C1F4C38EFD8797287A2205473678F7399F8EB42769891C9CA27923E5790D12",
+    "Path": "xmr-stak-win64-2.8.2\\xmr-stak.exe",
+    "Uri": "https://github.com/fireice-uk/xmr-stak/releases/download/2.8.2/xmr-stak-win64-2.8.2.7z",
+    "SHA256": "92D739EC13B0BC9D3BD08EDE1D9DA2A86BB5EF26DDF6AEDEC37BDE00DA07C83E",
     "Type": "AMD",
     "Arguments": [
         "$(if ($enableSSL){'-O'}else{'-o'}) #Server#:#Port#",
@@ -24,6 +24,7 @@
     "Algorithms": {
         "CnFast": "--currency cryptonight_masari",
         "CnGpu": "--currency cryptonight_gpu",
+        "CnHalf": "--currency cryptonight_v8_half",
         "CnHaven": "--currency cryptonight_haven",
         "CnHeavy": "--currency cryptonight_heavy",
         "CnLiteV7": "--currency cryptonight_lite_v7",
