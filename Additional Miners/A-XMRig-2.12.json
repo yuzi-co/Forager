@@ -1,7 +1,7 @@
 {
-    "Path": "xmrig-amd-2.11.1\\xmrig-amd.exe",
-    "Uri": "https://github.com/xmrig/xmrig-amd/releases/download/v2.11.1/xmrig-amd-2.11.1-msvc-win64.zip",
-    "SHA256": "5009B8682CA847F7F3B0DBE77143265862132AFBEBAB918CD0265169E2ABB95F",
+    "Path": "xmrig-amd-2.12.0\\xmrig-amd.exe",
+    "Uri": "https://github.com/xmrig/xmrig-amd/releases/download/v2.12.0/xmrig-amd-2.12.0-msvc-win64.zip",
+    "SHA256": "C5A90560E096EFF2A61D6EA1EAA410AE9689828DE4741CFAF467B92B96E236F4",
     "Type": "AMD",
     "Arguments": [
         "-o #Protocol#://#Server#:#Port#",
@@ -29,6 +29,7 @@
         "CnTrtl": "-a cn-pico/trtl",
         "CnV7": "-a cn/1",
         "CnV8": "-a cn/2",
+        "CnWow": "-a cn/wow",
         "CnXTL": "-a cn/xtl"
     }
 }
