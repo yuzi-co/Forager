@@ -1,7 +1,7 @@
 {
     "Path": "wildrig.exe",
-    "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.15.3/wildrig-multi-windows-0.15.3.7-beta.7z",
-    "SHA256": "FCC32C765CEE18A538A8FA90E8FE4170AC2A58C7BD8F47B134800112D355CF21",
+    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.02/wildrig-multi-windows-0.15.3.8-beta.7z",
+    "SHA256": "7F028AD51B2B9DD2FE11A4DB39A148FDEAAAFB4BA4483FAF96E30D754CF97FCE",
     "Type": "AMD",
     "Arguments": [
         "-o #Server#:#Port#",
@@ -34,7 +34,7 @@
         "Hex": "--algo hex --opencl-threads auto --opencl-launch auto",
         "HMQ1725": "--algo hmq1725 --opencl-threads auto --opencl-launch auto",
         "Jeonghash": "--algo glt-jeonghash --opencl-threads auto --opencl-launch auto",
-        "Lyra2v3": "--algo lyra2v3 --opencl-threads auto --opencl-launch auto",
+        "OFF-Lyra2v3": "--algo lyra2v3 --opencl-threads auto --opencl-launch auto",
         "Lyra2vc0ban": "--algo lyra2vc0ban --opencl-threads auto --opencl-launch auto",
         "Padihash": "--algo glt-padihash --opencl-threads auto --opencl-launch auto",
         "Pawelhash": "--algo glt-pawelhash --opencl-threads auto --opencl-launch auto",
