@@ -814,7 +814,6 @@ function Get-LiveHashRate {
                 }
             }
 
-
             "SRB" {
                 $Request = Invoke-HTTPRequest -Port $Miner.ApiPort
                 if ($Request) {
@@ -883,6 +882,14 @@ function Get-LiveHashRate {
                         [double]$Data.miner.total_hashrate_raw
                         [double]$Data.miner.total_hashrate2_raw
                     )
+                }
+            }
+
+            "RH" {
+                $Request = Invoke-TCPRequest -Port $Miner.ApiPort -Request ' '
+                if ($Request) {
+                    $Data = $Request | ConvertFrom-Json
+                    $HashRate = [double]($Data.infos.speed | Measure-Object -Sum).Sum
                 }
             }
         } #end switch

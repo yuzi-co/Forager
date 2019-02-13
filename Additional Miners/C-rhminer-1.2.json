@@ -1,0 +1,20 @@
+{
+    "Path": "rhminer.exe",
+    "Uri": "https://github.com/polyminer1/rhminer/releases/download/v1.2/rhminer.1.2.Windows.CPU.zip",
+    "SHA256": "60CDB8F9AC5410CF910A7A7B8BEF04823E708808D41B98DA4BACD571BC773D7F",
+    "Type": "CPU",
+    "Arguments": [
+        "-s #Protocol#://#Server#:#Port#",
+        "-su #Login#",
+        "-pw #Password#",
+        "-cpu",
+        "-cputhreads $($DeviceGroup.DevicesCount)",
+        "-apiport #ApiPort#"
+    ],
+    "API": "RH",
+    "APIPort": 4048,
+    "Fee": 0.01,
+    "Algorithms": {
+        "RandomHash": ""
+    }
+}
