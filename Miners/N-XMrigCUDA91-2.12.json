@@ -1,5 +1,5 @@
 {
-    "Path": "xmrig-nvidia-2.12.0\\xmrig-nvidia.exe",
+    "Path": "xmrig-nvidia-2.12.0-beta\\xmrig-nvidia.exe",
     "Uri": "https://github.com/xmrig/xmrig-nvidia/releases/download/v2.12.0-beta/xmrig-nvidia-2.12.0-beta-cuda9_1-win64.zip",
     "SHA256": "4A38F1B4B75ECCB5FBC810A9327BF50C40385923AD584FCD0FC7D49F20FA7A74",
     "Type": "NVIDIA",
