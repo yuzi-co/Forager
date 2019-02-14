@@ -1,0 +1,25 @@
+{
+    "Path": "miner.exe",
+    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.02/gminer_1_32_minimal_windows64.zip",
+    "SHA256": "A01D95F4F8DDB8864410E601A126DC25AB86349F30AC90E66281707F08375907",
+    "Type": "AMD",
+    "Arguments": [
+        "--server #Server#",
+        "--port #Port#",
+        "--user #Login#",
+        "--pass #Password#",
+        "--api #APIPort#",
+        "$(if($enableSSL){'--ssl 1'})",
+        "--devices #DevicesETHMode#",
+        "#AlgorithmParameters#"
+    ],
+    "API": "GMiner",
+    "APIPort": 4028,
+    "SSL": true,
+    "Fee": 0.02,
+    "CUDA": 9.0,
+    "NoCPUMining": "$(if ($AlgoName -in @('Aeternity', 'Cuckaroo29', 'Cuckatoo31')){$true}else{$false})",
+    "Algorithms": {
+        "Equihash150|4gb": "--algo 150_5"
+    }
+}
