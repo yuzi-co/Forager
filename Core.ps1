@@ -74,7 +74,7 @@ $ErrorActionPreference = "Continue"
 $Config = Get-Config
 
 $Application = "Forager"
-$Release = "19.01.1"
+$Release = "19.02"
 Log-Message "$Application v$Release"
 
 $Host.UI.RawUI.WindowTitle = "$Application v$Release"
