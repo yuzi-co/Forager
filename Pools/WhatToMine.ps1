@@ -1,7 +1,8 @@
 <#
-THIS IS A ADVANCED POOL, NOT FOR NOOB.
+THIS IS A ADVANCED POOL.
 
-THIS IS A VIRTUAL POOL, STATISTICS ARE TAKEN FROM WHATTOMINE AND RECALCULATED WITH YOUR BENCHMARKS HashRate, YOU CAN SET DESTINATION POOL YOU WANT FOR EACH COIN, BUT REMEMBER YOU MUST HAVE AND ACOUNT IF DESTINATION POOL IS NOT ANONYMOUS POOL
+THIS IS A VIRTUAL POOL, STATISTICS ARE TAKEN FROM WHATTOMINE AND RECALCULATED WITH YOUR BENCHMARKS HashRate,
+YOU CAN SET DESTINATION POOL YOU WANT FOR EACH COIN, BUT REMEMBER YOU MUST HAVE AN ACOUNT IF DESTINATION POOL IS NOT ANONYMOUS POOL
 #>
 
 param(
@@ -17,13 +18,13 @@ $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 $ActiveOnManualMode = $false
 $ActiveOnAutomaticMode = $true
 $ActiveOnAutomatic24hMode = $true
-$WalletMode = "MIXED"
+$WalletMode = "Mixed"
 $RewardType = "PPS"
 $Result = @()
 
-if ($Querymode -eq "info") {
+if ($Querymode -eq "Info") {
     $Result = [PSCustomObject]@{
-        Disclaimer               = "Based on WhatToMine statistics, you must have account on Suprnova a wallets for each coin on config.ini "
+        Disclaimer               = "Based on WhatToMine statistics, you must have accounts and wallets for each coin"
         ActiveOnManualMode       = $ActiveOnManualMode
         ActiveOnAutomaticMode    = $ActiveOnAutomaticMode
         ActiveOnAutomatic24hMode = $ActiveOnAutomatic24hMode
@@ -33,24 +34,24 @@ if ($Querymode -eq "info") {
     }
 }
 
-if (($Querymode -eq "speed") ) {
+if (($Querymode -eq "Speed") ) {
     if ($PoolRealName -ne $null) {
         $Info.PoolName = $PoolRealName
-        $Result = Get-Pools -Querymode "speed" -PoolsFilterList $Info.PoolName -Info $Info
+        $Result = Get-Pools -Querymode "Speed" -PoolsFilterList $Info.PoolName -Info $Info
     }
 }
 
-if (($Querymode -eq "wallet") -or ($Querymode -eq "APIKEY")) {
+if (($Querymode -eq "Wallet") -or ($Querymode -eq "ApiKey")) {
     if ($PoolRealName -ne $null) {
         $Info.PoolName = $PoolRealName
-        $Result = Get-Pools -Querymode $info.WalletMode -PoolsFilterList $Info.PoolName -Info $Info | select-object Pool, currency, balance
+        $Result = Get-Pools -Querymode $info.WalletMode -PoolsFilterList $Info.PoolName -Info $Info | Select-Object Pool, Currency, Balance
     }
 }
 
-if ($Querymode -eq "core" -or $Querymode -eq "Menu") {
+if ($Querymode -eq "Core" -or $Querymode -eq "Menu") {
 
     #Look for pools
-    $ConfigOrder = (Get-ConfigVariable "WHATTOMINEPOOLORDER") -split ','
+    $ConfigOrder = $PoolConfig.$Name.PoolOrder -split ','
     $HPools = foreach ($PoolToSearch in $ConfigOrder) {
         $HPoolsTmp = Get-Pools -Querymode "core" -PoolsFilterList $PoolToSearch -location $Info.Location
         #Filter by minworkes variable (must be here for not selecting now a pool and after that discarded on core.ps1 filter)
@@ -98,7 +99,7 @@ if ($Querymode -eq "core" -or $Querymode -eq "Menu") {
     ) -join '&'
 
     $WTMResponse = Invoke-APIRequest -Url $WtmUrl -Retry 3 | Select-Object -ExpandProperty coins
-    if (!$WTMResponse) {
+    if (-not $WTMResponse) {
         Write-Host $Name 'API NOT RESPONDING...ABORTING'
         Exit
     }
@@ -118,8 +119,12 @@ if ($Querymode -eq "core" -or $Querymode -eq "Menu") {
             #convert response to collection
             $res = $WTMResponse.($_)
             if ($res.Status -eq "Active") {
-                $res | Add-Member name (Get-CoinUnifiedName $_)
+                $res | Add-Member Name (Get-CoinUnifiedName $_)
                 $res.Algorithm = Get-AlgoUnifiedName ($res.Algorithm)
+                # Algo fixes
+                switch ($res.Name) {
+                    'Ryo' {$res.Algorithm = 'CnGpu'}
+                }
                 $res
             }
         }
@@ -139,6 +144,8 @@ if ($Querymode -eq "core" -or $Querymode -eq "Menu") {
             "Bitcore" { 1e6 }
             "Blake2s" { 1e6 }
             "CnFast" { 1 }
+            "CnGpu" { 1 }
+            "CnHalf" { 1 }
             "CnHaven" { 1 }
             "CnHeavy" { 1 }
             "CnLiteV7" { 1 }
@@ -149,6 +156,7 @@ if ($Querymode -eq "core" -or $Querymode -eq "Menu") {
             "Cuckaroo31" { 1 }
             "Energi" { 1e6 }
             "Equihash144" { 1 }
+            "Equihash150" { 1 }
             "Equihash192" { 1 }
             "Equihash210" { 1 }
             "Equihash96" { 1e3 }
@@ -189,7 +197,7 @@ if ($Querymode -eq "core" -or $Querymode -eq "Menu") {
                 $_.Algorithm -eq $HPool.Algorithm
             }
 
-            if (!$WtmCoin -and $WTMSecondaryCoins) {
+            if (-not $WtmCoin -and $WTMSecondaryCoins) {
                 #look in secondary coins page
                 $WtmSecCoin = $WTMSecondaryCoins | Where-Object {
                     $_.Name -eq $HPool.Info -and
