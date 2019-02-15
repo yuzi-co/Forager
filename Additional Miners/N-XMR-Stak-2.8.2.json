@@ -28,7 +28,7 @@
         "CnHeavy": "--currency cryptonight_heavy",
         "CnLiteV7": "--currency cryptonight_lite_v7",
         "CnSaber": "--currency cryptonight_bittube2",
-        "CnTrtl": "--currency cryptonight_turtle",
+        "CnTurtle": "--currency cryptonight_turtle",
         "CnV7": "--currency cryptonight_v7",
         "CnV8": "--currency cryptonight_v8",
         "CnXTL": "--currency cryptonight_v7_stellite"
