@@ -62,7 +62,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
 
     $Response = Invoke-WebRequest -Uri "https://miner.rocks"
 
-    $Regex = "[^\/]{name:\s*'(\w+)',\s+host:\s*'(\S+)'.*kind:\s*`"(\S*)`""
+    $Regex = "[^\/]{name:\s*'(\w+)',\s*host:\s*'(\S+)'.*kind:\s*`"(\S*)`""
     $Pools = $Response.Scripts -split "`n" -match $Regex | ForEach-Object {
         $_ -match $Regex | Out-Null
 
@@ -110,7 +110,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
                     RewardType            = $RewardType
 
                     Hashrate              = $PoolResponse.pool.hashrate
-                    Miners                = $PoolResponse.pool.miners
+                    Workers               = $PoolResponse.pool.workers
 
                     Price                 = $PoolResponse.charts.profitBtc[-1][1] / 1e6
                 }
