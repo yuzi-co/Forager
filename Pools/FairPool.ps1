@@ -8,13 +8,13 @@ param(
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 $ActiveOnManualMode = $true
 $ActiveOnAutomaticMode = $false
-$WalletMode = "WALLET"
+$WalletMode = "Wallet"
 $RewardType = "PPLS"
 $Result = @()
 
-if ($Querymode -eq "info") {
+if ($Querymode -eq "Info") {
     $Result = [PSCustomObject]@{
-        Disclaimer            = "Must set wallet for each coin on web, set login on config.ini file"
+        Disclaimer            = "No registration, No autoexchange, need wallet for each coin"
         ActiveOnManualMode    = $ActiveOnManualMode
         ActiveOnAutomaticMode = $ActiveOnAutomaticMode
         ApiData               = $true
@@ -23,8 +23,8 @@ if ($Querymode -eq "info") {
     }
 }
 
-if ($Querymode -eq "speed") {
-    $Request = Invoke-APIRequest -Url $("https://" + $Info.Symbol + ".fairpool.cloud/api/stats?login=" + ($Info.user -split "\+")[0]) -Retry 1
+if ($Querymode -eq "Speed") {
+    $Request = Invoke-APIRequest -Url $("https://" + $Info.Symbol + ".fairpool.xyz/api/stats?login=" + ($Info.user -split "\+")[0]) -Retry 1
 
     if ($Request -and $Request.Workers) {
         $Request.Workers | ForEach-Object {
@@ -38,8 +38,8 @@ if ($Querymode -eq "speed") {
     }
 }
 
-if ($Querymode -eq "wallet") {
-    $Request = Invoke-APIRequest -Url $("https://" + $Info.Symbol + ".fairpool.cloud/api/stats?login=" + ($Info.User -split "\+")[0]) -Retry 3
+if ($Querymode -eq "Wallet") {
+    $Request = Invoke-APIRequest -Url $("https://" + $Info.Symbol + ".fairpool.xyz/api/stats?login=" + ($Info.User -split "\+")[0]) -Retry 3
     if ($Request) {
         switch ($Info.Symbol) {
             'pasl' { $Divisor = 1e4 }
@@ -53,55 +53,54 @@ if ($Querymode -eq "wallet") {
         }
         $Result = [PSCustomObject]@{
             Pool     = $name
-            currency = $Info.Symbol
-            balance  = ($Request.balance + $Request.unconfirmed ) / $Divisor
+            Currency = $Info.Symbol
+            Balance  = ($Request.balance + $Request.unconfirmed ) / $Divisor
         }
         Remove-Variable Request
     }
 }
 
-if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
+if (($Querymode -eq "Core" ) -or ($Querymode -eq "Menu")) {
     $Pools = @()
 
-    $Pools += [PSCustomObject]@{coin = "Akroma"; algo = "Ethash"; symbol = "AKA"; port = 2222; fee = 0.01}
-    $Pools += [PSCustomObject]@{coin = "Dogethereum"; algo = "Ethash"; symbol = "DOGX"; port = 7788; fee = 0.01}
-    $Pools += [PSCustomObject]@{coin = "EthereumClassic"; algo = "Ethash"; symbol = "ETC"; port = 4444; fee = 0.01}
-    $Pools += [PSCustomObject]@{coin = "Metaverse"; algo = "Ethash"; symbol = "ETP"; port = 6666; fee = 0.01}
-    $Pools += [PSCustomObject]@{coin = "Nekonium"; algo = "Ethash"; symbol = "NUKO"; port = 7777; fee = 0.01}
-    $Pools += [PSCustomObject]@{coin = "Pegascoin"; algo = "Ethash"; symbol = "PGC"; port = 1111; fee = 0.01}
-
-    $Pools += [PSCustomObject]@{coin = "PascalLite"; algo = "Pascal"; symbol = "PASL"; port = 4009; fee = 0.02}
-    $Pools += [PSCustomObject]@{coin = "PURK"; algo = "WildKeccakPurk"; symbol = "PURK"; port = 2244; fee = 0.01}
-
-    $Pools += [PSCustomObject]@{coin = "Bittube"; algo = "CnSaber"; symbol = "TUBE"; port = 6040; fee = 0.01}
-    $Pools += [PSCustomObject]@{coin = "Haven"; algo = "CnHaven"; symbol = "XHV"; port = 5566; fee = 0.01}
-    $Pools += [PSCustomObject]@{coin = "Lethean"; algo = "CnV8"; symbol = "LTHN"; port = 6070; fee = 0.01}
-    $Pools += [PSCustomObject]@{coin = "Loki"; algo = "CnHeavy"; symbol = "LOKI"; port = 5577; fee = 0.01}
-    $Pools += [PSCustomObject]@{coin = "PrivatePay"; algo = "CnFast"; symbol = "XPP"; port = 6050; fee = 0.01}
-    $Pools += [PSCustomObject]@{coin = "Quantum R L"; algo = "CnV7"; symbol = "QRL"; port = 6010; fee = 0.01}
-    $Pools += [PSCustomObject]@{coin = "RYO"; algo = "CnHeavy"; symbol = "RYO"; port = 5555; fee = 0.01}
-    $Pools += [PSCustomObject]@{coin = "Saronite"; algo = "CnHeavy"; symbol = "XRN"; port = 5599; fee = 0.01}
-    $Pools += [PSCustomObject]@{coin = "SolaceCoin"; algo = "CnHeavy"; symbol = "SOLACE"; port = 5588; fee = 0.01}
-    $Pools += [PSCustomObject]@{coin = "Swap"; algo = "CnFreeHaven"; symbol = "XWP"; port = 6080; fee = 0.01}
+    $Pools += [PSCustomObject]@{ Coin = "Akroma"          ; Symbol = "AKA"    ; Algo = "Ethash"      ; WalletSymbol = "aka"     ; Port = 2222 ; Fee = 0.01 }
+    $Pools += [PSCustomObject]@{ Coin = "Bittube"         ; Symbol = "TUBE"   ; Algo = "CnSaber"     ; WalletSymbol = "tube"    ; Port = 6040 ; Fee = 0.01 }
+    $Pools += [PSCustomObject]@{ Coin = "Dogethereum"     ; Symbol = "DOGX"   ; Algo = "Ethash"      ; WalletSymbol = "dogx"    ; Port = 7788 ; Fee = 0.01 }
+    $Pools += [PSCustomObject]@{ Coin = "EthereumClassic" ; Symbol = "ETC"    ; Algo = "Ethash"      ; WalletSymbol = "etc"     ; Port = 4444 ; Fee = 0.01 }
+    $Pools += [PSCustomObject]@{ Coin = "Haven"           ; Symbol = "XHV"    ; Algo = "CnHaven"     ; WalletSymbol = "xhv"     ; Port = 5566 ; Fee = 0.01 }
+    $Pools += [PSCustomObject]@{ Coin = "Lethean"         ; Symbol = "LTHN"   ; Algo = "CnV8"        ; WalletSymbol = "lethean" ; Port = 6070 ; Fee = 0.01 }
+    $Pools += [PSCustomObject]@{ Coin = "Loki"            ; Symbol = "LOKI"   ; Algo = "CnHeavy"     ; WalletSymbol = "loki"    ; Port = 5577 ; Fee = 0.01 }
+    $Pools += [PSCustomObject]@{ Coin = "Masari"          ; Symbol = "MSR"    ; Algo = "CnHalf"      ; WalletSymbol = "msr"     ; Port = 6060 ; Fee = 0.01 }
+    $Pools += [PSCustomObject]@{ Coin = "Metaverse"       ; Symbol = "ETP"    ; Algo = "Ethash"      ; WalletSymbol = "etp"     ; Port = 6666 ; Fee = 0.01 }
+    $Pools += [PSCustomObject]@{ Coin = "Nekonium"        ; Symbol = "NUKO"   ; Algo = "Ethash"      ; WalletSymbol = "nuko"    ; Port = 7777 ; Fee = 0.01 }
+    $Pools += [PSCustomObject]@{ Coin = "PascalLite"      ; Symbol = "PASL"   ; Algo = "Pascal"      ; WalletSymbol = "pasl"    ; Port = 4009 ; Fee = 0.02 }
+    $Pools += [PSCustomObject]@{ Coin = "Pegascoin"       ; Symbol = "PGC"    ; Algo = "Ethash"      ; WalletSymbol = "pgc"     ; Port = 1111 ; Fee = 0.01 }
+    $Pools += [PSCustomObject]@{ Coin = "PURK"            ; Symbol = "PURK"   ; Algo = "Purk"        ; WalletSymbol = "purk"    ; Port = 2244 ; Fee = 0.01 }
+    $Pools += [PSCustomObject]@{ Coin = "Quantum R L"     ; Symbol = "QRL"    ; Algo = "CnV7"        ; WalletSymbol = "qrl"     ; Port = 6010 ; Fee = 0.01 }
+    $Pools += [PSCustomObject]@{ Coin = "RYO"             ; Symbol = "RYO"    ; Algo = "CnGpu"       ; WalletSymbol = "ryo"     ; Port = 5555 ; Fee = 0.01 }
+    $Pools += [PSCustomObject]@{ Coin = "Saronite"        ; Symbol = "XRN"    ; Algo = "CnHaven"     ; WalletSymbol = "xrn"     ; Port = 5599 ; Fee = 0.01 }
+    $Pools += [PSCustomObject]@{ Coin = "Solace"          ; Symbol = "SOLACE" ; Algo = "CnHeavy"     ; WalletSymbol = "solace"  ; Port = 5588 ; Fee = 0.01 }
+    $Pools += [PSCustomObject]@{ Coin = "Swap"            ; Symbol = "XWP"    ; Algo = "CnFreeHaven" ; WalletSymbol = "xfh"     ; Port = 6080 ; Fee = 0.01 }
+    $Pools += [PSCustomObject]@{ Coin = "Wownero"         ; Symbol = "WOW"    ; Algo = "CnWow"       ; WalletSymbol = "wow"     ; Port = 6090 ; Fee = 0.01 }
 
     $Pools | ForEach-Object {
-        if ($CoinsWallets.($_.symbol)) {
+        if ($Wallets.($_.Symbol)) {
             $Result += [PSCustomObject]@{
                 Algorithm             = $_.Algo
                 Info                  = $_.Coin
                 Protocol              = "stratum+tcp"
-                Host                  = "mine." + $_.symbol + ".fairpool.cloud"
+                Host                  = "mine." + $_.WalletSymbol + ".fairpool.xyz"
                 Port                  = $_.Port
-                User                  = $CoinsWallets.($_.symbol) + "+#WorkerName#"
+                User                  = $Wallets.($_.Symbol) + "+#WorkerName#"
                 Pass                  = "x"
                 Location              = "US"
                 SSL                   = $false
-                Symbol                = $_.symbol
+                Symbol                = $_.Symbol
                 ActiveOnManualMode    = $ActiveOnManualMode
                 ActiveOnAutomaticMode = $ActiveOnAutomaticMode
                 PoolName              = $Name
                 WalletMode            = $WalletMode
-                WalletSymbol          = $_.Symbol
+                WalletSymbol          = $_.WalletSymbol
                 Fee                   = $_.Fee
                 RewardType            = $RewardType
             }
