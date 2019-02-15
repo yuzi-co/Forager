@@ -109,7 +109,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
             Symbol                = Get-CoinSymbol -Coin $Pool_Algo
             ActiveOnManualMode    = $ActiveOnManualMode
             ActiveOnAutomaticMode = $ActiveOnAutomaticMode
-            PoolWorkers           = [int]$Algo.workers
+            PoolWorkers           = $(if ($Algo.workers_shared -ne $null) {[int]$Algo.workers_shared} else {[int]$Algo.workers})
             PoolHashRate          = [decimal]$Algo.HashRate
             WalletMode            = $WalletMode
             WalletSymbol          = $Currency

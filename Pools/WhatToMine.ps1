@@ -71,6 +71,7 @@ if ($Querymode -eq "core" -or $Querymode -eq "Menu") {
         'cnh=true&factor[cnh_hr]=10&factor[cnh_p]=0' #CryptoNightHeavy
         'cnhn=true&factor[cnhn_hr]=10&factor[cnhn_p]=0' #CryptoNightHaven
         'cns=true&factor[cns_hr]=10&factor[cns_p]=0' #CryptoNightSaber
+        'cr29=true&factor[cr29_hr]=10&factor[cr29_p]=0' #Cuckaroo29
         'eq=true&factor[eq_hr]=10&factor[eq_p]=0' #Equihash
         'eqa=true&factor[eqa_hr]=10&factor[eqa_p]=0' #AION (Equihash210)
         'eth=true&factor[eth_hr]=10&factor[eth_p]=0' #Ethash
@@ -79,6 +80,8 @@ if ($Querymode -eq "core" -or $Querymode -eq "Menu") {
         'l2z=true&factor[l2z_hr]=10&factor[l2z_p]=0' #Lyra2z
         'lbry=true&factor[lbry_hr]=10&factor[lbry_p]=0' #Lbry
         'lre=true&factor[lrev2_hr]=10&factor[lrev2_p]=0' #Lyra2v2
+        'lrev3=true&factor[lrev3_hr]=10&factor[lrev3_p]=0' #Lyra2v3
+        'mtp=true&factor[mtp_hr]=10&factor[mtp_p]=0' #MTP
         'n5=true&factor[n5_hr]=10&factor[n5_p]=0' #Nist5
         'ns=true&factor[ns_hr]=10&factor[ns_p]=0' #NeoScrypt
         'pas=true&factor[pas_hr]=10&factor[pas_p]=0' #Pascal
@@ -142,6 +145,8 @@ if ($Querymode -eq "core" -or $Querymode -eq "Menu") {
             "CnSaber" { 1 }
             "CnV7" { 1 }
             "CnV8" { 1 }
+            "Cuckaroo29" { 1 }
+            "Cuckaroo31" { 1 }
             "Energi" { 1e6 }
             "Equihash144" { 1 }
             "Equihash192" { 1 }
@@ -153,7 +158,7 @@ if ($Querymode -eq "core" -or $Querymode -eq "Menu") {
             "KeccakC" { 1e6 }
             "LBK3" { 1e3 }
             "Lyra2v2" {1e3}
-            "Lyra2v3" {1e3}
+            "Lyra2v3" {1e6}
             "Lyra2z" { 1e6 }
             "M7M" { 1e3 }
             "MTP" { 1e3 }

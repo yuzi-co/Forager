@@ -34,10 +34,11 @@ if ($Querymode -eq "speed") {
     if ($Request.Result.Workers) {
         $Request.Result.Workers | ForEach-Object {
             $Multiplier = switch ($_[6]) {
-                {@(16, 17, 18, 21, 23, 25, 28) -contains $PSItem} {1000000000} #GH
-                {@(5, 7, 8, 9, 10, 14, 20, 26, 29) -contains $PSItem} {1000000} #MH
-                {@(19, 22, 30) -contains $PSItem} {1000} #KH
-                {@(24) -contains $PSItem} {1}
+                {@(16, 17, 18, 21, 23, 25, 28) -contains $PSItem} {1e9} #GH
+                {@(5, 7, 8, 9, 10, 14, 20, 26, 29, 32) -contains $PSItem} {1e6} #MH
+                {@(19, 22, 30, 31) -contains $PSItem} {1e3} #KH
+                {@(24, 37) -contains $PSItem} {1}
+                Default {1}
             }
             $Result += [PSCustomObject]@{
                 PoolName   = $name
