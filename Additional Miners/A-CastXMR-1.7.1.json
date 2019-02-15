@@ -20,8 +20,8 @@
     "Fee": 0.015,
     "Algorithms": {
         "CnFast": "--algo=8",
-        "CnFast2": "--algo=11",
-        "CnFеst": "--algo=9",
+        "CnFest": "--algo=9",
+        "CnFreeHaven": "--algo=11",
         "CnHalf": "--algo=6",
         "CnHaven": "--algo=7",
         "CnHeavy": "--algo=2",
