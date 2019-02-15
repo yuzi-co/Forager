@@ -12,7 +12,7 @@ $WalletMode = "WALLET"
 $RewardType = "PPLS"
 $Result = @()
 
-if ($Querymode -eq "info") {
+if ($Querymode -eq "Info") {
     $Result = [PSCustomObject]@{
         Disclaimer            = "Must set wallet for each coin on web, set login on config.ini file"
         ActiveOnManualMode    = $ActiveOnManualMode
@@ -23,7 +23,7 @@ if ($Querymode -eq "info") {
     }
 }
 
-if ($Querymode -eq "speed") {
+if ($Querymode -eq "Speed") {
     $Request = Invoke-APIRequest -Url $("https://" + $Info.Symbol + ".miner.rocks/api/stats_address?address=" + $Info.User + "&longpoll=false") -Retry 3 -MaxAge 1
 
     if ($Request -and $Request.stats.workers) {
@@ -38,7 +38,7 @@ if ($Querymode -eq "speed") {
     }
 }
 
-if ($Querymode -eq "wallet") {
+if ($Querymode -eq "Wallet") {
     $Request = Invoke-APIRequest -Url $("https://" + $Info.Symbol + ".miner.rocks/api/stats_address?address=" + $Info.User + "&longpoll=false") -Retry 3
     $Divisor = switch ($Info.Symbol) {
         'aeon' { 1e12 }
@@ -58,12 +58,12 @@ if ($Querymode -eq "wallet") {
     }
 }
 
-if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
+if (($Querymode -eq "Core" ) -or ($Querymode -eq "Menu")) {
 
     $Response = Invoke-WebRequest -Uri "https://miner.rocks"
 
     $Regex = "[^\/]{name:\s*'(\w+)',\s*host:\s*'(\S+)'.*kind:\s*`"(\S*)`""
-    $Pools = $Response.Scripts -split "`n" -match $Regex | ForEach-Object {
+    $Pools = $Response.Content -split "`n" -match $Regex | ForEach-Object {
         $_ -match $Regex | Out-Null
 
         [PSCustomObject]@{
