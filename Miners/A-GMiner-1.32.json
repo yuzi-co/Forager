@@ -17,8 +17,6 @@
     "APIPort": 4028,
     "SSL": true,
     "Fee": 0.02,
-    "CUDA": 9.0,
-    "NoCPUMining": "$(if ($AlgoName -in @('Aeternity', 'Cuckaroo29', 'Cuckatoo31')){$true}else{$false})",
     "Algorithms": {
         "Equihash150|4gb": "--algo 150_5"
     }
