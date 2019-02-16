@@ -653,7 +653,7 @@ function Invoke-HTTPRequest {
 function Invoke-APIRequest {
     param(
         [Parameter(Mandatory = $true)]
-        [String]$Url = "http://localhost/",
+        [String]$Url,
         [Parameter(Mandatory = $false)]
         [Int]$Timeout = 5, # Request timeout in seconds
         [Parameter(Mandatory = $false)]
@@ -1036,7 +1036,7 @@ function Start-SubProcess {
         Start-Sleep -Seconds 1
         $JobOutput = Receive-Job $Job
     }
-    while ($JobOutput -eq $null)
+    while (-not $JobOutput)
 
     if ($JobOutput.ProcessId -gt 0) {
         $Process = Get-Process | Where-Object Id -eq $JobOutput.ProcessId
@@ -1092,7 +1092,7 @@ function Expand-WebRequest {
 function Get-Pools {
     param(
         [Parameter(Mandatory = $true)]
-        [String]$Querymode = 'core',
+        [String]$Querymode,
         [Parameter(Mandatory = $false)]
         [array]$PoolsFilterList = $null,
         #[array]$PoolsFilterList='Mining_pool_hub',
@@ -1290,11 +1290,6 @@ function Print-HorizontalLine ([string]$Title) {
 }
 
 function Set-WindowSize ([int]$Width, [int]$Height) {
-    #zero not change this axis
-
-    $pshost = Get-Host
-    $RawUI = $pshost.UI.RawUI
-
     #Buffer must be always greater than windows size
 
     $BSize = $Host.UI.RawUI.BufferSize
@@ -1599,7 +1594,7 @@ function Test-DeviceGroupsConfig ($Types) {
         }
     }
     $TotalMem = (($Types | Where-Object Type -ne 'CPU').OCLDevices.GlobalMemSize | Measure-Object -Sum).Sum / 1GB
-    $TotalSwap = (Get-WmiObject Win32_PageFile | Select-Object -ExpandProperty FileSize | Measure-Object -Sum).Sum / 1GB
+    $TotalSwap = (Get-CimInstance Win32_PageFile | Select-Object -ExpandProperty FileSize | Measure-Object -Sum).Sum / 1GB
     if ($TotalMem -gt $TotalSwap) {
         Log-Message "Make sure you have at least $TotalMem GB swap configured" -Severity Warn
         Start-Sleep -Seconds 5

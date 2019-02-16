@@ -487,7 +487,7 @@ while ($Quit -eq $false) {
                 }
 
                 if ($Config.CUDAVersion -and $Miner.CUDA) {
-                    if ([version]$Miner.CUDA -gt [version]$Config.CUDAVersion) {
+                    if ($Miner.CUDA -gt $Config.CUDAVersion) {
                         Log-Message "$($MinerFile.BaseName) skipped due to CUDA version constraints" -Severity Debug
                         Continue
                     }
