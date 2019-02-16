@@ -9,84 +9,108 @@
 
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 $ActiveOnManualMode = $true
-$ActiveOnAutomaticMode = $false
-$ActiveOnAutomatic24hMode = $false
-$WalletMode = "NONE"
+$ActiveOnAutomaticMode = $true
+$ActiveOnAutomatic24hMode = $true
+$WalletMode = "Wallet"
 $Location = 'US'
 $RewardType = 'PPLS'
 $Result = @()
 
 if ($Querymode -eq "info") {
     $Result = [PSCustomObject]@{
-        Disclaimer               = "No registration, No autoexchange, need wallet for each coin on config.txt"
+        Disclaimer               = "No registration, No autoexchange, need wallet for each coin"
         ActiveOnManualMode       = $ActiveOnManualMode
         ActiveOnAutomaticMode    = $ActiveOnAutomaticMode
         ActiveOnAutomatic24hMode = $ActiveOnAutomatic24hMode
-        ApiData                  = $false
+        ApiData                  = $true
         WalletMode               = $WalletMode
         RewardType               = $RewardType
     }
 }
 
-
-if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
+if (($Querymode -eq "Core" ) -or ($Querymode -eq "Menu")) {
     $Pools = @()
 
-    $Pools += [PSCustomObject]@{coin = "Aeon"; symbol = "AEON"; algo = "CnLiteV7"; port = 5541; fee = 0.0; walletSymbol = "Aeon"; server = "aeon.ingest.cryptoknight.cc"}
-    $Pools += [PSCustomObject]@{coin = "Alloy"; symbol = "XAO"; algo = "CnAlloy"; port = 5661; fee = 0.0; walletSymbol = "Alloy"; server = "alloy.ingest.cryptoknight.cc"}
-    $Pools += [PSCustomObject]@{coin = "Arqma"; symbol = "ARQ"; algo = "CnLiteV7"; port = 3731; fee = 0.0; walletSymbol = "arq"; server = "arq.ingest.cryptoknight.cc"}
-    $Pools += [PSCustomObject]@{coin = "Arto"; symbol = "ARTO"; algo = "CnArto"; port = 51201; fee = 0.0; walletSymbol = "Arto"; server = "arto.ingest.cryptoknight.cc"}
-    $Pools += [PSCustomObject]@{coin = "BBS"; symbol = "BBS"; algo = "CnV7"; port = 19931; fee = 0.0; walletSymbol = "BBS"; server = "bbs.ingest.cryptoknight.cc"}
-    $Pools += [PSCustomObject]@{coin = "BitTube"; symbol = "TUBE"; algo = "CnSaber"; port = 4461; fee = 0.0; walletSymbol = "IPBC"; server = "ipbc.ingest.cryptoknight.cc"}
-    $Pools += [PSCustomObject]@{coin = "Elya"; symbol = "ELYA"; algo = "CnV7"; port = 50201; fee = 0.0; walletSymbol = "ELYA"; server = "elya.ingest.cryptoknight.cc"}
-    $Pools += [PSCustomObject]@{coin = "Graft"; symbol = "GRF"; algo = "CnV7"; port = 9111; fee = 0.0; walletSymbol = "GRAFT"; server = "graft.ingest.cryptoknight.cc"}
-    $Pools += [PSCustomObject]@{coin = "Haven"; symbol = "XHV"; algo = "CnHeavy"; port = 5531; fee = 0.0; walletSymbol = "Haven"; server = "haven.ingest.cryptoknight.cc"}
-    $Pools += [PSCustomObject]@{coin = "IntenseCoin"; symbol = "ITNS"; algo = "CnV7"; port = 8881; fee = 0.0; walletSymbol = "ITNS"; server = "intense.ingest.cryptoknight.cc"}
-    $Pools += [PSCustomObject]@{coin = "Iridium"; symbol = "IRD"; algo = "CnLiteV7"; port = 50501; fee = 0.0; walletSymbol = "Iridium"; server = "iridium.ingest.cryptoknight.cc"}
-    $Pools += [PSCustomObject]@{coin = "Italo"; symbol = "ITA"; algo = "CnHaven"; port = 50701; fee = 0.0; walletSymbol = "Italo"; server = "italo.ingest.cryptoknight.cc"}
-    $Pools += [PSCustomObject]@{coin = "Lines"; symbol = "LNS"; algo = "CnV7"; port = 50401; fee = 0.0; walletSymbol = "Lines"; server = "lines.ingest.cryptoknight.cc"}
-    $Pools += [PSCustomObject]@{coin = "Loki"; symbol = "LOKI"; algo = "CnHeavy"; port = 7731; fee = 0.0; walletSymbol = "Loki"; server = "loki.ingest.cryptoknight.cc"}
-    $Pools += [PSCustomObject]@{coin = "Masari"; symbol = "MSR"; algo = "CnFast"; port = 3333; fee = 0.0; walletSymbol = "MSR"; server = "masari.ingest.cryptoknight.cc"}
-    $Pools += [PSCustomObject]@{coin = "MoneroV"; symbol = "XMV"; algo = "CnV7"; port = 9221; fee = 0.0; walletSymbol = "MoneroV"; server = "monerov.ingest.cryptoknight.cc"}
-    $Pools += [PSCustomObject]@{coin = "Niobio"; symbol = "NBR"; algo = "CnHeavy"; port = 50101; fee = 0.0; walletSymbol = "Niobio"; server = "niobio.ingest.cryptoknight.cc"}
-    $Pools += [PSCustomObject]@{coin = "Ombre"; symbol = "OMB"; algo = "CnHeavy"; port = 5571; fee = 0.0; walletSymbol = "Ombre"; server = "ombre.ingest.cryptoknight.cc"}
-    $Pools += [PSCustomObject]@{coin = "Qwerty"; symbol = "QWC"; algo = "CnHeavy"; port = 8261; fee = 0.0; walletSymbol = "Qwery"; server = "qwerty.ingest.cryptoknight.cc"}
-    $Pools += [PSCustomObject]@{coin = "Saronite"; symbol = "XRN"; algo = "CnHeavy"; port = 5531; fee = 0.0; walletSymbol = "Saronite"; server = "saronite.ingest.cryptoknight.cc"}
-    $Pools += [PSCustomObject]@{coin = "Solace"; symbol = "SOL"; algo = "CnHeavy"; port = 5001; fee = 0.0; walletSymbol = "Solace"; server = "solace.ingest.cryptoknight.cc"}
-    $Pools += [PSCustomObject]@{coin = "Stellite"; symbol = "XTL"; algo = "CnXTL"; port = 16221; fee = 0.0; walletSymbol = "Stellite"; server = "stellite.ingest.cryptoknight.cc"}
-    $Pools += [PSCustomObject]@{coin = "Triton"; symbol = "TRIT"; algo = "CnLiteV7"; port = 6631; fee = 0.0; walletSymbol = "Triton"; server = "triton.ingest.cryptoknight.cc"}
-    $Pools += [PSCustomObject]@{coin = "TurtleCoin"; symbol = "TRTL"; algo = "CnLiteV7"; port = 4901; fee = 0.0; walletSymbol = "Turtle"; server = "turtle.ingest.cryptoknight.cc"}
-    $Pools += [PSCustomObject]@{coin = "WowNero"; symbol = "WOW"; algo = "CnV7"; port = 50901; fee = 0.0; walletSymbol = "WowNero"; server = "wownero.ingest.cryptoknight.cc"}
+    $Pools += [PSCustomObject]@{ Coin = "Aeon"       ; Symbol = "AEON" ; Algo = "CnLiteV7" ; Port = 5542  ; WalletSymbol = "aeon"       }
+    $Pools += [PSCustomObject]@{ Coin = "Alloy"      ; Symbol = "XAO"  ; Algo = "CnAlloy"  ; Port = 5562  ; WalletSymbol = "alloy"      }
+    $Pools += [PSCustomObject]@{ Coin = "Arqma"      ; Symbol = "ARQ"  ; Algo = "CnLiteV7" ; Port = 3731  ; WalletSymbol = "arq"        }
+    $Pools += [PSCustomObject]@{ Coin = "Arto"       ; Symbol = "RTO"  ; Algo = "CnArto"   ; Port = 51201 ; WalletSymbol = "arto"       }
+    $Pools += [PSCustomObject]@{ Coin = "BBS"        ; Symbol = "BBS"  ; Algo = "CnLiteV7" ; Port = 19931 ; WalletSymbol = "bbs"        }
+    $Pools += [PSCustomObject]@{ Coin = "BitcoiNote" ; Symbol = "BTCN" ; Algo = "CnLiteV7" ; Port = 9732  ; WalletSymbol = "btcn"       }
+    $Pools += [PSCustomObject]@{ Coin = "Bittorium"  ; Symbol = "BTOR" ; Algo = "CnLiteV7" ; Port = 10401 ; WalletSymbol = "bittorium"  }
+    $Pools += [PSCustomObject]@{ Coin = "BitTube"    ; Symbol = "TUBE" ; Algo = "CnSaber"  ; Port = 5631  ; WalletSymbol = "ipbc"       ; Server = "tube.ingest.cryptoknight.cc" }
+    $Pools += [PSCustomObject]@{ Coin = "Caliber"    ; Symbol = "CAL"  ; Algo = "CnV8"     ; Port = 14101 ; WalletSymbol = "caliber"    }
+    $Pools += [PSCustomObject]@{ Coin = "CitiCash"   ; Symbol = "CCH"  ; Algo = "CnHeavy"  ; Port = 13901 ; WalletSymbol = "citi"       }
+    $Pools += [PSCustomObject]@{ Coin = "Elya"       ; Symbol = "ELYA" ; Algo = "CnV7"     ; Port = 50201 ; WalletSymbol = "elya"       }
+    $Pools += [PSCustomObject]@{ Coin = "Graft"      ; Symbol = "GRF"  ; Algo = "CnV8"     ; Port = 9111  ; WalletSymbol = "graft"      }
+    $Pools += [PSCustomObject]@{ Coin = "Haven"      ; Symbol = "XHV"  ; Algo = "CnHaven"  ; Port = 5831  ; WalletSymbol = "haven"      }
+    $Pools += [PSCustomObject]@{ Coin = "IPBCrocks"  ; Symbol = "IPBC" ; Algo = "SnSaber"  ; Port = 5631  ; WalletSymbol = "ipbcrocks"  }
+    $Pools += [PSCustomObject]@{ Coin = "Iridium"    ; Symbol = "IRD"  ; Algo = "CnLiteV7" ; Port = 50501 ; WalletSymbol = "iridium"    }
+    $Pools += [PSCustomObject]@{ Coin = "Italo"      ; Symbol = "ITA"  ; Algo = "CnHaven"  ; Port = 50701 ; WalletSymbol = "italo"      }
+    $Pools += [PSCustomObject]@{ Coin = "Lethean"    ; Symbol = "LTHN" ; Algo = "CnV8"     ; Port = 8881  ; WalletSymbol = "lethean"    }
+    $Pools += [PSCustomObject]@{ Coin = "Loki"       ; Symbol = "LOKI" ; Algo = "CnHeavy"  ; Port = 7731  ; WalletSymbol = "loki"       }
+    $Pools += [PSCustomObject]@{ Coin = "Masari"     ; Symbol = "MSR"  ; Algo = "CnHalf"   ; Port = 3333  ; WalletSymbol = "msr"        }
+    $Pools += [PSCustomObject]@{ Coin = "Monero"     ; Symbol = "XMR"  ; Algo = "CnV8"     ; Port = 4441  ; WalletSymbol = "monero"     }
+    $Pools += [PSCustomObject]@{ Coin = "MoneroV"    ; Symbol = "XMV"  ; Algo = "CnV7"     ; Port = 9221  ; WalletSymbol = "monerov"    }
+    $Pools += [PSCustomObject]@{ Coin = "NioBio"     ; Symbol = "NBR"  ; Algo = "CnHeavy"  ; Port = 5801  ; WalletSymbol = "niobio"     }
+    $Pools += [PSCustomObject]@{ Coin = "Ombre"      ; Symbol = "OMB"  ; Algo = "CnHeavy"  ; Port = 5571  ; WalletSymbol = "ombre"      }
+    $Pools += [PSCustomObject]@{ Coin = "Solace"     ; Symbol = "SOL"  ; Algo = "CnHeavy"  ; Port = 5001  ; WalletSymbol = "solace"     }
+    $Pools += [PSCustomObject]@{ Coin = "Ryo"        ; Symbol = "RYO"  ; Algo = "CnGpu"    ; Port = 52901 ; WalletSymbol = "ryo"        }
+    $Pools += [PSCustomObject]@{ Coin = "Saronite"   ; Symbol = "XRN"  ; Algo = "CnHeavy"  ; Port = 11301 ; WalletSymbol = "saronite"   }
+    $Pools += [PSCustomObject]@{ Coin = "Solace"     ; Symbol = "SOL"  ; Algo = "CnHeavy"  ; Port = 5001  ; WalletSymbol = "solace"     }
+    $Pools += [PSCustomObject]@{ Coin = "Stellite"   ; Symbol = "XTL"  ; Algo = "CnHalf"   ; Port = 16221 ; WalletSymbol = "stellite"   }
+    $Pools += [PSCustomObject]@{ Coin = "Swap"       ; Symbol = "XWP"  ; Algo = "CnSwap"   ; Port = 7731  ; WalletSymbol = "swap"       }
+    $Pools += [PSCustomObject]@{ Coin = "Triton"     ; Symbol = "TRIT" ; Algo = "CnLiteV7" ; Port = 6631  ; WalletSymbol = "triton"     }
+    $Pools += [PSCustomObject]@{ Coin = "WowNero"    ; Symbol = "WOW"  ; Algo = "CnWow"    ; Port = 50901 ; WalletSymbol = "wownero"    }
 
     $Pools | ForEach-Object {
 
-        $Wallet = $CoinsWallets.get_item($_.symbol)
-        if ($Wallet) {
+        if ($CoinsWallets.($_.Symbol)) {
+
+            try {
+                $Request = $null
+                $Request = Invoke-APIRequest -Url ("https://cryptoknight.cc/rpc/" + $_.WalletSymbol + "/stats") -MaxAge 100
+            } catch {}
+
+            if ($Request -and $Request.charts) {
+                $PriceUSD = [double] $Request.charts.priceUSD[-1][1]
+                $Price = [double] $Request.charts.price[-1][1]
+                $Profit = [double] $Request.charts.profit3[-1][1]
+                $ProfitBTC = $Profit / $PriceUSD * $Price / 100000000
+                # Write-Host "Profit $($_.coin): $Profit Price Sat: $Price Price USD: $PriceUSD ProfitBTC: $ProfitBTC"
+            } else {
+                $ProfitBTC = 0
+            }
 
             $Result += [PSCustomObject]@{
-                Algorithm                = $_.algo
-                Info                     = $_.coin
+                Algorithm                = $_.Algo
+                Info                     = $_.Coin
                 Protocol                 = "stratum+tcp"
-                Host                     = $_.server
-                Port                     = $_.port
-                User                     = $Wallet
+                Host                     = $(if ($_.Server) {$_.Server} else {$_.WalletSymbol + ".ingest.cryptoknight.cc"})
+                Port                     = $_.Port
+                User                     = $CoinsWallets.($_.Symbol)
                 Pass                     = "#WorkerName#"
                 Location                 = $Location
                 SSL                      = $false
-                Symbol                   = $_.symbol
+                Symbol                   = $_.Symbol
                 ActiveOnManualMode       = $ActiveOnManualMode
                 ActiveOnAutomaticMode    = $ActiveOnAutomaticMode
                 ActiveOnAutomatic24hMode = $ActiveOnAutomatic24hMode
                 WalletMode               = $WalletMode
-                WalletSymbol             = $_.walletSymbol
+                WalletSymbol             = $_.WalletSymbol
                 PoolName                 = $Name
-                Fee                      = $_.fee
+                Fee                      = 0
                 RewardType               = $RewardType
+
+                PoolWorkers              = $Request.pool.miners
+                PoolHashRate             = $Request.pool.hashRate
+                Price                    = [decimal]($ProfitBTC / 1000)
+                Price24h                 = [decimal]($ProfitBTC / 1000)
             }
         }
     }
     Remove-Variable Pools
 }
 
-$Result | ConvertTo-Json | Set-Content $info.SharedFile
+$Result | ConvertTo-Json | Set-Content $Info.SharedFile
 Remove-Variable Result
