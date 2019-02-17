@@ -8,7 +8,7 @@ param(
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 $ActiveOnManualMode = $true
 $ActiveOnAutomaticMode = $true
-$WalletMode = "WALLET"
+$WalletMode = "Wallet"
 $RewardType = "PPLS"
 $Result = @()
 
@@ -51,14 +51,14 @@ if ($Querymode -eq "Wallet") {
     if ($Request) {
         $Result = [PSCustomObject]@{
             Pool     = $Name
-            currency = $Info.Symbol
-            balance  = ($Request.stats.balance + $Request.stats.pendingIncome ) / $Divisor
+            Currency = $Info.Symbol
+            Balance  = ($Request.stats.balance + $Request.stats.pendingIncome ) / $Divisor
         }
         Remove-Variable Request
     }
 }
 
-if (($Querymode -eq "Core" ) -or ($Querymode -eq "Menu")) {
+if ($Querymode -eq "Core") {
 
     $Response = Invoke-WebRequest -Uri "https://miner.rocks"
 
@@ -81,21 +81,22 @@ if (($Querymode -eq "Core" ) -or ($Querymode -eq "Menu")) {
 
             $Algo = Get-AlgoUnifiedName $_.Algo
             switch ($_.Coin) {
-                "Haven" { $Algo = 'CnHaven' }
-                "Saronite" { $Algo = 'CnHaven' }
                 "BitTube" { $Algo = 'CnSaber' }
+                "Haven" { $Algo = 'CnHaven' }
+                "Masari" { $Algo = 'CnHalf' }
+                "Saronite" { $Algo = 'CnHaven' }
             }
 
             $Coin = Get-CoinUnifiedName $_.Coin
 
-            if ($CoinsWallets.($PoolResponse.config.symbol)) {
+            if ($Wallets.($PoolResponse.config.symbol)) {
                 $Result += [PSCustomObject]@{
                     Info                  = $Coin
                     Algorithm             = $Algo
                     Protocol              = "stratum+tcp"
                     Host                  = $($_.Url -split '//')[1]
                     Port                  = [int]$($PoolResponse.config.ports | Sort-Object {$_.desc -like "*Modern*GPU*"} -Descending | Select-Object -First 1 -ExpandProperty port)
-                    User                  = $CoinsWallets.($PoolResponse.config.symbol)
+                    User                  = $Wallets.($PoolResponse.config.symbol)
                     Pass                  = "w=#WorkerName#"
 
                     Location              = "EU"

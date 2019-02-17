@@ -11,13 +11,13 @@ $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 $ActiveOnManualMode = $true
 $ActiveOnAutomaticMode = $true
 $ActiveOnAutomatic24hMode = $true
-$WalletMode = "WALLET"
+$WalletMode = "Wallet"
 $RewardType = "PPLS"
 $Result = @()
 
-if ($Querymode -eq "info") {
+if ($Querymode -eq "Info") {
     $Result = [PSCustomObject]@{
-        Disclaimer               = "No registration, No autoexchange, need wallet for each coin on config.ini"
+        Disclaimer               = "No registration, No autoexchange, need wallet for each coin"
         ActiveOnManualMode       = $ActiveOnManualMode
         ActiveOnAutomaticMode    = $ActiveOnAutomaticMode
         ActiveOnAutomatic24hMode = $ActiveOnAutomatic24hMode
@@ -27,7 +27,7 @@ if ($Querymode -eq "info") {
     }
 }
 
-if ($Querymode -eq "SPEED") {
+if ($Querymode -eq "Speed") {
     $Request = Invoke-APIRequest -Url $("https://api.nanopool.org/v1/" + $Info.symbol.tolower() + "/history/" + $Info.user) -Retry 1
     if ($Request) {
         $Result = [PSCustomObject]@{
@@ -38,18 +38,18 @@ if ($Querymode -eq "SPEED") {
     }
 }
 
-if ($Querymode -eq "WALLET") {
+if ($Querymode -eq "Wallet") {
     $Request = Invoke-APIRequest -Url $("https://api.nanopool.org/v1/" + $Info.symbol.tolower() + "/balance/" + $Info.user) -Retry 3
     if ($Request) {
         $Result = [PSCustomObject]@{
             Pool     = $name
-            currency = $Info.Symbol
-            balance  = $Request.data
+            Currency = $Info.Symbol
+            Balance  = $Request.data
         }
     }
 }
 
-if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
+if ($Querymode -eq "Core") {
 
     $PrePools = @()
     $PrePools += [PSCustomObject]@{coin = "Ethereum"; algo = "Ethash"; symbol = "ETH"; port = 9999; fee = 0.01; divisor = 1000000; protocol = "stratum+tcp"};
@@ -74,12 +74,11 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
                 Algorithm             = $_.algo
                 Info                  = $_.Coin
                 Price                 = [decimal]$RequestP.bitcoins / $_.Divisor / 1000
-                Price24h              = [decimal]$RequestP.bitcoins / $_.Divisor / 1000
                 Protocol              = "stratum+tcp" #$_.Protocol
                 Host                  = $loc.server
                 Port                  = $_.Port
-                User                  = $CoinsWallets.($_.Symbol)
-                Pass                  = "x,#WorkerName#"
+                User                  = $Wallets.($_.Symbol) + "/#WorkerName#/$(Config.Email)"
+                Pass                  = "x"
                 Location              = $loc.location
                 SSL                   = $false
                 Symbol                = $_.symbol

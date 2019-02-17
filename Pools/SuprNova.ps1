@@ -54,7 +54,7 @@ if ($Querymode -eq "Speed") {
     }
 }
 
-if (($Querymode -eq "Core" ) -or ($Querymode -eq "Menu")) {
+if ($Querymode -eq "Core") {
 
     if (-not $Config.UserName -and -not $PoolConfig.$Name.UserName) {
         Write-Warning "$Name UserName not defined"
@@ -96,7 +96,7 @@ if (($Querymode -eq "Core" ) -or ($Querymode -eq "Menu")) {
             HostSSL               = $_.WalletSymbol + ".suprnova.cc"
             Port                  = $_.Port
             PortSSL               = $_.PortSSL
-            User                  = "$UserName.#WorkerName#"
+            User                  = $(if ($Config.("UserName_" + $Name)) {$Config.("UserName_" + $Name)} else {$Config.UserName}) + ".#WorkerName#"
             Pass                  = "x"
             Location              = "US"
             SSL                   = [bool]($_.PortSSL)

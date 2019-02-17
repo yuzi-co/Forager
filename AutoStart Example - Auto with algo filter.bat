@@ -6,7 +6,14 @@ set Mode=Automatic
 set Pools=Zpool
 set Algos=Lyra2z
 
-powershell -version 5.0 -noexit -executionpolicy bypass -command "& .\Core.ps1 -MiningMode %Mode% -PoolsName %Pools% -Algorithm %Algos%"
-::pwsh -noexit -executionpolicy bypass -command "& .\Core.ps1 -MiningMode %Mode% -PoolsName %Pools% -Algorithm %Algos%"
+set Command="& .\Core.ps1 -MiningMode %Mode% -PoolsName %Pools% -Algorithm %Algos%"
 
+where pwsh >nul 2>nul || goto powershell
+pwsh -noexit -executionpolicy bypass -command %Command%
+goto end
+
+:powershell
+powershell -version 5.0 -noexit -executionpolicy bypass -command %Command%
+
+:end
 pause

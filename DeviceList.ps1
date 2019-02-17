@@ -1,8 +1,10 @@
-. .\Include.ps1
-if ((Get-ConfigVariable "Afterburner") -eq "Enabled") {
+Import-Module .\Include.psm1
+
+$global:Config = Get-Config
+if ($Config.Afterburner) {
     . .\Includes\Afterburner.ps1
 }
-Print-DevicesInformation (Get-DevicesInformation (Get-MiningTypes -All))
+Out-DevicesInformation (Get-DevicesInformation (Get-MiningTypes -All))
 
 $Groups = Get-MiningTypes -All | Where-Object Type -ne 'CPU' | Select-Object GroupName,Type,Devices,@{Name = 'PowerLimits'; Expression = {$_.PowerLimits -join ','}} | ConvertTo-Json -Compress
 

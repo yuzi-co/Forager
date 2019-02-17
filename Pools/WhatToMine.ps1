@@ -48,14 +48,17 @@ if (($Querymode -eq "Wallet") -or ($Querymode -eq "ApiKey")) {
     }
 }
 
-if ($Querymode -eq "Core" -or $Querymode -eq "Menu") {
+if ($Querymode -eq "Core") {
 
     #Look for pools
-    $ConfigOrder = $PoolConfig.$Name.PoolOrder -split ','
+    $ConfigOrder = $Config.("PoolOrder_" + $Name) -split ','
     $HPools = foreach ($PoolToSearch in $ConfigOrder) {
         $HPoolsTmp = Get-Pools -Querymode "core" -PoolsFilterList $PoolToSearch -location $Info.Location
         #Filter by minworkes variable (must be here for not selecting now a pool and after that discarded on core.ps1 filter)
-        $HPoolsTmp | Where-Object {$_.Poolworkers -ge (Get-ConfigVariable "MINWORKERS") -or $_.Poolworkers -eq $null}
+        $HPoolsTmp | Where-Object {
+            $_.PoolWorkers -eq $null -or
+            $_.PoolWorkers -ge $(if ($Config.("MinWorkers_" + $PoolToSearch)) {$Config.("MinWorkers_" + $PoolToSearch)} else {$Config.MinWorkers})
+        }
     }
 
     #Common Data from WTM

@@ -11,26 +11,26 @@ $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 $ActiveOnManualMode = $true
 $ActiveOnAutomaticMode = $true
 $ActiveOnAutomatic24hMode = $true
-$WalletMode = 'WALLET'
+$WalletMode = 'Wallet'
 $ApiUrl = 'https://www.starpool.biz/api'
 $MineUrl = 'starpool.biz'
 $Location = 'EU'
 $RewardType = "PPS"
 $Result = @()
 
-if ($Querymode -eq "info") {
+if ($Querymode -eq "Info") {
     $Result = [PSCustomObject]@{
-        Disclaimer               = "Autoexchange to @@currency coin specified in config.ini, no registration required"
+        Disclaimer               = "Autoexchange to BTC/LTC/DASH/CANN/DGB, No registration"
         ActiveOnManualMode       = $ActiveOnManualMode
         ActiveOnAutomaticMode    = $ActiveOnAutomaticMode
         ActiveOnAutomatic24hMode = $ActiveOnAutomatic24hMode
-        ApiData                  = $True
+        ApiData                  = $true
         WalletMode               = $WalletMode
         RewardType               = $RewardType
     }
 }
 
-if ($Querymode -eq "speed") {
+if ($Querymode -eq "Speed") {
     $Request = Invoke-APIRequest -Url $($ApiUrl + "/walletEx?address=" + $Info.user) -Retry 1
 
     if ($Request) {
@@ -39,7 +39,7 @@ if ($Querymode -eq "speed") {
                 PoolName   = $Name
                 Version    = $_.version
                 Algorithm  = Get-AlgoUnifiedName $_.Algo
-                WorkerName = (($_.password -split 'ID=')[1] -split ',')[0]
+                WorkerName = (($_.password -split 'id=')[1] -split ',')[0]
                 Diff       = $_.difficulty
                 Rejected   = $_.rejected
                 HashRate   = $_.accepted
@@ -49,7 +49,7 @@ if ($Querymode -eq "speed") {
     }
 }
 
-if ($Querymode -eq "wallet") {
+if ($Querymode -eq "Wallet") {
     $Request = Invoke-APIRequest -Url $($ApiUrl + "/wallet?address=" + $Info.user) -Retry 3
 
     if ($Request) {
@@ -62,7 +62,7 @@ if ($Querymode -eq "wallet") {
     }
 }
 
-if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
+if ($Querymode -eq "Core") {
     $Request = Invoke-APIRequest -Url $($ApiUrl + "/status") -Retry 3
     $RequestCurrencies = Invoke-APIRequest -Url $($ApiUrl + "/currencies") -Retry 3
     if (-not $Request) {
@@ -70,7 +70,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
         Exit
     }
 
-    $Currency = if ([string]::IsNullOrEmpty($(Get-ConfigVariable "CURRENCY_$Name"))) { Get-ConfigVariable "CURRENCY" } else { Get-ConfigVariable "CURRENCY_$Name" }
+    $Currency = if ($Config.("Currency_" + $Name)) {$Config.("Currency_" + $Name)} else {$Config.Currency}
 
     if (
         @('BTC', 'LTC', 'DASH', 'CANN', 'DGB') -notcontains $Currency -and
@@ -79,8 +79,8 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
         Write-Warning "$Name $Currency may not be supported for payment"
     }
 
-    if (!$CoinsWallets.$Currency) {
-        Write-Warning "$Name $Currency wallet not defined in config.ini"
+    if (-not $Wallets.$Currency) {
+        Write-Warning "$Name $Currency wallet not defined"
         Exit
     }
 
@@ -102,8 +102,8 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
             Protocol              = "stratum+tcp"
             Host                  = $Algo.name + '.' + $MineUrl
             Port                  = $Algo.port
-            User                  = $CoinsWallets.$Currency
-            Pass                  = "c=$Currency,ID=#WorkerName#"
+            User                  = $Wallets.$Currency
+            Pass                  = "c=$Currency,id=#WorkerName#"
             Location              = $Location
             SSL                   = $false
             Symbol                = Get-CoinSymbol -Coin $Pool_Algo

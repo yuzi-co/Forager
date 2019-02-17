@@ -60,7 +60,7 @@ if ($Querymode -eq "Wallet") {
     }
 }
 
-if (($Querymode -eq "Core" ) -or ($Querymode -eq "Menu")) {
+if ($Querymode -eq "Core") {
     $Pools = @()
 
     $Pools += [PSCustomObject]@{ Coin = "Akroma"          ; Symbol = "AKA"    ; Algo = "Ethash"      ; WalletSymbol = "aka"     ; Port = 2222 }
@@ -84,7 +84,7 @@ if (($Querymode -eq "Core" ) -or ($Querymode -eq "Menu")) {
     $Pools += [PSCustomObject]@{ Coin = "Wownero"         ; Symbol = "WOW"    ; Algo = "CnWow"       ; WalletSymbol = "wow"     ; Port = 6090 }
 
     $Pools | ForEach-Object {
-        if ($CoinsWallets.($_.Symbol)) {
+        if ($Wallets.($_.Symbol)) {
             $ApiResponse = Invoke-APIRequest -Url ("https://" + $_.WalletSymbol + ".fairpool.xyz/api/poolStats")
             $Result += [PSCustomObject]@{
                 Algorithm             = $_.Algo
@@ -93,7 +93,7 @@ if (($Querymode -eq "Core" ) -or ($Querymode -eq "Menu")) {
                 Host                  = "mine." + $_.WalletSymbol + ".fairpool.xyz"
                 Port                  = $_.Port
                 Price                 = [decimal]$ApiResponse.ProfitBtc
-                User                  = $CoinsWallets.($_.Symbol) + "+#WorkerName#"
+                User                  = $Wallets.($_.Symbol) + "+#WorkerName#"
                 Pass                  = "x"
                 Location              = "US"
                 SSL                   = $false

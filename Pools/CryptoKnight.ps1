@@ -16,7 +16,7 @@ $Location = 'US'
 $RewardType = 'PPLS'
 $Result = @()
 
-if ($Querymode -eq "info") {
+if ($Querymode -eq "Info") {
     $Result = [PSCustomObject]@{
         Disclaimer               = "No registration, No autoexchange, need wallet for each coin"
         ActiveOnManualMode       = $ActiveOnManualMode
@@ -28,7 +28,7 @@ if ($Querymode -eq "info") {
     }
 }
 
-if (($Querymode -eq "Core" ) -or ($Querymode -eq "Menu")) {
+if ($Querymode -eq "Core") {
     $Pools = @()
 
     $Pools += [PSCustomObject]@{ Coin = "Aeon"       ; Symbol = "AEON" ; Algo = "CnLiteV7" ; Port = 5542  ; WalletSymbol = "aeon"       }
@@ -65,7 +65,7 @@ if (($Querymode -eq "Core" ) -or ($Querymode -eq "Menu")) {
 
     $Pools | ForEach-Object {
 
-        if ($CoinsWallets.($_.Symbol)) {
+        if ($Wallets.($_.Symbol)) {
 
             try {
                 $Request = $null
@@ -88,7 +88,7 @@ if (($Querymode -eq "Core" ) -or ($Querymode -eq "Menu")) {
                 Protocol                 = "stratum+tcp"
                 Host                     = $(if ($_.Server) {$_.Server} else {$_.WalletSymbol + ".ingest.cryptoknight.cc"})
                 Port                     = $_.Port
-                User                     = $CoinsWallets.($_.Symbol)
+                User                     = $Wallets.($_.Symbol)
                 Pass                     = "#WorkerName#"
                 Location                 = $Location
                 SSL                      = $false

@@ -11,26 +11,26 @@ $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 $ActiveOnManualMode = $true
 $ActiveOnAutomaticMode = $true
 $ActiveOnAutomatic24hMode = $true
-$WalletMode = 'WALLET'
+$WalletMode = 'Wallet'
 $ApiUrl = 'https://www.ahashpool.com/api'
 $MineUrl = 'mine.ahashpool.com'
 $Location = 'US'
 $RewardType = "PPS"
 $Result = @()
 
-if ($Querymode -eq "info") {
+if ($Querymode -eq "Info") {
     $Result = [PSCustomObject]@{
-        Disclaimer               = "Autoexchange to BTC wallet, no registration required"
+        Disclaimer               = "Autoexchange to BTC, No registration"
         ActiveOnManualMode       = $ActiveOnManualMode
         ActiveOnAutomaticMode    = $ActiveOnAutomaticMode
         ActiveOnAutomatic24hMode = $ActiveOnAutomatic24hMode
-        ApiData                  = $True
+        ApiData                  = $true
         WalletMode               = $WalletMode
         RewardType               = $RewardType
     }
 }
 
-if ($Querymode -eq "speed") {
+if ($Querymode -eq "Speed") {
     $Request = Invoke-APIRequest -Url $($ApiUrl + "/walletEx?address=" + $Info.user) -Retry 1
 
     if ($Request) {
@@ -39,7 +39,7 @@ if ($Querymode -eq "speed") {
                 PoolName   = $Name
                 Version    = $_.version
                 Algorithm  = Get-AlgoUnifiedName $_.Algo
-                WorkerName = (($_.password -split 'ID=')[1] -split ',')[0]
+                WorkerName = (($_.password -split 'id=')[1] -split ',')[0]
                 Diff       = $_.difficulty
                 Rejected   = $_.rejected
                 HashRate   = $_.accepted
@@ -49,7 +49,7 @@ if ($Querymode -eq "speed") {
     }
 }
 
-if ($Querymode -eq "wallet") {
+if ($Querymode -eq "Wallet") {
     $Request = Invoke-APIRequest -Url $($ApiUrl + "/wallet?address=" + $Info.user) -Retry 3
 
     if ($Request) {
@@ -62,10 +62,10 @@ if ($Querymode -eq "wallet") {
     }
 }
 
-if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
+if ($Querymode -eq "Core") {
 
-    if (!$CoinsWallets.BTC) {
-        Write-Warning "$Name BTC wallet not defined in config.ini"
+    if (-not $Wallets.BTC) {
+        Write-Warning "$Name BTC wallet not defined"
         Exit
     }
 
@@ -93,8 +93,8 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
             Protocol              = "stratum+tcp"
             Host                  = $Algo.name + "." + $MineUrl
             Port                  = $Algo.port
-            User                  = $CoinsWallets.BTC
-            Pass                  = "c=BTC,ID=#WorkerName#"
+            User                  = $Wallets.BTC
+            Pass                  = "c=BTC,id=#WorkerName#"
             Location              = $Location
             SSL                   = $false
             Symbol                = Get-CoinSymbol -Coin $Pool_Algo

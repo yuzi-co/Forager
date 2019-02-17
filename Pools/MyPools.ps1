@@ -8,11 +8,11 @@ param(
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 $ActiveOnManualMode = $true
 $ActiveOnAutomaticMode = $false
-$WalletMode = "NONE"
+$WalletMode = "None"
 $RewardType = "PPLS"
 $Result = @()
 
-if ($Querymode -eq "info") {
+if ($Querymode -eq "Info") {
     $Result = [PSCustomObject]@{
         Disclaimer            = "Must set wallet for each coin on web, set login on config.ini file"
         ActiveOnManualMode    = $ActiveOnManualMode
@@ -23,13 +23,13 @@ if ($Querymode -eq "info") {
     }
 }
 
-if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
+if ($Querymode -eq "Core") {
     $Pools = @()
 
     # $Pools += [PSCustomObject]@{coin = "HPPcoin"; algo = "Lyra2h"; symbol = "HPP"; server = "pool.hppcoin.com"; port = 3008; fee = 0.02; user = "$UserName.#WorkerName#"}
     # $Pools += [PSCustomObject]@{coin = "HPPcoin"; algo = "Lyra2h"; symbol = "HPP"; server = "pool.hppcoin.com"; port = 3008; fee = 0.02; user = "$UserName.#WorkerName#"}
-    $Pools += [PSCustomObject]@{coin = "Dallar"; algo = "Throestl"; symbol = "DAL"; server = "pool.dallar.org"; port = 3032; fee = 0.01; user = $CoinsWallets.DAL}
-    $Pools += [PSCustomObject]@{coin = "Pascalcoin"; algo = "RandomHash"; symbol = "PASC"; server = "mine.pool.pascalpool.org"; port = 3333; fee = 0.01; user = $CoinsWallets.PASC}
+    $Pools += [PSCustomObject]@{coin = "Dallar"; algo = "Throestl"; symbol = "DAL"; server = "pool.dallar.org"; port = 3032; fee = 0.01; user = $Wallets.DAL}
+    $Pools += [PSCustomObject]@{coin = "Pascalcoin"; algo = "RandomHash"; symbol = "PASC"; server = "mine.pool.pascalpool.org"; port = 3333; fee = 0.01; user = $Wallets.PASC}
     $Pools += [PSCustomObject]@{coin = "Grin"; algo = "Cuckaroo29"; symbol = "GRIN"; server = "eu-west-stratum.grinmint.com"; port = 3416; fee = 0.01; user = '$($Config.Email)/#WorkerName#'}
 
     $Pools | ForEach-Object {

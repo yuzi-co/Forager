@@ -5,12 +5,16 @@ Cache/*
 Config/*
 Downloads/*
 Archive/*
+Dump/*
 
 .vscode/
 Donation.ctr
 Wrapper_*.txt
 !empty.txt
-config.ini
+
+Config.ini
+Autoexec.txt
+Donations.json
 
 WIP/*
 *custom*

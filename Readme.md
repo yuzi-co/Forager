@@ -42,7 +42,7 @@ NVIDIA miners are not 100% untested.
 * Profit display in mBTC instead of BTC with too many zeroes
 * Support profitability info for all coins on WhatToMine
 * Power usage approximation for AMD and CPU when Afterburner integration is off
-	- You will need to add TDP values for your hardware in _cpu-tdp.json_ or _amd-cards-tdp.json_ if they are not there
+	- You will need to add TDP values for your hardware in _/Data/cpu-tdp.json_ or _/Data/amd-cards-tdp.json_ if they are not there
 * Support any fiat currency which is supported by CoinDesk for profit display
 * Allow dual mining any Ethash coin instead of ETH/ETC only
 * Filter out algos without solved blocks in 24h on MPH and YIIMP type pools
