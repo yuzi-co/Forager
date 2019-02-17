@@ -45,7 +45,7 @@ $ErrorActionPreference = "Continue"
 
 $Global:Release = @{
     Application = "Forager"
-    Version     = "19.02.1"
+    Version     = "19.03"
 }
 Log "$($Release.Application) v$($Release.Version)"
 
@@ -842,8 +842,7 @@ while ($Quit -eq $false) {
                 "$($ActiveMiners[$BestLast.IdF].Algorithms)/" +
                 "$($ActiveMiners[$BestLast.IdF].Pool.Info)" +
                 "$(if ($ActiveMiners[$BestLast.IdF].PoolDual.Info) { '_' + $ActiveMiners[$BestLast.IdF].PoolDual.Info}) " +
-                "with Power Limit $($BestLast.PowerLimit) " +
-                "(id $($BestLast.IdF)-$($BestLast.Id)) " +
+                "PL $($BestLast.PowerLimit) " +
                 "for group $($DeviceGroup.GroupName)")
 
             # cancel miner if current pool workers below MinWorkers
@@ -887,7 +886,7 @@ while ($Quit -eq $false) {
         if ($BestLast.Status -eq 'PendingCancellation') {
             if (($ActiveMiners[$BestLast.IdF].SubMiners.Stats.FailedTimes | Measure-Object -sum).sum -ge 3) {
                 $ActiveMiners[$BestLast.IdF].SubMiners | ForEach-Object {$_.Status = 'Failed'}
-                Log "Detected more than 3 fails, cancelling combination for $BestNowLogMsg" -Severity Warn
+                Log "Detected more than 3 fails, cancelling $BestLastLogMsg" -Severity Warn
             }
         }
 
@@ -900,8 +899,7 @@ while ($Quit -eq $false) {
                 "$($ActiveMiners[$BestNow.IdF].Algorithms)/" +
                 "$($ActiveMiners[$BestNow.IdF].Pool.Info)" +
                 "$(if ($ActiveMiners[$BestNow.IdF].PoolDual.Info) { '_' + $ActiveMiners[$BestNow.IdF].PoolDual.Info}) " +
-                "with Power Limit $($BestNow.PowerLimit) " +
-                "(id $($BestNow.IdF)-$($BestNow.Id))"
+                "PL $($BestNow.PowerLimit) " +
                 "for group $($DeviceGroup.GroupName)")
 
             $ProfitNow = $BestNow.Profits
@@ -912,7 +910,7 @@ while ($Quit -eq $false) {
                 $ActiveMiners[$BestNow.IdF].SubMiners[$BestNow.Id].StatsHistory.BestTimes++
             }
 
-            Log "$BestNowLogMsg is the best combination for device group, last was $BestLastLogMsg"
+            Log ($BestNowLogMsg + " is the best combination" + $(if ($BestLastLogMsg){", last was $BestLastLogMsg"}))
         } else {
             Log "No valid candidate for device group $($DeviceGroup.GroupName)" -Severity Warn
             # Continue
@@ -1017,7 +1015,7 @@ while ($Quit -eq $false) {
                     $ActiveMiners[$BestNow.IdF].SubMiners[$BestNow.Id].Stats.StatsTime = Get-Date
                     $ActiveMiners[$BestNow.IdF].SubMiners[$BestNow.Id].StatsHistory.LastTimeActive = Get-Date
                     $ActiveMiners[$BestNow.IdF].SubMiners[$BestNow.Id].TimeSinceStartInterval = [TimeSpan]0
-                    Log "Started System process Id $($ActiveMiners[$BestNow.IdF].Process.Id) for $BestNowLogMsg --> $($ActiveMiners[$BestNow.IdF].Path) $($ActiveMiners[$BestNow.IdF].Arguments)" -Severity Debug
+                    Log "Started pid $($ActiveMiners[$BestNow.IdF].Process.Id), $BestNowLogMsg --> $($ActiveMiners[$BestNow.IdF].Path) $($ActiveMiners[$BestNow.IdF].Arguments)" -Severity Debug
                 }
             } else {
                 #Must mantain last miner by switch
@@ -1236,7 +1234,7 @@ while ($Quit -eq $false) {
                 $_.Status = "PendingCancellation"
                 $_.Stats.FailedTimes++
                 $_.StatsHistory.FailedTimes++
-                Log "Detected miner error $($ActiveMiners[$_.IdF].Name)/$($ActiveMiners[$_.IdF].Algorithm) (id $($_.IdF)-$($_.Id)) --> $($ActiveMiners[$_.IdF].Path) $($ActiveMiners[$_.IdF].Arguments)" -Severity Warn
+                Log "Detected miner error $($ActiveMiners[$_.IdF].Name)/$($ActiveMiners[$_.IdF].Algorithm) --> $($ActiveMiners[$_.IdF].Path) $($ActiveMiners[$_.IdF].Arguments)" -Severity Warn
             }
         } #End For each
 
@@ -1260,16 +1258,16 @@ while ($Quit -eq $false) {
         #display header
         Out-HorizontalLine
         Write-Color @(
-            " {green}$($Release.Application) $($Release.Version)"
+            " {green}$($Release.Application) {white}$($Release.Version)"
             " {white}|"
-            " {green}E{white}nd Interval"
-            " {green}R{white}eset Failed"
             " {green}P{white}rofits"
             " {green}C{white}urrent"
             " {green}H{white}istory"
             " {green}W{white}allets"
             " {green}S{white}tats"
             " {white}|"
+            " {green}E{white}nd Interval"
+            " {green}R{white}eset Failed"
             " {green}Q{white}uit"
             " {green}$([string[]]$DeviceGroups.Id -join '/'){white} Group toggle"
         ) -join " "

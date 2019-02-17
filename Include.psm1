@@ -1761,22 +1761,22 @@ function Write-Color() {
         [switch] $NoNewLine = $false
     )
 
-    $startColor = $host.UI.RawUI.ForegroundColor;
+    $startColor = $Host.UI.RawUI.ForegroundColor;
 
     $text.Split( [char]"{", [char]"}" ) | ForEach-Object { $i = 0; } {
         if ($i % 2 -eq 0) {
             Write-Host $_ -NoNewline;
         } else {
             if ($_ -in [enum]::GetNames("ConsoleColor")) {
-                $host.UI.RawUI.ForegroundColor = ($_ -as [System.ConsoleColor]);
+                $Host.UI.RawUI.ForegroundColor = ($_ -as [System.ConsoleColor]);
             }
         }
 
         $i++;
     }
 
-    if (!$NoNewLine) {
-        Write-Host;
+    if (-not $NoNewLine) {
+        Write-Host
     }
-    $host.UI.RawUI.ForegroundColor = $startColor;
+    $Host.UI.RawUI.ForegroundColor = $startColor;
 }
