@@ -1,7 +1,7 @@
 {
     "Path": "miner.exe",
-    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.02/gminer_1_32_minimal_windows64.zip",
-    "SHA256": "A01D95F4F8DDB8864410E601A126DC25AB86349F30AC90E66281707F08375907",
+    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.02/gminer_1_33_minimal_windows64.zip",
+    "SHA256": "2D1791AA175D2E59BD2B37590C806FBFE06C000A299C07E7AA7FC25A52159A9A",
     "Type": "AMD",
     "Arguments": [
         "--server #Server#",
