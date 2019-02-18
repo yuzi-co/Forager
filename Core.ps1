@@ -201,41 +201,45 @@ while ($Quit -eq $false) {
     $Interval.StartTime = Get-Date
 
     #Donation
-    $DonationsFile = ".\Data\Donations.json"
+    $DonationsFile = ".\Data\donations.json"
     $DonationStat = if (Test-Path $DonationsFile) { Get-Content $DonationsFile | ConvertFrom-Json } else { @(0, 0) }
-    $MiningTime = [int]($DonationStat[0] + $Interval.LastTime.TotalMinutes)
-    $DonatedTime = [int]($DonationStat[1] + $Interval.LastTime.TotalMinutes)
+    $Config.DonateMinutes = [math]::Max($Config.DonateMinutes,10)
+    $MiningTime = $DonationStat[0]
+    $DonatedTime = $DonationStat[1]
+    switch ($Interval.Last) {
+        "Mining" { $MiningTime += $Interval.LastTime.TotalMinutes }
+        "Donate" { $DonatedTime += $Interval.LastTime.TotalMinutes }
+    }
+
+    if ($DonatedTime -ge $Config.DonateMinutes) {
+        $MiningTime = 0
+        $DonatedTime = 0
+    }
+
+    @($MiningTime, $DonatedTime) | ConvertTo-Json | Set-Content $DonationsFile
 
     #Activate or deactivate donation
     if ($MiningTime -gt 24 * 60) {
         # donation interval
         $Interval.Current = "Donate"
 
-        $Config.UserName = "ffwd"
-        $Config.WorkerName = "Donate"
-        $Wallets = @{
+        $Global:Config.UserName = "ffwd"
+        $Global:Config.WorkerName = "Donate"
+        $Global:Wallets = @{
             BTC = "3NoVvkGSNjPX8xBMWbP2HioWYK395wSzGL"
         }
 
-        $DonateInterval = ([math]::Max(($Config.DonateMinutes), 10) - $DonatedTime) * 60
+        $DonateInterval = ($Config.DonateMinutes - $DonatedTime) * 60
 
         $Algorithm = $null
-        $PoolsName = ("NiceHash")
+        $PoolsName = @("NiceHash")
         $CoinsName = $null
         $MiningMode = "Automatic"
-
-        if ($DonatedTime -ge [math]::Max(($Config.DonateMinutes), 10)) {
-            $DonatedTime = 0
-            $DonationStat[0] = 0
-        }
-
-        @($DonationStat[0], $DonatedTime) | ConvertTo-Json | Set-Content $DonationsFile
 
         Log "Next interval you will be donating for $DonateInterval seconds, thanks for your support"
     } else {
         #NOT donation interval
         $Interval.Current = "Mining"
-        @($MiningTime, 0) | ConvertTo-Json | Set-Content $DonationsFile
 
         $Algorithm = $ParamsBackup.Algorithm
         $PoolsName = $ParamsBackup.PoolsName
