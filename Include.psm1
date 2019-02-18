@@ -580,12 +580,14 @@ Function Write-Log {
         [switch]$NoEcho = $false
     )
     if ($Message) {
-        $LogFile.WriteLine("$(Get-Date -f "HH:mm:ss.ff")`t$Severity`t$Message")
+        if ($LogFile) {
+            $LogFile.WriteLine("$(Get-Date -f "HH:mm:ss.ff")`t$Severity`t$Message")
+        }
         if ($NoEcho -eq $false) {
             switch ($Severity) {
-                Info { Write-Host $Message -ForegroundColor Green }
-                Warn { Write-Warning $Message }
-                Error { Write-Error $Message }
+                Info { Write-Host "$Message" -ForegroundColor Green }
+                Warn { Write-Warning "$Message" }
+                Error { Write-Error "$Message" }
             }
         }
     }
