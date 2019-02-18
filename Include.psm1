@@ -1648,7 +1648,7 @@ function Get-CoinSymbol ([string]$Coin) {
     $Coin = $Coin -ireplace '[^\w]'
     if ($Coin) {
         $Coins = Get-Content -Path ".\Data\coins.json" | ConvertFrom-Json
-        if ($Coins.$Coin) { $Algos.$Coin }
+        if ($Coins.$Coin) { $Coins.$Coin }
         else { $Coin }
     }
 }
