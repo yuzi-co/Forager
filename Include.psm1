@@ -531,7 +531,6 @@ function Format-DeviceList {
     }
 }
 
-
 function Get-SystemInfo () {
 
     $OperatingSystem = Get-CimInstance Win32_OperatingSystem
@@ -1646,49 +1645,11 @@ function Clear-Files {
 }
 
 function Get-CoinSymbol ([string]$Coin) {
-
-    switch -wildcard ($Coin) {
-        "adzcoin" { "ADZ" }
-        "auroracoin" { "AUR" }
-        "bitcoin" { "BTC" }
-        "bitcoincash" { "BCH" }
-        "bitcoingold" { "BTG" }
-        "bitcoinz" { "BTCZ" }
-        "dash" { "DASH" }
-        "decred" { "DCR" }
-        "digibyte" { "DGB" }
-        "electroneum" { "ETN" }
-        "ethereum" { "ETH" }
-        "ethereumclassic" { "ETC" }
-        "expanse" { "EXP" }
-        "feathercoin" { "FTC" }
-        "gamecredits" { "GAME" }
-        "geocoin" { "GEO" }
-        "globalboosty" { "BSTY" }
-        "groestlcoin" { "GRS" }
-        "litecoin" { "LTC" }
-        "litecoinz" { "LTZ" }
-        "maxcoin" { "MAX" }
-        "minex" { "MNX" }
-        "monacoin" { "MONA" }
-        "monero" { "XMR" }
-        "musicoin" { "MUSIC" }
-        "myriad" { "XMY" }
-        "pascal" { "PASC" }
-        "polytimos" { "POLY" }
-        "safecoin" { "SAFE" }
-        "sexcoin" { "SXC" }
-        "siacoin" { "SC" }
-        "snowgem" { "XSG" }
-        "startcoin" { "START" }
-        "verge" { "XVG" }
-        "vertcoin" { "VTC" }
-        "zcash" { "ZEC" }
-        "zclassic" { "ZCL" }
-        "zcoin" { "XZC" }
-        "zencash" { "ZEN" }
-        "zero" { "ZER" }
-        Default { $Coin }
+    $Coin = $Coin -ireplace '[^\w]'
+    if ($Coin) {
+        $Coins = Get-Content -Path ".\Data\coins.json" | ConvertFrom-Json
+        if ($Coins.$Coin) { $Algos.$Coin }
+        else { $Coin }
     }
 }
 
