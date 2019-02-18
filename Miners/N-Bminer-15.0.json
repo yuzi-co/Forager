@@ -1,7 +1,7 @@
 {
-    "Path": "bminer-lite-v14.3.1-8d9471b\\bminer.exe",
-    "Uri": "https://www.bminercontent.com/releases/bminer-lite-v14.3.1-8d9471b-amd64.zip",
-    "SHA256": "727CEA4D14EBD054FF645FDAD955F86EC2115DFB2E33274943897BC3DA1289C0",
+    "Path": "bminer-lite-v15.0.0-e143cb4\\bminer.exe",
+    "Uri": "https://www.bminercontent.com/releases/bminer-lite-v15.0.0-e143cb4-amd64.zip",
+    "SHA256": "8ACF357EF48CF912D705BEC7A7AC7C7B659B36CC33FCC011E579B5B1D0AD5DE4",
     "Type": "NVIDIA",
     "Arguments": [
         "#AlgorithmParameters#$(if($enableSSL){'+ssl'})://$([System.Web.HttpUtility]::UrlEncode('#Login#')):$([System.Web.HttpUtility]::UrlEncode('#Password#'))@#Server#:#Port#",
@@ -19,7 +19,7 @@
     "Algorithms": {
         "Aeternity": "-uri aeternity",
         "Cuckaroo29|6gb": "-uri cuckaroo29",
-        "Cuckatoo31|11gb": "-uri cuckattoo31",
+        "Cuckatoo31|9gb": "-uri cuckattoo31",
         "Equihash144": "-pers auto -uri equihash1445",
         "Equihash150|8gb": "-uri beam",
         "Tensority": "-uri tensority"
