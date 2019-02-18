@@ -48,7 +48,7 @@ function Set-AfterburnerPowerLimit ([int]$PowerLimitPercent, $DeviceGroup) {
             Intel  = '*Intel*'
         }
 
-        $Devices = @($abMonitor.GpuEntries | Where-Object Device -like $Pattern.$($DeviceGroup.Type) | Select-Object -ExpandProperty Index)[$DeviceGroup.DevicesArray]
+        $Devices = @($abMonitor.GpuEntries | Where-Object Device -like $Pattern.$($DeviceGroup.GroupType) | Select-Object -ExpandProperty Index)[$DeviceGroup.DevicesArray]
 
         foreach ($device in $Devices) {
             if ($abControl.GpuEntries[$device].PowerLimitCur -ne $PowerLimit) {
