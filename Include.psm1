@@ -136,20 +136,20 @@ function Get-DevicesInformation ($Types) {
     if ($abControl) {$abControl.ReloadAll()}
 
     #AMD
-    if ($Types | Where-Object Type -eq 'AMD') {
+    if ($Types | Where-Object GroupType -eq 'AMD') {
         if ($abMonitor) {
-            foreach ($Type in @('AMD')) {
+            foreach ($GroupType in @('AMD')) {
                 $DeviceId = 0
                 $Pattern = @{
                     AMD    = '*Radeon*'
                     NVIDIA = '*GeForce*'
                     Intel  = '*Intel*'
                 }
-                @($abMonitor.GpuEntries | Where-Object Device -like $Pattern.$Type) | ForEach-Object {
+                @($abMonitor.GpuEntries | Where-Object Device -like $Pattern.$GroupType) | ForEach-Object {
                     $CardData = $abMonitor.Entries | Where-Object GPU -eq $_.Index
-                    $Group = $($Types | Where-Object Type -eq $Type | Where-Object DevicesArray -contains $DeviceId).GroupName
+                    $Group = $($Types | Where-Object GroupType -eq $GroupType | Where-Object DevicesArray -contains $DeviceId).GroupName
                     $Card = @{
-                        Type              = $Type
+                        GroupType         = $GroupType
                         Id                = $DeviceId
                         Group             = $Group
                         AdapterId         = [int]$_.Index
@@ -180,7 +180,7 @@ function Get-DevicesInformation ($Types) {
                 $AdlResult | ForEach-Object {
 
                     $AdlResultSplit = $_ -split (",")
-                    $Group = ($Types | Where-Object type -eq 'AMD' | Where-Object DevicesArray -contains $DeviceId).groupname
+                    $Group = ($Types | Where-Object GroupType -eq 'AMD' | Where-Object DevicesArray -contains $DeviceId).groupname
 
                     $CardName = $($AdlResultSplit[8] `
                             -replace 'ASUS' `
@@ -197,7 +197,7 @@ function Get-DevicesInformation ($Types) {
                     $CardName = $CardName -replace '.*\s(HD)\s?(\w+).*', 'Radeon HD $2'         # HD series
 
                     $Card = [PSCustomObject]@{
-                        Type              = 'AMD'
+                        GroupType         = 'AMD'
                         Id                = $DeviceId
                         Group             = $Group
                         AdapterId         = [int]$AdlResultSplit[0]
@@ -219,7 +219,7 @@ function Get-DevicesInformation ($Types) {
     }
 
     #NVIDIA
-    if ($Types | Where-Object Type -eq 'NVIDIA') {
+    if ($Types | Where-Object GroupType -eq 'NVIDIA') {
         $DeviceId = 0
         $Command = '.\includes\nvidia-smi.exe'
         $Arguments = @(
@@ -231,10 +231,10 @@ function Get-DevicesInformation ($Types) {
             if ($SMIresultSplit.count -gt 10) {
                 #less is error or no NVIDIA gpu present
 
-                $Group = ($Types | Where-Object type -eq 'NVIDIA' | Where-Object DevicesArray -contains $DeviceId).groupname
+                $Group = ($Types | Where-Object GroupType -eq 'NVIDIA' | Where-Object DevicesArray -contains $DeviceId).groupname
 
                 $Card = [PSCustomObject]@{
-                    Type              = 'NVIDIA'
+                    GroupType         = 'NVIDIA'
                     Id                = $DeviceId
                     Group             = $Group
                     Name              = $SMIresultSplit[0]
@@ -258,7 +258,7 @@ function Get-DevicesInformation ($Types) {
     }
 
     # CPU
-    if ($Types | Where-Object Type -eq 'CPU') {
+    if ($Types | Where-Object GroupType -eq 'CPU') {
 
         $CpuResult = @(Get-CimInstance Win32_Processor)
 
@@ -291,7 +291,7 @@ function Get-DevicesInformation ($Types) {
             }
             if (-not $CpuData.Clock) {$CpuData.Clock = $_.MaxClockSpeed}
             $Devices += [PSCustomObject]@{
-                Type        = 'CPU'
+                GroupType   = 'CPU'
                 Group       = 'CPU'
                 Id          = [int]($_.DeviceID -replace "[^0-9]")
                 Name        = $_.Name.Trim()
@@ -310,7 +310,7 @@ function Get-DevicesInformation ($Types) {
 
 function Out-DevicesInformation ($Devices) {
 
-    $Devices | Where-Object Type -ne 'CPU' | Sort-Object Type | Format-Table -Wrap (
+    $Devices | Where-Object GroupType -ne 'CPU' | Sort-Object GroupType | Format-Table -Wrap (
         @{Label = "Id"; Expression = {$_.Id}; Align = 'right'},
         @{Label = "Group"; Expression = {$_.Group}; Align = 'right'},
         @{Label = "Name"; Expression = {$_.Name}},
@@ -323,9 +323,9 @@ function Out-DevicesInformation ($Devices) {
         @{Label = "Pstate"; Expression = {$_.pstate}; Align = 'right'},
         @{Label = "Clock"; Expression = {[string]$_.Clock + "Mhz"}; Align = 'right'},
         @{Label = "ClkMem"; Expression = {[string]$_.ClockMem + "Mhz"}; Align = 'right'}
-    ) -groupby Type | Out-Host
+    ) -groupby GroupType | Out-Host
 
-    $Devices | Where-Object Type -eq 'CPU' | Format-Table -Wrap (
+    $Devices | Where-Object GroupType -eq 'CPU' | Format-Table -Wrap (
         @{Label = "Id"; Expression = {$_.Id}; Align = 'right'},
         @{Label = "Group"; Expression = {$_.Group}; Align = 'right'},
         @{Label = "Name"; Expression = {$_.Name}},
@@ -336,7 +336,7 @@ function Out-DevicesInformation ($Devices) {
         @{Label = "Load"; Expression = {[string]$_.Utilization + "%"}; Align = 'right'},
         @{Label = "Temp"; Expression = {$_.Temperature}; Align = 'right'},
         @{Label = "Power*"; Expression = {[string]$_.PowerDraw + "W"}; Align = 'right'}
-    ) -groupby Type | Out-Host
+    ) -groupby GroupType | Out-Host
 }
 
 function Get-Devices {
@@ -370,54 +370,44 @@ function Get-Devices {
         "GenuineIntel"                 = 'CPU'
         "AuthenticAMD"                 = 'CPU'
     }
+
+    $Groups = @()
     # $OCLDevices | Where-Object Type -eq 'Gpu' | Group-Object PlatformId, Name, GlobalMemSize, MaxComputeUnits | ForEach-Object {
     #     $Devices = $_.Group | Select-Object -Property PlatformId, Name, Vendor, GlobalMemSize, MaxComputeUnits -First 1
     #     if ($Vendors.($Devices.Vendor)) {
     #         $Devices | Add-Member Devices $($_.Group.DeviceIndex -join ',')
-    #         $Devices | Add-Member Type $Vendors.($Devices.Vendor)
+    #         $Devices | Add-Member GroupType $Vendors.($Devices.Vendor)
     #         $Devices | Add-Member GroupName $(($Devices.Name -replace "[^A-Z0-9]") + '_' + [int]($Devices.GlobalMemSize / 1GB) + 'gb_' + $Devices.MaxComputeUnits)
 
     #         $Devices | Select-Object -Property GroupName, Type, Name, PlatformId, Devices, Enabled
     #     }
     # }
     if ($Config.GpuGroupByType) {
-        $OCLDevices | Where-Object Type -eq 'Gpu' | Group-Object PlatformId, Name | ForEach-Object {
+        $OCLDevices | Group-Object PlatformId, Name | ForEach-Object {
             $Devices = $_.Group | Select-Object -Property PlatformId, Name, Vendor -First 1
             if ($Vendors.($Devices.Vendor)) {
                 $Devices | Add-Member Devices $($_.Group.DeviceIndex -join ',')
-                $Devices | Add-Member Type $Vendors.($Devices.Vendor)
+                $Devices | Add-Member GroupType $Vendors.($Devices.Vendor)
                 $Devices | Add-Member GroupName $Vendors.($Devices.Vendor)
                 $Devices | Add-Member Enabled $true
 
-                $Devices | Select-Object -Property GroupName, Type, Name, PlatformId, Devices, Enabled
+                $Groups += $Devices | Select-Object -Property GroupName, GroupType, Name, PlatformId, Devices, Enabled
             }
         }
     } else {
-        $OCLDevices | Where-Object Type -eq 'Gpu' | Group-Object PlatformId, Name, GlobalMemSize | ForEach-Object {
+        $OCLDevices | Group-Object PlatformId, Name, GlobalMemSize | ForEach-Object {
             $Devices = $_.Group | Select-Object -Property PlatformId, Name, Vendor, GlobalMemSize -First 1
             if ($Vendors.($Devices.Vendor)) {
                 $Devices | Add-Member Devices $($_.Group.DeviceIndex -join ',')
-                $Devices | Add-Member Type $Vendors.($Devices.Vendor)
+                $Devices | Add-Member GroupType $Vendors.($Devices.Vendor)
                 $Devices | Add-Member GroupName $(($Devices.Name -replace "[^A-Z0-9]") + '_' + [int]($Devices.GlobalMemSize / 1GB) + 'gb')
                 $Devices | Add-Member Enabled $true
 
-                $Devices | Select-Object -Property GroupName, Type, Name, PlatformId, Devices, Enabled
+                $Groups += $Devices | Select-Object -Property GroupName, GroupType, Name, PlatformId, Devices, Enabled
             }
         }
     }
-    # if ($Config.CPUMining) {
-    #     $OCLDevices | Where-Object Type -eq 'Cpu' | Select-Object -First 1 | ForEach-Object {
-    #         $Devices = $_ | Select-Object -Property PlatformId, Name, Vendor
-    #         if ($Vendors.($Devices.Vendor)) {
-    #             $Devices | Add-Member Devices $_.DeviceIndex
-    #             $Devices | Add-Member Type $Vendors.($Devices.Vendor)
-    #             $Devices | Add-Member GroupName $Vendors.($Devices.Vendor)
-    #             $Devices | Add-Member Enabled $true
-
-    #             $Devices | Select-Object -Property GroupName, Type, Name, PlatformId, Devices, Enabled
-    #         }
-    #     }
-    # }
+    $Groups | Sort-Object GroupType,GroupName -Unique
 }
 
 function Get-MiningTypes () {
@@ -444,7 +434,10 @@ function Get-MiningTypes () {
 
     if ($null -eq $Devices -or $All) {
         # Autodetection on
-        [array]$Devices = Get-Devices
+        [array]$Devices = Get-Devices -All
+        if (-not $All -and -not $Config.CPUMining) {
+            [array]$Devices = $Devices | Where-Object GroupType -ne 'CPU'
+        }
     } elseif ("" -eq $Devices) {
         # Empty GpuGroups - don't autodetect, use cpu only
         [array]$Devices = $null
@@ -456,31 +449,18 @@ function Get-MiningTypes () {
         }
     }
 
-    if ($Config.CpuMining) {
-        $Devices += $OCLDevices | Where-Object Type -eq 'Cpu' | Select-Object -First 1 | ForEach-Object {
-            $Devices = $_ | Select-Object -Property PlatformId, Name, Vendor
-            $Devices | Add-Member Devices $_.DeviceIndex
-            $Devices | Add-Member Type 'CPU'
-            $Devices | Add-Member GroupName 'CPU'
-            $Devices | Add-Member Enabled $true
+    if ($Devices | Where-Object {$_.GroupType -eq 'CPU'}) {
 
-            $Devices | Select-Object -Property GroupName, Type, Name, PlatformId, Devices, Enabled
-        }
-    }
-
-    if ($Devices | Where-Object {$_.Type -eq 'CPU'}) {
-
-        $SysResult = Get-CimInstance Win32_ComputerSystem
         $CpuResult = Get-CimInstance Win32_Processor
         $Features = $($feat = @{}; switch -regex ((& .\Includes\CHKCPU32.exe /x) -split "</\w+>") {"^\s*<_?(\w+)>(\d+).*" {$feat.($matches[1]) = [int]$matches[2]}}; $feat)
         $RealCores = [int[]](0..($CpuResult.NumberOfLogicalProcessors - 1))
         if ($CpuResult.NumberOfLogicalProcessors -gt $CpuResult.NumberOfCores) {
             $RealCores = $RealCores | Where-Object {-not ($_ % 2)}
         }
-        $Devices | Where-Object {$_.Type -eq 'CPU'} | ForEach-Object {
+        $Devices | Where-Object {$_.GroupType -eq 'CPU'} | ForEach-Object {
+            $_ | Add-Member Devices "0" -Force
             $_ | Add-Member RealCores ($RealCores -join ',')
-            $_ | Add-Member MemoryGB  ([int]($SysResult.TotalPhysicalMemory / 1GB))
-            $_ | Add-Member Features  $Features
+            $_ | Add-Member Features $Features
         }
     }
 
@@ -494,29 +474,29 @@ function Get-MiningTypes () {
             $_ | Add-Member DevicesArray @([int[]]($_.Devices -split ','))   # @(0,1,2,10,11,12)
             $_ | Add-Member DevicesCount ($_.DevicesArray.count)             # 6
 
-            $Pattern = switch ($_.Type) {
-                AMD { 'Advanced Micro Devices, Inc.' }
-                NVIDIA { 'NVIDIA Corporation' }
-                INTEL { 'Intel(R) Corporation' }
-                CPU { '' }
+            $Pattern = switch ($_.GroupType) {
+                'AMD' { @('Advanced Micro Devices, Inc.') }
+                'NVIDIA' { @('NVIDIA Corporation') }
+                'INTEL' { @('Intel(R) Corporation') }
+                'CPU' { @('GenuineIntel', 'AuthenticAMD') }
             }
-            $OCLDevice = @($OCLDevices | Where-Object {$_.Vendor -eq $Pattern -and $_.Type -eq 'Gpu'})[$_.DevicesArray]
-            if ($null -eq $_.PlatformId) {$_ | Add-Member PlatformId ($OCLDevice.PlatformId | Select-Object -First 1)}
-            if ($null -eq $_.MemoryGB) {$_ | Add-Member MemoryGB ([int](($OCLDevice | Measure-Object -Property GlobalMemSize -Minimum).Minimum / 1GB ))}
-            # if ($OCLDevice[0].Platform.Version -match "CUDA\s+([\d\.]+)") {$_ | Add-Member CUDAVersion $Matches[1] -Force}
-
-            if ($_.PowerLimits.Count -eq 0) {
-                $_ | Add-Member PowerLimits @(0)
-            } elseif (
-                $_.Type -eq 'Intel' -or
+            $OCLDevice = @($OCLDevices | Where-Object {$Pattern -contains $_.Vendor})[$_.DevicesArray]
+            if ($OCLDevice) {
+                if ($null -eq $_.PlatformId) {$_ | Add-Member PlatformId ($OCLDevice.PlatformId | Select-Object -First 1)}
+                if ($null -eq $_.MemoryGB) {$_ | Add-Member MemoryGB ([int](($OCLDevice | Measure-Object -Property GlobalMemSize -Minimum).Minimum / 1GB ))}
+                if ($OCLDevice[0].Platform.Version -match "CUDA\s+([\d\.]+)") {$_ | Add-Member CUDAVersion $Matches[1] -Force}
+            }
+            if (
+                $null -eq $_.PowerLimits -or
+                $_.GroupType -eq 'Intel' -or
                 ($_.Type -eq 'AMD' -and -not $abControl)
             ) {
-                $_.PowerLimits = @(0)
+                $_ | Add-Member PowerLimits @(0) -Force
             } else {
                 $_.PowerLimits = @([int[]]($_.PowerLimits -split ',') | Sort-Object -Descending -Unique)
             }
 
-            $_ | Add-Member MinProfit ($Config.("MinProfit_" + $_.GroupName))
+            $_ | Add-Member MinProfit ([math]::Max($Config.("MinProfit_" + $_.GroupName),0))
             $_ | Add-Member Algorithms ($Config.("Algorithms_" + $_.GroupName) -split ',')
 
             $_

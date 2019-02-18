@@ -363,7 +363,7 @@ while ($Quit -eq $false) {
             Continue
         }
 
-        foreach ($DeviceGroup in ($DeviceGroups | Where-Object Type -eq $Miner.Type)) {
+        foreach ($DeviceGroup in ($DeviceGroups | Where-Object GroupType -eq $Miner.Type)) {
             if (
                 $Config.("ExcludeMiners_" + $DeviceGroup.GroupName) -and
                 ($Config.("ExcludeMiners_" + $DeviceGroup.GroupName).Split(',') | Where-Object {$MinerFile.BaseName -like $_})
@@ -614,7 +614,7 @@ while ($Quit -eq $false) {
                             AlgorithmDual       = $AlgoNameDual
                             Algorithms          = $Algorithms
                             Api                 = $Miner.Api
-                            ApiPort             = $(if (($DeviceGroups | Where-Object type -eq $DeviceGroup.type).Count -le 1 -and -not $Config.ForceDynamicPorts) { $Miner.ApiPort })
+                            ApiPort             = $(if (($DeviceGroups | Where-Object GroupType -eq $DeviceGroup.GroupType).Count -le 1 -and -not $Config.ForceDynamicPorts) { $Miner.ApiPort })
                             Arguments           = $ExecutionContext.InvokeCommand.ExpandString($Arguments)
                             BenchmarkArg        = $ExecutionContext.InvokeCommand.ExpandString($Miner.BenchmarkArg)
                             ConfigFileArguments = $ExecutionContext.InvokeCommand.ExpandString($ConfigFileArguments)
@@ -806,21 +806,21 @@ while ($Quit -eq $false) {
     } | ForEach-Object { $_.Group | Select-Object -First 1 }
 
     # If GPU miner prevents CPU mining
-    if ($DeviceGroups.Type -contains 'CPU' -and ($BestNowMiners | Where-Object {$ActiveMiners[$_.IdF].NoCPUMining})) {
+    if ($DeviceGroups.GroupType -contains 'CPU' -and ($BestNowMiners | Where-Object {$ActiveMiners[$_.IdF].NoCPUMining})) {
         $AltBestNowMiners = $BestNowCandidates | Where-Object {
             $ActiveMiners[$_.IdF].NoCPUMining -ne $true
         } | Group-Object {
             $ActiveMiners[$_.IdF].DeviceGroup.GroupName
         } | ForEach-Object { $_.Group | Select-Object -First 1 }
 
-        $BestNowProfits = ($BestNowMiners | Where-Object {$ActiveMiners[$_.IdF].DeviceGroup.Type -ne 'CPU'}).Profits | Measure-Object -Sum | Select-Object -ExpandProperty Sum
+        $BestNowProfits = ($BestNowMiners | Where-Object {$ActiveMiners[$_.IdF].DeviceGroup.GroupType -ne 'CPU'}).Profits | Measure-Object -Sum | Select-Object -ExpandProperty Sum
         $AltBestNowProfits = $AltBestNowMiners.Profits | Measure-Object -Sum | Select-Object -ExpandProperty Sum
 
         if ($AltBestNowMiners.NeedBenchmark -contains $true -or ($AltBestNowProfits -gt $BestNowProfits -and $BestNowMiners.NeedBenchmark -notcontains $true)) {
             $BestNowMiners = $AltBestNowMiners
             Log "Skipping miners that prevent CPU mining" -Severity Warn
         } else {
-            $BestNowMiners = $BestNowMiners | Where-Object {$ActiveMiners[$_.IdF].DeviceGroup.Type -ne 'CPU'}
+            $BestNowMiners = $BestNowMiners | Where-Object {$ActiveMiners[$_.IdF].DeviceGroup.GroupType -ne 'CPU'}
             Log "Miner prevents CPU mining. Will not mine on CPU" -Severity Warn
         }
     }
@@ -963,7 +963,7 @@ while ($Quit -eq $false) {
                         if ($abControl) {
                             Set-AfterburnerPowerLimit -PowerLimitPercent $BestNow.PowerLimit -DeviceGroup $ActiveMiners[$BestNow.IdF].DeviceGroup
                         } elseif ($BestNow.PowerLimit -gt 0) {
-                            switch ($ActiveMiners[$BestNow.IdF].DeviceGroup.Type) {
+                            switch ($ActiveMiners[$BestNow.IdF].DeviceGroup.GroupType) {
                                 'NVIDIA' { Set-NvidiaPowerLimit $BestNow.PowerLimit $ActiveMiners[$BestNow.IdF].DeviceGroup.Devices }
                                 Default {}
                             }
@@ -1002,7 +1002,7 @@ while ($Quit -eq $false) {
                     $CommonParams = @{
                         WorkingDirectory = Split-Path $ActiveMiners[$BestNow.IdF].Path
                         MinerWindowStyle = $Config.MinerWindowStyle
-                        Priority         = if ($ActiveMiners[$BestNow.IdF].DeviceGroup.Type -eq "CPU") { -2 } else { 0 }
+                        Priority         = if ($ActiveMiners[$BestNow.IdF].DeviceGroup.GroupType -eq "CPU") { -2 } else { 0 }
                     }
                     $ActiveMiners[$BestNow.IdF].Process = Start-SubProcess @ProcessParams @CommonParams
 
