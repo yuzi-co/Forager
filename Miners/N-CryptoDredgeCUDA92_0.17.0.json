@@ -18,6 +18,7 @@
     "API": "Ccminer",
     "APIPort": 4068,
     "Fee": "$(if ($AlgoName -eq 'MTP'){0.02}else{0.01})",
+    "Pools": "$(if ($AlgoName -in @('Cuckaroo29') -and $Pool.PoolName -eq 'NiceHash') {$false} else {$true})",
     "CUDA": 9.2,
     "Algorithms": {
         "Aeternity": "-a aeternity",
