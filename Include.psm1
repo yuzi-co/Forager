@@ -136,7 +136,7 @@ function Get-DevicesInformation ($Types) {
     if ($abControl) {$abControl.ReloadAll()}
 
     #AMD
-    if ($Types | Where-Object GroupType -eq 'AMD') {
+    if ($Types | Where-Object GroupType -in @('AMD')) {
         if ($abMonitor) {
             foreach ($GroupType in @('AMD')) {
                 $DeviceId = 0
@@ -147,11 +147,11 @@ function Get-DevicesInformation ($Types) {
                 }
                 @($abMonitor.GpuEntries | Where-Object Device -like $Pattern.$GroupType) | ForEach-Object {
                     $CardData = $abMonitor.Entries | Where-Object GPU -eq $_.Index
-                    $Group = $($Types | Where-Object GroupType -eq $GroupType | Where-Object DevicesArray -contains $DeviceId).GroupName
-                    $Card = @{
+                    $GroupName = $($Types | Where-Object GroupType -eq $GroupType | Where-Object DevicesArray -contains $DeviceId).GroupName
+                    $Card = [PSCustomObject]@{
+                        GroupName         = $GroupName
                         GroupType         = $GroupType
                         Id                = $DeviceId
-                        Group             = $Group
                         AdapterId         = [int]$_.Index
                         Name              = $_.Device
                         Utilization       = [int]$($CardData | Where-Object SrcName -match "^(GPU\d* )?usage$").Data
@@ -164,7 +164,7 @@ function Get-DevicesInformation ($Types) {
                         PowerLimitPercent = [int]$($abControl.GpuEntries[$_.Index].PowerLimitCur)
                         PCIBus            = [int]$($null = $_.GpuId -match "&BUS_(\d+)&"; $matches[1])
                     }
-                    $Devices += [PSCustomObject]$Card
+                    $Devices += $Card
                     $DeviceId++
                 }
             }
@@ -173,14 +173,14 @@ function Get-DevicesInformation ($Types) {
             $DeviceId = 0
 
             $Command = ".\Includes\OverdriveN.exe"
-            $AdlResult = & $Command | Where-Object {$_ -notlike "*&???" -and $_ -ne "ADL2_OverdriveN_Capabilities_Get is failed"}
+            $AdlResult = & $Command | Where-Object {$_ -notlike "*&???" -and $_ -notlike "*failed"}
             $AmdCardsTDP = Get-Content .\Data\amd-cards-tdp.json | ConvertFrom-Json
 
             if ($null -ne $AdlResult) {
                 $AdlResult | ForEach-Object {
 
                     $AdlResultSplit = $_ -split (",")
-                    $Group = ($Types | Where-Object GroupType -eq 'AMD' | Where-Object DevicesArray -contains $DeviceId).groupname
+                    $GroupName = ($Types | Where-Object GroupType -eq 'AMD' | Where-Object DevicesArray -contains $DeviceId).groupname
 
                     $CardName = $($AdlResultSplit[8] `
                             -replace 'ASUS' `
@@ -197,9 +197,9 @@ function Get-DevicesInformation ($Types) {
                     $CardName = $CardName -replace '.*\s(HD)\s?(\w+).*', 'Radeon HD $2'         # HD series
 
                     $Card = [PSCustomObject]@{
+                        GroupName         = $GroupName
                         GroupType         = 'AMD'
                         Id                = $DeviceId
-                        Group             = $Group
                         AdapterId         = [int]$AdlResultSplit[0]
                         FanSpeed          = [int]([int]$AdlResultSplit[1] / [int]$AdlResultSplit[2] * 100)
                         Clock             = [int]([int]($AdlResultSplit[3] / 100))
@@ -231,12 +231,12 @@ function Get-DevicesInformation ($Types) {
             if ($SMIresultSplit.count -gt 10) {
                 #less is error or no NVIDIA gpu present
 
-                $Group = ($Types | Where-Object GroupType -eq 'NVIDIA' | Where-Object DevicesArray -contains $DeviceId).groupname
+                $GroupName = ($Types | Where-Object GroupType -eq 'NVIDIA' | Where-Object DevicesArray -contains $DeviceId).groupname
 
                 $Card = [PSCustomObject]@{
+                    GroupName         = $GroupName
                     GroupType         = 'NVIDIA'
                     Id                = $DeviceId
-                    Group             = $Group
                     Name              = $SMIresultSplit[0]
                     Utilization       = if ($SMIresultSplit[1] -like "*Supported*") {100} else {[int]($SMIresultSplit[1] -replace '%', '')} #If we dont have real Utilization, at least make the watchdog happy
                     UtilizationMem    = if ($SMIresultSplit[2] -like "*Supported*") {$null} else {[int]($SMIresultSplit[2] -replace '%', '')}
@@ -291,8 +291,8 @@ function Get-DevicesInformation ($Types) {
             }
             if (-not $CpuData.Clock) {$CpuData.Clock = $_.MaxClockSpeed}
             $Devices += [PSCustomObject]@{
+                GroupName   = 'CPU'
                 GroupType   = 'CPU'
-                Group       = 'CPU'
                 Id          = [int]($_.DeviceID -replace "[^0-9]")
                 Name        = $_.Name.Trim()
                 Cores       = [int]$_.NumberOfCores
@@ -312,31 +312,31 @@ function Out-DevicesInformation ($Devices) {
 
     $Devices | Where-Object GroupType -ne 'CPU' | Sort-Object GroupType | Format-Table -Wrap (
         @{Label = "Id"; Expression = {$_.Id}; Align = 'right'},
-        @{Label = "Group"; Expression = {$_.Group}; Align = 'right'},
+        @{Label = "Group"; Expression = {$_.GroupName}; Align = 'right'},
         @{Label = "Name"; Expression = {$_.Name}},
         @{Label = "Load"; Expression = {[string]$_.Utilization + "%"}; Align = 'right'},
-        @{Label = "Mem"; Expression = {[string]$_.UtilizationMem + "%"}; Align = 'right'},
-        @{Label = "Temp"; Expression = {$_.Temperature}; Align = 'right'},
-        @{Label = "Fan"; Expression = {[string]$_.FanSpeed + "%"}; Align = 'right'},
         @{Label = "Power"; Expression = {[string]$_.PowerDraw + "W"}; Align = 'right'},
-        @{Label = "PwLim"; Expression = {[string]$_.PowerLimitPercent + '%'}; Align = 'right'},
-        @{Label = "Pstate"; Expression = {$_.pstate}; Align = 'right'},
+        @{Label = "Temp"; Expression = {$_.Temperature}; Align = 'right'},
         @{Label = "Clock"; Expression = {[string]$_.Clock + "Mhz"}; Align = 'right'},
-        @{Label = "ClkMem"; Expression = {[string]$_.ClockMem + "Mhz"}; Align = 'right'}
-    ) -groupby GroupType | Out-Host
+        @{Label = "ClkMem"; Expression = {[string]$_.ClockMem + "Mhz"}; Align = 'right'},
+        @{Label = "Mem"; Expression = {[string]$_.UtilizationMem + "%"}; Align = 'right'},
+        @{Label = "Fan"; Expression = {[string]$_.FanSpeed + "%"}; Align = 'right'},
+        @{Label = "PwLim"; Expression = {[string]$_.PowerLimitPercent + '%'}; Align = 'right'},
+        @{Label = "Pstate"; Expression = {$_.pstate}; Align = 'right'}
+    ) -GroupBy GroupType | Out-Host
 
     $Devices | Where-Object GroupType -eq 'CPU' | Format-Table -Wrap (
         @{Label = "Id"; Expression = {$_.Id}; Align = 'right'},
-        @{Label = "Group"; Expression = {$_.Group}; Align = 'right'},
+        @{Label = "Group"; Expression = {$_.GroupName}; Align = 'right'},
         @{Label = "Name"; Expression = {$_.Name}},
+        @{Label = "Load"; Expression = {[string]$_.Utilization + "%"}; Align = 'right'},
+        @{Label = "Power"; Expression = {[string]$_.PowerDraw + "W"}; Align = 'right'},
+        @{Label = "Temp"; Expression = {$_.Temperature}; Align = 'right'},
+        @{Label = "Clock"; Expression = {[string]$_.Clock + "Mhz"}; Align = 'right'},
         @{Label = "Cores"; Expression = {$_.Cores}},
         @{Label = "Threads"; Expression = {$_.Threads}},
-        @{Label = "CacheL3"; Expression = {[string]$_.CacheL3 + "MB"}; Align = 'right'},
-        @{Label = "Clock"; Expression = {[string]$_.Clock + "Mhz"}; Align = 'right'},
-        @{Label = "Load"; Expression = {[string]$_.Utilization + "%"}; Align = 'right'},
-        @{Label = "Temp"; Expression = {$_.Temperature}; Align = 'right'},
-        @{Label = "Power*"; Expression = {[string]$_.PowerDraw + "W"}; Align = 'right'}
-    ) -groupby GroupType | Out-Host
+        @{Label = "CacheL3"; Expression = {[string]$_.CacheL3 + "MB"}; Align = 'right'}
+    ) -GroupBy GroupType | Out-Host
 }
 
 function Get-Devices {
@@ -390,8 +390,9 @@ function Get-Devices {
                 $Devices | Add-Member GroupType $Vendors.($Devices.Vendor)
                 $Devices | Add-Member GroupName $Vendors.($Devices.Vendor)
                 $Devices | Add-Member Enabled $true
+                $Devices | Add-Member OCLDevices ($_.Group | Select-Object -Property GlobalMemSize, MaxComputeUnits)
 
-                $Groups += $Devices | Select-Object -Property GroupName, GroupType, Name, PlatformId, Devices, Enabled
+                $Groups += $Devices | Select-Object -Property GroupName, GroupType, Name, PlatformId, Devices, Enabled, Vendor, OCLDevices
             }
         }
     } else {
@@ -402,12 +403,13 @@ function Get-Devices {
                 $Devices | Add-Member GroupType $Vendors.($Devices.Vendor)
                 $Devices | Add-Member GroupName $(($Devices.Name -replace "[^A-Z0-9]") + '_' + [int]($Devices.GlobalMemSize / 1GB) + 'gb')
                 $Devices | Add-Member Enabled $true
+                $Devices | Add-Member OCLDevices ($_.Group | Select-Object -Property GlobalMemSize, MaxComputeUnits)
 
-                $Groups += $Devices | Select-Object -Property GroupName, GroupType, Name, PlatformId, Devices, Enabled
+                $Groups += $Devices | Select-Object -Property GroupName, GroupType, Name, PlatformId, Devices, Enabled, Vendor, OCLDevices
             }
         }
     }
-    $Groups | Sort-Object GroupType,GroupName -Unique
+    $Groups | Sort-Object GroupName -Unique
 }
 
 function Get-MiningTypes () {
@@ -496,7 +498,7 @@ function Get-MiningTypes () {
                 $_.PowerLimits = @([int[]]($_.PowerLimits -split ',') | Sort-Object -Descending -Unique)
             }
 
-            $_ | Add-Member MinProfit ([math]::Max($Config.("MinProfit_" + $_.GroupName),0))
+            $_ | Add-Member MinProfit ([math]::Max($Config.("MinProfit_" + $_.GroupName), 0))
             $_ | Add-Member Algorithms ($Config.("Algorithms_" + $_.GroupName) -split ',')
 
             $_
@@ -1655,18 +1657,18 @@ function Get-CoinSymbol ([string]$Coin) {
 
 function Test-DeviceGroupsConfig ($Types) {
     $Devices = Get-DevicesInformation $Types
-    $Types | Where-Object Type -ne 'CPU' | ForEach-Object {
+    $Types | Where-Object GroupType -ne 'CPU' | ForEach-Object {
         $DetectedDevices = @()
-        $DetectedDevices += $Devices | Where-Object Group -eq $_.GroupName
-        if ($DetectedDevices.count -eq 0) {
-            Log ("No Devices for group " + $_.GroupName + " was detected, activity based watchdog will be disabled for that group, this can happens if AMD beta blockchain drivers are installed or incorrect gpugroups config") -Severity Warn
+        $DetectedDevices += $Devices | Where-Object GroupName -eq $_.GroupName
+        if ($DetectedDevices.Count -eq 0) {
+            Log ("No Devices for group " + $_.GroupName + " was detected, activity based watchdog will be disabled for that group, this happen with AMD beta blockchain drivers, no Afterburner or incorrect GpuGroups config") -Severity Warn
             Start-Sleep -Seconds 5
-        } elseif ($DetectedDevices.count -ne $_.DevicesCount) {
-            Log ("Mismatching Devices for group " + $_.GroupName + " was detected, check gpugroups config and gpulist.bat") -Severity Warn
+        } elseif ($DetectedDevices.Count -ne $_.DevicesCount) {
+            Log ("Mismatching Devices for group " + $_.GroupName + " was detected, check GpuGroups config and DeviceList.bat output") -Severity Warn
             Start-Sleep -Seconds 5
         }
     }
-    $TotalMem = (($Types | Where-Object Type -ne 'CPU').OCLDevices.GlobalMemSize | Measure-Object -Sum).Sum / 1GB
+    $TotalMem = (($Types | Where-Object GroupType -ne 'CPU').OCLDevices.GlobalMemSize | Measure-Object -Sum).Sum / 1GB
     $TotalSwap = (Get-CimInstance Win32_PageFile | Select-Object -ExpandProperty FileSize | Measure-Object -Sum).Sum / 1GB
     if ($TotalMem -gt $TotalSwap) {
         Log "Make sure you have at least $TotalMem GB swap configured" -Severity Warn

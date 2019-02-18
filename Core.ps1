@@ -49,6 +49,9 @@ $Global:Release = @{
 }
 Log "$($Release.Application) v$($Release.Version)"
 
+$Global:SysInfo = Get-SystemInfo
+Log ($SysInfo | ConvertTo-Json) -Severity Debug
+
 $Host.UI.RawUI.WindowTitle = "$($Release.Application) v$($Release.Version)"
 
 if ($env:CUDA_DEVICE_ORDER -ne 'PCI_BUS_ID') { setx CUDA_DEVICE_ORDER PCI_BUS_ID } #Align CUDA id with nvidia-smi order
@@ -1115,7 +1118,7 @@ while ($Quit -eq $false) {
 
                 $_.ProfitsLive = ($_.RevenueLive * (1 - $ActiveMiners[$_.IdF].MinerFee) + $_.RevenueLiveDual) * $LocalBTCvalue
 
-                $_.PowerLive = ($Devices | Where-Object Group -eq ($ActiveMiners[$_.IdF].DeviceGroup.GroupName) | Measure-Object -Property PowerDraw -sum).sum
+                $_.PowerLive = ($Devices | Where-Object GroupName -eq ($ActiveMiners[$_.IdF].DeviceGroup.GroupName) | Measure-Object -Property PowerDraw -sum).sum
                 if ($_.PowerLive) { $_.ProfitsLive -= ($PowerCost * ($_.PowerLive * 24) / 1000) }
 
                 $_.TimeSinceStartInterval = (Get-Date) - $_.Stats.LastTimeActive
@@ -1189,7 +1192,7 @@ while ($Quit -eq $false) {
             if ($Devices) {
                 #WATCHDOG
                 $GroupDevices = @()
-                $GroupDevices += $Devices | Where-Object Group -eq $ActiveMiners[$_.IdF].DeviceGroup.GroupName
+                $GroupDevices += $Devices | Where-Object GroupName -eq $ActiveMiners[$_.IdF].DeviceGroup.GroupName
 
                 $ActivityAverages += [PSCustomObject]@{
                     DeviceGroup     = $ActiveMiners[$_.IdF].DeviceGroup.GroupName
@@ -1436,7 +1439,7 @@ while ($Quit -eq $false) {
                     $ProfitMiner = $ActiveMiners[$_.IdF] | Select-Object * -ExcludeProperty SubMiners
                     $ProfitMiner | Add-Member SubMiner $_
                     # $ProfitMiner | Add-Member GroupName $ProfitMiner.DeviceGroup.GroupName #needed for groupby
-                    $ProfitMiner | Add-Member GroupName "$($ProfitMiner.DeviceGroup.Id)-$($ProfitMiner.DeviceGroup.GroupName)" #needed for groupby
+                    $ProfitMiner | Add-Member GroupName "[$($ProfitMiner.DeviceGroup.Id)] $($ProfitMiner.DeviceGroup.GroupName)" #needed for groupby
                     $ProfitMiner | Add-Member NeedBenchmark $ProfitMiner.SubMiner.NeedBenchmark #needed for sort
                     $ProfitMiner | Add-Member Profits $ProfitMiner.SubMiner.Profits #needed for sort
                     $ProfitMiner | Add-Member Revenue ($ProfitMiner.SubMiner.Revenue + $ProfitMiner.SubMiner.RevenueDual) #needed for sort
