@@ -1776,7 +1776,7 @@ function Write-Color() {
         if ($i % 2 -eq 0) {
             Write-Host $_ -NoNewline;
         } else {
-            if ($_ -in [enum]::GetNames("ConsoleColor")) {
+            if ([enum]::GetNames("ConsoleColor") -contains $_) {
                 $Host.UI.RawUI.ForegroundColor = ($_ -as [System.ConsoleColor]);
             }
         }

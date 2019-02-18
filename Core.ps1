@@ -60,9 +60,6 @@ if ($env:GPU_MAX_ALLOC_PERCENT -ne 100) { setx GPU_MAX_ALLOC_PERCENT 100 }      
 if ($env:GPU_SINGLE_ALLOC_PERCENT -ne 100) { setx GPU_SINGLE_ALLOC_PERCENT 100 } #For AMD
 if ($env:GPU_MAX_WORKGROUP_SIZE -ne 256) { setx GPU_MAX_WORKGROUP_SIZE 256 }     #For AMD
 
-$progressPreference = 'SilentlyContinue' #No progress message on web requests
-#$progressPreference = 'Stop'
-
 #Set process priority to BelowNormal to avoid hash rate drops on systems with weak CPUs
 (Get-Process -Id $PID).PriorityClass = "BelowNormal"
 
