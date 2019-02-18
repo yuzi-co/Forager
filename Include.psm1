@@ -713,11 +713,15 @@ function Invoke-HTTPRequest {
         [Int]$Timeout = 5 #seconds
     )
 
-    try {
-        $response = Invoke-WebRequest "http://$($Server):$Port$Path" -UseBasicParsing -TimeoutSec $timeout
-    } catch {$Error.Remove($error[$Error.Count - 1])}
+    $ProgressPreference = 'SilentlyContinue' #No progress message on web requests
 
-    $response
+    try {
+        $Response = Invoke-WebRequest "http://$($Server):$Port$Path" -UseBasicParsing -TimeoutSec $timeout
+    } catch {
+        $Error.Remove($error[$Error.Count - 1])
+        $Response = $null
+    }
+    $Response
 }
 
 function Invoke-APIRequest {
@@ -733,6 +737,9 @@ function Invoke-APIRequest {
         [Parameter(Mandatory = $false)]
         [Int]$Age = 3 # Cache age after which to request from origin, in minutes
     )
+
+    $ProgressPreference = 'SilentlyContinue' #No progress message on web requests
+
     $UserAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36'
     $CachePath = '.\Cache\'
     $CacheFile = $CachePath + [System.Web.HttpUtility]::UrlEncode($Url) + '.json'
