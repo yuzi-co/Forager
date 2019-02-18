@@ -12,7 +12,7 @@
         "--opencl #GPUPlatform#",
         "--gpu #Devices#",
         "--ratewatchdog",
-        "$(if (-not $Nicehash){'--nonicehash'})",
+        "$(if ($Pool.PoolName -ne 'NiceHash'){'--nonicehash'})",
         "#AlgorithmParameters#"
     ],
     "API": "castXMR",

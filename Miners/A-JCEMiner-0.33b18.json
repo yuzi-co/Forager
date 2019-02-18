@@ -8,7 +8,7 @@
         "-u #Login#",
         "-p #Password#",
         "$(if ($enableSSL){'--ssl'})",
-        "$(if ($Nicehash){'--nicehash'})",
+        "$(if ($Pool.PoolName -eq 'NiceHash'){'--nicehash'})",
         "-g #Devices#",
         "--any",
         "--auto",

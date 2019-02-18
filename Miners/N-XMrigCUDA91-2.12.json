@@ -8,7 +8,7 @@
         "-u #Login#",
         "-p #Password#",
         "--cuda-devices=#Devices#",
-        "$(if ($Nicehash){'--nicehash'})",
+        "$(if ($Pool.PoolName -eq 'NiceHash'){'--nicehash'})",
         "--donate-level 1",
         "--api-port #APIPort#",
         "#AlgorithmParameters#"

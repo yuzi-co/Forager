@@ -11,7 +11,7 @@
         "--noCPU",
         "--noAMD",
         "--noUAC",
-        "$(if ($Nicehash){'--use-nicehash'})",
+        "$(if ($Pool.PoolName -eq 'NiceHash'){'--use-nicehash'})",
         "--httpd #APIPort#",
         "--nvidia #GroupName#-#Algorithm#.txt",
         "#AlgorithmParameters#"

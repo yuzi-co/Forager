@@ -12,7 +12,7 @@
         "--noCPU",
         "--noUAC",
         "--noAMDCache",
-        "$(if ($Nicehash){'--use-nicehash'})",
+        "$(if ($Pool.PoolName -eq 'NiceHash'){'--use-nicehash'})",
         "--httpd #APIPort#",
         "--amd #GroupName#-#Algorithm#.txt",
         "#AlgorithmParameters#"

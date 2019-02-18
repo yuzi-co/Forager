@@ -7,7 +7,7 @@
         "-o #Protocol#://#Server#:#Port#",
         "-u #Login#",
         "-p #Password#",
-        "$(if ($Nicehash){'--nicehash'})",
+        "$(if ($Pool.PoolName -eq 'NiceHash'){'--nicehash'})",
         "--donate-level 1",
         "--api-port #APIPort#",
         "#AlgorithmParameters#"
