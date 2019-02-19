@@ -1,5 +1,5 @@
 {
-    "Path": "ccminer.exe",
+    "Path": "ccminer-8.21-yescrypt-algos+lyra2v3\\ccminer.exe",
     "Uri": "https://github.com/nemosminer/ccminer-KlausT-8.21-mod-r18-src-fix/releases/download/8.21-r18-fix%2Blyra2v3/ccminer-8.21-yescrypt-algos+lyra2v3.7z",
     "SHA256": "66FD59004EDD8758A89EDD07785AC3E2FCCF54F84192D7EE7BAF60DE24724022",
     "Type": "NVIDIA",
