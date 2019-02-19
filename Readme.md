@@ -18,6 +18,7 @@ Using integration with MSI Afterburner, it will get real time power usage and us
 - Profit display in any fiat currency which is supported by CoinDesk
 - SHA256 checksum validation for miner downloads
 - Autoexec.txt for running custom programs on start. Autorun programs are also stopped on exit
+- Enable/Disable a group during runtime
 
 
 ### Notes:
