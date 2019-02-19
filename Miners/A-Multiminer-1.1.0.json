@@ -10,7 +10,7 @@
         "-R 3",
         "-r 10",
         "--use-gpu=OPENCL",
-        "--gpu-id=$(('#Devices#' -split ',' | % {[int]$_+1}) -join ',')",
+        "--gpu-id=$(($DeviceGroup.GlobalIndex | % {[int]$_+1}) -join ',')",
         "-b #APIPort#",
         "#AlgorithmParameters#"
     ],
