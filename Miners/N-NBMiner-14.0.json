@@ -6,7 +6,6 @@
     "Arguments": [
         "-o #Protocol#://#Server#:#Port#",
         "-u #Login#",
-        "-o #Protocol#://#Server#:#Port#",
         "-d #Devices#",
         "--api 127.0.0.1:#ApiPort#",
         "#AlgorithmParameters#"
@@ -19,7 +18,7 @@
     "Pools": "$(if ($AlgoName -in @('Cuckaroo29') -and $Pool.PoolName -eq 'NiceHash') {$false} else {$true})",
     "Algorithms": {
         "Cuckaroo29|6gb": "-a cuckaroo",
-        "Ethash": "-a ethash",
+        "Ethash": "-a ethash -o $(if ($Pool.PoolName -eq 'NiceHash') {'ethnh'} else {'ethproxy'})+tcp://#Server#:#Port#",
         "Tensority_Ethash": "-a tensority_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'ethnh'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#",
         "Tensority": "-a tensority"
     }
