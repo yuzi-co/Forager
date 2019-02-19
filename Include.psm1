@@ -475,18 +475,6 @@ function Get-MiningTypes () {
         [switch]$All = $false
     )
 
-    $OCLPlatforms = [OpenCl.Platform]::GetPlatformIds()
-    $PlatformId = 0
-    $OCLDevices = @($OCLPlatforms | ForEach-Object {
-            $Devs = [OpenCl.Device]::GetDeviceIDs($_, [OpenCl.DeviceType]::All)
-            $Devs | Add-Member PlatformId $PlatformId
-            $Devs | ForEach-Object {
-                $_ | Add-Member DeviceIndex $([array]::indexof($Devs, $_))
-            }
-            $PlatformId++
-            $Devs
-        })
-
     $Devices = $Config.GpuGroups
 
     if ($null -eq $Devices -or $All) {
@@ -525,6 +513,21 @@ function Get-MiningTypes () {
         }
     }
 
+    $OCLPlatforms = [OpenCl.Platform]::GetPlatformIds()
+    $PlatformId = 0
+    $GlobalIndex = 0
+    $OCLDevices = @($OCLPlatforms | ForEach-Object {
+            $Devs = [OpenCl.Device]::GetDeviceIDs($_, [OpenCl.DeviceType]::All)
+            $Devs | Add-Member PlatformId $PlatformId
+            $Devs | ForEach-Object {
+                $_ | Add-Member DeviceIndex $([array]::indexof($Devs, $_))
+                $_ | Add-Member GlobalIndex $GlobalIndex
+                $GlobalIndex++
+            }
+            $PlatformId++
+            $Devs
+        })
+
     $TypeID = 0
     $DeviceGroups = $Devices | ForEach-Object {
         if (-not $Filter -or (Compare-Object $_.GroupName $Filter -IncludeEqual -ExcludeDifferent)) {
@@ -547,6 +550,7 @@ function Get-MiningTypes () {
                 if ($null -eq $_.MemoryGB) {$_ | Add-Member MemoryGB ([int](($OCLDevice | Measure-Object -Property GlobalMemSize -Minimum).Minimum / 1GB ))}
                 if ($OCLDevice[0].Platform.Version -match "CUDA\s+([\d\.]+)") {$_ | Add-Member CUDAVersion $Matches[1] -Force}
             }
+            $_ | Add-Member GlobalIndex (, $OCLDevice.GlobalIndex)
             if (
                 $null -eq $_.PowerLimits -or
                 $_.GroupType -eq 'Intel' -or
