@@ -340,15 +340,6 @@ function Out-DevicesInformation ($Devices) {
 }
 
 function Get-Devices {
-    param(
-        [Parameter(Mandatory = $false)]
-        $Type
-    )
-
-    if (-not $Type) {
-        $Type = "*"
-    }
-
     $OCLPlatforms = @([OpenCl.Platform]::GetPlatformIds())
     $PlatformId = 0
     $OCLDevices = @($OCLPlatforms | ForEach-Object {
@@ -361,64 +352,50 @@ function Get-Devices {
             $Devs
         })
 
-    # # start fake
-    # $OCLDevices = @()
-    # $OCLDevices += [PSCustomObject]@{Name = 'Ellesmere'; Vendor = 'Advanced Micro Devices, Inc.'; GlobalMemSize = 8GB; PlatformId = 0; Type = 'Gpu'; DeviceIndex = 0}
-    # $OCLDevices += [PSCustomObject]@{Name = 'Ellesmere'; Vendor = 'Advanced Micro Devices, Inc.'; GlobalMemSize = 8GB; PlatformId = 0; Type = 'Gpu'; DeviceIndex = 1}
-    # $OCLDevices += [PSCustomObject]@{Name = 'Ellesmere'; Vendor = 'Advanced Micro Devices, Inc.'; GlobalMemSize = 4GB; PlatformId = 0; Type = 'Gpu'; DeviceIndex = 2}
-    # $OCLDevices += [PSCustomObject]@{Name = 'GeForce 1060'; Vendor = 'NVIDIA Corporation'; GlobalMemSize = 3GB; PlatformId = 1; Type = 'Gpu'; DeviceIndex = 1}
-    # $OCLDevices += [PSCustomObject]@{Name = 'GeForce 1060'; Vendor = 'NVIDIA Corporation'; GlobalMemSize = 3GB; PlatformId = 1; Type = 'Gpu'; DeviceIndex = 2}
-    # # end fake
-
-
-    $Vendors = @{
-        "Advanced Micro Devices, Inc." = "AMD"
-        "NVIDIA Corporation"           = "NVIDIA"
-        # "Intel(R) Corporation"         = "INTEL" #Nothing to be mined on Intel iGPU
-        # "Intel Corporation"            = "INTEL" #Nothing to be mined on Intel iGPU
-        "GenuineIntel"                 = 'CPU'
-        "AuthenticAMD"                 = 'CPU'
+    $GroupFilter = @"
+    {
+        "AMD": {
+            "Type":  "Gpu",
+            "Vendor":  "Advanced Micro Devices, Inc.",
+            "PlatformId":  "*"
+        },
+        "NVIDIA": {
+            "Type": "Gpu",
+            "Vendor": "NVIDIA*",
+            "PlatformId": "*"
+        },
+        "INTEL": {
+            "Type": "Gpu",
+            "Vendor": "Intel(R) Corporation",
+            "PlatformId": "*"
+        },
+        "CPU": {
+            "Type": "Cpu",
+            "Vendor": "*",
+            "PlatformId": "0"
+        }
     }
+"@ | ConvertFrom-Json
 
-    $Groups = @()
-    # $OCLDevices | Where-Object Type -eq 'Gpu' | Group-Object PlatformId, Name, GlobalMemSize, MaxComputeUnits | ForEach-Object {
-    #     $Devices = $_.Group | Select-Object -Property PlatformId, Name, Vendor, GlobalMemSize, MaxComputeUnits -First 1
-    #     if ($Vendors.($Devices.Vendor)) {
-    #         $Devices | Add-Member Devices $($_.Group.DeviceIndex -join ',')
-    #         $Devices | Add-Member GroupType $Vendors.($Devices.Vendor)
-    #         $Devices | Add-Member GroupName $(($Devices.Name -replace "[^A-Z0-9]") + '_' + [int]($Devices.GlobalMemSize / 1GB) + 'gb_' + $Devices.MaxComputeUnits)
-
-    #         $Devices | Select-Object -Property GroupName, Type, Name, PlatformId, Devices, Enabled
-    #     }
-    # }
-    if ($Config.GpuGroupByType) {
-        $OCLDevices | Where-Object Type -like $Type | Group-Object PlatformId, Name | ForEach-Object {
-            $Devices = $_.Group | Select-Object -Property PlatformId, Name, Vendor -First 1
-            if ($Vendors.($Devices.Vendor)) {
+    [array]$Groups = foreach ($GroupType in @('AMD', 'NVIDIA', 'CPU')) {
+        $OCLDevices | Where-Object {
+            $_.Type -like $GroupFilter.$GroupType.Type -and
+            $_.Vendor -like $GroupFilter.$GroupType.Vendor -and
+            $_.PlatformId -like $GroupFilter.$GroupType.PlatformID
+        } | Group-Object PlatformId, Name | ForEach-Object {
+            if ($_.Group) {
+                $Devices = $_.Group | Select-Object -Property PlatformId, Name, Vendor -First 1
                 $Devices | Add-Member Devices $($_.Group.DeviceIndex -join ',')
-                $Devices | Add-Member GroupType $Vendors.($Devices.Vendor)
-                $Devices | Add-Member GroupName $Vendors.($Devices.Vendor)
+                $Devices | Add-Member GroupType $GroupType
+                $Devices | Add-Member GroupName $GroupType
                 $Devices | Add-Member Enabled $true
                 $Devices | Add-Member OCLDevices ($_.Group | Select-Object -Property GlobalMemSize, MaxComputeUnits)
 
-                $Groups += $Devices | Select-Object -Property GroupName, GroupType, Name, PlatformId, Devices, Enabled, Vendor, OCLDevices
-            }
-        }
-    } else {
-        $OCLDevices | Where-Object Type -like $Type | Group-Object PlatformId, Name, GlobalMemSize | ForEach-Object {
-            $Devices = $_.Group | Select-Object -Property PlatformId, Name, Vendor, GlobalMemSize -First 1
-            if ($Vendors.($Devices.Vendor)) {
-                $Devices | Add-Member Devices $($_.Group.DeviceIndex -join ',')
-                $Devices | Add-Member GroupType $Vendors.($Devices.Vendor)
-                $Devices | Add-Member GroupName $(($Devices.Name -replace "[^A-Z0-9]") + '_' + [int]($Devices.GlobalMemSize / 1GB) + 'gb')
-                $Devices | Add-Member Enabled $true
-                $Devices | Add-Member OCLDevices ($_.Group | Select-Object -Property GlobalMemSize, MaxComputeUnits)
-
-                $Groups += $Devices | Select-Object -Property GroupName, GroupType, Name, PlatformId, Devices, Enabled, Vendor, OCLDevices
+                $Devices | Select-Object -Property GroupName, GroupType, Name, PlatformId, Devices, Enabled, Vendor, OCLDevices
             }
         }
     }
-    $Groups | Sort-Object GroupName -Unique
+    $Groups
 }
 
 function Get-MiningTypes () {
@@ -448,16 +425,16 @@ function Get-MiningTypes () {
         if ($All -or $Config.CPUMining) {
             [array]$Devices = Get-Devices
         } else {
-            [array]$Devices = Get-Devices -Type 'Gpu'
+            [array]$Devices = Get-Devices | Where-Object GroupType -ne 'CPU'
         }
     } elseif ("" -eq $Devices) {
-        # Empty GpuGroups - don't autodetect, use cpu only
-        [array]$Devices = Get-Devices -Type 'Cpu'
+        # Empty GpuGroups - don't autodetect, use CPU only
+        [array]$Devices = Get-Devices | Where-Object GroupType -eq 'CPU'
     } else {
-        # GpuGroups not empty - parse it
+        # GpuGroups not empty, parse it
         [array]$Devices = $Devices | ConvertFrom-Json
         if ($Config.CPUMining) {
-            [array]$Devices += Get-Devices -Type 'Cpu'
+            [array]$Devices += Get-Devices | Where-Object GroupType -eq 'CPU'
         }
         $Devices | ForEach-Object {
             if ($null -eq $_.Enabled) { $_ | Add-Member Enabled $true }
