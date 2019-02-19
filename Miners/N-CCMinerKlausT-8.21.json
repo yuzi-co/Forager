@@ -23,7 +23,7 @@
         "YescryptR16": "-a yescryptr16 -i 13.25",
         "YescryptR16v2": "-a yescryptr16v2",
         "YescryptR24": "-a yescryptr24",
-        "YescryptR32": "a yescryptr32 -i 12.5",
+        "YescryptR32": "-a yescryptr32 -i 12.5",
         "YescryptR8": "-a yescryptr8"
     }
 }
