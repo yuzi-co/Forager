@@ -587,23 +587,6 @@ Function Read-KeyboardTimed {
     $KeyPressed
 }
 
-# function Clear-ScreenZone {
-#     param(
-#         [Parameter(Mandatory = $true)]
-#         [int]$startY,
-#         [Parameter(Mandatory = $true)]
-#         [int]$endY
-#     )
-
-#     $BlankLine = " " * $Host.UI.RawUI.WindowSize.Width
-
-#     Set-ConsolePosition 0 $start
-
-#     for ($i = $startY; $i -le $endY; $i++) {
-#         $BlankLine | Out-Host
-#     }
-# }
-
 function Invoke-TCPRequest {
     param(
         [Parameter(Mandatory = $false)]
@@ -1250,17 +1233,6 @@ function Get-Pools {
     $Return
 }
 
-function Get-Configs {
-    [CmdletBinding()]
-    param(
-        [Parameter(Mandatory = $true)]
-        [String]$Type
-    )
-    if (Test-Path ".\Config\$Type.json") {
-        Get-Content ".\Config\$Type.json" | ConvertFrom-Json
-    }
-}
-
 function Get-Updates {
     try {
         $Request = Invoke-APIRequest -Url "https://api.github.com/repos/yuzi-co/$($Release.Application)/releases/latest" -Age 60
@@ -1306,16 +1278,6 @@ function Get-Wallets {
             $Result[$name] = $value.Trim()
         }
     }
-    $Result # Return Value
-}
-
-Function Get-ConfigVariable {
-    param(
-        [Parameter(Mandatory = $true)]
-        [string]$VarName
-    )
-
-    $Result = (Get-Config).$VarName
     $Result # Return Value
 }
 
@@ -1530,26 +1492,6 @@ function Get-Stats {
     }
     $Content
 }
-# function Get-AllStats {
-#     $Stats = @()
-#     if (-not (Test-Path "Stats")) {New-Item "Stats" -ItemType "directory" | Out-Null}
-#     Get-ChildItem "Stats" -Filter "*_stats.json" | Foreach-Object {
-#         $Name = $_.BaseName
-#         $_ | Get-Content | ConvertFrom-Json | ForEach-Object {
-#             $Values = $Name -split '_'
-#             $Stats += @{
-#                 MinerName  = $Values[0]
-#                 Algorithm  = $Values[1]
-#                 GroupName  = $Values[2]
-#                 AlgoLabel  = $Values[3]
-#                 PowerLimit = ($Values[4] -split 'PL')[-1]
-#                 Stats      = $_
-#             }
-#         }
-#     }
-#     Return $Stats
-# }
-
 
 function Set-Stats {
     param(
