@@ -19,15 +19,15 @@
     "APIPort": 4028,
     "Fee": 0.01,
     "Algorithms": {
-        "OFF-Aergo": "-k aergo -g 2 -w 64 -X 256",
+        "_Aergo": "-k aergo -g 2 -w 64 -X 256",
         "Geek": "-k geek -g 2 -w 64 -X 256",
-        "OFF-Phi": "-k phi -g 2 -w 256 -X 256",
-        "OFF-Polytimos": "-k polytimos -g 2 -w 64 -X 256",
-        "OFF-Skunk": "-k skunk -g 2 -w 256 -X 256",
-        "OFF-Tribus": "-k tribus -g 2 -w 64 -X 256",
-        "OFF-X16r": "-k x16r -g 2 -w 64 -X 256",
-        "OFF-X16s": "-k x16s -g 2 -w 64 -X 256",
-        "OFF-X17": "-k x17 -g 2 -w 64 -X 256",
+        "_Phi": "-k phi -g 2 -w 256 -X 256",
+        "_Polytimos": "-k polytimos -g 2 -w 64 -X 256",
+        "_Skunk": "-k skunk -g 2 -w 256 -X 256",
+        "_Tribus": "-k tribus -g 2 -w 64 -X 256",
+        "_X16r": "-k x16r -g 2 -w 64 -X 256",
+        "_X16s": "-k x16s -g 2 -w 64 -X 256",
+        "_X17": "-k x17 -g 2 -w 64 -X 256",
         "Xevan": "-k xevan -g 2 -w 64 -X 256"
     }
 }

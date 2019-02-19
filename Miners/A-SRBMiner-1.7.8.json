@@ -29,17 +29,29 @@
         "CnFast": "fast",
         "CnFest": "festival",
         "CnFreeHaven": "freehaven",
-        "CnGpu": "gpu",
+        "CnGpu": {
+            "Params": "gpu",
+            "Mem": 4
+        },
         "CnHalf": "stellitev8",
-        "CnHaven": "haven",
-        "CnHeavy": "heavy",
+        "CnHaven": {
+            "Params": "haven",
+            "Mem": 4
+        },
+        "CnHeavy": {
+            "Params": "heavy",
+            "Mem": 4
+        },
         "CnHospital": "hospital",
         "CnHycon": "hycon",
         "CnItalo": "italo",
         "CnLiteV7": "litev7",
         "CnMarketCash": "marketcash",
         "CnRed": "mox",
-        "CnSaber": "bittubev2",
+        "CnSaber": {
+            "Params": "bittubev2",
+            "Mem": 4
+        },
         "CnStelliteV4": "stellitev4",
         "CnSwap": "swap",
         "CnTurtle": "turtle",

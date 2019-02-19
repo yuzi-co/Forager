@@ -21,6 +21,9 @@
     "APIPort": 4028,
     "SSL": true,
     "Algorithms": {
-        "Equihash150|4gb": "--coin BEAM"
+        "Equihash150": {
+            "Params": "--coin BEAM",
+            "Mem": 3.5
+        }
     }
 }

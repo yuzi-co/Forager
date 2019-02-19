@@ -17,8 +17,17 @@
     "Fee": 0.02,
     "CUDA": 9.2,
     "Algorithms": {
-        "Ethash_Blake2s": "blake2s",
-        "Ethash_Blake14r": "blake14r",
-        "Ethash_Tensority": "tensority"
+        "Ethash_Blake2s": {
+            "Params": "blake2s",
+            "Mem": 3
+        },
+        "Ethash_Blake14r": {
+            "Params": "blake14r",
+            "Mem": 3
+        },
+        "Ethash_Tensority": {
+            "Params": "tensority",
+            "Mem": 3
+        }
     }
 }

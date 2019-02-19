@@ -24,9 +24,13 @@
     "Fee": 0.0065,
     "SSL": true,
     "Algorithms": {
-        "Ethash": "",
-        "Ethash|8gb": "-clKernel 3",
-        "Ubqhash": "-coin ubq",
-        "Ubqhash|8gb": "-coin ubq -clKernel 3"
+        "Ethash": {
+            "Params": "-clKernel 3",
+            "Mem": 3
+        },
+        "Ubqhash": {
+            "Params": "-coin ubq -clKernel 3",
+            "Mem": 3
+        }
     }
 }

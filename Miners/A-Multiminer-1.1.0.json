@@ -7,8 +7,8 @@
         "-o #Protocol#://#Server#:#Port#",
         "-u #Login#",
         "-p #Password#",
-        "-R 10",
-        "-r 4",
+        "-R 3",
+        "-r 10",
         "--use-gpu=OPENCL",
         "--gpu-id=$(('#Devices#' -split ',' | % {[int]$_+1}) -join ',')",
         "-b #APIPort#",
@@ -17,11 +17,11 @@
     "API": "Ccminer",
     "APIPort": 4028,
     "Fee": 0.01,
-    "NoCPUMining": true,
+    "NoCPU": true,
     "Algorithms": {
         "Argon2ad": "-a argon2ad --gpu-batchsize=512 -t 4",
         "Argon2d250": "-a argon2d250 --gpu-batchsize=2048 -t 4",
-        "OFF-Argon2d500": "-a argon2d500 --gpu-batchsize=1024 -t 4",
+        "_Argon2d500": "-a argon2d500 --gpu-batchsize=1024 -t 4",
         "Argon2d4096": "-a argon2d4096 --gpu-batchsize=256 -t 2"
     }
 }

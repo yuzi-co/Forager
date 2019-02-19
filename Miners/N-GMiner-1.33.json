@@ -1,6 +1,6 @@
 {
     "Path": "miner.exe",
-    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.02/gminer_1_33_minimal_windows64.zip",
+    "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.33/gminer_1_33_minimal_windows64.zip",
     "SHA256": "2D1791AA175D2E59BD2B37590C806FBFE06C000A299C07E7AA7FC25A52159A9A",
     "Type": "NVIDIA",
     "Arguments": [
@@ -18,14 +18,31 @@
     "SSL": true,
     "Fee": 0.02,
     "CUDA": 9.0,
-    "NoCPUMining": "$(if ($AlgoName -in @('Aeternity', 'Cuckaroo29', 'Cuckatoo31')){$true}else{$false})",
     "Algorithms": {
-        "Aeternity": "--algo aeternity",
-        "Cuckaroo29|6gb": "--algo grin29",
-        "Cuckatoo31|9gb": "--algo grin31",
+        "Aeternity": {
+            "Params": "--algo aeternity",
+            "NoCpu": true,
+            "Mem": 5.6
+        },
+        "Cuckaroo29": {
+            "Params": "--algo grin29",
+            "NoCpu": true,
+            "Mem": 5.6
+        },
+        "Cuckatoo31": {
+            "Params": "--algo grin31",
+            "NoCpu": true,
+            "Mem": 7.4
+        },
         "Equihash144": "--algo 144_5 --pers auto",
-        "Equihash150|4gb": "--algo 150_5",
-        "Equihash192|3gb": "--algo 192_7 --pers auto",
+        "_Equihash150": {
+            "Params": "--algo 150_5",
+            "Mem": 2.9
+        },
+        "Equihash192": {
+            "Params": "--algo 192_7 --pers auto",
+            "Mem": 2.75
+        },
         "Equihash210": "--algo 210_9 --pers AION0PoW",
         "Equihash96": "--algo 96_5 --pers auto"
     }

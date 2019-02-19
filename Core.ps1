@@ -206,7 +206,7 @@ while ($Quit -eq $false) {
     #Donation
     $DonationsFile = ".\Data\donations.json"
     $DonationStat = if (Test-Path $DonationsFile) { Get-Content $DonationsFile | ConvertFrom-Json } else { @(0, 0) }
-    $Config.DonateMinutes = [math]::Max($Config.DonateMinutes,10)
+    $Config.DonateMinutes = [math]::Max($Config.DonateMinutes, 10)
     $MiningTime = $DonationStat[0]
     $DonatedTime = $DonationStat[1]
     switch ($Interval.Last) {
@@ -389,18 +389,6 @@ while ($Quit -eq $false) {
                 $AlgoNameDual = Get-AlgoUnifiedName (($AlgoTmp -split ("_"))[1])
                 $Algorithms = $AlgoName + $(if ($AlgoNameDual) {"_$AlgoNameDual"})
 
-                # Check memory constraints on miners
-                if ($DeviceGroup.MemoryGB -gt 0) {
-                    $SkipLabel = $false
-                    if ($AlgoLabel -match '(?<mem>\d+)gb.*') {
-                        if ($DeviceGroup.MemoryGB -lt [int]$Matches.mem) {$SkipLabel = $true}
-                    }
-                    if ($SkipLabel) {
-                        Log "$($MinerFile.BaseName)/$Algorithms/$AlgoLabel skipped due to constraints" -Severity Debug
-                        Continue
-                    }
-                }
-
                 if ($null -ne $Config.CUDAVersion -and $null -ne $Miner.CUDA) {
                     if ($Miner.CUDA -gt $Config.CUDAVersion) {
                         Log "$($MinerFile.BaseName) skipped due to CUDA version constraints" -Severity Debug
@@ -413,16 +401,12 @@ while ($Quit -eq $false) {
                 foreach ($Pool in ($Pools | Where-Object Algorithm -eq $AlgoName)) {
                     #Search pools for that algo
 
-                    # If Miner limited to pools
-                    if ($Miner.Pools -and $ExecutionContext.InvokeCommand.ExpandString($Miner.Pools) -eq $false) {Continue}
-
                     if (-not $AlgoNameDual -or ($Pools | Where-Object Algorithm -eq $AlgoNameDual)) {
 
                         #Set flag if both Miner and Pool support SSL
                         $EnableSSL = [bool]($Miner.SSL -and $Pool.SSL)
 
                         #Replace wildcards patterns
-                        if ($Pool.PoolName -eq 'Nicehash') {$Nicehash = $true} else {$Nicehash = $false}
                         if ($Pool.PoolName -eq 'Nicehash') {
                             $WorkerNameMain = $Config.WorkerName + '-' + $DeviceGroup.GroupName #Nicehash requires alphanumeric WorkerNames
                         } else {
@@ -431,8 +415,31 @@ while ($Quit -eq $false) {
                         $PoolUser = $Pool.User -replace '#WorkerName#', $WorkerNameMain
                         $PoolPass = $Pool.Pass -replace '#WorkerName#', $WorkerNameMain
 
+                        if ($Algo.Value -is [string]) {
+                            $AlgoParams = $ExecutionContext.InvokeCommand.ExpandString($Algo.Value)
+                            $MinerFee = $ExecutionContext.InvokeCommand.ExpandString($Miner.Fee)
+                            $NoCpu = $ExecutionContext.InvokeCommand.ExpandString($Miner.NoCpu)
+                        } else {
+                            $AlgoParams = $ExecutionContext.InvokeCommand.ExpandString($Algo.Value.Params)
+                            if ($Algo.Value.Fee -ne $null) {
+                                $MinerFee = $ExecutionContext.InvokeCommand.ExpandString($Algo.Value.Fee)
+                            }
+                            if ($Algo.Value.NoCpu -ne $null) {
+                                $NoCpu = $ExecutionContext.InvokeCommand.ExpandString($Algo.Value.NoCpu)
+                            }
+
+                            ### Limitations
+                            if (
+                                $Algo.Value.Enabled -eq $false -or
+                                $Algo.Value.NH -eq $false -and $Pool.PoolName -eq 'NiceHash' -or
+                                $Algo.Value.Mem -gt $DeviceGroup.MemoryGB * $(if ($SysInfo.OSVersion.Major -eq 10) {0.9} else {1})
+                            ) {
+                                Continue
+                            }
+                        }
+
                         $Params = @{
-                            '#AlgorithmParameters#' = $Algo.Value
+                            '#AlgorithmParameters#' = $AlgoParams
                             '#Algorithm#'           = $AlgoName
 
                             '#Protocol#'            = $(if ($EnableSSL) {$Pool.ProtocolSSL} else {$Pool.Protocol})
@@ -453,7 +460,7 @@ while ($Quit -eq $false) {
                         }
 
                         $Arguments = $Miner.Arguments -join " "
-                        $Arguments = $Arguments -replace '#AlgorithmParameters#', $Algo.Value
+                        $Arguments = $Arguments -replace '#AlgorithmParameters#', $AlgoParams
                         foreach ($P in $Params.Keys) {$Arguments = $Arguments -replace $P, $Params.$P}
                         $PatternConfigFile = $Miner.PatternConfigFile -replace '#Algorithm#', $AlgoName -replace '#GroupName#', $DeviceGroup.GroupName
                         if ($PatternConfigFile -and (Test-Path -Path $PatternConfigFile)) {
@@ -560,7 +567,6 @@ while ($Quit -eq $false) {
                             $SubMinerRevenueDual = [decimal]($HashRateValueDual * $PoolDual.Estimate)
 
                             #apply fee to revenues
-                            $MinerFee = [decimal]$ExecutionContext.InvokeCommand.ExpandString($Miner.Fee)
                             $SubMinerRevenue *= (1 - $MinerFee)
 
                             if (-not $FoundSubMiner) {
@@ -630,7 +636,7 @@ while ($Quit -eq $false) {
                             GenerateConfigFile  = $(if ($PatternConfigFile) {".\Bin\" + $MinerFile.BaseName + "\" + $Miner.GenerateConfigFile -replace '#GroupName#', $DeviceGroup.GroupName -replace '#Algorithm#', $AlgoName})
                             MinerFee            = $MinerFee
                             Name                = $MinerFile.BaseName
-                            NoCPUMining         = $ExecutionContext.InvokeCommand.ExpandString($Miner.NoCPUMining)
+                            NoCpu               = $NoCpu
                             Path                = $(".\Bin\" + $MinerFile.BaseName + "\" + $ExecutionContext.InvokeCommand.ExpandString($Miner.Path))
                             Pool                = $Pool
                             PoolDual            = $PoolDual
@@ -752,7 +758,7 @@ while ($Quit -eq $false) {
                 IsValid             = $true
                 MinerFee            = $Miner.MinerFee
                 Name                = $Miner.Name
-                NoCPUMining         = $Miner.NoCPUMining
+                NoCpu               = $Miner.NoCpu
                 Path                = Convert-Path $Miner.Path
                 Pool                = $Miner.Pool
                 PoolDual            = $Miner.PoolDual
@@ -813,9 +819,9 @@ while ($Quit -eq $false) {
     } | ForEach-Object { $_.Group | Select-Object -First 1 }
 
     # If GPU miner prevents CPU mining
-    if ($DeviceGroups.GroupType -contains 'CPU' -and ($BestNowMiners | Where-Object {$ActiveMiners[$_.IdF].NoCPUMining})) {
+    if ($DeviceGroups.GroupType -contains 'CPU' -and ($BestNowMiners | Where-Object {$ActiveMiners[$_.IdF].NoCpu})) {
         $AltBestNowMiners = $BestNowCandidates | Where-Object {
-            $ActiveMiners[$_.IdF].NoCPUMining -ne $true
+            $ActiveMiners[$_.IdF].NoCpu -ne $true
         } | Group-Object {
             $ActiveMiners[$_.IdF].DeviceGroup.GroupName
         } | ForEach-Object { $_.Group | Select-Object -First 1 }
@@ -914,7 +920,7 @@ while ($Quit -eq $false) {
                 $ActiveMiners[$BestNow.IdF].SubMiners[$BestNow.Id].StatsHistory.BestTimes++
             }
 
-            Log ($BestNowLogMsg + " is the best combination" + $(if ($BestLastLogMsg){", last was $BestLastLogMsg"}))
+            Log ($BestNowLogMsg + " is the best combination" + $(if ($BestLastLogMsg) {", last was $BestLastLogMsg"}))
         } else {
             Log "No valid candidate for device group $($DeviceGroup.GroupName)" -Severity Warn
             # Continue
@@ -936,7 +942,7 @@ while ($Quit -eq $false) {
                 $BestNow.NeedBenchmark -or
                 @('PendingCancellation', 'Failed') -contains $BestLast.Status -or
                 (@('Running') -contains $BestLast.Status -and $ProfitNow -gt ($ProfitLast * (1 + ($Config.PercentToSwitch / 100)))) -or
-                (($ActiveMiners[$BestLast.IdF].NoCPUMining -or $ActiveMiners[$BestNow.IdF].NoCPUMining) -and $BestLast -ne $BestNow)
+                (($ActiveMiners[$BestLast.IdF].NoCpu -or $ActiveMiners[$BestNow.IdF].NoCpu) -and $BestLast -ne $BestNow)
             ) {
                 #Must launch other miner and/or stop actual
 

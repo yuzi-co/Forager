@@ -14,6 +14,8 @@
     "API": "Claymore",
     "APIPort": 4028,
     "Algorithms": {
-        "Ethash": ""
+        "Ethash": {
+            "Mem": 3
+        }
     }
 }

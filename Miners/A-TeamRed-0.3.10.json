@@ -14,11 +14,22 @@
     ],
     "API": "Xgminer",
     "APIPort": 4028,
-    "Fee": 0.03,
     "Algorithms": {
-        "OFF-CnV8": "-a cnv8",
-        "OFF-Lyra2z": "-a lyra2z",
-        "Lyra2v3": "-a lyra2rev3",
-        "OFF-Phi2": "-a phi2"
+        "_CnV8": {
+            "Params": "-a cnv8",
+            "Fee": 0.025
+        },
+        "_Lyra2z": {
+            "Params": "-a lyra2z",
+            "Fee": 0.03
+        },
+        "Lyra2v3": {
+            "Params": "-a lyra2rev3",
+            "Fee": 0.025
+        },
+        "_Phi2": {
+            "Params": "-a phi2",
+            "Fee": 0.03
+        }
     }
 }

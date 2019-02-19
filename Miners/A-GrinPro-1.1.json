@@ -12,9 +12,11 @@
     "APIPort": 4028,
     "Fee": 0.02,
     "SSL": true,
-    "Pools": "$(if ($Pool.PoolName -eq 'NiceHash'){$false}else{$true})",
-    "NoCPUMining": true,
     "Algorithms": {
-        "Cuckaroo29": ""
+        "Cuckaroo29": {
+            "Mem": 5.6,
+            "NoCpu": true,
+            "NH": false
+        }
     }
 }

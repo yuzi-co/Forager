@@ -21,13 +21,28 @@
         "CnAlloy": "-a cn/xao",
         "CnArto": "-a cn/rto",
         "CnFast": "-a cn/msr",
-        "CnGpu": "-a cn/gpu",
+        "CnGpu": {
+            "Params": "-a cn/gpu",
+            "Mem": 4
+        },
         "CnHalf": "-a cn/half",
-        "CnHaven": "-a cn-heavy/xhv",
-        "CnHeavy": "-a cn-heavy",
+        "CnHaven": {
+            "Params": "-a cn-heavy/xhv",
+            "Mem": 4
+        },
+        "CnHeavy": {
+            "Params": "-a cn-heavy",
+            "Mem": 4
+        },
         "CnLiteV7": "-a  cn-lite/1",
-        "CnSaber": "-a cn-heavy/tube",
-        "CnTurtle": "-a cn-pico/trtl",
+        "CnSaber": {
+            "Params": "-a cn-heavy/tube",
+            "Mem": 4
+        },
+        "CnTurtle": {
+            "Params": "-a cn-pico/trtl",
+            "Mem": 4
+        },
         "CnV7": "-a cn/1",
         "CnV8": "-a cn/2",
         "CnWow": "-a cn/wow",

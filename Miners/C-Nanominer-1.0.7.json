@@ -8,6 +8,7 @@
     "Arguments": "#GroupName#-#Algorithm#.conf",
     "API": "Claymore",
     "APIPort": 4048,
+    "Fee": 0.05,
     "Algorithms": {
         "RandomHash": "RandomHash"
     }

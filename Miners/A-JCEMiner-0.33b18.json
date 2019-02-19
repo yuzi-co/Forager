@@ -29,12 +29,21 @@
         "CnFast": "--variation 11",
         "CnFreeHaven": "--variation 18",
         "CnHalf": "--variation 21",
-        "CnHaven": "--variation 12",
-        "CnHeavy": "--variation 5",
+        "CnHaven": {
+            "Params": "--variation 12",
+            "Mem": 4
+        },
+        "CnHeavy": {
+            "Params": "--variation 5",
+            "Mem": 4
+        },
         "CnLiteV7": "--variation 4",
         "CnMkt": "--variation 9",
         "CnRed": "--variation 14",
-        "CnSaber": "--variation 13",
+        "CnSaber": {
+            "Params": "--variation 13",
+            "Mem": 4
+        },
         "CnTurtle": "--variation 20",
         "CnUplexa": "--variation 19",
         "CnV7": "--variation 3",

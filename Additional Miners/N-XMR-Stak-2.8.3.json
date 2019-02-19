@@ -22,13 +22,28 @@
     "SSL": true,
     "Algorithms": {
         "CnFast": "--currency cryptonight_masari",
-        "CnGpu": "--currency cryptonight_gpu",
+        "CnGpu": {
+            "Params": "--currency cryptonight_gpu",
+            "Mem": 4
+        },
         "CnHalf": "--currency cryptonight_v8_half",
-        "CnHaven": "--currency cryptonight_haven",
-        "CnHeavy": "--currency cryptonight_heavy",
+        "CnHaven": {
+            "Params": "--currency cryptonight_haven",
+            "Mem": 4
+        },
+        "CnHeavy": {
+            "Params": "--currency cryptonight_heavy",
+            "Mem": 4
+        },
         "CnLiteV7": "--currency cryptonight_lite_v7",
-        "CnSaber": "--currency cryptonight_bittube2",
-        "CnTurtle": "--currency cryptonight_turtle",
+        "CnSaber": {
+            "Params": "--currency cryptonight_bittube2",
+            "Mem": 4
+        },
+        "CnTurtle": {
+            "Params": "--currency cryptonight_turtle",
+            "Mem": 4
+        },
         "CnV7": "--currency cryptonight_v7",
         "CnV8": "--currency cryptonight_v8",
         "CnXTL": "--currency cryptonight_v7_stellite"

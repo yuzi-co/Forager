@@ -11,7 +11,13 @@
     "Algorithms": {
         "CNv7": "CryptoNightv7",
         "CNv8": "CryptoNightv8",
-        "Ethash": "Ethash",
-        "Ubqhash": "Ubqhash"
+        "Ethash": {
+            "Params": "Ethash",
+            "Mem": 3
+        },
+        "Ubqhash": {
+            "Params": "Ubqhash",
+            "Mem": 3
+        }
     }
 }

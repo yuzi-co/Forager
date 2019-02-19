@@ -19,9 +19,18 @@
     "Fee": 0.01,
     "CUDA": 10.0,
     "Algorithms": {
-        "Ethash": "-a ETHASH-100",
-        "MTP|6gb": "-a MTP-100",
+        "Ethash": {
+            "Params": "-a ETHASH-100",
+            "Mem": 3
+        },
+        "MTP": {
+            "Params": "-a MTP-100",
+            "Mem": 4.5
+        },
         "ProgPOW": "-a PROGPOW-100",
-        "Ubqhash": "-a UBQHASH-100"
+        "Ubqhash": {
+            "Params": "-a UBQHASH-100",
+            "Mem": 3
+        }
     }
 }

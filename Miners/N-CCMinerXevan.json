@@ -1,7 +1,7 @@
 {
-    "Path": "ccminer.exe",
-    "Uri": "https://github.com/djm34/ccminer-msvc2015/releases/download/v0.3.0/ccminer.rar",
-    "SHA256": "b19fa7fcfa6f81620fd82068ba5f0da7dfac4d9fa885d09d9430cab4fbf509f1",
+    "Path": "ccminer_x86.exe",
+    "Uri": "https://github.com/nemosminer/ccminer-xevan/releases/download/ccminer-xevan/ccminer_x86.7z",
+    "SHA256": "",
     "Type": "NVIDIA",
     "Arguments": [
         "-o #Protocol#://#Server#:#Port#",
@@ -16,6 +16,6 @@
     "API": "Ccminer",
     "APIPort": 4068,
     "Algorithms": {
-        "Lyra2h": "-a lyra2h"
+        "Xevan": "-a xevan -i 21 -N 1"
     }
 }

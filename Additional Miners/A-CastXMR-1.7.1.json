@@ -20,15 +20,26 @@
     "Fee": 0.015,
     "Algorithms": {
         "CnFast": "--algo=8",
-        "CnFest": "--algo=9",
-        "CnFreeHaven": "--algo=11",
         "CnHalf": "--algo=6",
-        "CnHaven": "--algo=7",
-        "CnHeavy": "--algo=2",
+        "CnHaven": {
+            "Params": "--algo=7",
+            "Mem": 4
+        },
+        "CnHeavy": {
+            "Params": "--algo=2",
+            "Mem": 4
+        },
         "CnLiteV7": "--algo=4",
-        "CnSaber": "--algo=5",
-        "CnTurtle": "--algo=9",
+        "CnSaber": {
+            "Params": "--algo=5",
+            "Mem": 4
+        },
+        "CnTurtle": {
+            "Params": "--algo=9",
+            "Mem": 4
+        },
         "CnV7": "--algo=1",
-        "CnV8": "--algo=10"
+        "CnV8": "--algo=10",
+        "CnWow": "--algo=11"
     }
 }

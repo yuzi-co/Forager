@@ -7,8 +7,8 @@
         "-o #Protocol#://#Server#:#Port#",
         "-u #Login#",
         "-p #Password#",
-        "-R 10",
-        "-r 4",
+        "-R 3",
+        "-r 10",
         "-d #Devices#",
         "-b #APIPort#",
         "#AlgorithmParameters#"
@@ -16,6 +16,9 @@
     "API": "Ccminer",
     "APIPort": 4068,
     "Algorithms": {
-        "MTP|6gb": "-a mtp"
+        "MTP": {
+            "Params": "-a mtp -i 18",
+            "Mem": 4.5
+        }
     }
 }

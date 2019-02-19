@@ -15,6 +15,9 @@
     "SSL": true,
     "Fee": 0.02,
     "Algorithms": {
-        "Equihash150|8gb": "-uri beam"
+        "Equihash150": {
+            "Params": "-uri beam",
+            "Mem": 8
+        }
     }
 }

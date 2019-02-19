@@ -1,23 +1,21 @@
 {
     "Path": "ccminer.exe",
-    "Uri": "https://github.com/KlausT/ccminer/releases/download/8.22/ccminer-822-cuda92-x64.zip",
-    "SHA256": "61B40A3FAC6016E82A93DF799E4A57F5E06034D0CA92872D70E8F5FE2E3723B2",
+    "Uri": "https://github.com/SUQAORG/ccminer-x22i/releases/download/v1.2.0/ccminer-x22i-bin-w64-v1.2.0.7z",
+    "SHA256": "8D91F744AB6B61CD24F611658575548D9DDA13D663119E8F704945BA5023471E",
     "Type": "NVIDIA",
     "Arguments": [
         "-o #Protocol#://#Server#:#Port#",
         "-u #Login#",
         "-p #Password#",
-        "-R 10",
-        "-r 4",
+        "-R 3",
+        "-r 10",
         "-d #Devices#",
         "-b #APIPort#",
         "#AlgorithmParameters#"
     ],
     "API": "Ccminer",
     "APIPort": 4068,
-    "CUDA": 9.2,
     "Algorithms": {
-        "WhirlpoolX": "-a whirlpoolx",
-        "Whirlpool": "-a whirl"
+        "X22i": "-a x22i"
     }
 }

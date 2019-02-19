@@ -16,8 +16,17 @@
     "API": "Xgminer",
     "APIPort": 4028,
     "Algorithms": {
-        "MTP": "-k mtp -w 64 -I 20",
-        "MTP|vega": "-k mtp_vega -w 64 -I 20",
-        "OFF-MTP|nvidia": "-k mtp_nvidia4 -w 64 -I 20"
+        "MTP": {
+            "Params": "-k mtp -w 64 -I 20",
+            "Mem": 4.5
+        },
+        "MTP|vega": {
+            "Params": "-k mtp_vega -w 64 -I 20",
+            "Mem": 4.5
+        },
+        "_MTP|nvidia": {
+            "Params": "-k mtp_nvidia4 -w 64 -I 20",
+            "Mem": 4.5
+        }
     }
 }

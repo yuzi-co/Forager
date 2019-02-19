@@ -1,7 +1,7 @@
 {
     "Path": "ccminer.exe",
-    "Uri": "https://github.com/djm34/ccminer-msvc2015/releases/download/v0.3.0/ccminer.rar",
-    "SHA256": "b19fa7fcfa6f81620fd82068ba5f0da7dfac4d9fa885d09d9430cab4fbf509f1",
+    "Uri": "https://github.com/KlausT/ccminer/releases/download/8.22/ccminer-822-cuda80-x64.zip",
+    "SHA256": "68FDB70720434C64B9ECAB8D7F0A6ED444E2B8E7B0E3CC29864E752411801A56",
     "Type": "NVIDIA",
     "Arguments": [
         "-o #Protocol#://#Server#:#Port#",
@@ -15,7 +15,9 @@
     ],
     "API": "Ccminer",
     "APIPort": 4068,
+    "CUDA": 8.0,
     "Algorithms": {
-        "Lyra2h": "-a lyra2h"
+        "WhirlpoolX": "-a whirlpoolx",
+        "Whirlpool": "-a whirl"
     }
 }

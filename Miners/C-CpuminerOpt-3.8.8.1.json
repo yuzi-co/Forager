@@ -7,8 +7,8 @@
         "-o #Protocol#://#Server#:#Port#",
         "-u #Login#",
         "-p #Password#",
-        "-R 10",
-        "-r 4",
+        "-R 3",
+        "-r 10",
         "-b #APIPort#",
         "#AlgorithmParameters#"
     ],
@@ -19,9 +19,9 @@
         "Allium": "-a allium",
         "Anime": "-a anime",
         "Argon2": "-a argon2",
-        "OFF-Argon2d250": "-a argon2d250",
-        "OFF-Argon2d500": "-a argon2d500",
-        "OFF-Argon2d4096": "-a argon2d4096",
+        "_Argon2d250": "-a argon2d250",
+        "_Argon2d500": "-a argon2d500",
+        "_Argon2d4096": "-a argon2d4096",
         "Axiom": "-a axiom",
         "BMW": "-a bmw",
         "Bastion": "-a bastion",
@@ -67,9 +67,9 @@
         "X17": "-a x17",
         "Xevan": "-a xevan",
         "Yescrypt": "-a yescrypt",
-        "OFF-YescryptR8": "-a yescryptr8",
-        "OFF-YescryptR16": "-a yescryptr16",
-        "OFF-YescryptR32": "-a yescryptr32",
+        "_YescryptR8": "-a yescryptr8",
+        "_YescryptR16": "-a yescryptr16",
+        "_YescryptR32": "-a yescryptr32",
         "ZR5": "-a zr5"
     }
 }
