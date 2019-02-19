@@ -1,0 +1,13 @@
+﻿#
+# Forager autoexec
+# =====================
+#
+# put commands to be executed at the startup of Forager here:
+# - one line, one command
+# - command and path must be enclosed with doublequotes (")
+# - arguments (if any) must follow after the closing doublequote if the command
+# - hashtag marks a comment
+#
+
+#".\Includes\OhGodAnETHlargementPill-r2.exe" --revA
+#"..\OverdriveNTool\OverdriveNTool.exe" -p*UV
