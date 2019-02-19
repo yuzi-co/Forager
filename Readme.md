@@ -42,7 +42,7 @@ Using integration with MSI Afterburner, it will get real time power usage and us
 - XMR-Stak (AMD and NVIDIA) doesn't support multiple groups per GPU Vendor (2+ AMD or NVIDIA) out of the box.
   Of first run it will create "GroupName-Algorithm.txt" files for each group that you can edit once to include only the relevant GPUs.
 
-- Mixed rigs (AMD+NVIDIA) are not recommended .Use at your own risk.
+- Mixed rigs (AMD+NVIDIA) are not recommended. Use at your own risk.
   You may have problems with some miners selecting specific devices. Disable problematic miners if you have issues.
 
 
@@ -72,6 +72,7 @@ Run "git pull" in Forager folder to get latest master version
 
 
 ### Forager folder structure:
+```
 /Additional Miners/	- Miners disabled by default, usually because of low profitability or issues
 /Bin/			- Installed miners are located in this folder
 /Cache/			- Cached API requests storage. Can be purged at will. Old files automatically cleaned on start.
@@ -83,13 +84,14 @@ Run "git pull" in Forager folder to get latest master version
 /Patterns/		- Miner config templates
 /Pools/			- Pool definitions
 /Stats/			- Miner benchmarks and run statistics
-
+```
 
 ### Donations are welcome
-- BTC - 3FzmW9JMhgmRwipKkNnphxG73VPQMsYsN6
-- ETH - 0x38973025136D1a5B773aE71c02cA24b365850A9A
-- LTC - MM8RmXUgxDwHJxrC54muF7KHciSCFS3gx3
-
+```
+BTC - 3FzmW9JMhgmRwipKkNnphxG73VPQMsYsN6
+ETH - 0x38973025136D1a5B773aE71c02cA24b365850A9A
+LTC - MM8RmXUgxDwHJxrC54muF7KHciSCFS3gx3
+```
 
 Disclaimer:
 
