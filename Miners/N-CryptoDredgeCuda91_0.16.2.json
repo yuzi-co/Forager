@@ -48,6 +48,7 @@
         "Lyra2zz": "-a lyra2zz --intensity 8",
         "MTP": {
             "Params": "-a mtp --intensity 8",
+            "NH": false,
             "Mem": 4.5,
             "Fee": 0.02
         },

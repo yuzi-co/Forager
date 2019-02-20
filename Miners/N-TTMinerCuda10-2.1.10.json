@@ -25,6 +25,7 @@
         },
         "MTP": {
             "Params": "-a MTP-100",
+            "NH": false,
             "Mem": 4.5
         },
         "ProgPOW": "-a PROGPOW-100",

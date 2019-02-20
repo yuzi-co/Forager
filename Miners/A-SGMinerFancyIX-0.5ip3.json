@@ -24,6 +24,7 @@
         "Lyra2zz": "-k lyra2zz -g 1 -w 256 -I 22",
         "MTP": {
             "Params": "-k mtp -I 20",
+            "NH": false,
             "Mem": 4.5
         },
         "_Phi2": "-k phi2 -g 1 -w 256 -I 22",
