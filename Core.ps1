@@ -797,7 +797,16 @@ while ($Quit -eq $false) {
         }) | ConvertTo-Json
     Log $Msg -Severity Debug
 
-    $BestLastMiners = $ActiveMiners.SubMiners | Where-Object {@("Running", "PendingCancellation") -contains $_.Status}
+    $BestLastMiners = $ActiveMiners.SubMiners | Where-Object {@("Running", "PendingStop", "PendingFail") -contains $_.Status}
+
+    # Check if must cancel miner/algo/coin combo
+    $BestLastMiners | Where-Object {
+        $_.Status -eq 'PendingFail' -and
+        ($ActiveMiners[$_.IdF].SubMiners.Stats.FailedTimes | Measure-Object -Sum).Sum -ge 3
+    } | ForEach-Object {
+        $ActiveMiners[$_.IdF].SubMiners | ForEach-Object {$_.Status = 'Failed'}
+        Log "Detected 3 fails, disabling $($ActiveMiners[$_.IdF].DeviceGroup.GroupName)/$($ActiveMiners[$_.IdF].Name)/$($ActiveMiners[$_.IdF].Algorithms)" -Severity Warn
+    }
 
     ## Select miners that need Benchmark, or if running in Manual mode, or highest Profit above zero.
     $BestNowCandidates = $ActiveMiners | Where-Object {$_.IsValid -and $_.UserName -and $_.DeviceGroup.Enabled} |
@@ -851,20 +860,19 @@ while ($Quit -eq $false) {
 
         if ($BestLast) {
             $ProfitLast = $BestLast.Profits
-            $BestLastLogMsg = $(
-                "$($ActiveMiners[$BestLast.IdF].Name)/" +
-                "$($ActiveMiners[$BestLast.IdF].Algorithms)/" +
-                "$($ActiveMiners[$BestLast.IdF].Pool.Info)" +
-                "$(if ($ActiveMiners[$BestLast.IdF].PoolDual.Info) { '_' + $ActiveMiners[$BestLast.IdF].PoolDual.Info}) " +
-                "PL $($BestLast.PowerLimit) " +
-                "for group $($DeviceGroup.GroupName)")
+            $BestLastLogMsg = @(
+                "$($DeviceGroup.GroupName)"
+                "$($ActiveMiners[$BestLast.IdF].Name)"
+                "$($ActiveMiners[$BestLast.IdF].Algorithms)"
+                "PL$($BestLast.PowerLimit)"
+                ) -join '/'
 
-            # cancel miner if current pool workers below MinWorkers
+            # Cancel miner if current pool workers below MinWorkers
             if (
                 $null -ne $ActiveMiners[$BestLast.IdF].PoolWorkers -and
-                $ActiveMiners[$BestLast.IdF].PoolWorkers -le $Config.MinWorkers
+                $ActiveMiners[$BestLast.IdF].PoolWorkers -le $(if ($Config.("MinWorkers_" + $ActiveMiners[$BestLast.IdF].Pool.PoolName) -ne $null) {$Config.("MinWorkers_" + $ActiveMiners[$BestLast.IdF].Pool.PoolName)}else {$Config.MinWorkers})
             ) {
-                $BestLast.Status = 'PendingCancellation'
+                $BestLast.Status = 'PendingStop'
                 Log "Cancelling miner due to low worker count"
             }
         } else {
@@ -896,25 +904,16 @@ while ($Quit -eq $false) {
                 Export-Csv -Path $(".\Logs\Stats-" + (Get-Process -PID $PID).StartTime.tostring('yyyy-MM-dd_HH-mm-ss') + ".csv") -Append -NoTypeInformation
         }
 
-        #check if must cancel miner/algo/coin combo
-        if ($BestLast.Status -eq 'PendingCancellation') {
-            if (($ActiveMiners[$BestLast.IdF].SubMiners.Stats.FailedTimes | Measure-Object -sum).sum -ge 3) {
-                $ActiveMiners[$BestLast.IdF].SubMiners | ForEach-Object {$_.Status = 'Failed'}
-                Log "Detected more than 3 fails, cancelling $BestLastLogMsg" -Severity Warn
-            }
-        }
-
         # look for best for next round
         $BestNow = $BestNowMiners | Where-Object { $ActiveMiners[$_.IdF].DeviceGroup.GroupName -eq $DeviceGroup.GroupName }
 
         if ($BestNow) {
-            $BestNowLogMsg = $(
-                "$($ActiveMiners[$BestNow.IdF].Name)/" +
-                "$($ActiveMiners[$BestNow.IdF].Algorithms)/" +
-                "$($ActiveMiners[$BestNow.IdF].Pool.Info)" +
-                "$(if ($ActiveMiners[$BestNow.IdF].PoolDual.Info) { '_' + $ActiveMiners[$BestNow.IdF].PoolDual.Info}) " +
-                "PL $($BestNow.PowerLimit) " +
-                "for group $($DeviceGroup.GroupName)")
+            $BestNowLogMsg = @(
+                "$($DeviceGroup.GroupName)"
+                "$($ActiveMiners[$BestNow.IdF].Name)"
+                "$($ActiveMiners[$BestNow.IdF].Algorithms)"
+                "PL$($BestNow.PowerLimit)"
+            ) -join '/'
 
             $ProfitNow = $BestNow.Profits
 
@@ -924,16 +923,15 @@ while ($Quit -eq $false) {
                 $ActiveMiners[$BestNow.IdF].SubMiners[$BestNow.Id].StatsHistory.BestTimes++
             }
 
-            Log ($BestNowLogMsg + " is the best combination" + $(if ($BestLastLogMsg) {", last was $BestLastLogMsg"}))
+            Log ("Current best: $BestNowLogMsg" + $(if ($BestLastLogMsg) {", Last best $BestLastLogMsg"}))
         } else {
             Log "No valid candidate for device group $($DeviceGroup.GroupName)" -Severity Warn
-            # Continue
         }
 
         if (
             $BestLast.IdF -ne $BestNow.IdF -or
             $BestLast.Id -ne $BestNow.Id -or
-            @('PendingCancellation', 'Failed') -contains $BestLast.Status -or
+            @('PendingStop', 'PendingFail', 'Failed') -contains $BestLast.Status -or
             $Interval.Current -ne $Interval.Last -or
             -not $BestNow
         ) {
@@ -944,7 +942,7 @@ while ($Quit -eq $false) {
                 -not $BestNow -or
                 -not $ActiveMiners[$BestLast.IdF].IsValid -or
                 $BestNow.NeedBenchmark -or
-                @('PendingCancellation', 'Failed') -contains $BestLast.Status -or
+                @('PendingStop', 'PendingFail', 'Failed') -contains $BestLast.Status -or
                 (@('Running') -contains $BestLast.Status -and $ProfitNow -gt ($ProfitLast * (1 + ($Config.PercentToSwitch / 100)))) -or
                 (($ActiveMiners[$BestLast.IdF].NoCpu -or $ActiveMiners[$BestNow.IdF].NoCpu) -and $BestLast -ne $BestNow)
             ) {
@@ -965,7 +963,8 @@ while ($Quit -eq $false) {
                     $ActiveMiners[$BestLast.IdF].SubMiners[$BestLast.Id].Best = $false
                     switch ($BestLast.Status) {
                         'Running' {$ActiveMiners[$BestLast.IdF].SubMiners[$BestLast.Id].Status = 'Idle'}
-                        'PendingCancellation' {$ActiveMiners[$BestLast.IdF].SubMiners[$BestLast.Id].Status = 'Cancelled'}
+                        'PendingStop' {$ActiveMiners[$BestLast.IdF].SubMiners[$BestLast.Id].Status = 'Idle'}
+                        'PendingFail' {$ActiveMiners[$BestLast.IdF].SubMiners[$BestLast.Id].Status = 'Idle'}
                         'Failed' {$ActiveMiners[$BestLast.IdF].SubMiners[$BestLast.Id].Status = 'Failed'}
                     }
                 }
@@ -1248,12 +1247,12 @@ while ($Quit -eq $false) {
                 ($Devices -and $ActivityAverage -le 40 -and $TimeSinceStartInterval -gt 100 -and $ActivityDeviceCount -gt 0)
             ) {
                 $ExitLoop = $true
-                $_.Status = "PendingCancellation"
+                $_.Status = "PendingFail"
                 $_.Stats.FailedTimes++
                 $_.StatsHistory.FailedTimes++
                 Log "Detected miner error $($ActiveMiners[$_.IdF].Name)/$($ActiveMiners[$_.IdF].Algorithm) --> $($ActiveMiners[$_.IdF].Path) $($ActiveMiners[$_.IdF].Arguments)" -Severity Warn
             }
-        } #End For each
+        } #End foreach best subminer
 
         #############################################################
 
@@ -1662,46 +1661,48 @@ while ($Quit -eq $false) {
 
         #Loop for reading key and wait
 
-        $ValidGroups = [string[]]$DeviceGroups.Id
-        $KeyPressed = Read-KeyboardTimed -SecondsToWait 3 -ValidKeys (@('P', 'C', 'H', 'E', 'W', 'U', 'T', 'B', 'S', 'X', 'Q', 'D', 'R') + $ValidGroups)
+        if (-not $ExitLoop) {
+            $ValidGroups = [string[]]$DeviceGroups.Id
+            $KeyPressed = Read-KeyboardTimed -SecondsToWait 3 -ValidKeys (@('P', 'C', 'H', 'E', 'W', 'U', 'T', 'B', 'S', 'X', 'Q', 'D', 'R') + $ValidGroups)
 
-        switch -regex ($KeyPressed) {
-            'P' {$Screen = 'Profits'; Log "Switch to Profits screen"}
-            'C' {$Screen = 'Current'; Log "Switch to Current screen"}
-            'H' {$Screen = 'History'; Log "Switch to History screen"}
-            'S' {$Screen = 'Stats'; Log "Switch to Stats screen"}
-            'E' {$ExitLoop = $true; Log "Forced end of interval by E key"}
-            'W' {$Screen = 'Wallets'; Log "Switch to Wallet screen"}
-            'U' {if ($Screen -eq "Wallets") {$WalletsUpdate = $null}; Log "Update wallets"}
-            'T' {if ($Screen -eq "Profits") {$ProfitsScreenLimit = $(if ($ProfitsScreenLimit -eq $InitialProfitsScreenLimit) {1000} else {$InitialProfitsScreenLimit}); Log "Toggle Profits Top"}}
-            'B' {if ($Screen -eq "Profits") {$ShowBestMinersOnly = -not $ShowBestMinersOnly}; Log "Toggle Profits Best"}
-            'X' {try {Set-WindowSize 180 50} catch {}; Log "Reset screen size"}
-            'Q' {$Quit = $true; $ExitLoop = $true; Log "Exit by Q key"}
-            'D' {
-                if (-not (Test-Path ".\Dump")) { New-Item -Path .\Dump -ItemType directory -Force | Out-Null }
-                $Pools | ConvertTo-Json -Depth 10 | Set-Content .\Dump\Pools.json
-                $ActiveMiners | ConvertTo-Json -Depth 10 | Set-Content .\Dump\Miners.json
-                $DeviceGroups | ConvertTo-Json -Depth 10 | Set-Content .\Dump\DeviceGroups.json
-            }
-            'R' {
-                ## Reset failed miners
-                $ActiveMiners.SubMiners | Where-Object {$_.Status -eq 'Failed'} | ForEach-Object {
-                    $_.Status = 'Idle'
-                    $_.Stats.FailedTimes = 0
-                    Log "Reset failed miner status: $($ActiveMiners[$_.IdF].Name)/$($ActiveMiners[$_.IdF].Algorithms)"
+            switch -regex ($KeyPressed) {
+                'P' {$Screen = 'Profits'; Log "Switch to Profits screen"}
+                'C' {$Screen = 'Current'; Log "Switch to Current screen"}
+                'H' {$Screen = 'History'; Log "Switch to History screen"}
+                'S' {$Screen = 'Stats'; Log "Switch to Stats screen"}
+                'E' {$ExitLoop = $true; Log "Forced end of interval by E key"}
+                'W' {$Screen = 'Wallets'; Log "Switch to Wallet screen"}
+                'U' {if ($Screen -eq "Wallets") {$WalletsUpdate = $null}; Log "Update wallets"}
+                'T' {if ($Screen -eq "Profits") {$ProfitsScreenLimit = $(if ($ProfitsScreenLimit -eq $InitialProfitsScreenLimit) {1000} else {$InitialProfitsScreenLimit}); Log "Toggle Profits Top"}}
+                'B' {if ($Screen -eq "Profits") {$ShowBestMinersOnly = -not $ShowBestMinersOnly}; Log "Toggle Profits Best"}
+                'X' {try {Set-WindowSize 180 50} catch {}; Log "Reset screen size"}
+                'Q' {$Quit = $true; $ExitLoop = $true; Log "Exit by Q key"}
+                'D' {
+                    if (-not (Test-Path ".\Dump")) { New-Item -Path .\Dump -ItemType directory -Force | Out-Null }
+                    $Pools | ConvertTo-Json -Depth 10 | Set-Content .\Dump\Pools.json
+                    $ActiveMiners | ConvertTo-Json -Depth 10 | Set-Content .\Dump\Miners.json
+                    $DeviceGroups | ConvertTo-Json -Depth 10 | Set-Content .\Dump\DeviceGroups.json
+                }
+                'R' {
+                    ## Reset failed miners
+                    $ActiveMiners.SubMiners | Where-Object {$_.Status -eq 'Failed'} | ForEach-Object {
+                        $_.Status = 'Idle'
+                        $_.Stats.FailedTimes = 0
+                        Log "Reset failed miner status: $($ActiveMiners[$_.IdF].Name)/$($ActiveMiners[$_.IdF].Algorithms)"
+                    }
+                }
+                "\d" {
+                    if ($DeviceGroups | Where-Object {$_.ID -eq "$KeyPressed"}) {
+                        $DeviceGroups | Where-Object {$_.ID -eq "$KeyPressed"} | ForEach-Object {$_.Enabled = -not $_.Enabled}
+                        $ExitLoop = $true
+                        Log "Toggle Device group $_"
+                    }
                 }
             }
-            "\d" {
-                if ($DeviceGroups | Where-Object {$_.ID -eq "$KeyPressed"}) {
-                    $DeviceGroups | Where-Object {$_.ID -eq "$KeyPressed"} | ForEach-Object {$_.Enabled = -not $_.Enabled}
-                    $ExitLoop = $true
-                    Log "Toggle Device group $_"
-                }
-            }
-        }
 
-        if ($KeyPressed) {
-            $RepaintScreen = $true
+            if ($KeyPressed) {
+                $RepaintScreen = $true
+            }
         }
 
         if ((Get-Date) -ge $LoopStartTime.AddSeconds($Interval.Duration)) {
@@ -1709,9 +1710,9 @@ while ($Quit -eq $false) {
             #If last interval was benchmark and no speed detected mark as failed
             $ActiveMiners.SubMiners | Where-Object Best | ForEach-Object {
                 if ($_.NeedBenchmark -and $_.SpeedReads.Count -eq 0) {
-                    $_.Status = 'PendingCancellation'
+                    $_.Status = 'PendingFail'
                     $_.Stats.FailedTimes++
-                    Log "No speed detected while benchmark $($ActiveMiners[$_.IdF].Name)/$($ActiveMiners[$_.IdF].Algorithm) (id $($ActiveMiners[$_.IdF].Id))" -Severity Warn
+                    Log "No speed detected while benchmarking $($ActiveMiners[$_.IdF].Name)/$($ActiveMiners[$_.IdF].Algorithm) (id $($ActiveMiners[$_.IdF].Id))" -Severity Warn
                 }
             }
             $ExitLoop = $true
