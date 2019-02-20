@@ -814,6 +814,10 @@ while ($Quit -eq $false) {
         } | Sort-Object -Descending NeedBenchmark, {$(if ($MiningMode -eq "Manual") {$_.HashRate} elseif ($LocalBTCvalue) {$_.Profits} else {$_.Revenue + $_.RevenueDual})}, {$ActiveMiners[$_.IdF].PoolPrice}, {$ActiveMiners[$_.IdF].PoolPriceDual}, PowerLimit
     }
 
+    if ($Interval.Current -eq "Donate") {
+        $BestNowCandidates = $BestNowCandidates | Where-Object -not NeedBenchmark
+    }
+
     $BestNowMiners = $BestNowCandidates | Group-Object {
         $ActiveMiners[$_.IdF].DeviceGroup.GroupName
     } | ForEach-Object { $_.Group | Select-Object -First 1 }
@@ -1050,11 +1054,14 @@ while ($Quit -eq $false) {
         }
     }
 
-    if ($ActiveMiners | Where-Object IsValid | Select-Object -ExpandProperty Subminers | Where-Object {$_.NeedBenchmark -and $_.Status -ne 'Failed'}) {$Interval.Benchmark = $true} else {$Interval.Benchmark = $false}
-
-    if ($Interval.Current -eq "Donate") { $Interval.Duration = $DonateInterval }
-    elseif ($Interval.Benchmark) { $Interval.Duration = $Config.BenchmarkTime }
-    else {
+    if ($Interval.Current -eq "Donate") {
+        $Interval.Benchmark = $false
+        $Interval.Duration = $DonateInterval
+    } elseif ($ActiveMiners | Where-Object IsValid | Select-Object -ExpandProperty Subminers | Where-Object {$_.NeedBenchmark -and $_.Status -ne 'Failed'}) {
+        $Interval.Benchmark = $true
+        $Interval.Duration = $Config.BenchmarkTime
+    } else {
+        $Interval.Benchmark = $false
         $Interval.Duration = $ActiveMiners.SubMiners | Where-Object Status -eq 'Running' | Select-Object -ExpandProperty IdF | ForEach-Object {
             $PoolInterval = $Config.("Interval_" + $ActiveMiners[$_].Pool.RewardType)
             Log "Interval for pool $($ActiveMiners[$_].Pool.PoolName) is $PoolInterval" -Severity Debug
