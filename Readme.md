@@ -1,5 +1,5 @@
 ## Forager
-Advanced open source multi-pool / multi-algo profit switching miner
+#### Advanced open source multi-pool / multi-algo profit switching miner
 
 It will use profit information from supporting pools to make sure you mine the most profitable algorithm at all times
 You can also use WhatToMine and CoinCalculators virtual pools for profit data and mine to pools which dont provide profit information, or even your custom pools
@@ -18,24 +18,44 @@ Using integration with MSI Afterburner, it will get real time power usage and us
 - Profit display in any fiat currency which is supported by CoinDesk
 - SHA256 checksum validation for miner downloads
 - Autoexec.txt for running custom programs on start. Autorun programs are also stopped on exit
-- Enable/Disable a group during runtime
+- Enable/Disable a device group during runtime
 
 
 ### Notes:
-- Recommended drivers for AMD - 18.3.4 or 18.6.1.
-  18.4.1/18.7.1 are problematic and not recommended
-  18.8.1 and higher have issues with Optiminer and some others
-  you can use https://forums.guru3d.com/threads/atic-install-tool-radeon-drivers-download-utility.422576/ to easily find and download specific driver version
 
-- Recommended drivers for NVIDIA on Win 10 - 411.31+ for CUDA 10. Set CUDAVersion = 10.0 in Config.ini
-- Recommended drivers for NVIDIA on Win 10 - 398.+ for CUDA 9.2
-- Recommended drivers for NVIDIA on Win 7 - 390.65-391.01 Set CUDAVersion = 9.1 in Config.ini
+#### Drivers:
 
-- Using PowerShell Core recommended - https://github.com/PowerShell/PowerShell/releases
-- Windows 7 will require PowerShell Core or PowerShell v5 installed: https://www.microsoft.com/en-us/download/details.aspx?id=54616
+Recommended drivers for AMD - 18.3.4 or 18.6.1.
 
-- Recommended MSI Afterburner version is 4.5.0 or newer
-  prior versions don't support Intel CPU power usage and may not fully support your GPU
+You can use https://forums.guru3d.com/threads/atic-install-tool-radeon-drivers-download-utility.422576/ to easily find and download specific driver version
+
+Recommended drivers for NVIDIA on Win 10 - 411.31+ for CUDA 10
+
+Recommended drivers for NVIDIA on Win 10 - 398.+ for CUDA 9.2
+
+Recommended drivers for NVIDIA on Win 7 - 390.65-391.01 for CUDA 9.1
+
+
+#### Powershell:
+
+Using PowerShell Core recommended - https://github.com/PowerShell/PowerShell/releases
+
+Windows 7 will require PowerShell Core or PowerShell v5 installed: https://www.microsoft.com/en-us/download/details.aspx?id=54616
+
+
+##### Runtimes for miners:
+
+MSVCR120 - https://www.microsoft.com/en-gb/download/details.aspx?id=40784
+
+VCRUNTIME140 - https://www.microsoft.com/en-us/download/details.aspx?id=48145
+
+Visual C++ Redistributable for Visual Studio 2015 - https://www.microsoft.com/en-US/download/details.aspx?id=48145
+
+
+#### Afterburner
+
+Recommended MSI Afterburner version is 4.5.0 or newer.
+Prior versions don't support Intel CPU power usage and may not fully support your GPU
 
 - Some miners when benchmarking X16r/X16s (AMD) submit "fake" shares that get rejected by the pools.
   Ignore this and after benchmarking it will work normally.
@@ -48,13 +68,16 @@ Using integration with MSI Afterburner, it will get real time power usage and us
 
 
 ### Getting started:
-- Option 1:
- Download latest Forager release (7zip or self-extracting SFX) from https://github.com/yuzi-co/Forager/releases and extract it
+#### Option 1:
 
-- Option 2:
+Download latest Forager release (7zip or self-extracting SFX) from https://github.com/yuzi-co/Forager/releases and extract it
+
+#### Option 2:
+
 Install GIT (https://git-scm.com/download/win), open command line and run "git clone https://github.com/yuzi-co/Forager/" to get latest master version
 
 ### Configure:
+
 Copy Config-SAMPLE.ini to Config.ini and edit it with your preferred currencies, wallets and pool users
 See Autostart*.bat files for launch examples
 
@@ -64,11 +87,13 @@ When run, Forager will benchmark all available Miner/Algo combinations and after
 Be aware that benchmarking can be a long process
 
 ### Upgrade:
-- Option 1:
+#### Option 1:
+
 Download latest Forager release (7zip or self-extracting SFX) and extract to a new folder
 Copy your customized Autostart.bat, Config.ini and Stats folder to new version folder
 
-- Option 2 (if initially installed using GIT):
+#### Option 2 (if initially installed using GIT):
+
 Run "git pull" in Forager folder to get latest master version
 
 
