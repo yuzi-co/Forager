@@ -57,14 +57,14 @@ Visual C++ Redistributable for Visual Studio 2015 - https://www.microsoft.com/en
 Recommended MSI Afterburner version is 4.5.0 or newer.
 Prior versions don't support Intel CPU power usage and may not fully support your GPU
 
-- Some miners when benchmarking X16r/X16s (AMD) submit "fake" shares that get rejected by the pools.
-  Ignore this and after benchmarking it will work normally.
+Some miners when benchmarking X16r/X16s (AMD) submit "fake" shares that get rejected by the pools.
+Ignore this and after benchmarking it will work normally.
 
-- XMR-Stak (AMD and NVIDIA) doesn't support multiple groups per GPU Vendor (2+ AMD or NVIDIA) out of the box.
-  Of first run it will create "GroupName-Algorithm.txt" files for each group that you can edit once to include only the relevant GPUs.
+XMR-Stak (AMD and NVIDIA) doesn't support multiple groups per GPU Vendor (2+ AMD or NVIDIA) out of the box.
+Of first run it will create "GroupName-Algorithm.txt" files for each group that you can edit once to include only the relevant GPUs.
 
-- Mixed rigs (AMD+NVIDIA) are not recommended. Use at your own risk.
-  You may have problems with some miners selecting specific devices. Disable problematic miners if you have issues.
+Mixed rigs (AMD+NVIDIA) are not recommended. Use at your own risk.
+You may have problems with some miners selecting specific devices. Disable problematic miners if you have issues.
 
 
 ### Getting started:
