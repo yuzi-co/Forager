@@ -274,31 +274,29 @@ function Get-DevicesInfoNvidiaSMI {
         '--format=csv,noheader'
     )
     $Result = & $Command $Arguments | ConvertFrom-Csv -Header gpu_name,utilization_gpu,utilization_memory,temperature_gpu,power_draw,power_limit,fan_speed,pstate,clocks_current_graphics,clocks_current_memory,power_max_limit,power_default_limit
-    $Devices = $Result | ForEach-Object {
-        if ($_.gpu_name) {
-            $GroupName = ($Types | Where-Object DevicesArray -contains $DeviceId).GroupName
+    $Devices = $Result | Where-Object pstate -ne $null | ForEach-Object {
+        $GroupName = ($Types | Where-Object DevicesArray -contains $DeviceId).GroupName
 
-            $Card = [PSCustomObject]@{
-                GroupName         = $GroupName
-                GroupType         = 'NVIDIA'
-                Id                = $DeviceId
-                Name              = $_.gpu_name
-                Utilization       = $(if ($_.utilization_gpu) {$_.utilization_gpu -replace "[^0-9.,]"} else {100}) #If we dont have real Utilization, at least make the watchdog happy
-                UtilizationMem    = $($_.utilization_memory -replace "[^0-9.,]")
-                Temperature       = $($_.temperature_gpu -replace "[^0-9.,]")
-                PowerDraw         = $($_.power_draw -replace "[^0-9.,]")
-                PowerLimit        = $($_.power_limit -replace "[^0-9.,]")
-                FanSpeed          = $($_.fan_speed -replace "[^0-9.,]")
-                Pstate            = $($_.pstate)
-                Clock             = $($_.clocks_current_graphics -replace "[^0-9.,]")
-                ClockMem          = $($_.clocks_current_memory -replace "[^0-9.,]")
-                PowerMaxLimit     = $($_.power_max_limit -replace "[^0-9.,]")
-                PowerDefaultLimit = $($_.power_default_limit -replace "[^0-9.,]")
-            }
-            if ($Card.PowerDefaultLimit -gt 0) { $Card | Add-Member PowerLimitPercent ([math]::Floor(($Card.PowerLimit * 100) / $Card.PowerDefaultLimit))}
-            $Card
-            $DeviceId++
+        $Card = [PSCustomObject]@{
+            GroupName         = $GroupName
+            GroupType         = 'NVIDIA'
+            Id                = $DeviceId
+            Name              = $_.gpu_name
+            Utilization       = [int]$(if ($_.utilization_gpu) {$_.utilization_gpu -replace "[^0-9.,]"} else {100}) #If we dont have real Utilization, at least make the watchdog happy
+            UtilizationMem    = [int]$($_.utilization_memory -replace "[^0-9.,]")
+            Temperature       = [int]$($_.temperature_gpu -replace "[^0-9.,]")
+            PowerDraw         = [int]$($_.power_draw -replace "[^0-9.,]")
+            PowerLimit        = [int]$($_.power_limit -replace "[^0-9.,]")
+            FanSpeed          = [int]$($_.fan_speed -replace "[^0-9.,]")
+            Pstate            = $_.pstate
+            Clock             = [int]$($_.clocks_current_graphics -replace "[^0-9.,]")
+            ClockMem          = [int]$($_.clocks_current_memory -replace "[^0-9.,]")
+            PowerMaxLimit     = [int]$($_.power_max_limit -replace "[^0-9.,]")
+            PowerDefaultLimit = [int]$($_.power_default_limit -replace "[^0-9.,]")
         }
+        if ($Card.PowerDefaultLimit -gt 0) { $Card | Add-Member PowerLimitPercent ([int](($Card.PowerLimit * 100) / $Card.PowerDefaultLimit)) }
+        $Card
+        $DeviceId++
     }
     $Devices
 }
