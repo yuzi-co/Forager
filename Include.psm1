@@ -271,29 +271,29 @@ function Get-DevicesInfoNvidiaSMI {
     $Command = '.\includes\nvidia-smi.exe'
     $Arguments = @(
         '--query-gpu=gpu_name,utilization.gpu,utilization.memory,temperature.gpu,power.draw,power.limit,fan.speed,pstate,clocks.current.graphics,clocks.current.memory,power.max_limit,power.default_limit'
-        '--format=csv'
+        '--format=csv,noheader'
     )
-    $Result = & $Command $Arguments | ConvertFrom-Csv
+    $Result = & $Command $Arguments | ConvertFrom-Csv -Header gpu_name,utilization_gpu,utilization_memory,temperature_gpu,power_draw,power_limit,fan_speed,pstate,clocks_current_graphics,clocks_current_memory,power_max_limit,power_default_limit
     $Devices = $Result | ForEach-Object {
-        if ($_.'gpu_name') {
+        if ($_.gpu_name) {
             $GroupName = ($Types | Where-Object DevicesArray -contains $DeviceId).GroupName
 
             $Card = [PSCustomObject]@{
                 GroupName         = $GroupName
                 GroupType         = 'NVIDIA'
                 Id                = $DeviceId
-                Name              = $_.'gpu_name'
-                Utilization       = if ($_.'utilization.gpu') {$_.'utilization.gpu' -replace '%'} else {100} #If we dont have real Utilization, at least make the watchdog happy
-                UtilizationMem    = if ($_.'utilization.memory') {$_.'utilization.memory' -replace '%'}
-                Temperature       = if ($_.'temperature.gpu') {$_.'temperature.gpu' -replace '%'}
-                PowerDraw         = if ($_.'power.draw') {$_.'power.draw' -replace 'W'}
-                PowerLimit        = if ($_.'power.limit') {$_.'power.limit' -replace 'W'}
-                FanSpeed          = if ($_.'fan.speed') {$_.'fan.speed' -replace '%'}
-                Pstate            = if ($_.'pstate') {($_.'pstate')}
-                Clock             = if ($_.'clocks.current.graphics') {$_.'clocks.current.graphics' -replace 'Mhz'}
-                ClockMem          = if ($_.'clocks.current.memory') {$_.'clocks.current.memory' -replace 'Mhz'}
-                PowerMaxLimit     = if ($_.'power.max_limit') {$_.'power.max_limit' -replace 'W'}
-                PowerDefaultLimit = if ($_.'power.default_limit') {$_.'power.default_limit' -replace 'W'}
+                Name              = $_.gpu_name
+                Utilization       = $(if ($_.utilization_gpu) {$_.utilization_gpu -replace "[^0-9.,]"} else {100}) #If we dont have real Utilization, at least make the watchdog happy
+                UtilizationMem    = $($_.utilization_memory -replace "[^0-9.,]")
+                Temperature       = $($_.temperature_gpu -replace "[^0-9.,]")
+                PowerDraw         = $($_.power_draw -replace "[^0-9.,]")
+                PowerLimit        = $($_.power_limit -replace "[^0-9.,]")
+                FanSpeed          = $($_.fan_speed -replace "[^0-9.,]")
+                Pstate            = $($_.pstate)
+                Clock             = $($_.clocks_current_graphics -replace "[^0-9.,]")
+                ClockMem          = $($_.clocks_current_memory -replace "[^0-9.,]")
+                PowerMaxLimit     = $($_.power_max_limit -replace "[^0-9.,]")
+                PowerDefaultLimit = $($_.power_default_limit -replace "[^0-9.,]")
             }
             if ($Card.PowerDefaultLimit -gt 0) { $Card | Add-Member PowerLimitPercent ([math]::Floor(($Card.PowerLimit * 100) / $Card.PowerDefaultLimit))}
             $Card
