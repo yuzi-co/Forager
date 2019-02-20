@@ -273,7 +273,7 @@ function Get-DevicesInfoNvidiaSMI {
         '--query-gpu=gpu_name,utilization.gpu,utilization.memory,temperature.gpu,power.draw,power.limit,fan.speed,pstate,clocks.current.graphics,clocks.current.memory,power.max_limit,power.default_limit'
         '--format=csv,noheader'
     )
-    $Result = & $Command $Arguments | ConvertFrom-Csv -Header gpu_name,utilization_gpu,utilization_memory,temperature_gpu,power_draw,power_limit,fan_speed,pstate,clocks_current_graphics,clocks_current_memory,power_max_limit,power_default_limit
+    $Result = & $Command $Arguments | ConvertFrom-Csv -Header gpu_name, utilization_gpu, utilization_memory, temperature_gpu, power_draw, power_limit, fan_speed, pstate, clocks_current_graphics, clocks_current_memory, power_max_limit, power_default_limit
     $Devices = $Result | Where-Object pstate -ne $null | ForEach-Object {
         $GroupName = ($Types | Where-Object DevicesArray -contains $DeviceId).GroupName
 
@@ -445,16 +445,27 @@ function Get-Devices {
 "@ | ConvertFrom-Json
 
     [array]$Groups = foreach ($GroupType in @('AMD', 'NVIDIA', 'CPU')) {
+        $GroupBy = @{
+            Property = "PlatformId"
+        }
+        if ($Config.GroupGpuByType) {
+            $GroupBy.Property += ",Name,GlobalMemSize,MaxComputeUnits"
+        }
         $OCLDevices | Where-Object {
             $_.Type -like $GroupFilter.$GroupType.Type -and
             $_.Vendor -like $GroupFilter.$GroupType.Vendor -and
-            $_.PlatformId -like $GroupFilter.$GroupType.PlatformID
-        } | Group-Object PlatformId, Name | ForEach-Object {
+            $_.PlatformId -like $GroupFilter.$GroupType.PlatformId
+        } | Group-Object @GroupBy | ForEach-Object {
             if ($_.Group) {
-                $Devices = $_.Group | Select-Object -Property PlatformId, Name, Vendor -First 1
+                $Devices = $_.Group | Select-Object -Property PlatformId, Name, Vendor, GlobalMemSize, MaxComputeUnits -First 1
+                if ($Config.GroupGpuByType -and $GroupType -ne 'CPU') {
+                    $GroupName = ($Devices.Name -replace "[^\w]") + '_' + $Devices.MaxComputeUnits + 'cu' + [int]($Devices.GlobalMemSize / 1GB) + 'gb'
+                } else {
+                    $GroupName = $GroupType
+                }
                 $Devices | Add-Member Devices $($_.Group.DeviceIndex -join ',')
                 $Devices | Add-Member GroupType $GroupType
-                $Devices | Add-Member GroupName $GroupType
+                $Devices | Add-Member GroupName $GroupName
                 $Devices | Add-Member Enabled $true
                 $Devices | Add-Member OCLDevices ($_.Group | Select-Object -Property GlobalMemSize, MaxComputeUnits)
 
@@ -473,27 +484,25 @@ function Get-MiningTypes () {
         [switch]$All = $false
     )
 
-    $Devices = $Config.GpuGroups
-
-    if ($null -eq $Devices -or $All) {
+    [array]$Devices = if ($null -eq $Config.GpuGroups -or $All) {
         # Autodetection on
         if ($All -or $Config.CPUMining) {
-            [array]$Devices = Get-Devices
+            Get-Devices
         } else {
-            [array]$Devices = Get-Devices | Where-Object GroupType -ne 'CPU'
+            Get-Devices | Where-Object GroupType -ne 'CPU'
         }
-    } elseif ("" -eq $Devices) {
-        # Empty GpuGroups - don't autodetect, use CPU only
-        [array]$Devices = Get-Devices | Where-Object GroupType -eq 'CPU'
     } else {
         # GpuGroups not empty, parse it
-        [array]$Devices = $Devices | ConvertFrom-Json
+        if ($Config.GpuGroups.Length -gt 0) {
+            $Config.GpuGroups | ConvertFrom-Json
+        }
         if ($Config.CPUMining) {
-            [array]$Devices += Get-Devices | Where-Object GroupType -eq 'CPU'
+            Get-Devices | Where-Object GroupType -eq 'CPU'
         }
-        $Devices | ForEach-Object {
-            if ($null -eq $_.Enabled) { $_ | Add-Member Enabled $true }
-        }
+    }
+
+    $Devices | ForEach-Object {
+        if ($null -eq $_.Enabled) { $_ | Add-Member Enabled $true }
     }
 
     if ($Devices | Where-Object {$_.GroupType -eq 'CPU'}) {
