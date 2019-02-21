@@ -218,49 +218,6 @@ function Get-DevicesInfoADL {
     $Devices
 }
 
-# function Get-DevicesInfoNvidiaSMI {
-#     param (
-#         $Types
-#     )
-#     $DeviceId = 0
-#     $Command = '.\includes\nvidia-smi.exe'
-#     $Arguments = @(
-#         '--query-gpu=gpu_name,utilization.gpu,utilization.memory,temperature.gpu,power.draw,power.limit,fan.speed,pstate,clocks.current.graphics,clocks.current.memory,power.max_limit,power.default_limit'
-#         '--format=csv,noheader'
-#     )
-#     $Result = & $Command $Arguments
-#     $Devices = $Result | ForEach-Object {
-#         $ResultSplit = $_ -split (",")
-#         if ($ResultSplit.count -gt 10) {
-#             #less is error or no NVIDIA gpu present
-
-#             $GroupName = ($Types | Where-Object DevicesArray -contains $DeviceId).GroupName
-
-#             $Card = [PSCustomObject]@{
-#                 GroupName         = $GroupName
-#                 GroupType         = 'NVIDIA'
-#                 Id                = $DeviceId
-#                 Name              = $ResultSplit[0]
-#                 Utilization       = if ($ResultSplit[1] -like "*Supported*") {100} else {[int]($ResultSplit[1] -replace '%', '')} #If we dont have real Utilization, at least make the watchdog happy
-#                 UtilizationMem    = if ($ResultSplit[2] -like "*Supported*") {$null} else {[int]($ResultSplit[2] -replace '%', '')}
-#                 Temperature       = if ($ResultSplit[3] -like "*Supported*") {$null} else {[int]($ResultSplit[3] -replace '%', '')}
-#                 PowerDraw         = if ($ResultSplit[4] -like "*Supported*") {$null} else {[int]($ResultSplit[4] -replace 'W', '')}
-#                 PowerLimit        = if ($ResultSplit[5] -like "*Supported*" -or $ResultSplit[5] -like "*error*") {$null} else {[int]($ResultSplit[5] -replace 'W', '')}
-#                 FanSpeed          = if ($ResultSplit[6] -like "*Supported*" -or $ResultSplit[6] -like "*error*") {$null} else {[int]($ResultSplit[6] -replace '%', '')}
-#                 Pstate            = $ResultSplit[7]
-#                 Clock             = if ($ResultSplit[8] -like "*Supported*") {$null} else {[int]($ResultSplit[8] -replace 'Mhz', '')}
-#                 ClockMem          = if ($ResultSplit[9] -like "*Supported*") {$null} else {[int]($ResultSplit[9] -replace 'Mhz', '')}
-#                 PowerMaxLimit     = if ($ResultSplit[10] -like "*Supported*") {$null} else {[int]($ResultSplit[10] -replace 'W', '')}
-#                 PowerDefaultLimit = if ($ResultSplit[11] -like "*Supported*") {$null} else {[int]($ResultSplit[11] -replace 'W', '')}
-#             }
-#             if ($Card.PowerDefaultLimit -gt 0) { $Card | Add-Member PowerLimitPercent ([math]::Floor(($Card.PowerLimit * 100) / $Card.PowerDefaultLimit))}
-#             $Card
-#             $DeviceId++
-#         }
-#     }
-#     $Devices
-# }
-
 function Get-DevicesInfoNvidiaSMI {
     param (
         $Types
@@ -272,6 +229,12 @@ function Get-DevicesInfoNvidiaSMI {
         '--format=csv,noheader'
     )
     $Result = & $Command $Arguments | ConvertFrom-Csv -Header gpu_name, utilization_gpu, utilization_memory, temperature_gpu, power_draw, power_limit, fan_speed, pstate, clocks_current_graphics, clocks_current_memory, power_max_limit, power_default_limit
+#     $FakeData = @"
+#     GeForce GTX 1060 6GB, 0 %, 3 %, 46, 9.34 W, 180.00 W, 0 %, P8, 139 MHz, 405 MHz, 200.00 W, 180.00 W
+#     GeForce GTX 1060 6GB, 0 %, 3 %, 46, 9.34 W, 180.00 W, 0 %, P8, 139 MHz, 405 MHz, 200.00 W, 180.00 W
+#     GeForce GTX 1080, 0 %, 0 %, 29, 6.54 W, 90.00 W, 39 %, P8, 135 MHz, 405 MHz, 108.00 W, 90.00 W
+# "@
+#     $Result = $FakeData | ConvertFrom-Csv -Header gpu_name, utilization_gpu, utilization_memory, temperature_gpu, power_draw, power_limit, fan_speed, pstate, clocks_current_graphics, clocks_current_memory, power_max_limit, power_default_limit
     $Devices = $Result | Where-Object pstate -ne $null | ForEach-Object {
         $GroupName = ($Types | Where-Object DevicesArray -contains $DeviceId).GroupName
 
@@ -427,9 +390,9 @@ function Get-Devices {
     # $OCLDevices += [PSCustomObject]@{Name = 'Ellesmere'; Vendor = 'Advanced Micro Devices, Inc.'; GlobalMemSize = 8GB; PlatformId = 0; Type = 'Gpu'; DeviceIndex = 0; MaxComputeUnits = 30}
     # $OCLDevices += [PSCustomObject]@{Name = 'Ellesmere'; Vendor = 'Advanced Micro Devices, Inc.'; GlobalMemSize = 8GB; PlatformId = 0; Type = 'Gpu'; DeviceIndex = 1; MaxComputeUnits = 30}
     # $OCLDevices += [PSCustomObject]@{Name = 'Ellesmere'; Vendor = 'Advanced Micro Devices, Inc.'; GlobalMemSize = 4GB; PlatformId = 0; Type = 'Gpu'; DeviceIndex = 2; MaxComputeUnits = 30}
+    # $OCLDevices += [PSCustomObject]@{Name = 'GeForce 1060'; Vendor = 'NVIDIA Corporation'; GlobalMemSize = 3GB; PlatformId = 1; Type = 'Gpu'; DeviceIndex = 0; MaxComputeUnits = 30}
     # $OCLDevices += [PSCustomObject]@{Name = 'GeForce 1060'; Vendor = 'NVIDIA Corporation'; GlobalMemSize = 3GB; PlatformId = 1; Type = 'Gpu'; DeviceIndex = 1; MaxComputeUnits = 30}
-    # $OCLDevices += [PSCustomObject]@{Name = 'GeForce 1060'; Vendor = 'NVIDIA Corporation'; GlobalMemSize = 3GB; PlatformId = 1; Type = 'Gpu'; DeviceIndex = 2; MaxComputeUnits = 30}
-    # $OCLDevices += [PSCustomObject]@{Name = 'GeForce 1080'; Vendor = 'NVIDIA Corporation'; GlobalMemSize = 8GB; PlatformId = 1; Type = 'Gpu'; DeviceIndex = 3; MaxComputeUnits = 60}
+    # $OCLDevices += [PSCustomObject]@{Name = 'GeForce 1080'; Vendor = 'NVIDIA Corporation'; GlobalMemSize = 8GB; PlatformId = 1; Type = 'Gpu'; DeviceIndex = 2; MaxComputeUnits = 60}
     # # end fake
 
     $GroupFilter = @"
