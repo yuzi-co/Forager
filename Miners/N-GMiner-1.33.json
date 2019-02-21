@@ -9,6 +9,7 @@
         "--user #Login#",
         "--pass #Password#",
         "--api #APIPort#",
+        "--watchdog 0",
         "$(if($enableSSL){'--ssl 1'})",
         "--devices #DevicesETHMode#",
         "#AlgorithmParameters#"

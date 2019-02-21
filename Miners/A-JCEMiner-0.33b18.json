@@ -9,7 +9,7 @@
         "-p #Password#",
         "$(if ($enableSSL){'--ssl'})",
         "$(if ($Pool.PoolName -eq 'NiceHash'){'--nicehash'})",
-        "-g #Devices#",
+        "-g $($DeviceGroup.OCLGpuId -join ',')",
         "--any",
         "--auto",
         "--no-cpu",

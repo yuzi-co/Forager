@@ -54,14 +54,14 @@ Log ($SysInfo | ConvertTo-Json) -Severity Debug
 
 $Host.UI.RawUI.WindowTitle = "$($Release.Application) v$($Release.Version)"
 
-if ($env:CUDA_DEVICE_ORDER -ne 'PCI_BUS_ID') { setx CUDA_DEVICE_ORDER PCI_BUS_ID } #Align CUDA id with nvidia-smi order
+if ($env:CUDA_DEVICE_ORDER -ne 'PCI_BUS_ID') { $env:CUDA_DEVICE_ORDER = 'PCI_BUS_ID' } #Align CUDA id with nvidia-smi order
 
-if ($env:GPU_FORCE_64BIT_PTR -ne 0) { setx GPU_FORCE_64BIT_PTR 0 }               #For AMD
-if ($env:GPU_MAX_HEAP_SIZE -ne 100) { setx GPU_MAX_HEAP_SIZE 100 }               #For AMD
-if ($env:GPU_USE_SYNC_OBJECTS -ne 1) { setx GPU_USE_SYNC_OBJECTS 1 }             #For AMD
-if ($env:GPU_MAX_ALLOC_PERCENT -ne 100) { setx GPU_MAX_ALLOC_PERCENT 100 }       #For AMD
-if ($env:GPU_SINGLE_ALLOC_PERCENT -ne 100) { setx GPU_SINGLE_ALLOC_PERCENT 100 } #For AMD
-if ($env:GPU_MAX_WORKGROUP_SIZE -ne 256) { setx GPU_MAX_WORKGROUP_SIZE 256 }     #For AMD
+if ($env:GPU_FORCE_64BIT_PTR -ne 0) { $env:GPU_FORCE_64BIT_PTR = 0 }               #For AMD
+if ($env:GPU_MAX_HEAP_SIZE -ne 100) { $env:GPU_MAX_HEAP_SIZE = 100 }               #For AMD
+if ($env:GPU_USE_SYNC_OBJECTS -ne 1) { $env:GPU_USE_SYNC_OBJECTS = 1 }             #For AMD
+if ($env:GPU_MAX_ALLOC_PERCENT -ne 100) { $env:GPU_MAX_ALLOC_PERCENT = 100 }       #For AMD
+if ($env:GPU_SINGLE_ALLOC_PERCENT -ne 100) { $env:GPU_SINGLE_ALLOC_PERCENT = 100 } #For AMD
+if ($env:GPU_MAX_WORKGROUP_SIZE -ne 256) { $env:GPU_MAX_WORKGROUP_SIZE = 256 }     #For AMD
 
 #Set process priority to BelowNormal to avoid hash rate drops on systems with weak CPUs
 (Get-Process -Id $PID).PriorityClass = "BelowNormal"
@@ -415,10 +415,10 @@ while ($Quit -eq $false) {
                         $PoolUser = $Pool.User -replace '#WorkerName#', $WorkerNameMain
                         $PoolPass = $Pool.Pass -replace '#WorkerName#', $WorkerNameMain
 
+                        $MinerFee = $ExecutionContext.InvokeCommand.ExpandString($Miner.Fee)
+                        $NoCpu = $ExecutionContext.InvokeCommand.ExpandString($Miner.NoCpu)
                         if ($Algo.Value -is [string]) {
                             $AlgoParams = $ExecutionContext.InvokeCommand.ExpandString($Algo.Value)
-                            $MinerFee = $ExecutionContext.InvokeCommand.ExpandString($Miner.Fee)
-                            $NoCpu = $ExecutionContext.InvokeCommand.ExpandString($Miner.NoCpu)
                         } else {
                             $AlgoParams = $ExecutionContext.InvokeCommand.ExpandString($Algo.Value.Params)
                             if ($Algo.Value.Fee -ne $null) {
@@ -640,7 +640,7 @@ while ($Quit -eq $false) {
                             Path                = $(".\Bin\" + $MinerFile.BaseName + "\" + $ExecutionContext.InvokeCommand.ExpandString($Miner.Path))
                             Pool                = $Pool
                             PoolDual            = $PoolDual
-                            PrelaunchCommand    = $ExecutionContext.InvokeCommand.ExpandString($Miner.PrelaunchCommand)
+                            PrelaunchCommand    = $Miner.PrelaunchCommand
                             SHA256              = $Miner.SHA256
                             SubMiners           = $SubMiners
                             URI                 = $Miner.URI
