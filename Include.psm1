@@ -583,9 +583,8 @@ function Get-MiningTypes () {
             }
 
             if ($_.GroupType -eq 'AMD' -and -not $abControl) {
-                $_.PowerLimits = @(0)
+                $_ | Add-Member PowerLimits @(0) -Force
             }
-
 
             $_ | Add-Member MinProfit ([math]::Max($Config.("MinProfit_" + $_.GroupName), 0))
             $_ | Add-Member Algorithms ($Config.("Algorithms_" + $_.GroupName) -split ',')
