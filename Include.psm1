@@ -485,7 +485,7 @@ function Get-Devices {
             }
         }
     }
-    , $Groups
+    @($Groups)
 }
 
 function Get-MiningTypes () {
