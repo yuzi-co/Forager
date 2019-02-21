@@ -497,17 +497,14 @@ function Get-MiningTypes () {
     )
 
     $Devices = @(
-        if ($All) {
-            # Autodetection on
-            Get-Devices -Types AMD, NVIDIA, CPU
-        } elseif ($Config.GpuGroups -is [string] -and $Config.GpuGroups.Length -gt 0) {
+        if ($Config.GpuGroups -is [string] -and $Config.GpuGroups.Length -gt 0 -and -not $All) {
             # GpuGroups not empty, parse it
             $Config.GpuGroups | ConvertFrom-Json
         } else {
             # Autodetection on
             Get-Devices -Types AMD, NVIDIA
         }
-        if ($Config.CPUMining) {
+        if ($Config.CPUMining -or $All) {
             Get-Devices -Types CPU
         }
     )
