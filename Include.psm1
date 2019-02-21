@@ -405,6 +405,11 @@ function Out-DevicesInformation ($Devices) {
 }
 
 function Get-Devices {
+    param(
+        [Parameter(Mandatory = $false)]
+        [array]$Types = @('AMD', 'NVIDIA', 'CPU')
+    )
+
     $OCLPlatforms = @([OpenCl.Platform]::GetPlatformIds())
     $PlatformId = 0
     $OCLDevices = @($OCLPlatforms | ForEach-Object {
@@ -452,7 +457,7 @@ function Get-Devices {
     }
 "@ | ConvertFrom-Json
 
-    $Groups = foreach ($GroupType in @('AMD', 'NVIDIA', 'CPU')) {
+    $Groups = foreach ($GroupType in $Types) {
         $GroupBy = @{
             Property = @('PlatformId')
         }
@@ -491,22 +496,21 @@ function Get-MiningTypes () {
         [switch]$All = $false
     )
 
-    [array]$Devices = if ($null -eq $Config.GpuGroups -or $All) {
-        # Autodetection on
-        if ($All -or $Config.CPUMining) {
-            Get-Devices
-        } else {
-            Get-Devices | Where-Object GroupType -ne 'CPU'
-        }
-    } else {
-        # GpuGroups not empty, parse it
-        if ($Config.GpuGroups.Length -gt 0) {
+    $Devices = @(
+        if ($All) {
+            # Autodetection on
+            Get-Devices -Types AMD, NVIDIA, CPU
+        } elseif ($Config.GpuGroups -is [string] -and $Config.GpuGroups.Length -gt 0) {
+            # GpuGroups not empty, parse it
             $Config.GpuGroups | ConvertFrom-Json
+        } else {
+            # Autodetection on
+            Get-Devices -Types AMD, NVIDIA
         }
         if ($Config.CPUMining) {
-            Get-Devices | Where-Object GroupType -eq 'CPU'
+            Get-Devices -Types CPU
         }
-    }
+    )
 
     $Devices | ForEach-Object {
         if ($null -eq $_.Enabled) { $_ | Add-Member Enabled $true }
@@ -571,15 +575,17 @@ function Get-MiningTypes () {
             }
             $_ | Add-Member OCLDeviceId (, $OCLDevice.OCLDeviceId)
             $_ | Add-Member OCLGpuId (, $OCLDevice.OCLGpuId)
-            if (
-                $null -eq $_.PowerLimits -or
-                $_.GroupType -eq 'Intel' -or
-                ($_.Type -eq 'AMD' -and -not $abControl)
-            ) {
-                $_ | Add-Member PowerLimits @(0) -Force
+
+            if ($_.PowerLimits -is [string] -and $_.PowerLimits.Length -gt 0) {
+                $_ | Add-Member PowerLimits @([int[]]($_.PowerLimits -split ',') | Sort-Object -Descending -Unique) -Force
             } else {
-                $_.PowerLimits = @([int[]]($_.PowerLimits -split ',') | Sort-Object -Descending -Unique)
+                $_ | Add-Member PowerLimits @(0) -Force
             }
+
+            if ($_.GroupType -eq 'AMD' -and -not $abControl) {
+                $_.PowerLimits = @(0)
+            }
+
 
             $_ | Add-Member MinProfit ([math]::Max($Config.("MinProfit_" + $_.GroupName), 0))
             $_ | Add-Member Algorithms ($Config.("Algorithms_" + $_.GroupName) -split ',')
