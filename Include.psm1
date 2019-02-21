@@ -175,46 +175,44 @@ function Get-DevicesInfoADL {
     $DeviceId = 0
 
     $Command = ".\Includes\OverdriveN.exe"
-    $Result = & $Command | Where-Object {$_ -notlike "*&???" -and $_ -notlike "*failed"}
+    $Result = & $Command | Where-Object {$_ -notlike "*&???" -and $_ -notlike "*failed"} | ConvertFrom-Csv -Header id, fan_speed, fan_max, clock, clock_mem, load, temp, power_limit, name, pci_device
+
     $AmdCardsTDP = Get-Content .\Data\amd-cards-tdp.json | ConvertFrom-Json
 
-    $Devices = if ($null -ne $Result) {
-        $AdlResult | ForEach-Object {
+    $Devices = $Result | Where-Object name -ne $null | ForEach-Object {
 
-            $ResultSplit = $_ -split (",")
-            $GroupName = ($Types | Where-Object DevicesArray -contains $DeviceId).GroupName
+        $GroupName = ($Types | Where-Object DevicesArray -contains $DeviceId).GroupName
 
-            $CardName = $($ResultSplit[8] `
-                    -replace 'ASUS' `
-                    -replace 'AMD' `
-                    -replace '\(?TM\)?' `
-                    -replace 'Series' `
-                    -replace 'Graphics' `
-                    -replace "\s+", ' '
-            ).Trim()
+        $CardName = $($Result.name `
+                -replace 'ASUS' `
+                -replace 'AMD' `
+                -replace '\(?TM\)?' `
+                -replace 'Series' `
+                -replace 'Graphics' `
+                -replace "\s+", ' '
+        ).Trim()
 
-            $CardName = $CardName -replace '.*Radeon.*([4-5]\d0).*', 'Radeon RX $1'     # RX 400/500 series
-            $CardName = $CardName -replace '.*\s(Vega).*(56|64).*', 'Radeon Vega $2'    # Vega series
-            $CardName = $CardName -replace '.*\s(R\d)\s(\w+).*', 'Radeon $1 $2'         # R3/R5/R7/R9 series
-            $CardName = $CardName -replace '.*\s(HD)\s?(\w+).*', 'Radeon HD $2'         # HD series
+        $CardName = $CardName -replace '.*Radeon.*([4-5]\d0).*', 'Radeon RX $1'     # RX 400/500 series
+        $CardName = $CardName -replace '.*\s(Vega).*(56|64).*', 'Radeon Vega $2'    # Vega series
+        $CardName = $CardName -replace '.*\s(R\d)\s(\w+).*', 'Radeon $1 $2'         # R3/R5/R7/R9 series
+        $CardName = $CardName -replace '.*\s(HD)\s?(\w+).*', 'Radeon HD $2'         # HD series
 
-            [PSCustomObject]@{
-                GroupName         = $GroupName
-                GroupType         = 'AMD'
-                Id                = $DeviceId
-                AdapterId         = [int]$ResultSplit[0]
-                FanSpeed          = [int]([int]$ResultSplit[1] / [int]$ResultSplit[2] * 100)
-                Clock             = [int]([int]($ResultSplit[3] / 100))
-                ClockMem          = [int]([int]($ResultSplit[4] / 100))
-                Utilization       = [int]$ResultSplit[5]
-                Temperature       = [int]$ResultSplit[6] / 1000
-                PowerLimitPercent = 100 + [int]$ResultSplit[7]
-                PowerDraw         = $AmdCardsTDP.$CardName * ((100 + [double]$ResultSplit[7]) / 100) * ([double]$ResultSplit[5] / 100)
-                Name              = $CardName
-            }
-
-            $DeviceId++
+        [PSCustomObject]@{
+            GroupName         = $GroupName
+            GroupType         = 'AMD'
+            Id                = $DeviceId
+            AdapterId         = [int]$Result.id
+            FanSpeed          = [int]($Result.fan_speed / $Result.fan_max * 100)
+            Clock             = [int]($Result.clock / 100)
+            ClockMem          = [int]($Result.clock_mem / 100)
+            Utilization       = [int]$Result.load
+            Temperature       = [int]$Result.temp / 1000
+            PowerLimitPercent = 100 + [int]$Result.power_limit
+            PowerDraw         = $AmdCardsTDP.$CardName * ((100 + [int]$Result.power_limit) / 100) * ([int]$Result.load / 100)
+            Name              = $CardName
         }
+
+        $DeviceId++
     }
     Clear-Variable AmdCardsTDP
     $Devices
