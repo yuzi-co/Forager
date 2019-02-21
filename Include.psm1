@@ -183,7 +183,7 @@ function Get-DevicesInfoADL {
 
         $GroupName = ($Types | Where-Object DevicesArray -contains $DeviceId).GroupName
 
-        $CardName = $($Result.name `
+        $CardName = $($_.name `
                 -replace 'ASUS' `
                 -replace 'AMD' `
                 -replace '\(?TM\)?' `
@@ -201,14 +201,14 @@ function Get-DevicesInfoADL {
             GroupName         = $GroupName
             GroupType         = 'AMD'
             Id                = $DeviceId
-            AdapterId         = [int]$Result.id
-            FanSpeed          = [int]($Result.fan_speed / $Result.fan_max * 100)
-            Clock             = [int]($Result.clock / 100)
-            ClockMem          = [int]($Result.clock_mem / 100)
-            Utilization       = [int]$Result.load
-            Temperature       = [int]$Result.temp / 1000
-            PowerLimitPercent = 100 + [int]$Result.power_limit
-            PowerDraw         = $AmdCardsTDP.$CardName * ((100 + [int]$Result.power_limit) / 100) * ([int]$Result.load / 100)
+            AdapterId         = [int]$_.id
+            FanSpeed          = [int]($_.fan_speed / $_.fan_max * 100)
+            Clock             = [int]($_.clock / 100)
+            ClockMem          = [int]($_.clock_mem / 100)
+            Utilization       = [int]$_.load
+            Temperature       = [int]$_.temp / 1000
+            PowerLimitPercent = 100 + [int]$_.power_limit
+            PowerDraw         = $AmdCardsTDP.$CardName * ((100 + [int]$_.power_limit) / 100) * ([int]$_.load / 100)
             Name              = $CardName
         }
 
