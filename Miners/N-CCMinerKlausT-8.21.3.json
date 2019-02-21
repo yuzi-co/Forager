@@ -1,7 +1,7 @@
 {
     "Path": "ccminerKlausT\\ccminer.exe",
-    "Uri": "https://github.com/nemosminer/ccminer-KlausT-8.21-mod-r18-src-fix/releases/download/v2/ccminerKlausT.7z",
-    "SHA256": "EDFC761C0A578FEE963418BEFFCA93A880238C9819FC9EF79A5CC3DC7D3DBB9A",
+    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.02/ccminerKlausT-8.21.3.7z",
+    "SHA256": "5A1752003013A2662BAAE462BA2F8DAFA51CA65BDDD196D446FC34C2468611A0",
     "Type": "NVIDIA",
     "Arguments": [
         "-o #Protocol#://#Server#:#Port#",
