@@ -419,6 +419,16 @@ function Get-Devices {
             $Devs
         })
 
+    # # start fake
+    # $OCLDevices = @()
+    # $OCLDevices += [PSCustomObject]@{Name = 'Ellesmere'; Vendor = 'Advanced Micro Devices, Inc.'; GlobalMemSize = 8GB; PlatformId = 0; Type = 'Gpu'; DeviceIndex = 0; MaxComputeUnits = 30}
+    # $OCLDevices += [PSCustomObject]@{Name = 'Ellesmere'; Vendor = 'Advanced Micro Devices, Inc.'; GlobalMemSize = 8GB; PlatformId = 0; Type = 'Gpu'; DeviceIndex = 1; MaxComputeUnits = 30}
+    # $OCLDevices += [PSCustomObject]@{Name = 'Ellesmere'; Vendor = 'Advanced Micro Devices, Inc.'; GlobalMemSize = 4GB; PlatformId = 0; Type = 'Gpu'; DeviceIndex = 2; MaxComputeUnits = 30}
+    # $OCLDevices += [PSCustomObject]@{Name = 'GeForce 1060'; Vendor = 'NVIDIA Corporation'; GlobalMemSize = 3GB; PlatformId = 1; Type = 'Gpu'; DeviceIndex = 1; MaxComputeUnits = 30}
+    # $OCLDevices += [PSCustomObject]@{Name = 'GeForce 1060'; Vendor = 'NVIDIA Corporation'; GlobalMemSize = 3GB; PlatformId = 1; Type = 'Gpu'; DeviceIndex = 2; MaxComputeUnits = 30}
+    # $OCLDevices += [PSCustomObject]@{Name = 'GeForce 1080'; Vendor = 'NVIDIA Corporation'; GlobalMemSize = 8GB; PlatformId = 1; Type = 'Gpu'; DeviceIndex = 3; MaxComputeUnits = 60}
+    # # end fake
+
     $GroupFilter = @"
     {
         "AMD": {
@@ -444,12 +454,12 @@ function Get-Devices {
     }
 "@ | ConvertFrom-Json
 
-    [array]$Groups = foreach ($GroupType in @('AMD', 'NVIDIA', 'CPU')) {
+    $Groups = foreach ($GroupType in @('AMD', 'NVIDIA', 'CPU')) {
         $GroupBy = @{
-            Property = "PlatformId"
+            Property = @('PlatformId')
         }
         if ($Config.GroupGpuByType) {
-            $GroupBy.Property += ",Name,GlobalMemSize,MaxComputeUnits"
+            $GroupBy.Property += @('Name', 'GlobalMemSize', 'MaxComputeUnits')
         }
         $OCLDevices | Where-Object {
             $_.Type -like $GroupFilter.$GroupType.Type -and
@@ -458,10 +468,9 @@ function Get-Devices {
         } | Group-Object @GroupBy | ForEach-Object {
             if ($_.Group) {
                 $Devices = $_.Group | Select-Object -Property PlatformId, Name, Vendor, GlobalMemSize, MaxComputeUnits -First 1
+                $GroupName = $GroupType
                 if ($Config.GroupGpuByType -and $GroupType -ne 'CPU') {
                     $GroupName = ($Devices.Name -replace "[^\w]") + '_' + $Devices.MaxComputeUnits + 'cu' + [int]($Devices.GlobalMemSize / 1GB) + 'gb'
-                } else {
-                    $GroupName = $GroupType
                 }
                 $Devices | Add-Member Devices $($_.Group.DeviceIndex -join ',')
                 $Devices | Add-Member GroupType $GroupType
@@ -473,7 +482,7 @@ function Get-Devices {
             }
         }
     }
-    $Groups
+    , $Groups
 }
 
 function Get-MiningTypes () {
