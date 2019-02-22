@@ -172,13 +172,26 @@ function Get-DevicesInfoADL {
         $Types
     )
 
-    $DeviceId = 0
-
+    $CsvParams = @{
+        Header = @(
+            'id'
+            'fan_speed'
+            'fan_max'
+            'clock'
+            'clock_mem'
+            'load'
+            'temp'
+            'power_limit'
+            'name'
+            'pci_device'
+        )
+    }
     $Command = ".\Includes\OverdriveN.exe"
-    $Result = & $Command | Where-Object {$_ -notlike "*&???" -and $_ -notlike "*failed"} | ConvertFrom-Csv -Header id, fan_speed, fan_max, clock, clock_mem, load, temp, power_limit, name, pci_device
+    $Result = & $Command | Where-Object {$_ -notlike "*&???" -and $_ -notlike "*failed"} | ConvertFrom-Csv @CsvParams
 
     $AmdCardsTDP = Get-Content .\Data\amd-cards-tdp.json | ConvertFrom-Json
 
+    $DeviceId = 0
     $Devices = $Result | Where-Object name -ne $null | ForEach-Object {
 
         $GroupName = ($Types | Where-Object DevicesArray -contains $DeviceId).GroupName
@@ -220,21 +233,44 @@ function Get-DevicesInfoADL {
 
 function Get-DevicesInfoNvidiaSMI {
     param (
-        $Types
+        $Types,
+        [switch]$Fake = $false
     )
+
+    $CvsParams = @{
+        Header = @(
+            'gpu_name'
+            'utilization_gpu'
+            'utilization_memory'
+            'temperature_gpu'
+            'power_draw'
+            'power_limit'
+            'fan_speed'
+            'pstate'
+            'clocks_current_graphics'
+            'clocks_current_memory'
+            'power_max_limit'
+            'power_default_limit'
+        )
+    }
+
+    if ($Fake) {
+        $FakeData = @"
+        GeForce GTX 1060 6GB, 0 %, 3 %, 46, 9.34 W, 180.00 W, 0 %, P8, 139 MHz, 405 MHz, 200.00 W, 180.00 W
+        GeForce GTX 1060 6GB, 0 %, 3 %, 46, 9.34 W, 180.00 W, 0 %, P8, 139 MHz, 405 MHz, 200.00 W, 180.00 W
+        GeForce GTX 1080, 0 %, 0 %, 29, 6.54 W, 90.00 W, 39 %, P8, 135 MHz, 405 MHz, 108.00 W, 90.00 W
+"@
+        $Result = $FakeData | ConvertFrom-Csv @CvsParams
+    } else {
+        $Command = '.\includes\nvidia-smi.exe'
+        $Arguments = @(
+            '--query-gpu=gpu_name,utilization.gpu,utilization.memory,temperature.gpu,power.draw,power.limit,fan.speed,pstate,clocks.current.graphics,clocks.current.memory,power.max_limit,power.default_limit'
+            '--format=csv,noheader'
+        )
+        $Result = & $Command $Arguments | ConvertFrom-Csv @CvsParams
+    }
+
     $DeviceId = 0
-    $Command = '.\includes\nvidia-smi.exe'
-    $Arguments = @(
-        '--query-gpu=gpu_name,utilization.gpu,utilization.memory,temperature.gpu,power.draw,power.limit,fan.speed,pstate,clocks.current.graphics,clocks.current.memory,power.max_limit,power.default_limit'
-        '--format=csv,noheader'
-    )
-    $Result = & $Command $Arguments | ConvertFrom-Csv -Header gpu_name, utilization_gpu, utilization_memory, temperature_gpu, power_draw, power_limit, fan_speed, pstate, clocks_current_graphics, clocks_current_memory, power_max_limit, power_default_limit
-#     $FakeData = @"
-#     GeForce GTX 1060 6GB, 0 %, 3 %, 46, 9.34 W, 180.00 W, 0 %, P8, 139 MHz, 405 MHz, 200.00 W, 180.00 W
-#     GeForce GTX 1060 6GB, 0 %, 3 %, 46, 9.34 W, 180.00 W, 0 %, P8, 139 MHz, 405 MHz, 200.00 W, 180.00 W
-#     GeForce GTX 1080, 0 %, 0 %, 29, 6.54 W, 90.00 W, 39 %, P8, 135 MHz, 405 MHz, 108.00 W, 90.00 W
-# "@
-#     $Result = $FakeData | ConvertFrom-Csv -Header gpu_name, utilization_gpu, utilization_memory, temperature_gpu, power_draw, power_limit, fan_speed, pstate, clocks_current_graphics, clocks_current_memory, power_max_limit, power_default_limit
     $Devices = $Result | Where-Object pstate -ne $null | ForEach-Object {
         $GroupName = ($Types | Where-Object DevicesArray -contains $DeviceId).GroupName
 
@@ -375,16 +411,6 @@ function Get-Devices {
 
     $OCLDevices = Get-OpenCLDevices
 
-    # # start fake
-    # $OCLDevices = @()
-    # $OCLDevices += [PSCustomObject]@{Name = 'Ellesmere'; Vendor = 'Advanced Micro Devices, Inc.'; GlobalMemSize = 8GB; PlatformId = 0; Type = 'Gpu'; DeviceIndex = 0; MaxComputeUnits = 30}
-    # $OCLDevices += [PSCustomObject]@{Name = 'Ellesmere'; Vendor = 'Advanced Micro Devices, Inc.'; GlobalMemSize = 8GB; PlatformId = 0; Type = 'Gpu'; DeviceIndex = 1; MaxComputeUnits = 30}
-    # $OCLDevices += [PSCustomObject]@{Name = 'Ellesmere'; Vendor = 'Advanced Micro Devices, Inc.'; GlobalMemSize = 4GB; PlatformId = 0; Type = 'Gpu'; DeviceIndex = 2; MaxComputeUnits = 30}
-    # $OCLDevices += [PSCustomObject]@{Name = 'GeForce 1060'; Vendor = 'NVIDIA Corporation'; GlobalMemSize = 3GB; PlatformId = 1; Type = 'Gpu'; DeviceIndex = 0; MaxComputeUnits = 30}
-    # $OCLDevices += [PSCustomObject]@{Name = 'GeForce 1060'; Vendor = 'NVIDIA Corporation'; GlobalMemSize = 3GB; PlatformId = 1; Type = 'Gpu'; DeviceIndex = 1; MaxComputeUnits = 30}
-    # $OCLDevices += [PSCustomObject]@{Name = 'GeForce 1080'; Vendor = 'NVIDIA Corporation'; GlobalMemSize = 8GB; PlatformId = 1; Type = 'Gpu'; DeviceIndex = 2; MaxComputeUnits = 60}
-    # # end fake
-
     $GroupFilter = @"
     {
         "AMD": {
@@ -405,7 +431,7 @@ function Get-Devices {
         "CPU": {
             "Type": "Cpu",
             "Vendor": "*",
-            "PlatformId": "0"
+            "PlatformId": "*"
         }
     }
 "@ | ConvertFrom-Json
@@ -415,13 +441,35 @@ function Get-Devices {
             Property = @('PlatformId')
         }
         if ($Config.GroupGpuByType) {
-            $GroupBy.Property += @('Name', 'GlobalMemSize', 'MaxComputeUnits')
+            $GroupBy = @{
+                Property = @('PlatformId', 'Name', 'GlobalMemSize', 'MaxComputeUnits')
+            }
         }
-        $OCLDevices | Where-Object {
+        if ($GroupType -eq 'CPU') {
+            $GroupBy = @{
+                Property = @('Type')
+            }
+        }
+        $DeviceList = $OCLDevices | Where-Object {
             $_.Type -like $GroupFilter.$GroupType.Type -and
             $_.Vendor -like $GroupFilter.$GroupType.Vendor -and
             $_.PlatformId -like $GroupFilter.$GroupType.PlatformId
-        } | Group-Object @GroupBy | ForEach-Object {
+        }
+        if ($GroupType -eq 'CPU') {
+            if ($DeviceList) {
+                $DeviceList = $DeviceList | Sort-Object PlatformId | Select-Object -First 1
+            } else {
+                # Fake CPU device if none detected in OpenCL
+                $DeviceList = @{
+                    PlatformId = 0
+                    DeviceIndex = 0
+                    Name = 'CPU'
+                    Vendor = 'Generic'
+                    Type = 'Cpu'
+                }
+            }
+        }
+        $DeviceList | Group-Object @GroupBy | ForEach-Object {
             if ($_.Group) {
                 $Devices = $_.Group | Select-Object -Property PlatformId, Name, Vendor, GlobalMemSize, MaxComputeUnits -First 1
                 $GroupName = $GroupType
@@ -442,25 +490,51 @@ function Get-Devices {
 }
 
 function Get-OpenCLDevices {
-    $OCLPlatforms = [OpenCl.Platform]::GetPlatformIds()
-    $PlatformId = 0
-    $OCLDeviceId = 0
-    $OCLGpuId = 0
-    $OCLDevices = @($OCLPlatforms | ForEach-Object {
-            $Devs = [OpenCl.Device]::GetDeviceIDs($_, [OpenCl.DeviceType]::All)
-            $Devs | Add-Member PlatformId $PlatformId
-            $Devs | ForEach-Object {
-                $_ | Add-Member DeviceIndex $([array]::indexof($Devs, $_))
-                $_ | Add-Member OCLDeviceId $OCLDeviceId
-                $OCLDeviceId++
-                if ($_.Type -eq 'Gpu') {
-                    $_ | Add-Member OCLGpuId $OCLGpuId
-                    $OCLGpuId++
-                }
+    param(
+        [switch]$Fake = $false
+    )
+
+    if ($Fake) {
+        # start fake
+        $OCLDevices = @(
+            [PSCustomObject]@{Name = 'Ellesmere'; Vendor = 'Advanced Micro Devices, Inc.'; GlobalMemSize = 8GB; PlatformId = 0; Type = 'Gpu'; DeviceIndex = 0; MaxComputeUnits = 30}
+            [PSCustomObject]@{Name = 'Ellesmere'; Vendor = 'Advanced Micro Devices, Inc.'; GlobalMemSize = 8GB; PlatformId = 0; Type = 'Gpu'; DeviceIndex = 1; MaxComputeUnits = 30}
+            [PSCustomObject]@{Name = 'Ellesmere'; Vendor = 'Advanced Micro Devices, Inc.'; GlobalMemSize = 4GB; PlatformId = 0; Type = 'Gpu'; DeviceIndex = 2; MaxComputeUnits = 30}
+            [PSCustomObject]@{Name = 'GeForce 1060'; Vendor = 'NVIDIA Corporation'; GlobalMemSize = 3GB; PlatformId = 1; Type = 'Gpu'; DeviceIndex = 0; MaxComputeUnits = 30}
+            [PSCustomObject]@{Name = 'GeForce 1060'; Vendor = 'NVIDIA Corporation'; GlobalMemSize = 3GB; PlatformId = 1; Type = 'Gpu'; DeviceIndex = 1; MaxComputeUnits = 30}
+            [PSCustomObject]@{Name = 'GeForce 1080'; Vendor = 'NVIDIA Corporation'; GlobalMemSize = 8GB; PlatformId = 1; Type = 'Gpu'; DeviceIndex = 2; MaxComputeUnits = 60}
+            [PSCustomObject]@{Name = 'Intel CPU'; Vendor = 'Intel'; GlobalMemSize = 8GB; PlatformId = 1; Type = 'Cpu'; DeviceIndex = 1; MaxComputeUnits = 4}
+        )
+        # end fake
+    } else {
+        Add-Type -Path .\Includes\OpenCL\*.cs
+        try {
+            $OCLPlatforms = [OpenCl.Platform]::GetPlatformIds()
+            if ($OCLPlatforms) {
+                $PlatformId = 0
+                $OCLDeviceId = 0
+                $OCLGpuId = 0
+                $OCLDevices = @($OCLPlatforms | ForEach-Object {
+                        $Devs = [OpenCl.Device]::GetDeviceIDs($_, [OpenCl.DeviceType]::All)
+                        $Devs | Add-Member PlatformId $PlatformId
+                        $Devs | ForEach-Object {
+                            $_ | Add-Member DeviceIndex $([array]::indexof($Devs, $_))
+                            $_ | Add-Member OCLDeviceId $OCLDeviceId
+                            $OCLDeviceId++
+                            if ($_.Type -eq 'Gpu') {
+                                $_ | Add-Member OCLGpuId $OCLGpuId
+                                $OCLGpuId++
+                            }
+                        }
+                        $PlatformId++
+                        $Devs
+                    })
             }
-            $PlatformId++
-            $Devs
-        })
+        } catch {
+            Log "Error during OpenCL device detection!" -Severity Warn
+            Exit
+        }
+    }
     $OCLDevices
 }
 
@@ -504,10 +578,6 @@ function Get-MiningTypes () {
         }
     }
 
-    $OCLPlatforms = [OpenCl.Platform]::GetPlatformIds()
-    $PlatformId = 0
-    $OCLDeviceId = 0
-    $OCLGpuId = 0
     $OCLDevices = Get-OpenCLDevices
 
     $TypeID = 0
