@@ -29,28 +29,13 @@
         "_Bitcore": "-a bitcore --intensity 8",
         "_C11": "-a c11 --intensity 8",
         "CnFast": "-a cnfast --intensity 8",
-        "CnGpu": {
-            "Params": "-a cngpu  --intensity 8",
-            "Mem": 4
-        },
+        "CnGpu": "-a cngpu  --intensity 8",
         "CnHalf": "-a cnfast2 --intensity 8",
-        "CnHaven": {
-            "Params": "-a cnhaven --intensity 8",
-            "Mem": 4
-        },
-        "CnHeavy": {
-            "Params": "-a cnheavy --intensity 8",
-            "Mem": 4
-        },
+        "CnHaven": "-a cnhaven --intensity 8",
+        "CnHeavy": "-a cnheavy --intensity 8",
         "CnLiteV7": "-a aeon --intensity 8",
-        "CnSaber": {
-            "Params": "-a cnsaber --intensity 8",
-            "Mem": 4
-        },
-        "CnTurtle": {
-            "Params": "-a cnturtle --intensity 8",
-            "Mem": 4
-        },
+        "CnSaber": "-a cnsaber --intensity 8",
+        "CnTurtle": "-a cnturtle --intensity 8",
         "CnV7": "-a cnv7 --intensity 8",
         "CnV8": "-a cnv8 --intensity 8",
         "CnWow": "-a cnsuperfast --intensity 8",

@@ -22,7 +22,7 @@
     "SSL": true,
     "Algorithms": {
         "CnFast": "--currency cryptonight_masari",
-        "CnGpu": "--currency cryptonight_gpu",
+        "_CnGpu": "--currency cryptonight_gpu",
         "CnHalf": "--currency cryptonight_v8_half",
         "CnHaven": "--currency cryptonight_haven",
         "CnHeavy": "--currency cryptonight_heavy",

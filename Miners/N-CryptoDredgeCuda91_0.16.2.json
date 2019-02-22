@@ -24,19 +24,10 @@
         "_BCD": "-a bcd --intensity 8",
         "_C11": "-a c11 --intensity 8",
         "CnFast": "-a cryptonightfast --intensity 8",
-        "CnHaven": {
-            "Params": "-a cryptonighthaven --intensity 8",
-            "Mem": 4
-        },
-        "CnHeavy": {
-            "Params": "-a cryptonightheavy --intensity 8",
-            "Mem": 4
-        },
+        "CnHaven": "-a cryptonighthaven --intensity 8",
+        "CnHeavy": "-a cryptonightheavy --intensity 8",
         "CnLiteV7": "-a cryptolightv7 --intensity 8",
-        "CnSaber": {
-            "Params": "-a cryptonightsaber --intensity 8",
-            "Mem": 4
-        },
+        "CnSaber": "-a cryptonightsaber --intensity 8",
         "CnV7": "-a cryptonightv7 --intensity 8",
         "CnV8": "-a cryptonightv8 --intensity 8",
         "CnXTL": "-a stellite --intensity 8",
