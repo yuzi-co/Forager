@@ -461,11 +461,11 @@ function Get-Devices {
             } else {
                 # Fake CPU device if none detected in OpenCL
                 $DeviceList = @{
-                    PlatformId = 0
+                    PlatformId  = 0
                     DeviceIndex = 0
-                    Name = 'CPU'
-                    Vendor = 'Generic'
-                    Type = 'Cpu'
+                    Name        = 'CPU'
+                    Vendor      = 'Generic'
+                    Type        = 'Cpu'
                 }
             }
         }
@@ -714,7 +714,8 @@ Function Read-KeyboardTimed {
     $KeyPressed
 }
 
-function Invoke-TCPRequest {
+function Invoke-TcpRequest {
+    [CmdletBinding()]
     param(
         [Parameter(Mandatory = $false)]
         [String]$Server = "localhost",
@@ -723,63 +724,46 @@ function Invoke-TCPRequest {
         [Parameter(Mandatory = $true)]
         [String]$Request,
         [Parameter(Mandatory = $false)]
-        [Int]$Timeout = 5 #seconds
+        [Int]$Timeout = 10, #seconds,
+        [Parameter(Mandatory = $false)]
+        [Switch]$DoNotSendNewline,
+        [Parameter(Mandatory = $false)]
+        [Switch]$Quiet,
+        [Parameter(Mandatory = $false)]
+        [Switch]$WriteOnly,
+        [Parameter(Mandatory = $false)]
+        [Switch]$ReadToEnd
     )
-
+    $Response = $null
+    if ($Server -eq "localhost") {$Server = "127.0.0.1"}
+    #try {$ipaddress = [ipaddress]$Server} catch {$ipaddress = [system.Net.Dns]::GetHostByName($Server).AddressList | select-object -index 0}
     try {
         $Client = New-Object System.Net.Sockets.TcpClient $Server, $Port
         $Stream = $Client.GetStream()
         $Writer = New-Object System.IO.StreamWriter $Stream
-        $Reader = New-Object System.IO.StreamReader $Stream
+        if (-not $WriteOnly) {$Reader = New-Object System.IO.StreamReader $Stream}
         $client.SendTimeout = $Timeout * 1000
         $client.ReceiveTimeout = $Timeout * 1000
         $Writer.AutoFlush = $true
 
-        $Writer.WriteLine($Request)
-        $Response = $Reader.ReadLine()
-    } catch { $Error.Remove($error[$Error.Count - 1])}
-    finally {
-        if ($Reader) {$Reader.Close()}
-        if ($Writer) {$Writer.Close()}
-        if ($Stream) {$Stream.Close()}
-        if ($Client) {$Client.Close()}
-    }
-    $response
-}
-
-function Get-TCPResponse {
-    param(
-        [Parameter(Mandatory = $false)]
-        [String]$Server = "localhost",
-        [Parameter(Mandatory = $true)]
-        [String]$Port,
-        [Parameter(Mandatory = $false)]
-        [Int]$Timeout = 5, #seconds
-        [Parameter(Mandatory = $false)]
-        [String]$Request
-    )
-
-    try {
-        $Client = New-Object System.Net.Sockets.TcpClient $Server, $Port
-        $Stream = $Client.GetStream()
-        if ($Request) { $Writer = New-Object System.IO.StreamWriter $Stream }
-        $Reader = New-Object System.IO.StreamReader $Stream
-        $Client.SendTimeout = $Timeout * 1000
-        $Client.ReceiveTimeout = $Timeout * 1000
-        if ($Request) {
-            $Writer.AutoFlush = $true
-            $Writer.Write($Request)
+        if ($DoNotSendNewline) {$Writer.Write($Request)} else {$Writer.WriteLine($Request)}
+        if (-not $WriteOnly) {
+            if ($ReadToEnd) {
+                $Response = $Reader.ReadToEnd()
+            } else {
+                $Response = $Reader.ReadLine()
+            }
         }
-
-        $Response = $Reader.ReadToEnd()
-    } catch { $Error.Remove($error[$Error.Count - 1])}
-    finally {
-        if ($Reader) {$Reader.Close()}
-        if ($Writer) {$Writer.Close()}
-        if ($Stream) {$Stream.Close()}
-        if ($Client) {$Client.Close()}
+    } catch {
+        if ($Error.Count) {$Error.RemoveAt(0)}
+        if (-not $Quiet) {Log "Could not request from $($Server):$($Port)" -Severity Warn}
+    } finally {
+        if ($Reader) {$Reader.Close(); $Reader.Dispose()}
+        if ($Writer) {$Writer.Close(); $Writer.Dispose()}
+        if ($Stream) {$Stream.Close(); $Stream.Dispose()}
+        if ($Client) {$Client.Close(); $Client.Dispose()}
     }
-    $response
+    $Response
 }
 
 function Invoke-HTTPRequest {
@@ -861,7 +845,7 @@ function Get-LiveHashRate {
 
             "xgminer" {
                 $Message = @{command = "summary"; parameter = ""} | ConvertTo-Json -Compress
-                $Request = Invoke-TCPRequest -Port $Miner.ApiPort -Request $Message
+                $Request = Invoke-TCPRequest -Port $Miner.ApiPort -Request $Message -Quiet
 
                 if ($Request) {
                     $Data = $Request.Substring($Request.IndexOf("{"), $Request.LastIndexOf("}") - $Request.IndexOf("{") + 1) | ConvertFrom-Json
@@ -889,7 +873,7 @@ function Get-LiveHashRate {
             }
 
             "ccminer" {
-                $Request = Invoke-TCPRequest -Port $Miner.ApiPort -Request "summary"
+                $Request = Invoke-TCPRequest -Port $Miner.ApiPort -Request "summary" -Quiet
                 if ($Request) {
                     $Data = $Request -split ";" | ConvertFrom-StringData
                     $HashRate = @(
@@ -905,7 +889,7 @@ function Get-LiveHashRate {
 
             "ewbf" {
                 $Message = @{id = 1; method = "getstat"} | ConvertTo-Json -Compress
-                $Request = Invoke-TCPRequest -Port $Miner.ApiPort -Request $Message
+                $Request = Invoke-TCPRequest -Port $Miner.ApiPort -Request $Message -Quiet
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
                     $HashRate = [double](($Data.result.speed_sps) | Measure-Object -Sum).Sum
@@ -914,7 +898,7 @@ function Get-LiveHashRate {
 
             "Claymore" {
                 $Message = @{id = 0; jsonrpc = "2.0"; method = "miner_getstat1"} | ConvertTo-Json -Compress
-                $Request = Invoke-TCPRequest -Port $Miner.ApiPort -Request $Message
+                $Request = Invoke-TCPRequest -Port $Miner.ApiPort -Request $Message -Quiet
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
                     $Multiplier = 1
@@ -1000,7 +984,7 @@ function Get-LiveHashRate {
 
             "MiniZ" {
                 $Message = '{"id":"0", "method":"getstat"}'
-                $Request = Invoke-TCPRequest -Port $Miner.ApiPort -Request $Message
+                $Request = Invoke-TCPRequest -Port $Miner.ApiPort -Request $Message -Quiet
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
                     $HashRate = [double](($Data.result.speed_sps) | Measure-Object -Sum).Sum
@@ -1016,7 +1000,7 @@ function Get-LiveHashRate {
             }
 
             "Mkx" {
-                $Request = Get-TCPResponse -Port $Miner.ApiPort -Request 'stats'
+                $Request = Invoke-TCPRequest -Port $Miner.ApiPort -Request 'stats' -ReadToEnd -Quiet
                 if ($Request) {
                     $Data = $Request.Substring($Request.IndexOf("{"), $Request.LastIndexOf("}") - $Request.IndexOf("{") + 1) | ConvertFrom-Json
                     $HashRate = [double]$Data.gpus.hashrate * 1e6
@@ -1043,7 +1027,7 @@ function Get-LiveHashRate {
             }
 
             "RH" {
-                $Request = Invoke-TCPRequest -Port $Miner.ApiPort -Request ' '
+                $Request = Invoke-TCPRequest -Port $Miner.ApiPort -Request ' ' -Quiet
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
                     $HashRate = [double]($Data.infos.speed | Measure-Object -Sum).Sum

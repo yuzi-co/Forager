@@ -197,6 +197,22 @@ while ($Quit -eq $false) {
     if ($NumberTypesGroups -gt 0) {$InitialProfitsScreenLimit = [Math]::Floor(30 / $NumberTypesGroups) - 5} #screen adjust to number of groups
     if ($null -eq $Interval.Current) {$ProfitsScreenLimit = $InitialProfitsScreenLimit}
 
+    #get actual hour electricity cost
+    ($Config.ElectricityCost | ConvertFrom-Json) | ForEach-Object {
+        if ((
+                $_.HourStart -lt $_.HourEnd -and
+                @(($_.HourStart)..($_.HourEnd)) -contains (Get-Date).Hour
+            ) -or (
+                $_.HourStart -gt $_.HourEnd -and (
+                    @(($_.HourStart)..23) -contains (Get-Date).Hour -or
+                    @(0..($_.HourEnd)) -contains (Get-Date).Hour
+                )
+            )
+        ) {
+            $PowerCost = [decimal]$_.CostKwh
+        }
+    }
+
     Log "New interval starting..."
 
     $Interval.Last = $Interval.Current
@@ -238,6 +254,7 @@ while ($Quit -eq $false) {
         $PoolsName = @("NiceHash")
         $CoinsName = $null
         $MiningMode = "Automatic"
+        $PowerCost = 0
 
         Log "Next interval you will be donating for $DonateInterval seconds, thanks for your support"
     } else {
@@ -254,22 +271,6 @@ while ($Quit -eq $false) {
     }
 
     Send-ErrorsToLog $LogFile
-
-    #get actual hour electricity cost
-    ($Config.ElectricityCost | ConvertFrom-Json) | ForEach-Object {
-        if ((
-                $_.HourStart -lt $_.HourEnd -and
-                @(($_.HourStart)..($_.HourEnd)) -contains (Get-Date).Hour
-            ) -or (
-                $_.HourStart -gt $_.HourEnd -and (
-                    @(($_.HourStart)..23) -contains (Get-Date).Hour -or
-                    @(0..($_.HourEnd)) -contains (Get-Date).Hour
-                )
-            )
-        ) {
-            $PowerCost = [decimal]$_.CostKwh
-        }
-    }
 
     Log "Loading Pools Information..."
 
@@ -634,7 +635,7 @@ while ($Quit -eq $false) {
                             DeviceGroup         = $DeviceGroup
                             ExtractionPath      = $(".\Bin\" + $MinerFile.BaseName + "\")
                             GenerateConfigFile  = $(if ($PatternConfigFile) {".\Bin\" + $MinerFile.BaseName + "\" + $Miner.GenerateConfigFile -replace '#GroupName#', $DeviceGroup.GroupName -replace '#Algorithm#', $AlgoName})
-                            MinerFee            = $MinerFee
+                            MinerFee            = [decimal]$MinerFee
                             Name                = $MinerFile.BaseName
                             NoCpu               = $NoCpu
                             Path                = $(".\Bin\" + $MinerFile.BaseName + "\" + $ExecutionContext.InvokeCommand.ExpandString($Miner.Path))
@@ -1410,7 +1411,7 @@ while ($Quit -eq $false) {
                 @{Label = "Coin"; Expression = {$_.Coin}},
                 @{Label = "Miner"; Expression = {$_.Miner}},
                 @{Label = "LocalSpeed"; Expression = {$_.LocalSpeed} ; Align = 'right'},
-                @{Label = "PwLim"; Expression = {$_.PwLim} ; Align = 'right'},
+                @{Label = "PLim"; Expression = {$_.PwLim} ; Align = 'right'},
                 @{Label = "Watt"; Expression = {$_.Power} ; Align = 'right'},
                 @{Label = "$($Config.LocalCurrency)/W"; Expression = {$_.EfficiencyW}  ; Align = 'right'},
                 @{Label = "mBTC/Day"; Expression = {$_.mbtcDay} ; Align = 'right'},
@@ -1478,7 +1479,7 @@ while ($Quit -eq $false) {
                 @{Label = "Coin"; Expression = {$_.Pool.Symbol + $(if ($_.AlgorithmDual) {"_$($_.PoolDual.Symbol)"})}},
                 @{Label = "Miner"; Expression = {$_.Name}},
                 @{Label = "StatsSpeed"; Expression = {if ($_.NeedBenchmark) {"Bench"} else {"$(ConvertTo-Hash $_.SubMiner.HashRate)" + $(if ($_.AlgorithmDual) {"/$(ConvertTo-Hash $_.SubMiner.HashRateDual)"})}}; Align = 'right'},
-                @{Label = "PwLim"; Expression = {if ($_.SubMiner.PowerLimit -ne 0) {$_.SubMiner.PowerLimit}}; align = 'right'},
+                @{Label = "PLim"; Expression = {if ($_.SubMiner.PowerLimit -ne 0) {$_.SubMiner.PowerLimit}}; align = 'right'},
                 @{Label = "Watt"; Expression = {if ($_.SubMiner.PowerAvg -gt 0) {$_.SubMiner.PowerAvg.tostring("n0")} else {$null}}; Align = 'right'},
                 @{Label = "$($Config.LocalCurrency)/W"; Expression = {if ($_.SubMiner.PowerAvg -gt 0) {($_.SubMiner.Profits / $_.SubMiner.PowerAvg).tostring("n4")} else {$null} }; Align = 'right'},
                 @{Label = "mBTC/Day"; Expression = {if ($_.Revenue) {($_.Revenue * 1000).tostring("n3")} else {$null}} ; Align = 'right'},
