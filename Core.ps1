@@ -1309,7 +1309,7 @@ while ($Quit -eq $false) {
             $Host.UI.RawUI.WindowTitle = $(if ($RunTime.TotalDays -lt 1) {"{0:hh\:mm}" -f $RunTime} else {"{0:dd\d\ hh\:mm}" -f $RunTime}) + " : " + $CurrentAlgos
 
             # Report stats
-            if ($Config.MinerStatusURL -and $Config.MinerStatusKey) {
+            if ($Config.MinerStatusURL -and $Config.MinerStatusKey -and $Interval.Current -ne "Donate") {
                 $Params = @{
                     Key            = $Config.MinerStatusKey
                     WorkerName     = $Config.WorkerName
