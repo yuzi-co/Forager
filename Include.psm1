@@ -373,17 +373,7 @@ function Get-Devices {
         [array]$Types = @('AMD', 'NVIDIA', 'CPU')
     )
 
-    $OCLPlatforms = @([OpenCl.Platform]::GetPlatformIds())
-    $PlatformId = 0
-    $OCLDevices = @($OCLPlatforms | ForEach-Object {
-            $Devs = [OpenCl.Device]::GetDeviceIDs($_, [OpenCl.DeviceType]::All)
-            $Devs | Add-Member PlatformId $PlatformId
-            $Devs | ForEach-Object {
-                $_ | Add-Member DeviceIndex $([array]::indexof($Devs, $_))
-            }
-            $PlatformId++
-            $Devs
-        })
+    $OCLDevices = Get-OpenCLDevices
 
     # # start fake
     # $OCLDevices = @()
@@ -451,6 +441,29 @@ function Get-Devices {
     @($Groups)
 }
 
+function Get-OpenCLDevices {
+    $OCLPlatforms = [OpenCl.Platform]::GetPlatformIds()
+    $PlatformId = 0
+    $OCLDeviceId = 0
+    $OCLGpuId = 0
+    $OCLDevices = @($OCLPlatforms | ForEach-Object {
+            $Devs = [OpenCl.Device]::GetDeviceIDs($_, [OpenCl.DeviceType]::All)
+            $Devs | Add-Member PlatformId $PlatformId
+            $Devs | ForEach-Object {
+                $_ | Add-Member DeviceIndex $([array]::indexof($Devs, $_))
+                $_ | Add-Member OCLDeviceId $OCLDeviceId
+                $OCLDeviceId++
+                if ($_.Type -eq 'Gpu') {
+                    $_ | Add-Member OCLGpuId $OCLGpuId
+                    $OCLGpuId++
+                }
+            }
+            $PlatformId++
+            $Devs
+        })
+    $OCLDevices
+}
+
 function Get-MiningTypes () {
     param(
         [Parameter(Mandatory = $false)]
@@ -495,21 +508,7 @@ function Get-MiningTypes () {
     $PlatformId = 0
     $OCLDeviceId = 0
     $OCLGpuId = 0
-    $OCLDevices = @($OCLPlatforms | ForEach-Object {
-            $Devs = [OpenCl.Device]::GetDeviceIDs($_, [OpenCl.DeviceType]::All)
-            $Devs | Add-Member PlatformId $PlatformId
-            $Devs | ForEach-Object {
-                $_ | Add-Member DeviceIndex $([array]::indexof($Devs, $_))
-                $_ | Add-Member OCLDeviceId $OCLDeviceId
-                $OCLDeviceId++
-                if ($_.Type -eq 'Gpu') {
-                    $_ | Add-Member OCLGpuId $OCLGpuId
-                    $OCLGpuId++
-                }
-            }
-            $PlatformId++
-            $Devs
-        })
+    $OCLDevices = Get-OpenCLDevices
 
     $TypeID = 0
     $DeviceGroups = $Devices | ForEach-Object {

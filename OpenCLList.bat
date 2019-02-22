@@ -2,7 +2,7 @@
 
 cd /d %~dp0
 
-set Command="&.\DeviceList.ps1
+set Command="&.\OpenCLList.ps1
 
 where pwsh >nul 2>nul || goto powershell
 pwsh -executionpolicy bypass -command %Command%
