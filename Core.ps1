@@ -18,7 +18,7 @@ param(
 $Error.Clear()
 Import-Module .\Include.psm1
 
-try {Set-WindowSize 180 50} catch {}
+try {Set-WindowSize 170 50} catch {}
 
 #Start log file
 $LogPath = ".\Logs\"
@@ -1675,7 +1675,7 @@ while ($Quit -eq $false) {
                 'U' {if ($Screen -eq "Wallets") {$WalletsUpdate = $null}; Log "Update wallets"}
                 'T' {if ($Screen -eq "Profits") {$ProfitsScreenLimit = $(if ($ProfitsScreenLimit -eq $InitialProfitsScreenLimit) {1000} else {$InitialProfitsScreenLimit}); Log "Toggle Profits Top"}}
                 'B' {if ($Screen -eq "Profits") {$ShowBestMinersOnly = -not $ShowBestMinersOnly}; Log "Toggle Profits Best"}
-                'X' {try {Set-WindowSize 180 50} catch {}; Log "Reset screen size"}
+                'X' {try {Set-WindowSize 170 50} catch {}; Log "Reset screen size"}
                 'Q' {$Quit = $true; $ExitLoop = $true; Log "Exit by Q key"}
                 'D' {
                     if (-not (Test-Path ".\Dump")) { New-Item -Path .\Dump -ItemType directory -Force | Out-Null }
