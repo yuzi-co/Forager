@@ -1337,7 +1337,8 @@ while ($Quit -eq $false) {
                         Select-Object @{Name = "PoolName"; Expression = {$_.PoolDual.PoolName}},
                     @{Name = "WalletSymbol"; Expression = {$_.PoolDual.WalletSymbol}},
                     @{Name = "Coin"; Expression = {$_.PoolDual.Info}},
-                    UserNameDual, WorkerName -Unique
+                    @{Name = "UserName"; Expression = {$_.UserNameDual}},
+                    WorkerName -Unique
 
                 ) | Foreach-Object {
                     [PSCustomObject]@{
