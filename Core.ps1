@@ -825,7 +825,11 @@ while ($Quit -eq $false) {
     }
 
     if ($Interval.Current -eq "Donate") {
-        $BestNowCandidates = $BestNowCandidates | Where-Object NeedBenchmark -ne $true
+        $DonateBest = $BestNowCandidates | Where-Object NeedBenchmark -ne $true
+        if ($null -ne $DonateBest) {
+            $BestNowCandidates = $DonateBest
+        }
+        Remove-Variable $DonateBest
     }
 
     $BestNowMiners = $BestNowCandidates | Group-Object {
