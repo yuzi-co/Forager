@@ -77,7 +77,7 @@ if ($Querymode -eq "Core") {
                 Protocol              = "stratum+tcp" #$_.Protocol
                 Host                  = $loc.server
                 Port                  = $_.Port
-                User                  = $Wallets.($_.Symbol) + "/#WorkerName#/$($Config.Email)"
+                User                  = $Wallets.($_.Symbol)
                 Pass                  = "x"
                 Location              = $loc.location
                 SSL                   = $false
