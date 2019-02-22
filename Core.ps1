@@ -781,9 +781,9 @@ while ($Quit -eq $false) {
         Log "Reset failed miner status: $($ActiveMiners[$_.IdF].Name)/$($ActiveMiners[$_.IdF].Algorithms)"
     }
 
-    Log "Active Miners-pools: $($ActiveMiners.Count)"
+    Log "Active Miners-Pools: $(($ActiveMiners | Where-Object IsValid | Select-Object -ExpandProperty SubMiners | Where-Object Status -ne 'Failed').Count)"
     Send-ErrorsToLog $LogFile
-    Log "Pending benchmarks: $(($ActiveMiners | Where-Object IsValid | Select-Object -ExpandProperty SubMiners | Where-Object NeedBenchmark | Select-Object -ExpandProperty Id).Count)..."
+    Log "Pending benchmarks: $(($ActiveMiners | Where-Object IsValid | Select-Object -ExpandProperty SubMiners | Where-Object NeedBenchmark | Select-Object -ExpandProperty Id).Count)"
 
     $Msg = ($ActiveMiners.SubMiners | ForEach-Object {
             "$($_.IdF)-$($_.Id), " +
