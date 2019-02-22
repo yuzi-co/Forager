@@ -189,8 +189,8 @@ while ($Quit -eq $false) {
     }
     $DeviceGroups = $DeviceGroupsConfig
 
-    Log (Get-DevicesInformation $DeviceGroups | ConvertTo-Json) -Severity Debug
-    Log ($DeviceGroups | ConvertTo-Json) -Severity Debug
+    Log "Device List: ($DeviceGroups | ConvertTo-Json)" -Severity Debug
+    Log "Device Information: $(Get-DevicesInformation $DeviceGroups | ConvertTo-Json)" -Severity Debug
     Test-DeviceGroupsConfig $DeviceGroups
 
     $NumberTypesGroups = ($DeviceGroups | Measure-Object).count
@@ -865,7 +865,7 @@ while ($Quit -eq $false) {
                 "$($ActiveMiners[$BestLast.IdF].Name)"
                 "$($ActiveMiners[$BestLast.IdF].Algorithms)"
                 "PL$($BestLast.PowerLimit)"
-                ) -join '/'
+            ) -join '/'
 
             # Cancel miner if current pool workers below MinWorkers
             if (
