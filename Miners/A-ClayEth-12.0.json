@@ -57,6 +57,12 @@
         "Ethash|a2": {
             "Params": "-asm 2 -mode 1",
             "Mem": 3
-        }
+        },
+        "_Ethash_Decred|30": "-dcoin dcr -dcri 30 -mode 0",
+        "_Ethash_Decred|35": "-dcoin dcr -dcri 35 -mode 0",
+        "_Ethash_Lbry|25": "-dcoin lbc -dcri 25 -mode 0",
+        "_Ethash_Lbry|35": "-dcoin lbc -dcri 35 -mode 0",
+        "_Ethash_Pascal|10": "-dcoin pasc -dcri 10 -mode 0",
+        "_Ethash_Pascal|15": "-dcoin pasc -dcri 15 -mode 0"
     }
 }

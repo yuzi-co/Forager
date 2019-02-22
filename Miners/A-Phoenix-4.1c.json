@@ -7,6 +7,9 @@
         "-pool #Protocol#://#Server#:#Port#",
         "-wal #Login#",
         "-pass #Password#",
+        "-dpool #ProtocolDual#://#ServerDual#:#PortDual#",
+        "-dwal #LoginDual#",
+        "-dpsw #PasswordDual#",
         "-esm #EthStMode#",
         "-mi 12",
         "-wd 1",
@@ -25,12 +28,15 @@
     "SSL": true,
     "Algorithms": {
         "Ethash": {
-            "Params": "-clKernel 3",
+            "Params": "-clKernel 3 -mode 1",
             "Mem": 3
         },
         "Ubqhash": {
-            "Params": "-coin ubq -clKernel 3",
+            "Params": "-coin ubq -clKernel 3 -mode 1",
             "Mem": 3
-        }
+        },
+        "_Ethash_Blake2s|30": "-dcoin blake2s -sci 30 -mode 0 -clKernel 3",
+        "_Ethash_Blake2s|35": "-dcoin blake2s -sci 35 -mode 0 -clKernel 3",
+        "_Ethash_Blake2s|40": "-dcoin blake2s -sci 40 -mode 0 -clKernel 3"
     }
 }
