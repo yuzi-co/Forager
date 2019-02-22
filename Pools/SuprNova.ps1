@@ -68,7 +68,7 @@ if ($Querymode -eq "Core") {
     $Pools += [PSCustomObject]@{ Coin = "BitcoinZ"        ; Symbol = "BTCZ"  ; Algo = "Equihash144" ; WalletSymbol = "btcz"     ; Port = 6586 }
     $Pools += [PSCustomObject]@{ Coin = "BitCore"         ; Symbol = "BTX"   ; Algo = "Bitcore"     ; WalletSymbol = "btx"      ; Port = 3629 }
     $Pools += [PSCustomObject]@{ Coin = "BitSend"         ; Symbol = "BSD"   ; Algo = "Xevan"       ; WalletSymbol = "bsd"      ; Port = 8686 }
-    $Pools += [PSCustomObject]@{ Coin = "Credits"         ; Symbol = "CRDS"  ; Algo = "Argon2d250"  ; WalletSymbol = "crds"     ; Port = 2771 }
+    # $Pools += [PSCustomObject]@{ Coin = "Credits"         ; Symbol = "CRDS"  ; Algo = "Argon2d250"  ; WalletSymbol = "crds"     ; Port = 2771 }
     $Pools += [PSCustomObject]@{ Coin = "Dynamic"         ; Symbol = "DYN"   ; Algo = "Argon2d500"  ; WalletSymbol = "dyn"      ; Port = 5960 }
     $Pools += [PSCustomObject]@{ Coin = "Garlicoin"       ; Symbol = "GRLC"  ; Algo = "Allium"      ; WalletSymbol = "grlc"     ; Port = 8600 }
     $Pools += [PSCustomObject]@{ Coin = "GenX"            ; Symbol = "GENX"  ; Algo = "Equihash192" ; WalletSymbol = "genx"     ; Port = 9983 }
