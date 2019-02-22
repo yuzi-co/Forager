@@ -195,7 +195,7 @@ while ($Quit -eq $false) {
 
     $NumberTypesGroups = ($DeviceGroups | Measure-Object).count
     if ($NumberTypesGroups -gt 0) {$InitialProfitsScreenLimit = [Math]::Floor(30 / $NumberTypesGroups) - 5} #screen adjust to number of groups
-    if ($null -eq $Interval.Last) {$ProfitsScreenLimit = $InitialProfitsScreenLimit}
+    if ($null -eq $Interval.Current) {$ProfitsScreenLimit = $InitialProfitsScreenLimit}
 
     Log "New interval starting..."
 
