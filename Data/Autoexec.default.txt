@@ -9,5 +9,5 @@
 # - hashtag marks a comment
 #
 
-#".\Includes\OhGodAnETHlargementPill-r2.exe" --revA
+#".\Includes\OhGodAnETHlargementPill-r2.exe" -RevB
 #"..\OverdriveNTool\OverdriveNTool.exe" -p*UV
