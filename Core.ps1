@@ -401,6 +401,13 @@ while ($Quit -eq $false) {
                     }
                 }
 
+                if ($DeviceGroup.GroupType -eq 'CPU' -and $Config.CpuThreads -gt 0) {
+                    $AlgoLabel += 't' + $Config.CpuThreads
+                    $CpuThreads = $Config.CpuThreads
+                } else {
+                    $CpuThreads = $null
+                }
+
                 if ($DeviceGroup.Algorithms -and $DeviceGroup.Algorithms -notcontains $Algorithms) {Continue} #check config has this algo as minable
 
                 foreach ($Pool in ($Pools | Where-Object Algorithm -eq $AlgoName)) {

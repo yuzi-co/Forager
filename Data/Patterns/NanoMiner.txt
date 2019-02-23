@@ -1,5 +1,6 @@
 mport=-#APIPort#
 port=1#APIPort#
+watchdog=false
 
 [#AlgorithmParameters#]
 wallet = #Login#
@@ -9,3 +10,4 @@ rigPassword = #Password#
 email = #EMail#
 pool1 = #Server#:#Port#
 devices = #Devices#
+$(if ($CpuThreads -ne $null){'cpuThreads = ' + $CpuThreads})

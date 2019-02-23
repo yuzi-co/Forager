@@ -10,6 +10,7 @@
         "-R 3",
         "-r 10",
         "-b #APIPort#",
+        "$(if ($CpuThreads -ne $null){'-t ' + $CpuThreads})",
         "#AlgorithmParameters#"
     ],
     "BenchmarkArg": "$(if ($AlgoName -in @('bitcore', 'x16r', 'x16s', 'timetravel')){'--benchmark'})",
