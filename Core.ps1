@@ -194,8 +194,9 @@ while ($Quit -eq $false) {
 
     $DeviceGroups = $DeviceGroupsConfig
 
-    if ($DeviceGroups.Count -gt 0) {
-        $InitialProfitsScreenLimit = [Math]::Floor(30 / $DeviceGroups.Count) - 5
+    $DeviceGroupsCount = $DeviceGroups | Measure-Object | Select-Object -ExpandProperty Count
+    if ($DeviceGroupsCount -gt 0) {
+        $InitialProfitsScreenLimit = [Math]::Floor(30 / $DeviceGroupsCount) - 5
     }
     if ($null -eq $ProfitsScreenLimit) {
         $ProfitsScreenLimit = $InitialProfitsScreenLimit
