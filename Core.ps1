@@ -194,9 +194,12 @@ while ($Quit -eq $false) {
 
     $DeviceGroups = $DeviceGroupsConfig
 
-    $NumberTypesGroups = ($DeviceGroups | Measure-Object).count
-    if ($NumberTypesGroups -gt 0) {$InitialProfitsScreenLimit = [Math]::Floor(30 / $NumberTypesGroups) - 5} #screen adjust to number of groups
-    if ($null -eq $Interval.Current) {$ProfitsScreenLimit = $InitialProfitsScreenLimit}
+    if ($DeviceGroups.Count -gt 0) {
+        $InitialProfitsScreenLimit = [Math]::Floor(30 / $DeviceGroups.Count) - 5
+    }
+    if ($null -eq $ProfitsScreenLimit) {
+        $ProfitsScreenLimit = $InitialProfitsScreenLimit
+    }
 
     #get actual hour electricity cost
     ($Config.ElectricityCost | ConvertFrom-Json) | ForEach-Object {
