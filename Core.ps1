@@ -50,7 +50,7 @@ $Global:Release = @{
 Log "$($Release.Application) v$($Release.Version)"
 
 $Global:SysInfo = Get-SystemInfo
-Log ($SysInfo | ConvertTo-Json) -Severity Debug
+Log "System Info: $($SysInfo | ConvertTo-Json  -Depth 1)" -Severity Debug
 
 $Host.UI.RawUI.WindowTitle = "$($Release.Application) v$($Release.Version)"
 
@@ -171,7 +171,7 @@ $Screen = 'Profits'
 while ($Quit -eq $false) {
 
     $Global:Config = Get-Config
-    Log ($Config | ConvertTo-Json) -Severity Debug
+    Log "Config File: $($Config | ConvertTo-Json -Depth 1)" -Severity Debug
 
     Clear-Host
     $RepaintScreen = $true
@@ -180,18 +180,19 @@ while ($Quit -eq $false) {
 
     #get mining types
     $DeviceGroupsConfig = Get-MiningTypes -Filter $GroupNames
+    Test-DeviceGroupsConfig $DeviceGroupsConfig
     if ($null -ne $DeviceGroups) {
         $DeviceGroupsConfig | ForEach-Object {
             if ($DeviceGroups.GroupName -contains $_.GroupName) {
                 $_.Enabled = $DeviceGroups | Where-Object GroupName -eq $_.GroupName | Select-Object -ExpandProperty Enabled -First 1
             }
         }
+    } else {
+        Log "Device List: $($DeviceGroupsConfig | ConvertTo-Json -Depth 1)" -Severity Debug
+        Log "Device Information: $(Get-DevicesInformation $DeviceGroupsConfig | ConvertTo-Json -Depth 1)" -Severity Debug
     }
-    $DeviceGroups = $DeviceGroupsConfig
 
-    Log "Device List: ($DeviceGroups | ConvertTo-Json)" -Severity Debug
-    Log "Device Information: $(Get-DevicesInformation $DeviceGroups | ConvertTo-Json)" -Severity Debug
-    Test-DeviceGroupsConfig $DeviceGroups
+    $DeviceGroups = $DeviceGroupsConfig
 
     $NumberTypesGroups = ($DeviceGroups | Measure-Object).count
     if ($NumberTypesGroups -gt 0) {$InitialProfitsScreenLimit = [Math]::Floor(30 / $NumberTypesGroups) - 5} #screen adjust to number of groups
@@ -869,6 +870,7 @@ while ($Quit -eq $false) {
                 "$($DeviceGroup.GroupName)"
                 "$($ActiveMiners[$BestLast.IdF].Name)"
                 "$($ActiveMiners[$BestLast.IdF].Algorithms)"
+                "$($ActiveMiners[$BestLast.IdF].AlgoLabel)"
                 "PL$($BestLast.PowerLimit)"
             ) -join '/'
 
@@ -917,6 +919,7 @@ while ($Quit -eq $false) {
                 "$($DeviceGroup.GroupName)"
                 "$($ActiveMiners[$BestNow.IdF].Name)"
                 "$($ActiveMiners[$BestNow.IdF].Algorithms)"
+                "$($ActiveMiners[$BestNow.IdF].AlgoLabel)"
                 "PL$($BestNow.PowerLimit)"
             ) -join '/'
 
@@ -928,7 +931,7 @@ while ($Quit -eq $false) {
                 $ActiveMiners[$BestNow.IdF].SubMiners[$BestNow.Id].StatsHistory.BestTimes++
             }
 
-            Log ("Current best: $BestNowLogMsg" + $(if ($BestLastLogMsg) {", Last best $BestLastLogMsg"}))
+            Log ("Current best: $BestNowLogMsg")
         } else {
             Log "No valid candidate for device group $($DeviceGroup.GroupName)" -Severity Warn
         }
@@ -1557,8 +1560,7 @@ while ($Quit -eq $false) {
                     " " * 70 | Out-Host
                     Set-ConsolePosition 0 $YToWriteMessages
 
-                    if ($_.WalletMode -eq "Wallet") {Log "Checking $($_.PoolName) - $($_.Symbol)"}
-                    else {Log "Checking $($_.PoolName) - $($_.Symbol) ($($_.Algorithm))"}
+                    Log "Checking pool balance $($_.PoolName)/$($_.Symbol)"
 
                     $Ws = Get-Pools -Querymode $_.WalletMode -PoolsFilterList $_.PoolName -Info ($_)
 
@@ -1666,10 +1668,10 @@ while ($Quit -eq $false) {
         $FirstLoopExecution = $false
 
         #Loop for reading key and wait
-
+        Set-ConsolePosition 0 $YToWriteMessages
         if (-not $ExitLoop) {
-            $ValidGroups = [string[]]$DeviceGroups.Id
-            $KeyPressed = Read-KeyboardTimed -SecondsToWait 3 -ValidKeys (@('P', 'C', 'H', 'E', 'W', 'U', 'T', 'B', 'S', 'X', 'Q', 'D', 'R') + $ValidGroups)
+            $ValidKeys = @('P', 'C', 'H', 'E', 'W', 'U', 'T', 'B', 'S', 'X', 'Q', 'D', 'R') + [string[]]$DeviceGroups.Id
+            $KeyPressed = Read-KeyboardTimed -SecondsToWait 3 -ValidKeys $ValidKeys
 
             switch -regex ($KeyPressed) {
                 'P' {$Screen = 'Profits'; Log "Switch to Profits screen"}
@@ -1706,7 +1708,7 @@ while ($Quit -eq $false) {
                 }
             }
 
-            if ($KeyPressed) {
+            if ($ValidKeys -contains $KeyPressed) {
                 $RepaintScreen = $true
             }
         }
