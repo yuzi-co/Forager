@@ -70,7 +70,8 @@ if ($Querymode -eq "Core") {
         Exit
     }
 
-    $RequestCurrencies | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | Where-Object {
+    $Result = $RequestCurrencies | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | Where-Object {
+        $Wallets.$_ -ne $null -and
         $RequestCurrencies.$_.'24h_blocks' -gt 0 -and
         $RequestCurrencies.$_.HashRate -gt 0
     } | ForEach-Object {
@@ -82,7 +83,7 @@ if ($Querymode -eq "Core") {
 
         $Divisor = 1e9
 
-        $Result += [PSCustomObject]@{
+        [PSCustomObject]@{
             Algorithm             = $Pool_Algo
             Info                  = $Pool_Coin
             Price                 = [decimal]$Coin.estimate / $Divisor

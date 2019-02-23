@@ -75,7 +75,7 @@ if ($Querymode -eq "Core") {
         Exit
     }
 
-    $Request | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | Where-Object {
+    $Result = $Request | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | Where-Object {
         $Request.$_.HashRate -gt 0
     } | ForEach-Object {
 
@@ -84,7 +84,7 @@ if ($Querymode -eq "Core") {
 
         $Divisor = 1000000 * $Algo.mbtc_mh_factor
 
-        $Result += [PSCustomObject]@{
+        [PSCustomObject]@{
             Algorithm             = $Pool_Algo
             Info                  = $Pool_Algo
             Price                 = [decimal]$Algo.estimate_current / $Divisor

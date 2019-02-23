@@ -83,7 +83,7 @@ if ($Querymode -eq "Core") {
 
     $Locations = "EU", "US", "Asia"
 
-    $MiningPoolHub_Request.return | Where-Object time_since_last_block -gt 0 | ForEach-Object {
+    $Result = $MiningPoolHub_Request.return | Where-Object time_since_last_block -gt 0 | ForEach-Object {
 
         $MiningPoolHub_Algorithm = Get-AlgoUnifiedName $_.algo
         $MiningPoolHub_Coin = Get-CoinUnifiedName $_.coin_name
@@ -99,7 +99,7 @@ if ($Querymode -eq "Core") {
 
             $Server = $MiningPoolHub_Hosts | Sort-Object {$_ -like "$Location*"} -Descending | Select-Object -First 1
 
-            $Result += [PSCustomObject]@{
+            [PSCustomObject]@{
                 Algorithm             = $MiningPoolHub_Algorithm
                 Info                  = $MiningPoolHub_Coin
                 Price                 = [decimal]$MiningPoolHub_Price

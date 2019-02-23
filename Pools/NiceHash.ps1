@@ -76,7 +76,7 @@ if ($Querymode -eq "Core") {
     $Request = Invoke-APIRequest -Url "https://api.nicehash.com/api?method=simplemultialgo.info" -Retry 3 |
         Select-Object -expand result | Select-Object -expand simplemultialgo
 
-    if (!$Request) {
+    if (-not $Request) {
         Write-Warning "$Name API NOT RESPONDING...ABORTING"
         Exit
     }
@@ -87,30 +87,30 @@ if ($Querymode -eq "Core") {
         Asia = 'hk'
     }
 
-    $Request | Where-Object {$_.paying -gt 0} | ForEach-Object {
+    $Result = $Request | Where-Object {$_.paying -gt 0} | ForEach-Object {
 
         $Algo = Get-AlgoUnifiedName ($_.name)
 
         $Divisor = 1000000000
 
-        foreach ($location in $Locations.Keys) {
+        foreach ($Location in $Locations.Keys) {
 
-            $enableSSL = (@('CnV7', 'Equihash', 'Equihash150') -contains $Algo)
+            $EnableSSL = (@('CnV7', 'CnV8', 'Equihash150') -contains $Algo)
 
-            $Result += [PSCustomObject]@{
+            [PSCustomObject]@{
                 Algorithm             = $Algo
                 Info                  = $Algo
                 Price                 = [decimal]$_.paying / $Divisor
                 Protocol              = "stratum+tcp"
                 ProtocolSSL           = "ssl"
-                Host                  = $_.name + "." + $Locations.$location + ".nicehash.com"
-                HostSSL               = $_.name + "." + $Locations.$location + ".nicehash.com"
+                Host                  = $_.name + "." + $Locations.$Location + ".nicehash.com"
+                HostSSL               = $_.name + "." + $Locations.$Location + ".nicehash.com"
                 Port                  = $_.port
                 PortSSL               = $_.port + 30000
                 User                  = $(if ($Wallets.BTC_NICE) {$Wallets.BTC_NICE} else {$Wallets.BTC}) + '.' + "#WorkerName#"
                 Pass                  = "x"
                 Location              = $Location
-                SSL                   = $enableSSL
+                SSL                   = $EnableSSL
                 Symbol                = Get-CoinSymbol -Coin $Algo
                 ActiveOnManualMode    = $ActiveOnManualMode
                 ActiveOnAutomaticMode = $ActiveOnAutomaticMode

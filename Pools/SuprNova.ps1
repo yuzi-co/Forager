@@ -61,33 +61,34 @@ if ($Querymode -eq "Core") {
         Exit
     }
 
-    $Pools = @()
-    $Pools += [PSCustomObject]@{ Coin = "Beam"            ; Symbol = "BEAM"  ; Algo = "Equihash150" ; WalletSymbol = "beam"     ; Port = 7776 ; PortSSL = 7777 }
-    $Pools += [PSCustomObject]@{ Coin = "BitcoinGold"     ; Symbol = "BTG"   ; Algo = "Equihash144" ; WalletSymbol = "btg"      ; Port = 8866 ; PortSSL = 8817 }
-    $Pools += [PSCustomObject]@{ Coin = "BitcoinInterest" ; Symbol = "BCI"   ; Algo = "ProgPOW"     ; WalletSymbol = "bci"      ; Port = 9166 }
-    $Pools += [PSCustomObject]@{ Coin = "BitcoinZ"        ; Symbol = "BTCZ"  ; Algo = "Equihash144" ; WalletSymbol = "btcz"     ; Port = 6586 }
-    $Pools += [PSCustomObject]@{ Coin = "BitCore"         ; Symbol = "BTX"   ; Algo = "Bitcore"     ; WalletSymbol = "btx"      ; Port = 3629 }
-    $Pools += [PSCustomObject]@{ Coin = "BitSend"         ; Symbol = "BSD"   ; Algo = "Xevan"       ; WalletSymbol = "bsd"      ; Port = 8686 }
-    # $Pools += [PSCustomObject]@{ Coin = "Credits"         ; Symbol = "CRDS"  ; Algo = "Argon2d250"  ; WalletSymbol = "crds"     ; Port = 2771 }
-    $Pools += [PSCustomObject]@{ Coin = "Dynamic"         ; Symbol = "DYN"   ; Algo = "Argon2d500"  ; WalletSymbol = "dyn"      ; Port = 5960 }
-    $Pools += [PSCustomObject]@{ Coin = "Garlicoin"       ; Symbol = "GRLC"  ; Algo = "Allium"      ; WalletSymbol = "grlc"     ; Port = 8600 }
-    $Pools += [PSCustomObject]@{ Coin = "GenX"            ; Symbol = "GENX"  ; Algo = "Equihash192" ; WalletSymbol = "genx"     ; Port = 9983 }
-    $Pools += [PSCustomObject]@{ Coin = "HODLcoin"        ; Symbol = "HODL"  ; Algo = "HOdl"        ; WalletSymbol = "hodl"     ; Port = 4693 }
-    $Pools += [PSCustomObject]@{ Coin = "Pigeon"          ; Symbol = "PGN"   ; Algo = "X16s"        ; WalletSymbol = "pign"     ; Port = 4096 }
-    $Pools += [PSCustomObject]@{ Coin = "Polytimos"       ; Symbol = "POLY"  ; Algo = "Polytimos"   ; WalletSymbol = "poly"     ; Port = 7935 }
-    $Pools += [PSCustomObject]@{ Coin = "Raven"           ; Symbol = "RVN"   ; Algo = "X16r"        ; WalletSymbol = "rvn"      ; Port = 6666 }
-    $Pools += [PSCustomObject]@{ Coin = "ROIcoin"         ; Symbol = "ROI"   ; Algo = "HOdl"        ; WalletSymbol = "roi"      ; Port = 4699 }
-    $Pools += [PSCustomObject]@{ Coin = "SafeCash"        ; Symbol = "SCASH" ; Algo = "Equihash144" ; WalletSymbol = "scash"    ; Port = 8983 }
-    $Pools += [PSCustomObject]@{ Coin = "UBIQ"            ; Symbol = "UBQ"   ; Algo = "Ethash"      ; WalletSymbol = "ubiq"     ; Port = 3030 }
-    $Pools += [pscustomobject]@{ Coin = "Veil"            ; Symbol = "VEIL"  ; Algo = "X16rt"       ; WalletSymbol = "veil"     ; Port = 7220 }
-    $Pools += [pscustomobject]@{ Coin = "Verge"           ; Symbol = "XVG"   ; Algo = "X17"         ; WalletSymbol = "xvg-x17"  ; Port = 7477 }
-    $Pools += [PSCustomObject]@{ Coin = "Vertcoin"        ; Symbol = "VTC"   ; Algo = "Lyra2v3"     ; WalletSymbol = "vtc"      ; Port = 5778 }
-    $Pools += [PSCustomObject]@{ Coin = "XDNA"            ; Symbol = "XDNA"  ; Algo = "Hex"         ; WalletSymbol = "xdna"     ; Port = 4919 }
-    $Pools += [PSCustomObject]@{ Coin = "Zero"            ; Symbol = "ZER"   ; Algo = "Equihash192" ; WalletSymbol = "zero"     ; Port = 6568 }
+    $Pools = @(
+        [PSCustomObject]@{ Coin = "Beam"            ; Symbol = "BEAM"  ; Algo = "Equihash150" ; WalletSymbol = "beam"     ; Port = 7776 ; PortSSL = 7777 }
+        [PSCustomObject]@{ Coin = "BitcoinGold"     ; Symbol = "BTG"   ; Algo = "Equihash144" ; WalletSymbol = "btg"      ; Port = 8866 ; PortSSL = 8817 }
+        [PSCustomObject]@{ Coin = "BitcoinInterest" ; Symbol = "BCI"   ; Algo = "ProgPOW"     ; WalletSymbol = "bci"      ; Port = 9166 }
+        [PSCustomObject]@{ Coin = "BitcoinZ"        ; Symbol = "BTCZ"  ; Algo = "Equihash144" ; WalletSymbol = "btcz"     ; Port = 6586 }
+        [PSCustomObject]@{ Coin = "BitCore"         ; Symbol = "BTX"   ; Algo = "Bitcore"     ; WalletSymbol = "btx"      ; Port = 3629 }
+        [PSCustomObject]@{ Coin = "BitSend"         ; Symbol = "BSD"   ; Algo = "Xevan"       ; WalletSymbol = "bsd"      ; Port = 8686 }
+        # [PSCustomObject]@{ Coin = "Credits"         ; Symbol = "CRDS"  ; Algo = "Argon2d250"  ; WalletSymbol = "crds"     ; Port = 2771 }
+        [PSCustomObject]@{ Coin = "Dynamic"         ; Symbol = "DYN"   ; Algo = "Argon2d500"  ; WalletSymbol = "dyn"      ; Port = 5960 }
+        [PSCustomObject]@{ Coin = "Garlicoin"       ; Symbol = "GRLC"  ; Algo = "Allium"      ; WalletSymbol = "grlc"     ; Port = 8600 }
+        [PSCustomObject]@{ Coin = "GenX"            ; Symbol = "GENX"  ; Algo = "Equihash192" ; WalletSymbol = "genx"     ; Port = 9983 }
+        [PSCustomObject]@{ Coin = "HODLcoin"        ; Symbol = "HODL"  ; Algo = "HOdl"        ; WalletSymbol = "hodl"     ; Port = 4693 }
+        [PSCustomObject]@{ Coin = "Pigeon"          ; Symbol = "PGN"   ; Algo = "X16s"        ; WalletSymbol = "pign"     ; Port = 4096 }
+        [PSCustomObject]@{ Coin = "Polytimos"       ; Symbol = "POLY"  ; Algo = "Polytimos"   ; WalletSymbol = "poly"     ; Port = 7935 }
+        [PSCustomObject]@{ Coin = "Raven"           ; Symbol = "RVN"   ; Algo = "X16r"        ; WalletSymbol = "rvn"      ; Port = 6666 }
+        [PSCustomObject]@{ Coin = "ROIcoin"         ; Symbol = "ROI"   ; Algo = "HOdl"        ; WalletSymbol = "roi"      ; Port = 4699 }
+        [PSCustomObject]@{ Coin = "SafeCash"        ; Symbol = "SCASH" ; Algo = "Equihash144" ; WalletSymbol = "scash"    ; Port = 8983 }
+        [PSCustomObject]@{ Coin = "UBIQ"            ; Symbol = "UBQ"   ; Algo = "Ethash"      ; WalletSymbol = "ubiq"     ; Port = 3030 }
+        [pscustomobject]@{ Coin = "Veil"            ; Symbol = "VEIL"  ; Algo = "X16rt"       ; WalletSymbol = "veil"     ; Port = 7220 }
+        [pscustomobject]@{ Coin = "Verge"           ; Symbol = "XVG"   ; Algo = "X17"         ; WalletSymbol = "xvg-x17"  ; Port = 7477 }
+        [PSCustomObject]@{ Coin = "Vertcoin"        ; Symbol = "VTC"   ; Algo = "Lyra2v3"     ; WalletSymbol = "vtc"      ; Port = 5778 }
+        [PSCustomObject]@{ Coin = "XDNA"            ; Symbol = "XDNA"  ; Algo = "Hex"         ; WalletSymbol = "xdna"     ; Port = 4919 }
+        [PSCustomObject]@{ Coin = "Zero"            ; Symbol = "ZER"   ; Algo = "Equihash192" ; WalletSymbol = "zero"     ; Port = 6568 }
+    )
 
-    $Pools | ForEach-Object {
+    $Result = $Pools | ForEach-Object {
 
-        $Result += [PSCustomObject]@{
+        [PSCustomObject]@{
             Algorithm             = $_.Algo
             Info                  = $_.Coin
             Protocol              = "stratum+tcp"

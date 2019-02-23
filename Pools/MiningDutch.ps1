@@ -34,33 +34,33 @@ if ($Querymode -eq "Core") {
         Exit
     }
 
-    $Pools = @()
+    $Pools = @(
+        [PSCustomObject]@{ Coin = "Cerberus"    ; Algo = "NeoScrypt" ; Symbol = "CBS"  ; Port = 3426 }
+        [PSCustomObject]@{ Coin = "Crowdcoin"   ; Algo = "NeoScrypt" ; Symbol = "CRC"  ; Port = 3315 }
+        [PSCustomObject]@{ Coin = "Desire"      ; Algo = "NeoScrypt" ; Symbol = "DSR"  ; Port = 3635 }
+        [PSCustomObject]@{ Coin = "Feathercoin" ; Algo = "NeoScrypt" ; Symbol = "FTC"  ; Port = 3347 }
+        [PSCustomObject]@{ Coin = "Gobyte"      ; Algo = "NeoScrypt" ; Symbol = "GBX"  ; Port = 3606 }
+        [PSCustomObject]@{ Coin = "Guncoin"     ; Algo = "NeoScrypt" ; Symbol = "GUN"  ; Port = 3615 }
+        [PSCustomObject]@{ Coin = "Innova"      ; Algo = "NeoScrypt" ; Symbol = "INN"  ; Port = 3389 }
+        [PSCustomObject]@{ Coin = "Nyxcoin"     ; Algo = "NeoScrypt" ; Symbol = "NYX"  ; Port = 3419 }
+        [PSCustomObject]@{ Coin = "Onexcash"    ; Algo = "NeoScrypt" ; Symbol = "ONEX" ; Port = 3655 }
+        [PSCustomObject]@{ Coin = "Orbitcoin"   ; Algo = "NeoScrypt" ; Symbol = "ORB"  ; Port = 3614 }
+        [PSCustomObject]@{ Coin = "Qbic"        ; Algo = "NeoScrypt" ; Symbol = "QBIC" ; Port = 3416 }
+        [PSCustomObject]@{ Coin = "Sparks"      ; Algo = "NeoScrypt" ; Symbol = "SPK"  ; Port = 3408 }
+        [PSCustomObject]@{ Coin = "Trezarcoin"  ; Algo = "NeoScrypt" ; Symbol = "TZC"  ; Port = 3616 }
+        [PSCustomObject]@{ Coin = "Ufocoin"     ; Algo = "NeoScrypt" ; Symbol = "UFO"  ; Port = 3351 }
+        [PSCustomObject]@{ Coin = "Vivo"        ; Algo = "NeoScrypt" ; Symbol = "VIVO" ; Port = 3610 }
+        [PSCustomObject]@{ Coin = "Monacoin"    ; Algo = "Lyra2rev2" ; Symbol = "MONA" ; Port = 3420 }
+        [PSCustomObject]@{ Coin = "Rupee"       ; Algo = "Lyra2rev2" ; Symbol = "RUP"  ; Port = 3427 }
+        [PSCustomObject]@{ Coin = "Shield"      ; Algo = "Lyra2rev2" ; Symbol = "XSH"  ; Port = 3432 }
+        [PSCustomObject]@{ Coin = "Straks"      ; Algo = "Lyra2rev2" ; Symbol = "STAK" ; Port = 3433 }
+        [PSCustomObject]@{ Coin = "Verge"       ; Algo = "Lyra2rev2" ; Symbol = "XVG"  ; Port = 3431 }
+        [PSCustomObject]@{ Coin = "Vertcoin"    ; Algo = "Lyra2rev2" ; Symbol = "VTC"  ; Port = 3429 }
+    )
 
-    $Pools += [PSCustomObject]@{ Coin = "Cerberus"    ; Algo = "NeoScrypt" ; Symbol = "CBS"  ; Port = 3426 }
-    $Pools += [PSCustomObject]@{ Coin = "Crowdcoin"   ; Algo = "NeoScrypt" ; Symbol = "CRC"  ; Port = 3315 }
-    $Pools += [PSCustomObject]@{ Coin = "Desire"      ; Algo = "NeoScrypt" ; Symbol = "DSR"  ; Port = 3635 }
-    $Pools += [PSCustomObject]@{ Coin = "Feathercoin" ; Algo = "NeoScrypt" ; Symbol = "FTC"  ; Port = 3347 }
-    $Pools += [PSCustomObject]@{ Coin = "Gobyte"      ; Algo = "NeoScrypt" ; Symbol = "GBX"  ; Port = 3606 }
-    $Pools += [PSCustomObject]@{ Coin = "Guncoin"     ; Algo = "NeoScrypt" ; Symbol = "GUN"  ; Port = 3615 }
-    $Pools += [PSCustomObject]@{ Coin = "Innova"      ; Algo = "NeoScrypt" ; Symbol = "INN"  ; Port = 3389 }
-    $Pools += [PSCustomObject]@{ Coin = "Nyxcoin"     ; Algo = "NeoScrypt" ; Symbol = "NYX"  ; Port = 3419 }
-    $Pools += [PSCustomObject]@{ Coin = "Onexcash"    ; Algo = "NeoScrypt" ; Symbol = "ONEX" ; Port = 3655 }
-    $Pools += [PSCustomObject]@{ Coin = "Orbitcoin"   ; Algo = "NeoScrypt" ; Symbol = "ORB"  ; Port = 3614 }
-    $Pools += [PSCustomObject]@{ Coin = "Qbic"        ; Algo = "NeoScrypt" ; Symbol = "QBIC" ; Port = 3416 }
-    $Pools += [PSCustomObject]@{ Coin = "Sparks"      ; Algo = "NeoScrypt" ; Symbol = "SPK"  ; Port = 3408 }
-    $Pools += [PSCustomObject]@{ Coin = "Trezarcoin"  ; Algo = "NeoScrypt" ; Symbol = "TZC"  ; Port = 3616 }
-    $Pools += [PSCustomObject]@{ Coin = "Ufocoin"     ; Algo = "NeoScrypt" ; Symbol = "UFO"  ; Port = 3351 }
-    $Pools += [PSCustomObject]@{ Coin = "Vivo"        ; Algo = "NeoScrypt" ; Symbol = "VIVO" ; Port = 3610 }
-    $Pools += [PSCustomObject]@{ Coin = "Monacoin"    ; Algo = "Lyra2rev2" ; Symbol = "MONA" ; Port = 3420 }
-    $Pools += [PSCustomObject]@{ Coin = "Rupee"       ; Algo = "Lyra2rev2" ; Symbol = "RUP"  ; Port = 3427 }
-    $Pools += [PSCustomObject]@{ Coin = "Shield"      ; Algo = "Lyra2rev2" ; Symbol = "XSH"  ; Port = 3432 }
-    $Pools += [PSCustomObject]@{ Coin = "Straks"      ; Algo = "Lyra2rev2" ; Symbol = "STAK" ; Port = 3433 }
-    $Pools += [PSCustomObject]@{ Coin = "Verge"       ; Algo = "Lyra2rev2" ; Symbol = "XVG"  ; Port = 3431 }
-    $Pools += [PSCustomObject]@{ Coin = "Vertcoin"    ; Algo = "Lyra2rev2" ; Symbol = "VTC"  ; Port = 3429 }
+    $Result = $Pools | ForEach-Object {
 
-    $Pools | ForEach-Object {
-
-        $Result += [PSCustomObject]@{
+        [PSCustomObject]@{
             Algorithm             = Get-AlgoUnifiedName $_.Algo
             Info                  = $_.Coin
             Protocol              = "stratum+tcp"

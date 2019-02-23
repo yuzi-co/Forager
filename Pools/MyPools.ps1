@@ -24,16 +24,14 @@ if ($Querymode -eq "Info") {
 }
 
 if ($Querymode -eq "Core") {
-    $Pools = @()
+    $Pools = @(
+        [PSCustomObject]@{ Coin = "Dallar"     ; Symbol = "DAL"  ; Algo = "Throestl"   ; Server = "pool.dallar.org"              ; Port = 3032 ; Fee = 0.01 ; User = $Wallets.DAL                    }
+        [PSCustomObject]@{ Coin = "Pascalcoin" ; Symbol = "PASC" ; Algo = "RandomHash" ; Server = "mine.pool.pascalpool.org"     ; Port = 3333 ; Fee = 0.01 ; User = $Wallets.PASC                   }
+        [PSCustomObject]@{ Coin = "Grin"       ; Symbol = "GRIN" ; Algo = "Cuckaroo29" ; Server = "eu-west-stratum.grinmint.com" ; Port = 3416 ; Fee = 0.01 ; User = '$($Config.Email)/#WorkerName#' }
+    )
 
-    # $Pools += [PSCustomObject]@{coin = "HPPcoin"; algo = "Lyra2h"; symbol = "HPP"; server = "pool.hppcoin.com"; port = 3008; fee = 0.02; user = "$UserName.#WorkerName#"}
-    # $Pools += [PSCustomObject]@{coin = "HPPcoin"; algo = "Lyra2h"; symbol = "HPP"; server = "pool.hppcoin.com"; port = 3008; fee = 0.02; user = "$UserName.#WorkerName#"}
-    $Pools += [PSCustomObject]@{coin = "Dallar"; algo = "Throestl"; symbol = "DAL"; server = "pool.dallar.org"; port = 3032; fee = 0.01; user = $Wallets.DAL}
-    $Pools += [PSCustomObject]@{coin = "Pascalcoin"; algo = "RandomHash"; symbol = "PASC"; server = "mine.pool.pascalpool.org"; port = 3333; fee = 0.01; user = $Wallets.PASC}
-    $Pools += [PSCustomObject]@{coin = "Grin"; algo = "Cuckaroo29"; symbol = "GRIN"; server = "eu-west-stratum.grinmint.com"; port = 3416; fee = 0.01; user = '$($Config.Email)/#WorkerName#'}
-
-    $Pools | ForEach-Object {
-        $Result += [PSCustomObject]@{
+    $Result = $Pools | ForEach-Object {
+        [PSCustomObject]@{
             Algorithm             = $_.Algo
             Info                  = $_.Coin
             Protocol              = "stratum+tcp"

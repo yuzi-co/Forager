@@ -73,11 +73,11 @@ if ($Querymode -eq "Core") {
         }
     } | Sort-Object -Property Coin -Unique
 
-    $Pools | Where-Object { $_.Algo -notin @('Cn')} | ForEach-Object {
+    $Result = $Pools | Where-Object { $_.Algo -notin @('Cn')} | ForEach-Object {
 
         $PoolResponse = Invoke-RestMethod -Uri ($_.Url + '/api/stats') -UseBasicParsing
 
-        if ($PoolResponse.pool.heightOK) {
+        if ($PoolResponse.pool.heightOK -and $Wallets.($PoolResponse.config.symbol) -ne $null) {
 
             $Algo = Get-AlgoUnifiedName $_.Algo
             switch ($_.Coin) {
@@ -89,33 +89,32 @@ if ($Querymode -eq "Core") {
 
             $Coin = Get-CoinUnifiedName $_.Coin
 
-            if ($Wallets.($PoolResponse.config.symbol)) {
-                $Result += [PSCustomObject]@{
-                    Info                  = $Coin
-                    Algorithm             = $Algo
-                    Protocol              = "stratum+tcp"
-                    Host                  = $($_.Url -split '//')[1]
-                    Port                  = [int]$($PoolResponse.config.ports | Sort-Object {$_.desc -like "*Modern*GPU*"} -Descending | Select-Object -First 1 -ExpandProperty port)
-                    User                  = $Wallets.($PoolResponse.config.symbol)
-                    Pass                  = "w=#WorkerName#"
+            [PSCustomObject]@{
+                Info                  = $Coin
+                Algorithm             = $Algo
+                Protocol              = "stratum+tcp"
+                Host                  = $($_.Url -split '//')[1]
+                Port                  = [int]$($PoolResponse.config.ports | Sort-Object {$_.desc -like "*Modern*GPU*"} -Descending | Select-Object -First 1 -ExpandProperty port)
+                User                  = $Wallets.($PoolResponse.config.symbol)
+                Pass                  = "w=#WorkerName#"
 
-                    Location              = "EU"
-                    SSL                   = $false
-                    Symbol                = $PoolResponse.config.symbol
-                    ActiveOnManualMode    = $ActiveOnManualMode
-                    ActiveOnAutomaticMode = $ActiveOnAutomaticMode
-                    PoolName              = $Name
-                    WalletMode            = $WalletMode
-                    WalletSymbol          = $($($_.Url -split '//')[1] -split '\.')[0]
-                    Fee                   = $PoolResponse.config.fee / 100
-                    RewardType            = $RewardType
+                Location              = "EU"
+                SSL                   = $false
+                Symbol                = $PoolResponse.config.symbol
+                ActiveOnManualMode    = $ActiveOnManualMode
+                ActiveOnAutomaticMode = $ActiveOnAutomaticMode
+                PoolName              = $Name
+                WalletMode            = $WalletMode
+                WalletSymbol          = $($($_.Url -split '//')[1] -split '\.')[0]
+                Fee                   = $PoolResponse.config.fee / 100
+                RewardType            = $RewardType
 
-                    Hashrate              = $PoolResponse.pool.hashrate
-                    Workers               = $PoolResponse.pool.workers
+                Hashrate              = $PoolResponse.pool.hashrate
+                Workers               = $PoolResponse.pool.workers
 
-                    Price                 = $PoolResponse.charts.profitBtc[-1][1] / 1e6
-                }
+                Price                 = $PoolResponse.charts.profitBtc[-1][1] / 1e6
             }
+
         }
     }
 }
