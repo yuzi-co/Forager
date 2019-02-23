@@ -28,10 +28,10 @@ if ($Querymode -eq "Info") {
 }
 
 if ($Querymode -eq "Speed") {
-    $Request = Invoke-APIRequest -Url $("https://api.nanopool.org/v1/" + $Info.symbol.tolower() + "/history/" + $Info.user) -Retry 1
+    $Request = Invoke-APIRequest -Url $("https://api.nanopool.org/v1/" + $Info.Symbol.ToLower() + "/history/" + $Info.User) -Retry 1
     if ($Request) {
         $Result = [PSCustomObject]@{
-            PoolName   = $name
+            PoolName   = $Name
             WorkerName = $Info.WorkerName
             HashRate   = ($Request.data)[0].HashRate
         }
@@ -39,61 +39,66 @@ if ($Querymode -eq "Speed") {
 }
 
 if ($Querymode -eq "Wallet") {
-    $Request = Invoke-APIRequest -Url $("https://api.nanopool.org/v1/" + $Info.symbol.tolower() + "/balance/" + $Info.user) -Retry 3
+    $Request = Invoke-APIRequest -Url $("https://api.nanopool.org/v1/" + $Info.Symbol.ToLower() + "/balance/" + $Info.User) -Retry 3
     if ($Request) {
         $Result = [PSCustomObject]@{
-            Pool     = $name
+            Pool     = $Name
             Currency = $Info.Symbol
-            Balance  = $Request.data
+            Balance  = $Request.Data
         }
     }
 }
 
 if ($Querymode -eq "Core") {
 
-    $PrePools = @()
-    $PrePools += [PSCustomObject]@{coin = "Ethereum"; algo = "Ethash"; symbol = "ETH"; port = 9999; fee = 0.01; divisor = 1000000; protocol = "stratum+tcp"};
-    $PrePools += [PSCustomObject]@{coin = "EthereumClassic"; algo = "Ethash"; symbol = "ETC"; port = 19999; fee = 0.01; divisor = 1000000; protocol = "stratum+tcp"};
-    $PrePools += [PSCustomObject]@{coin = "Monero"; algo = "CnV8"; symbol = "XMR"; port = 14444; fee = 0.01; divisor = 1; protocol = "stratum+ssl"};
-    $PrePools += [PSCustomObject]@{coin = "Pascalcoin"; algo = "RandomHash"; symbol = "PASC"; port = 15556; fee = 0.02; divisor = 1; protocol = "stratum+tcp"};
-    $PrePools += [PSCustomObject]@{coin = "Raven"; algo = "X16r"; symbol = "RVN"; port = 12222; fee = 0.01; divisor = 1000000; protocol = "stratum+tcp"};
+    $Pools = @(
+        [PSCustomObject]@{ Coin = "Ethereum"        ; Symbol = "ETH"  ; Algo = "Ethash"    ; WalletSymbol = "ETH"    ; Port = 9999  ; Fee = 0.01 ; Divisor = 1e6 }
+        [PSCustomObject]@{ Coin = "EthereumClassic" ; Symbol = "ETC"  ; Algo = "Ethash"    ; WalletSymbol = "ETC"    ; Port = 19999 ; Fee = 0.01 ; Divisor = 1e6 }
+        [PSCustomObject]@{ Coin = "Monero"          ; Symbol = "XMR"  ; Algo = "CnV8"      ; WalletSymbol = "XMR"    ; Port = 14444 ; Fee = 0.01 ; Divisor = 1   ; PortSSL = 14433}
+        [PSCustomObject]@{ Coin = "Pascalcoin"      ; Symbol = "PASC" ; Algo = "RandomHash"; WalletSymbol = "PASC"   ; Port = 15556 ; Fee = 0.02 ; Divisor = 1   }
+        [PSCustomObject]@{ Coin = "Raven"           ; Symbol = "RVN"  ; Algo = "X16r"      ; WalletSymbol = "RVN"    ; Port = 12222 ; Fee = 0.01 ; Divisor = 1e6 }
+        [PSCustomObject]@{ Coin = "Grin"            ; Symbol = "GRIN" ; Algo = "Cuckaroo29"; WalletSymbol = "GRIN29" ; Port = 12111 ; Fee = 0.01 ; Divisor = 1e6 }
+    )
 
     #generate a pool for each location and add API data
-    $PrePools | ForEach-Object {
+    $Result = $Pools | ForEach-Object {
         $RequestW = Invoke-APIRequest -Url $("https://api.nanopool.org/v1/" + $_.symbol.ToLower() + "/pool/activeworkers") -Retry 1
         $RequestP = Invoke-APIRequest -Url $("https://api.nanopool.org/v1/" + $_.symbol.ToLower() + "/approximated_earnings/1000") -Retry 1 |
             Select-Object -ExpandProperty data | Select-Object -ExpandProperty day
 
-        $Locations = @()
-        $Locations += [PSCustomObject]@{location = "EU"; server = $_.Symbol + "-eu1.nanopool.org"}
-        $Locations += [PSCustomObject]@{location = "US"; server = $_.Symbol + "-us-east1.nanopool.org"}
-        $Locations += [PSCustomObject]@{location = "ASIA"; server = $_.Symbol + "-asia1.nanopool.org"}
+        $Locations = @(
+            [PSCustomObject]@{ Location = "Eu"    ; Server = $_.WalletSymbol + "-eu1.nanopool.org" }
+            [PSCustomObject]@{ Location = "US"    ; Server = $_.WalletSymbol + "-us-east1.nanopool.org" }
+            [PSCustomObject]@{ Location = "Asia"  ; Server = $_.WalletSymbol + "-asia1.nanopool.org" }
+        )
 
-        ForEach ($loc in $locations) {
-            $Result += [PSCustomObject]@{
-                Algorithm             = $_.algo
+        ForEach ($Loc in $Locations) {
+            [PSCustomObject]@{
+                Algorithm             = $_.Algo
                 Info                  = $_.Coin
                 Price                 = [decimal]$RequestP.bitcoins / $_.Divisor / 1000
-                Protocol              = "stratum+tcp" #$_.Protocol
-                Host                  = $loc.server
+                Protocol              = "stratum+tcp"
+                ProtocolSSL           = "stratum+tls"
+                Host                  = $Loc.Server
                 Port                  = $_.Port
+                PortSSL               = $_.PortSSL
                 User                  = $Wallets.($_.Symbol)
                 Pass                  = "x"
-                Location              = $loc.location
-                SSL                   = $false
-                Symbol                = $_.symbol
+                Location              = $Loc.Location
+                SSL                   = [bool]$PortSSL
+                Symbol                = $_.Symbol
                 ActiveOnManualMode    = $ActiveOnManualMode
                 ActiveOnAutomaticMode = $ActiveOnAutomaticMode
                 PoolWorkers           = $RequestW.Data
                 PoolName              = $Name
                 WalletMode            = $WalletMode
-                WalletSymbol          = $_.symbol
-                Fee                   = $_.fee
+                WalletSymbol          = $_.WalletSymbol
+                Fee                   = $_.Fee
                 EthStMode             = 0
                 RewardType            = $RewardType
             }
         }
-        Start-Sleep -Seconds 1 # Prevent API Saturation
+        Start-Sleep -Milliseconds 250 # Prevent API Saturation
     }
 }
 
