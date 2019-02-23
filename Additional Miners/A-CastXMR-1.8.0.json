@@ -1,7 +1,7 @@
 {
     "Path": "cast_xmr-vega.exe",
-    "Uri": "http://www.gandalph3000.com/download/cast_xmr-vega-win64_171.zip",
-    "SHA256": "2347F1DBFEEF00BEF72416F5BC3F20DE3A3414E2F734AF6606E6B77C95CE60A3",
+    "Uri": "https://github.com/glph3k/cast_xmr/releases/download/v180/cast_xmr-vega-win64_180.zip",
+    "SHA256": "D20661F8229052BEF6BCC277C621E6D5EB66852CBF051F0AF8639DC3E9AB3D6F",
     "Type": "AMD",
     "Arguments": [
         "--pool #Server#:#Port#",
@@ -11,7 +11,6 @@
         "--remoteport #APIPort#",
         "--opencl #GPUPlatform#",
         "--gpu #Devices#",
-        "--ratewatchdog",
         "$(if ($Pool.PoolName -ne 'NiceHash'){'--nonicehash'})",
         "#AlgorithmParameters#"
     ],
