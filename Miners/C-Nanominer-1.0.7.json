@@ -4,7 +4,7 @@
     "SHA256": "3471D214D54569FBC54EF2A9D2277AEE169B7DAF0394FCA43646609D041712E8",
     "Type": "CPU",
     "GenerateConfigFile": "nanominer-windows-1.0.7\\#GroupName#-#Algorithm#.conf",
-    "PatternConfigFile": ".\\Patterns\\nanoMinerPattern.txt",
+    "PatternConfigFile": "NanoMiner.txt",
     "Arguments": "#GroupName#-#Algorithm#.conf",
     "API": "Claymore",
     "APIPort": 4048,

@@ -464,8 +464,8 @@ while ($Quit -eq $false) {
                         $Arguments = $Arguments -replace '#AlgorithmParameters#', $AlgoParams
                         foreach ($P in $Params.Keys) {$Arguments = $Arguments -replace $P, $Params.$P}
                         $PatternConfigFile = $Miner.PatternConfigFile -replace '#Algorithm#', $AlgoName -replace '#GroupName#', $DeviceGroup.GroupName
-                        if ($PatternConfigFile -and (Test-Path -Path $PatternConfigFile)) {
-                            $ConfigFileArguments = Edit-ForEachDevice (Get-Content $PatternConfigFile -raw) -Devices $DeviceGroup
+                        if ($PatternConfigFile -and (Test-Path -Path ".\Data\Patterns\$PatternConfigFile")) {
+                            $ConfigFileArguments = Edit-ForEachDevice (Get-Content ".\Data\Patterns\$PatternConfigFile" -raw) -Devices $DeviceGroup
                             foreach ($P in $Params.Keys) {$ConfigFileArguments = $ConfigFileArguments -replace $P, $Params.$P}
                         } else {$ConfigFileArguments = $null}
 
@@ -500,7 +500,7 @@ while ($Quit -eq $false) {
                                 '#WorkerName#'    = $WorkerNameDual
                             }
                             foreach ($P in $Params.Keys) {$Arguments = $Arguments -replace $P, $Params.$P}
-                            if ($PatternConfigFile -and (Test-Path -Path $PatternConfigFile)) {
+                            if ($PatternConfigFile -and (Test-Path -Path ".\Data\Patterns\$PatternConfigFile")) {
                                 foreach ($P in $Params.Keys) {$ConfigFileArguments = $ConfigFileArguments -replace $P, $Params.$P}
                             }
                         } else {

@@ -4,7 +4,7 @@
     "SHA256": "498FABE8FE071B84A2B47255D78EBFA6BAD9355D8097D15C4D8493B4F47D70E1",
     "Type": "AMD",
     "GenerateConfigFile": "config-#GroupName#-#Algorithm#.txt",
-    "PatternConfigFile": ".\\Patterns\\SRBMinerConfig-Pattern.txt",
+    "PatternConfigFile": "SRBMiner.txt",
     "Arguments": [
         "--config config-#GroupName#-#Algorithm#.txt",
         "--cpool #Server#:#Port#",
