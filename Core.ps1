@@ -841,7 +841,7 @@ while ($Quit -eq $false) {
         if ($null -ne $DonateBest) {
             $BestNowCandidates = $DonateBest
         }
-        Remove-Variable $DonateBest
+        Remove-Variable DonateBest
     }
 
     $BestNowMiners = $BestNowCandidates | Group-Object {
