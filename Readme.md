@@ -45,6 +45,8 @@ Windows 7 will require PowerShell Core or PowerShell v5 installed: https://www.m
 
 ##### Runtimes for miners:
 
+.NET Core Runtime - https://dotnet.microsoft.com/download
+
 MSVCR120 - https://www.microsoft.com/en-gb/download/details.aspx?id=40784
 
 VCRUNTIME140 - https://www.microsoft.com/en-us/download/details.aspx?id=48145
