@@ -14,7 +14,7 @@ $Result = @()
 
 if ($Querymode -eq "Info") {
     $Result = [PSCustomObject]@{
-        Disclaimer            = "Must set wallet for each coin on web, set login on config.ini file"
+        Disclaimer            = "No registration, No autoexchange, need wallet for each coin"
         ActiveOnManualMode    = $ActiveOnManualMode
         ActiveOnAutomaticMode = $ActiveOnAutomaticMode
         ApiData               = $true
@@ -41,12 +41,15 @@ if ($Querymode -eq "Speed") {
 if ($Querymode -eq "Wallet") {
     $Request = Invoke-APIRequest -Url $("https://" + $Info.Symbol + ".miner.rocks/api/stats_address?address=" + $Info.User + "&longpoll=false") -Retry 3
     $Divisor = switch ($Info.Symbol) {
-        'aeon' { 1e12 }
-        'bittube' { 1e14 }
-        'haven' { 1e12 }
-        'masari' { 1e12 }
-        'stellite' { 1e5 }
-        Default { 1e12 }
+        'aeon' { 1e21 }
+        'bittube' { 1e9 }
+        'haven' { 1e13 }
+        'loki' { 1e9 }
+        'masari' { 1e13 }
+        'ryo' { 1e16 }
+        'stellite' { 1e3 }
+        'turtle' { 1e6 }
+        Default { 1e9 }
     }
     if ($Request) {
         $Result = [PSCustomObject]@{

@@ -42,13 +42,14 @@ if ($Querymode -eq "Wallet") {
     $Request = Invoke-APIRequest -Url $("https://" + $Info.Symbol + ".fairpool.xyz/api/stats?login=" + ($Info.User -split "\+")[0]) -Retry 3
     if ($Request) {
         switch ($Info.Symbol) {
-            'pasl' { $Divisor = 1e4 }
-            'sumo' { $Divisor = 1e9}
             'loki' { $Divisor = 1e9}
+            'msr' { $Divisor = 1e12}
+            'pasl' { $Divisor = 1e4 }
+            'purk' { $Divisor = 1e6}
+            'sumo' { $Divisor = 1e9}
+            'xfh' { $Divisor = 1e12}
             'xhv' { $Divisor = 1e12}
             'xrn' { $Divisor = 1e9}
-            'bloc' { $Divisor = 1e4}
-            'purk' { $Divisor = 1e6}
             Default { $Divisor = 1e9 }
         }
         $Result = [PSCustomObject]@{
@@ -79,7 +80,7 @@ if ($Querymode -eq "Core") {
         [PSCustomObject]@{ Coin = "RYO"             ; Symbol = "RYO"    ; Algo = "CnGpu"       ; WalletSymbol = "ryo"     ; Port = 5555 }
         [PSCustomObject]@{ Coin = "Saronite"        ; Symbol = "XRN"    ; Algo = "CnHaven"     ; WalletSymbol = "xrn"     ; Port = 5599 }
         [PSCustomObject]@{ Coin = "Solace"          ; Symbol = "SOLACE" ; Algo = "CnHeavy"     ; WalletSymbol = "solace"  ; Port = 5588 }
-        [PSCustomObject]@{ Coin = "Swap"            ; Symbol = "XWP"    ; Algo = "CnFreeHaven" ; WalletSymbol = "xfh"     ; Port = 6080 }
+        [PSCustomObject]@{ Coin = "Swap"            ; Symbol = "XWP"    ; Algo = "Cuckaroo29s" ; WalletSymbol = "xfh"     ; Port = 6080 }
         [PSCustomObject]@{ Coin = "Wownero"         ; Symbol = "WOW"    ; Algo = "CnWow"       ; WalletSymbol = "wow"     ; Port = 6090 }
     )
 
