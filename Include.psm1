@@ -1070,7 +1070,7 @@ function Start-SubProcess {
         [Parameter(Mandatory = $false)] <# UselessGuru #>
         [String]$MinerWindowStyle = "Minimized", <# UselessGuru #>
         [Parameter(Mandatory = $false)] <# UselessGuru #>
-        [String]$UseAlternateMinerLauncher = $true <# UselessGuru #>
+        [bool]$UseAlternateMinerLauncher = $true <# UselessGuru #>
     )
 
     $PriorityNames = @{
@@ -1731,12 +1731,19 @@ function Start-Autoexec {
     foreach ($cmd in @(Get-Content ".\Autoexec.txt" -ErrorAction Ignore | Select-Object)) {
         if ($cmd -match "^[\s\t]*`"(.+?)`"(.*)$") {
             try {
-                $Job = Start-SubProcess -FilePath "$($Matches[1])" -ArgumentList "$($Matches[2].Trim())" -WorkingDirectory (Split-Path "$($Matches[1])") -Priority $Priority
+                $Params = @{
+                    FilePath                  = Convert-Path $Matches[1]
+                    ArgumentList              = $Matches[2].Trim()
+                    WorkingDirectory          = Split-Path (Convert-Path $Matches[1])
+                    Priority                  = $Priority
+                    UseAlternateMinerLauncher = $false
+                }
+                $Job = Start-SubProcess @Params
                 if ($Job) {
-                    $Job | Add-Member FilePath "$($Matches[1])" -Force
-                    $Job | Add-Member Arguments "$($Matches[2].Trim())" -Force
+                    $Job | Add-Member FilePath $Params.FilePath -Force
+                    $Job | Add-Member Arguments $Params.ArgumentList -Force
                     $Job | Add-Member HasOwnMinerWindow $true -Force
-                    Log "Autoexec command started: $($Matches[1]) $($Matches[2].Trim())" -Severity Info
+                    Log "Autoexec command started: $($Params.FilePath) $($Params.ArgumentList)" -Severity Info
                     $Script:AutoexecCommands.Add($Job) | Out-Null
                 }
             } catch {}
