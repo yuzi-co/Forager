@@ -830,7 +830,7 @@ while ($Quit -eq $false) {
                 $_.NeedBenchmark -or
                 $MiningMode -eq "Manual" -or
                 $Interval.Current -eq "Donate" -or
-                ($_.Profits -ne $null -and $_.Profits -gt $DeviceGroup.MinProfit) -or
+                $_.Profits -gt $DeviceGroup.MinProfit -or
                 -not $LocalBTCvalue -gt 0
             )
         } | Sort-Object -Descending NeedBenchmark, {$(if ($MiningMode -eq "Manual") {$_.HashRate} elseif ($LocalBTCvalue) {$_.Profits} else {$_.Revenue + $_.RevenueDual})}, {$ActiveMiners[$_.IdF].PoolPrice}, {$ActiveMiners[$_.IdF].PoolPriceDual}, PowerLimit
