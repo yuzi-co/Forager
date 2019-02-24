@@ -29,38 +29,52 @@ $PowerShell.AddScript("$Command 2>&1 | Write-Verbose -Verbose") | Out-Null
 $Result = $PowerShell.BeginInvoke()
 
 Write-Host "Wrapper Started" -BackgroundColor Yellow -ForegroundColor Black
+# $CardsArray = @(0) * 20
 
 do {
-    Start-Sleep -Seconds 1
-
     $PowerShell.Streams.Verbose.ReadAll() | ForEach-Object {
         $Param = @{}
-        if ($Command -like '*energiminer.exe*') {$Param.NoNewLine = $true}
+        if (
+            $PSVersionTable.PSVersion.Major -lt 6 -and
+            $Command -like '*energiminer.exe*'
+        ) {
+            $Param.NoNewLine = $true
+        }
         Write-Host $_ @Param
 
         $HashRate = 0
+
         if (
             $_ -match "Speed\s([0-9.,]+)\s?([kmgtp]?h/s)" -or # EnergiMiner
             $_ -match "Accepted.*\s([0-9.,]+)\s([kmgtp]?h/s)" -or # lyclMiner
+            $_ -match "Results: ([\d,.]+) ([kmgtp]?gps), sub:(\d+) acc:(\d+) rej:(\d+)" -or # SwapMiner
             $false
         ) {
-            $HashRate = [decimal]($Matches[1] -replace ',','.')
-            $Units = $Matches[2]
+            [decimal]$HashRate = $Matches[1] -replace ',', '.'
+            $Units = $Matches[2] -replace "gps", "h/s"
+            # } elseif ($_ -match "Statistics: GPU (\d+): mining at ([0-9,.]+) (gps), solutions: (\d+)") {
+            #     # SwapMiner per card
+            #     [int]$DevIndex = $Matches[1]
+            #     [decimal]$DevHash = $Matches[2] -replace ',', '.'
+            #     $CardsArray[$DevIndex] = $DevHash
+            #     $HashRate = $CardsArray | Measure-Object -Sum | Select-Object -ExpandProperty Sum
+            #     $Units = $Matches[3] -replace "gps", "h/s"
+        }
 
-            if ($HashRate -gt 0) {
-                "`nWrapper Detected HashRate: $HashRate $Units" | Write-Host -BackgroundColor Yellow -ForegroundColor Black
+        if ($HashRate -gt 0) {
+            "`nWrapper Detected HashRate: $HashRate $Units" | Write-Host -BackgroundColor Yellow -ForegroundColor Black
 
-                $HashRate *= switch ($Units) {
-                    "kh/s" { 1e3 }
-                    "mh/s" { 1e6 }
-                    "gh/s" { 1e9 }
-                    "th/s" { 1e12 }
-                    "ph/s" { 1e15 }
-                    Default { 1 }
-                }
-                $HashRate -replace ',', '.' | Set-Content ".\Wrapper_$Id.txt"
+            $HashRate *= switch ($Units) {
+                "kh/s" { 1e3 }
+                "mh/s" { 1e6 }
+                "gh/s" { 1e9 }
+                "th/s" { 1e12 }
+                "ph/s" { 1e15 }
+                Default { 1 }
             }
+            $HashRate -replace ',', '.' | Set-Content ".\Wrapper_$Id.txt"
         }
     }
     if (-not (Get-Process | Where-Object Id -EQ $ControllerProcessID)) {$PowerShell.Stop() | Out-Null}
+    Start-Sleep -Seconds 1
 } until($Result.IsCompleted)

@@ -1,0 +1,20 @@
+{
+    "Path": "SwapReferenceMinerCLI.exe",
+    "Uri": "https://github.com/RainbowMiner/miner-binaries/releases/download/v1.0.2-swap/SwapReferenceMinerCLI-v1.0.2-rbm.zip",
+    "SHA256": "",
+    "Type": "NVIDIA",
+    "GenerateConfigFile": "config.xml",
+    "PatternConfigFile": "SwapMiner.txt",
+    "Arguments": [
+        "mode=rolling"
+    ],
+    "API": "Wrapper",
+    "APIPort": 4068,
+    "SSL": true,
+    "Algorithms": {
+        "Cuckaroo29s": {
+            "Mem": 5.6,
+            "NoCpu": true
+        }
+    }
+}
