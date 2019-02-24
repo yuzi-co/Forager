@@ -1565,7 +1565,7 @@ while ($Quit -eq $false) {
                     }
                 )
 
-                $WalletStatus = $WalletsToCheck | ForEach-Object {
+                [array]$WalletStatus = $WalletsToCheck | ForEach-Object {
 
                     Set-ConsolePosition 0 $YToWriteMessages
                     " " * 70 | Out-Host
@@ -1585,7 +1585,7 @@ while ($Quit -eq $false) {
                 Set-ConsolePosition 0 $YToWriteMessages
                 " " * 70 | Out-Host
 
-                if (-not $WalletStatusAtStart) {$WalletStatusAtStart = $WalletStatus}
+                if (-not $WalletStatusAtStart) {[array]$WalletStatusAtStart = $WalletStatus}
 
                 foreach ($Wallet in $WalletStatus) {
                     if (-not $Wallet.BalanceAtStart) {
