@@ -1,7 +1,7 @@
 {
     "Path": "miner.exe",
     "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.34/gminer_1_34_minimal_windows64.zip",
-    "SHA256": "DBC82353214E1EB6E7929C1DD27D95183B0A2092BD18716798DD143F08F076A5",
+    "SHA256": "FAF6BEE635DC830E22FE0978DE3680479544440422C2EE35D857F37757D726DC",
     "Type": "NVIDIA",
     "Arguments": [
         "--server #Server#",
