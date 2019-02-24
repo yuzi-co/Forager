@@ -9,12 +9,14 @@
         "--opencl-platform #GPUPlatform#",
         "--opencl-devices #DevicesETHMode#",
         "--syslog",
+        "--nocolor",
         "#AlgorithmParameters#"
     ],
     "API": "Wrapper",
     "APIPort": 4028,
     "Algorithms": {
         "Energi": {
+            "Params": "--cl-local-work 256",
             "Mem": 3
         }
     }

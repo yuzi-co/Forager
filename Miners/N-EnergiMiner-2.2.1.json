@@ -6,16 +6,16 @@
     "Arguments": [
         "-P stratum://#Login#:#Password#@#Server#:#Port#",
         "--cuda",
-        "--cuda-parallel-hash 8",
-        "--cuda-block-size 256",
         "--cuda-devices #DevicesETHMode#",
         "--syslog",
+        "--nocolor",
         "#AlgorithmParameters#"
     ],
     "API": "Wrapper",
     "APIPort": 4068,
     "Algorithms": {
         "Energi": {
+            "Params": "--cuda-parallel-hash 8 --cuda-block-size 256",
             "Mem": 3
         }
     }
