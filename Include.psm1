@@ -510,29 +510,30 @@ function Get-OpenCLDevices {
         Add-Type -Path .\Includes\OpenCL\*.cs
         try {
             $OCLPlatforms = [OpenCl.Platform]::GetPlatformIds()
-            if ($OCLPlatforms) {
-                $PlatformId = 0
-                $OCLDeviceId = 0
-                $OCLGpuId = 0
-                $OCLDevices = @($OCLPlatforms | ForEach-Object {
-                        $Devs = [OpenCl.Device]::GetDeviceIDs($_, [OpenCl.DeviceType]::All)
-                        $Devs | Add-Member PlatformId $PlatformId
-                        $Devs | ForEach-Object {
-                            $_ | Add-Member DeviceIndex $([array]::indexof($Devs, $_))
-                            $_ | Add-Member OCLDeviceId $OCLDeviceId
-                            $OCLDeviceId++
-                            if ($_.Type -eq 'Gpu') {
-                                $_ | Add-Member OCLGpuId $OCLGpuId
-                                $OCLGpuId++
-                            }
-                        }
-                        $PlatformId++
-                        $Devs
-                    })
-            }
         } catch {
-            Log "Error during OpenCL device detection!" -Severity Warn
-            Exit
+            Log "Error during OpenCL platform detection!" -Severity Warn
+        }
+        if ($null -ne $OCLPlatforms) {
+            $PlatformId = 0
+            $OCLDeviceId = 0
+            $OCLGpuId = 0
+            $OCLDevices = @($OCLPlatforms | ForEach-Object {
+                    $Devs = [OpenCl.Device]::GetDeviceIDs($_, [OpenCl.DeviceType]::All)
+                    $Devs | Add-Member PlatformId $PlatformId
+                    $Devs | ForEach-Object {
+                        $_ | Add-Member DeviceIndex $([array]::indexof($Devs, $_))
+                        $_ | Add-Member OCLDeviceId $OCLDeviceId
+                        $OCLDeviceId++
+                        if ($_.Type -eq 'Gpu') {
+                            $_ | Add-Member OCLGpuId $OCLGpuId
+                            $OCLGpuId++
+                        }
+                    }
+                    $PlatformId++
+                    $Devs
+                })
+        } else {
+            Log "No OpenCL devices detected!" -Severity Warn
         }
     }
     $OCLDevices
