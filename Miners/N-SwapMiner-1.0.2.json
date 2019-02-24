@@ -1,7 +1,7 @@
 {
     "Path": "SwapReferenceMinerCLI.exe",
     "Uri": "https://github.com/RainbowMiner/miner-binaries/releases/download/v1.0.2-swap/SwapReferenceMinerCLI-v1.0.2-rbm.zip",
-    "SHA256": "",
+    "SHA256": "D23B7C5D615131EB4DAF6B11A573880CC49159B9206A6FC175AB70658EABF794",
     "Type": "NVIDIA",
     "GenerateConfigFile": "config.xml",
     "PatternConfigFile": "SwapMiner.txt",
