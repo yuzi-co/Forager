@@ -101,18 +101,32 @@ Run "git pull" in Forager folder to get latest master version
 
 ### Forager folder structure:
 ```
-/Additional Miners/	- Miners disabled by default, usually because of low profitability or issues
-/Bin/			- Installed miners are located in this folder
-/Cache/			- Cached API requests storage. Can be purged at will. Old files automatically cleaned on start.
-/Data/			- Data files containing different mappings and lists required for Forager
-/Downloads/		- Downloaded miner archives. Can be purged at will.
-/Includes/		- Code includes and binary helper programs
-/Logs/			- Runtime logs and session reports (if enabled). Old files automatically cleaned on start.
-/Miners/		- Miner definitions
-/Patterns/		- Miner config templates
-/Pools/			- Pool definitions
-/Stats/			- Miner benchmarks and run statistics
+/Additional Miners/ - Miners disabled by default, usually because of low profitability or issues
+/Bin/               - Installed miners are located in this folder
+/Cache/             - Cached API requests storage. Can be purged at will. Old files automatically cleaned on start.
+/Data/              - Data files containing different mappings and lists required for Forager
+/Downloads/         - Downloaded miner archives. Can be purged at will.
+/Includes/          - Code includes and binary helper programs
+/Logs/              - Runtime logs and session reports (if enabled). Old files automatically cleaned on start.
+/Miners/            - Miner definitions in json format
+/Pools/             - Pool definitions
+/Stats/             - Miner benchmarks and run statistics. *_Hashrate.csv - Benchmark results, remove to re-benchmark. *_Stats.json - Runtime stats
 ```
+
+### Helper scripts:
+```
+START.bat               - Menu based option Mining Mode / Pools / Coins selection
+
+AutoStart.bat           - Sample start script with recommended set of AutoExchange pools based on instant profitability
+AutoStart24h.bat        - Sample start script with recommended set of AutoExchange pools based on 24h profitability (for supporting pools)
+
+AutoStart Example*.bat  - Examples of startup scripts with Algo/Coin filters
+
+BootStart.bat           - Starts AutoStart.bat after 3 minute delay. Can be added to Autostart
+DeviceList.bat          - List detected devices and suggested GpuGroups based on auto-detection
+OpenCLList.bat          - List OpenCL devices
+```
+
 
 ### Donations are welcome
 ```
