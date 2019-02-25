@@ -303,7 +303,7 @@ while ($Quit -eq $false) {
     #Filter by minworkers variable (only if there is any pool greater than minimum)
     $Pools = ($AllPools | Where-Object {
             $_.PoolWorkers -eq $null -or
-            $_.PoolWorkers -ge $Config.MinWorkers
+            $_.PoolWorkers -ge $(if ($Config.('MinWorkers_' + $_.PoolName) -ne $null) {$Config.('MinWorkers_' + $_.PoolName)}else{$Config.MinWorkers})
         }
     )
     if ($Pools.Count -ge 1) {
