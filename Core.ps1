@@ -1,15 +1,16 @@
 param(
-    [Parameter(Mandatory = $false)]
-    [Array]$Algorithm,
+    [Parameter(Mandatory = $true)]
+    [ValidateSet('Automatic','Automatic24h','Manual')]
+    [String]$MiningMode,
+
+    [Parameter(Mandatory = $true)]
+    [array]$PoolsName,
 
     [Parameter(Mandatory = $false)]
-    [Array]$PoolsName,
+    [array]$Algorithm,
 
     [Parameter(Mandatory = $false)]
     [array]$CoinsName,
-
-    [Parameter(Mandatory = $false)]
-    [String]$MiningMode,
 
     [Parameter(Mandatory = $false)]
     [array]$GroupNames
