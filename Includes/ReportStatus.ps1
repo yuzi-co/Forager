@@ -6,7 +6,7 @@ param(
 )
 
 $Profit = 0
-$MinerReport = ConvertTo-Json @($ActiveMiners.SubMiners | Where-Object Status -eq 'Running' | ForEach-Object {
+$MinerReport = ConvertTo-Json @($ActiveMiners.SubMiners | Where-Object Status -eq 'Running' | Sort-Object {$ActiveMiners[$_.IdF].DeviceGroup.GroupType -eq 'CPU'} | ForEach-Object {
         $Profit += [decimal]$_.RevenueLive + [decimal]$_.RevenueLiveDual
 
         $M = $ActiveMiners[$_.IdF]
