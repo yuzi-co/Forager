@@ -17,7 +17,7 @@
     "Algorithms": {
         "Equihash150": {
             "Params": "-uri beam",
-            "Mem": 8
+            "Mem": 7
         }
     }
 }
