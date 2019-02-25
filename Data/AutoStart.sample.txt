@@ -1,0 +1,20 @@
+@echo off
+
+cd /d %~dp0
+
+set Mode=$($MiningMode)
+set Pools=$($PoolsName)
+set Algos=$($AlgosName)
+set Coins=$($CoinsName)
+
+set Command="& .\Core.ps1 -MiningMode %Mode% -PoolsName %Pools%$(if ($AlgosName) {' -Algorithm %Algos%'})$(if ($CoinsName) {' -CoinsName %Coins%'})"
+
+where pwsh >nul 2>nul || goto powershell
+pwsh -executionpolicy bypass -command %Command%
+goto end
+
+:powershell
+powershell -version 5.0 -executionpolicy bypass -command %Command%
+
+:end
+pause
