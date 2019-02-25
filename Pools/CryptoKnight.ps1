@@ -48,7 +48,7 @@ if ($Querymode -eq "Core") {
         [PSCustomObject]@{ Coin = "Italo"      ; Symbol = "ITA"  ; Algo = "CnHaven"     ; Port = 50701 ; WalletSymbol = "italo"     }
         [PSCustomObject]@{ Coin = "Lethean"    ; Symbol = "LTHN" ; Algo = "CnV8"        ; Port = 8881  ; WalletSymbol = "lethean"   }
         [PSCustomObject]@{ Coin = "Loki"       ; Symbol = "LOKI" ; Algo = "CnHeavy"     ; Port = 7731  ; WalletSymbol = "loki"      }
-        [PSCustomObject]@{ Coin = "Masari"     ; Symbol = "MSR"  ; Algo = "CnHalf"      ; Port = 3333  ; WalletSymbol = "msr"       }
+        [PSCustomObject]@{ Coin = "Masari"     ; Symbol = "MSR"  ; Algo = "CnHalf"      ; Port = 3333  ; WalletSymbol = "msr"       ; Server = "masari" }
         [PSCustomObject]@{ Coin = "Monero"     ; Symbol = "XMR"  ; Algo = "CnV8"        ; Port = 4441  ; WalletSymbol = "monero"    }
         [PSCustomObject]@{ Coin = "MoneroV"    ; Symbol = "XMV"  ; Algo = "CnV7"        ; Port = 9221  ; WalletSymbol = "monerov"   }
         [PSCustomObject]@{ Coin = "NioBio"     ; Symbol = "NBR"  ; Algo = "CnHeavy"     ; Port = 5801  ; WalletSymbol = "niobio"    }
