@@ -1,7 +1,7 @@
 {
     "Path": "SwapReferenceMinerCLI.exe",
-    "Uri": "https://github.com/RainbowMiner/miner-binaries/releases/download/v1.0.2-swap/SwapReferenceMinerCLI-v1.0.2-rbm.zip",
-    "SHA256": "D23B7C5D615131EB4DAF6B11A573880CC49159B9206A6FC175AB70658EABF794",
+    "Uri": "https://github.com/RainbowMiner/miner-binaries/releases/download/v1.2.0-swap/SwapMiner-v1.2.0-rbm.7z",
+    "SHA256": "9C88D76CAE83DA4E6605EB18239E45321556F0218800C2A4163C611E8E0FB8B6",
     "Type": "AMD",
     "GenerateConfigFile": "config.xml",
     "PatternConfigFile": "SwapMiner.txt",
