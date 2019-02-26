@@ -8,7 +8,7 @@
         "-su #Login#",
         "-pw #Password#",
         "-cpu",
-        "-cputhreads $($DeviceGroup.DevicesCount)",
+        "-cputhreads $(if ($CpuThreads -ne $null){$CpuThreads} else {$DeviceGroup.Features.Cores})",
         "-apiport #ApiPort#"
     ],
     "API": "RH",

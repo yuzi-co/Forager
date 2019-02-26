@@ -10,6 +10,7 @@
         "$(if ($Pool.PoolName -eq 'NiceHash'){'--nicehash'})",
         "--donate-level 1",
         "--api-port #APIPort#",
+        "--max-cpu-usage=$(if ($CpuThreads -ne $null){ [int](100 * $CpuThreads / $DeviceGroup.Features.Threads) } else { 100 })",
         "#AlgorithmParameters#"
     ],
     "API": "XMRig",
