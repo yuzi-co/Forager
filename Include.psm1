@@ -189,7 +189,9 @@ function Get-DevicesInfoADL {
     $Command = ".\Includes\OverdriveN.exe"
     $Result = & $Command | Where-Object {$_ -notlike "*&???" -and $_ -notlike "*failed"} | ConvertFrom-Csv @CsvParams
 
-    $AmdCardsTDP = Get-Content .\Data\amd-cards-tdp.json | ConvertFrom-Json
+    if (-not $global:AmdCardsTDP) {
+        $global:AmdCardsTDP = Get-Content .\Data\amd-cards-tdp.json | ConvertFrom-Json
+    }
 
     $DeviceId = 0
     $Devices = $Result | Where-Object name -ne $null | ForEach-Object {
@@ -326,7 +328,9 @@ function Get-DevicesInfoCPU {
             }
         }
         if (-not $CpuData.PowerDraw) {
-            if (-not $CpuTDP) {$CpuTDP = Get-Content ".\Data\cpu-tdp.json" | ConvertFrom-Json}
+            if (-not $global:CpuTDP) {
+                $global:CpuTDP = Get-Content ".\Data\cpu-tdp.json" | ConvertFrom-Json
+            }
             $CpuData.PowerDraw = $CpuTDP.($_.Name.Trim()) * $CpuData.Utilization / 100
         }
         if (-not $CpuData.Clock) {$CpuData.Clock = $_.MaxClockSpeed}
@@ -1259,6 +1263,7 @@ function Get-Pools {
 
     $ChildItems = $PoolsFolderContent | ForEach-Object {
 
+        $StopWatch = [system.diagnostics.stopwatch]::StartNew()
         $Basename = $_.BaseName
         $SharedFile = $PSScriptRoot + "\Cache\" + $Basename + [string](Get-Random -minimum 0 -maximum 9999999) + ".tmp"
         $Info.SharedFile = $SharedFile
@@ -1270,6 +1275,9 @@ function Get-Pools {
             Remove-Item $SharedFile
         } else { $Content = $null }
         $Content | ForEach-Object {[PSCustomObject]@{Name = $Basename; Content = $_}}
+        $StopWatch.Stop()
+
+        Log "Pool $($Querymode) $($_.BaseName) responded in $($StopWatch.Elapsed.TotalSeconds) sec." -Severity Debug
     }
 
     $AllPools = $ChildItems | ForEach-Object {if ($_.Content) {$_.Content | Add-Member @{Name = $_.Name} -PassThru}}
@@ -1471,8 +1479,11 @@ function Get-AlgoUnifiedName ([string]$Algo) {
 
     $Algo = $Algo -ireplace '[^\w]'
     if ($Algo) {
-        $Algos = Get-Content -Path ".\Data\algorithms.json" | ConvertFrom-Json
-        if ($Algos.$Algo) { $Algos.$Algo }
+
+        if (-not $global:AlgosTable) {
+            $global:AlgosTable = Get-Content -Path ".\Data\algorithms.json" | ConvertFrom-Json
+        }
+        if ($AlgosTable.$Algo) { $AlgosTable.$Algo }
         else { $Algo }
     }
 }
@@ -1693,10 +1704,10 @@ function Clear-Files {
 function Get-CoinSymbol ([string]$Coin) {
     $Coin = $Coin -ireplace '[^\w]'
     if ($Coin) {
-        if (-not $CoinsList) {
-            $global:CoinsList = Get-Content -Path ".\Data\coins.json" | ConvertFrom-Json
+        if (-not $global:CoinsTable) {
+            $global:CoinsTable = Get-Content -Path ".\Data\coins.json" | ConvertFrom-Json
         }
-        if ($CoinsList.$Coin) { $CoinsList.$Coin }
+        if ($CoinsTable.$Coin) { $CoinsTable.$Coin }
         else { $Coin }
     }
 }
