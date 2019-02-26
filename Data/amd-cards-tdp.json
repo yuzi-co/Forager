@@ -26,6 +26,8 @@
     "Radeon RX 560": 80,
     "Radeon RX 570": 150,
     "Radeon RX 580": 185,
+    "Radeon RX 590": 175,
     "Radeon Vega 56": 210,
-    "Radeon Vega 64": 295
+    "Radeon Vega 64": 295,
+    "Radeon VII": 295
 }
