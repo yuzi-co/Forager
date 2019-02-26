@@ -1693,8 +1693,10 @@ function Clear-Files {
 function Get-CoinSymbol ([string]$Coin) {
     $Coin = $Coin -ireplace '[^\w]'
     if ($Coin) {
-        $Coins = Get-Content -Path ".\Data\coins.json" | ConvertFrom-Json
-        if ($Coins.$Coin) { $Coins.$Coin }
+        if (-not $CoinsList) {
+            $global:CoinsList = Get-Content -Path ".\Data\coins.json" | ConvertFrom-Json
+        }
+        if ($CoinsList.$Coin) { $CoinsList.$Coin }
         else { $Coin }
     }
 }
