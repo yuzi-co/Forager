@@ -70,17 +70,21 @@ if ($Querymode -eq "Core") {
         $_ -match $Regex | Out-Null
 
         [PSCustomObject]@{
-            Coin = $Matches[1]
-            Url  = $Matches[2]
-            Algo = if ($Matches[3]) {$Matches[3]} else {'Cn'}
+            Coin   = $Matches[1]
+            Url    = $Matches[2]
+            Algo   = if ($Matches[3]) {$Matches[3]} else {'Cn'}
+            Symbol = Get-CoinSymbol -Coin $Matches[1]
         }
     } | Sort-Object -Property Coin -Unique
 
-    $Result = $Pools | Where-Object { $_.Algo -notin @('Cn')} | ForEach-Object {
+    $Result = $Pools | Where-Object {
+        $_.Algo -notin @('Cn') -and
+        $Wallets.($_.Symbol) -ne $null
+    } | ForEach-Object {
 
         $PoolResponse = Invoke-RestMethod -Uri ($_.Url + '/api/stats') -UseBasicParsing
 
-        if ($PoolResponse.pool.heightOK -and $Wallets.($PoolResponse.config.symbol) -ne $null) {
+        if ($PoolResponse.pool.heightOK) {
 
             $Algo = Get-AlgoUnifiedName $_.Algo
             switch ($_.Coin) {
@@ -117,10 +121,9 @@ if ($Querymode -eq "Core") {
 
                 Price                 = $PoolResponse.charts.profitBtc[-1][1] / 1e6
             }
-
         }
     }
 }
 
-$Result | ConvertTo-Json | Set-Content $info.SharedFile
+$Result | ConvertTo-Json | Set-Content $Info.SharedFile
 Remove-Variable Result
