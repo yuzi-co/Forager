@@ -63,8 +63,7 @@ if ($Querymode -eq "Core") {
     #generate a pool for each location and add API data
     $Result = $Pools | Where-Object {$Wallets.($_.Symbol) -ne $null} | ForEach-Object {
         $RequestW = Invoke-APIRequest -Url $("https://api.nanopool.org/v1/" + $_.WalletSymbol.ToLower() + "/pool/activeworkers") -Retry 1
-        $RequestP = Invoke-APIRequest -Url $("https://api.nanopool.org/v1/" + $_.WalletSymbol.ToLower() + "/approximated_earnings/1000") -Retry 1 |
-            Select-Object -ExpandProperty data | Select-Object -ExpandProperty day
+        $RequestP = Invoke-APIRequest -Url $("https://api.nanopool.org/v1/" + $_.WalletSymbol.ToLower() + "/approximated_earnings/1000") -Retry 1
 
         $Locations = @(
             [PSCustomObject]@{ Location = "Eu"    ; Server = $_.WalletSymbol + "-eu1.nanopool.org" }
@@ -76,7 +75,7 @@ if ($Querymode -eq "Core") {
             [PSCustomObject]@{
                 Algorithm             = $_.Algo
                 Info                  = $_.Coin
-                Price                 = [decimal]$RequestP.bitcoins / $_.Divisor / 1000
+                Price                 = [decimal]$RequestP.data.day.bitcoins / $_.Divisor / 1000
                 Protocol              = "stratum+tcp"
                 ProtocolSSL           = "stratum+tls"
                 Host                  = $Loc.Server
