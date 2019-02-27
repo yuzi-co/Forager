@@ -255,5 +255,5 @@ if ($Querymode -eq "Core") {
     Remove-Variable HPools
 }
 
-$Result | ConvertTo-Json | Set-Content $Info.SharedFile
+$Result
 Remove-Variable Result

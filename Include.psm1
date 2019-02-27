@@ -1238,49 +1238,53 @@ function Expand-WebRequest {
 function Get-Pools {
     param(
         [Parameter(Mandatory = $true)]
-        [String]$Querymode,
+        [ValidateSet('Info', 'Core', 'Wallet', 'ApiKey', 'Speed')]
+        [string]$Querymode,
+
         [Parameter(Mandatory = $false)]
-        [array]$PoolsFilterList = $null,
+        [array]$PoolsFilterList = @(),
+
         [Parameter(Mandatory = $false)]
         [array]$CoinFilterList,
+
         [Parameter(Mandatory = $false)]
         [string]$Location = $null,
+
         [Parameter(Mandatory = $false)]
         [array]$AlgoFilterList,
+
         [Parameter(Mandatory = $false)]
-        [PSCustomObject]$Info
+        [PSCustomObject]$Info = @{}
     )
     #in detail mode returns a line for each pool/algo/coin combination, in info mode returns a line for pool
 
-    $PoolsFolderContent = Get-ChildItem ($PSScriptRoot + '\Pools\*') -File -Include '*.ps1' | Where-Object {$PoolsFilterList.Count -eq 0 -or (Compare-Object $PoolsFilterList $_.BaseName -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0}
-
-    if ($null -eq $Info) { $Info = [PSCustomObject]@{}
+    $PoolsFolderContent = Get-ChildItem .\Pools\* -File -Include '*.ps1' | Where-Object {
+        $PoolsFilterList.Count -eq 0 -or $PoolsFilterList -contains $_.BaseName
     }
 
-    if ($null -eq ($Info | Get-Member -MemberType NoteProperty | Where-Object name -eq location)) {$Info | Add-Member Location $Location}
-
-    $Info | Add-Member SharedFile [string]$null
+    if ($null -eq ($Info | Get-Member -MemberType NoteProperty | Where-Object Name -eq Location)) {
+        $Info | Add-Member Location $Location
+    }
 
     $ChildItems = $PoolsFolderContent | ForEach-Object {
-
         $StopWatch = [system.diagnostics.stopwatch]::StartNew()
-        $Basename = $_.BaseName
-        $SharedFile = $PSScriptRoot + "\Cache\" + $Basename + [string](Get-Random -minimum 0 -maximum 9999999) + ".tmp"
-        $Info.SharedFile = $SharedFile
-
-        if (Test-Path $SharedFile) {Remove-Item $SharedFile}
-        & $_.FullName -Querymode $Querymode -Info $Info
-        if (Test-Path $SharedFile) {
-            $Content = Get-Content $SharedFile | ConvertFrom-Json
-            Remove-Item $SharedFile
-        } else { $Content = $null }
-        $Content | ForEach-Object {[PSCustomObject]@{Name = $Basename; Content = $_}}
+        $BaseName = $_.BaseName
+        $Content = & $_.FullName -Querymode $Querymode -Info $Info
+        $Content | ForEach-Object {
+            [PSCustomObject]@{
+                Name    = $BaseName
+                Content = $_
+            }
+        }
         $StopWatch.Stop()
-
-        Log "Pool $($Querymode) $($_.BaseName) responded in $($StopWatch.Elapsed.TotalSeconds) sec." -Severity Debug
+        Log "Pool $Querymode $BaseName responded in $($StopWatch.Elapsed.TotalSeconds) sec." -Severity Debug
     }
 
-    $AllPools = $ChildItems | ForEach-Object {if ($_.Content) {$_.Content | Add-Member @{Name = $_.Name} -PassThru}}
+    $AllPools = $ChildItems | ForEach-Object {
+        if ($_.Content) {
+            $_.Content | Add-Member @{Name = $_.Name} -PassThru
+        }
+    }
 
     $AllPools | Add-Member LocationPriority 9999
 

@@ -84,5 +84,5 @@ if ($Querymode -eq "Core") {
     Remove-Variable Pools
 }
 
-$Result | ConvertTo-Json | Set-Content $Info.SharedFile
+$Result
 Remove-Variable Result

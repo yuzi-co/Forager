@@ -112,5 +112,5 @@ if ($Querymode -eq "Core") {
     Remove-Variable Request
 }
 
-$Result | ConvertTo-Json | Set-Content $Info.SharedFile
+$Result
 Remove-Variable Result

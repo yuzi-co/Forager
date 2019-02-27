@@ -124,5 +124,5 @@ if ($Querymode -eq "Core") {
     Remove-Variable MiningPoolHub_Request
 }
 
-$Result | ConvertTo-Json | Set-Content $Info.SharedFile
+$Result
 Remove-Variable Result
