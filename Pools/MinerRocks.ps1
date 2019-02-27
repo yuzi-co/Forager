@@ -41,15 +41,16 @@ if ($Querymode -eq "Speed") {
 if ($Querymode -eq "Wallet") {
     $Request = Invoke-APIRequest -Url $("https://" + $Info.Symbol + ".miner.rocks/api/stats_address?address=" + $Info.User + "&longpoll=false") -Retry 3
     $Divisor = switch ($Info.Symbol) {
-        'aeon' { 1e21 }
-        'bittube' { 1e9 }
-        'haven' { 1e13 }
-        'loki' { 1e9 }
+        'aeon' { 1e13 }
+        'bittube' { 1e14 }
+        'graft' { 1e11 }
+        'haven' { 1e12 }
+        'loki' { 1e10 }
         'masari' { 1e13 }
-        'ryo' { 1e16 }
-        'stellite' { 1e3 }
+        'qrl' { 1e10 }
+        'stellite' { 1e5 }
         'turtle' { 1e6 }
-        Default { 1e9 }
+        Default { 1e13 }
     }
     if ($Request) {
         $Result = [PSCustomObject]@{
@@ -65,8 +66,8 @@ if ($Querymode -eq "Core") {
 
     $Response = Invoke-WebRequest -Uri "https://miner.rocks"
 
-    $Regex = "[^\/]{name:\s*'(\w+)',\s*host:\s*'(\S+)'.*kind:\s*`"(\S*)`""
-    $Pools = $Response.Content -split "`n" -match $Regex | ForEach-Object {
+    $Regex = "^{name:'(\w+)',host:'(\S+)',lastStats:null,kind:`"(\S*)`""
+    $Pools = $Response.Content -split "`n" -replace "\s" -match $Regex | ForEach-Object {
         $_ -match $Regex | Out-Null
 
         [PSCustomObject]@{
