@@ -40,23 +40,26 @@ if ($Querymode -eq "Speed") {
 
 if ($Querymode -eq "Wallet") {
     $Request = Invoke-APIRequest -Url $("https://" + $Info.Symbol + ".miner.rocks/api/stats_address?address=" + $Info.User + "&longpoll=false") -Retry 3
+    # $StatsRequest = Invoke-APIRequest -Url $("https://" + $Info.Symbol + ".miner.rocks/api/stats") -Retry 3
+    # $Divisor = $StatsRequest.config.coinUnits
     $Divisor = switch ($Info.Symbol) {
-        'aeon' { 1e13 }
-        'bittube' { 1e14 }
-        'graft' { 1e11 }
+        'aeon' { 1e12 }
+        'bittube' { 1e8 }
+        'graft' { 1e10 }
         'haven' { 1e12 }
-        'loki' { 1e10 }
-        'masari' { 1e13 }
-        'qrl' { 1e10 }
-        'stellite' { 1e5 }
-        'turtle' { 1e6 }
-        Default { 1e13 }
+        'loki' { 1e9 }
+        'masari' { 1e12 }
+        'qrl' { 1e9 }
+        'ryo' { 1e9 }
+        'stellite' { 100 }
+        'turtle' { 100 }
+        Default { 1e9 }
     }
     if ($Request) {
         $Result = [PSCustomObject]@{
             Pool     = $Name
             Currency = $Info.Symbol
-            Balance  = ($Request.stats.balance + $Request.stats.pendingIncome ) / $Divisor
+            Balance  = ([double]$Request.stats.balance + [double]$Request.stats.pendingIncome ) / $Divisor
         }
         Remove-Variable Request
     }
