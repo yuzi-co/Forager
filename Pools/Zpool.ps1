@@ -73,7 +73,7 @@ if ($Querymode -eq "Core") {
         Exit
     }
 
-    $Currency = if ($Config.("Currency_" + $Name)) {$Confi.g("Currency_" + $Name)} else {$Config.Currency}
+    $Currency = if ($Config.("Currency_" + $Name)) {$Config.("Currency_" + $Name)} else {$Config.Currency}
 
     if (
         @('BTC', 'LTC', 'DASH') -notcontains $Currency -and
