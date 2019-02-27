@@ -1,5 +1,3 @@
-Add-Type -Path .\Includes\OpenCL\*.cs
-
 function Set-NvidiaPowerLimit ([int]$PowerLimitPercent, [string]$Devices) {
 
     if ($PowerLimitPercent -eq 0) { return }
@@ -13,11 +11,11 @@ function Set-NvidiaPowerLimit ([int]$PowerLimitPercent, [string]$Devices) {
         # )
         # $PowerDefaultLimit = [int](((& $Command $Arguments) -replace 'W').Trim())
 
-        $xpr = ".\includes\nvidia-smi.exe -i " + $Device + " --query-gpu=power.default_limit --format=csv,noheader"
+        $xpr = "$PSScriptRoot\includes\nvidia-smi.exe -i " + $Device + " --query-gpu=power.default_limit --format=csv,noheader"
         $PowerDefaultLimit = [int]((invoke-expression $xpr) -replace 'W', '')
 
         #powerlimit change must run in admin mode
-        $NewProcess = New-Object System.Diagnostics.ProcessStartInfo ".\includes\nvidia-smi.exe"
+        $NewProcess = New-Object System.Diagnostics.ProcessStartInfo "$PSScriptRoot\includes\nvidia-smi.exe"
         $NewProcess.Verb = "runas"
         #$NewProcess.UseShellExecute = $false
         $NewProcess.Arguments = "-i $Device -pl $([Math]::Floor([int]($PowerDefaultLimit -replace ' W', '') * ($PowerLimitPercent / 100)))"
@@ -186,11 +184,11 @@ function Get-DevicesInfoADL {
             'pci_device'
         )
     }
-    $Command = ".\Includes\OverdriveN.exe"
+    $Command = "$PSScriptRoot\Includes\OverdriveN.exe"
     $Result = & $Command | Where-Object {$_ -notlike "*&???" -and $_ -notlike "*failed"} | ConvertFrom-Csv @CsvParams
 
     if (-not $global:AmdCardsTDP) {
-        $global:AmdCardsTDP = Get-Content .\Data\amd-cards-tdp.json | ConvertFrom-Json
+        $global:AmdCardsTDP = Get-Content $PSScriptRoot\Data\amd-cards-tdp.json | ConvertFrom-Json
     }
 
     $DeviceId = 0
@@ -264,7 +262,7 @@ function Get-DevicesInfoNvidiaSMI {
 "@
         $Result = $FakeData | ConvertFrom-Csv @CvsParams
     } else {
-        $Command = '.\includes\nvidia-smi.exe'
+        $Command = "$PSScriptRoot\includes\nvidia-smi.exe"
         $Arguments = @(
             '--query-gpu=gpu_name,utilization.gpu,utilization.memory,temperature.gpu,power.draw,power.limit,fan.speed,pstate,clocks.current.graphics,clocks.current.memory,power.max_limit,power.default_limit'
             '--format=csv,noheader'
@@ -329,7 +327,7 @@ function Get-DevicesInfoCPU {
         }
         if (-not $CpuData.PowerDraw) {
             if (-not $global:CpuTDP) {
-                $global:CpuTDP = Get-Content ".\Data\cpu-tdp.json" | ConvertFrom-Json
+                $global:CpuTDP = Get-Content $PSScriptRoot\Data\cpu-tdp.json | ConvertFrom-Json
             }
             $CpuData.PowerDraw = $CpuTDP.($_.Name.Trim()) * $CpuData.Utilization / 100
         }
@@ -511,7 +509,7 @@ function Get-OpenCLDevices {
         )
         # end fake
     } else {
-        Add-Type -Path .\Includes\OpenCL\*.cs
+        Add-Type -Path $PSScriptRoot\Includes\OpenCL\*.cs
         try {
             $OCLPlatforms = [OpenCl.Platform]::GetPlatformIds()
         } catch {
@@ -571,7 +569,7 @@ function Get-MiningTypes () {
     if ($Devices | Where-Object {$_.GroupType -eq 'CPU'}) {
 
         $CpuResult = Get-CimInstance Win32_Processor
-        $Features = $($feat = @{}; switch -regex ((& .\Includes\CHKCPU32.exe /x) -split "</\w+>") {"^\s*<_?(\w+)>(\d+).*" {$feat.($matches[1]) = [int]$matches[2]}}; $feat)
+        $Features = $($feat = @{}; switch -regex ((& $PSScriptRoot\Includes\CHKCPU32.exe /x) -split "</\w+>") {"^\s*<_?(\w+)>(\d+).*" {$feat.($matches[1]) = [int]$matches[2]}}; $feat)
         $RealCores = [int[]](0..($CpuResult.NumberOfLogicalProcessors - 1))
         if ($CpuResult.NumberOfLogicalProcessors -gt $CpuResult.NumberOfCores) {
             $RealCores = $RealCores | Where-Object {-not ($_ % 2)}
@@ -658,7 +656,7 @@ function Format-DeviceList {
 function Get-SystemInfo () {
 
     $OperatingSystem = Get-CimInstance Win32_OperatingSystem
-    $Features = $($feat = @{}; switch -regex ((& .\Includes\CHKCPU32.exe /x) -split "</\w+>") {"^\s*<_?(\w+)>(\d+).*" {$feat.($matches[1]) = [int]$matches[2]}}; $feat)
+    $Features = $($feat = @{}; switch -regex ((& $PSScriptRoot\Includes\CHKCPU32.exe /x) -split "</\w+>") {"^\s*<_?(\w+)>(\d+).*" {$feat.($matches[1]) = [int]$matches[2]}}; $feat)
 
     [PSCustomObject]@{
         OSName       = $OperatingSystem.Caption
@@ -811,7 +809,7 @@ function Invoke-APIRequest {
     $ProgressPreference = 'SilentlyContinue' #No progress message on web requests
 
     $UserAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36'
-    $CachePath = '.\Cache\'
+    $CachePath = "$PSScriptRoot\Cache\"
     $CacheFile = $CachePath + [System.Web.HttpUtility]::UrlEncode($Url) + '.json'
 
     if (-not (Test-Path -Path $CachePath)) { New-Item -Path $CachePath -ItemType directory -Force | Out-Null }
@@ -923,7 +921,7 @@ function Get-LiveHashRate {
             }
 
             "wrapper" {
-                $wrpath = ".\Wrapper_$($Miner.ApiPort).txt"
+                $wrpath = "$PSScriptRoot\Wrapper_$($Miner.ApiPort).txt"
                 $HashRate = [double]$(if (Test-Path -path $wrpath) {Get-Content $wrpath} else {0})
             }
 
@@ -1205,7 +1203,7 @@ function Expand-WebRequest {
 
     $DestinationFolder = $PSScriptRoot + $Path.Substring(1)
     $FileName = ([IO.FileInfo](Split-Path $Uri -Leaf)).name
-    $CachePath = $PSScriptRoot + '\Downloads\'
+    $CachePath = "$PSScriptRoot\Downloads\"
     $FilePath = $CachePath + $Filename
 
     if (-not (Test-Path -LiteralPath $CachePath)) {$null = New-Item -Path $CachePath -ItemType directory}
@@ -1227,7 +1225,7 @@ function Expand-WebRequest {
                 Start-Process $FilePath "-qb" -Wait
             } else {
                 $Command = 'x "' + $FilePath + '" -o"' + $DestinationFolder + '" -y -spe'
-                Start-Process ".\includes\7z.exe" $Command -Wait
+                Start-Process $PSScriptRoot\includes\7z.exe $Command -Wait
             }
         }
     } finally {
@@ -1258,7 +1256,7 @@ function Get-Pools {
     )
     #in detail mode returns a line for each pool/algo/coin combination, in info mode returns a line for pool
 
-    $PoolsFolderContent = Get-ChildItem .\Pools\* -File -Include '*.ps1' | Where-Object {
+    $PoolsFolderContent = Get-ChildItem $PSScriptRoot\Pools\* -File -Include '*.ps1' | Where-Object {
         $PoolsFilterList.Count -eq 0 -or $PoolsFilterList -contains $_.BaseName
     }
 
@@ -1376,7 +1374,7 @@ function Get-Updates {
 function Get-Config {
 
     $Result = @{}
-    switch -regex -file config.ini {
+    switch -regex -file $PSScriptRoot\config.ini {
         "^\s*(\w+)\s*=\s*(.*)" {
             $name, $value = $matches[1..2]
             $Result[$name] = switch -wildcard ($value.Trim()) {
@@ -1396,7 +1394,7 @@ function Get-Config {
 function Get-Wallets {
 
     $Result = @{}
-    switch -regex -file config.ini {
+    switch -regex -file $PSScriptRoot\config.ini {
         "^\s*WALLET_(\w+)\s*=\s*(.*)" {
             $name, $value = $matches[1..2]
             $Result[$name] = $value.Trim()
@@ -1415,8 +1413,8 @@ function Get-BestHashRateAlgo {
 
     $BestHashRate = 0
 
-    Get-ChildItem ($PSScriptRoot + "\Stats") -Filter $Pattern -File | ForEach-Object {
-        $Content = ($_ | Get-Content | ConvertFrom-Csv )
+    Get-ChildItem $PSScriptRoot\Stats -Filter $Pattern -File | ForEach-Object {
+        $Content = $_ | Get-Content | ConvertFrom-Csv
         $Hrs = 0
         if ($null -ne $Content) {$Hrs = $($Content | Where-Object TimeSinceStartInterval -gt 60 | Measure-Object -property Speed -average).Average}
 
@@ -1485,7 +1483,7 @@ function Get-AlgoUnifiedName ([string]$Algo) {
     if ($Algo) {
 
         if (-not $global:AlgosTable) {
-            $global:AlgosTable = Get-Content -Path ".\Data\algorithms.json" | ConvertFrom-Json
+            $global:AlgosTable = Get-Content -Path $PSScriptRoot\Data\algorithms.json | ConvertFrom-Json
         }
         if ($AlgosTable.$Algo) { $AlgosTable.$Algo }
         else { $Algo }
@@ -1682,23 +1680,23 @@ function Clear-Files {
     $Now = Get-Date
     $Days = "3"
 
-    $TargetFolder = ".\Logs"
+    $TargetFolder = "$PSScriptRoot\Logs"
     $Extension = "*.log"
     $LastWrite = $Now.AddDays( - $Days)
     $Files = Get-Childitem $TargetFolder -Include $Extension -Exclude "empty.txt" -File -Recurse | Where-Object {$_.LastWriteTime -le "$LastWrite"}
     $Files | ForEach-Object {Remove-Item $_.fullname}
 
-    $TargetFolder = "."
+    $TargetFolder = $PSScriptRoot
     $Extension = "wrapper_*.txt"
     $Files = Get-Childitem $TargetFolder -Include $Extension -File -Recurse
     $Files | ForEach-Object {Remove-Item $_.fullname}
 
-    $TargetFolder = "."
+    $TargetFolder = $PSScriptRoot
     $Extension = "*.tmp"
     $Files = Get-Childitem $TargetFolder -Include $Extension -File -Recurse
     $Files | ForEach-Object {Remove-Item $_.fullname}
 
-    $TargetFolder = ".\Cache"
+    $TargetFolder = "$PSScriptRoot\Cache"
     $Extension = "*.json"
     $LastWrite = $Now.AddDays( - $Days)
     $Files = Get-Childitem $TargetFolder -Include $Extension -Exclude "empty.txt" -File -Recurse | Where-Object {$_.LastWriteTime -le "$LastWrite"}
@@ -1709,7 +1707,7 @@ function Get-CoinSymbol ([string]$Coin) {
     $Coin = $Coin -ireplace '[^\w]'
     if ($Coin) {
         if (-not $global:CoinsTable) {
-            $global:CoinsTable = Get-Content -Path ".\Data\coins.json" | ConvertFrom-Json
+            $global:CoinsTable = Get-Content -Path $PSScriptRoot\Data\coins.json | ConvertFrom-Json
         }
         if ($CoinsTable.$Coin) { $CoinsTable.$Coin }
         else { $Coin }
@@ -1744,9 +1742,11 @@ function Start-Autoexec {
         [Parameter(Mandatory = $false)]
         [Int]$Priority = 0
     )
-    if (-not (Test-Path ".\Autoexec.txt") -and (Test-Path ".\Data\Autoexec.default.txt")) {Copy-Item ".\Data\Autoexec.default.txt" ".\Autoexec.txt" -Force -ErrorAction Ignore}
+    if (-not (Test-Path $PSScriptRoot\Autoexec.txt) -and (Test-Path $PSScriptRoot\Data\Autoexec.default.txt)) {
+        Copy-Item $PSScriptRoot\Data\Autoexec.default.txt $PSScriptRoot\Autoexec.txt -Force -ErrorAction Ignore
+    }
     [System.Collections.ArrayList]$Script:AutoexecCommands = @()
-    foreach ($cmd in @(Get-Content ".\Autoexec.txt" -ErrorAction Ignore | Select-Object)) {
+    foreach ($cmd in @(Get-Content $PSScriptRoot\Autoexec.txt -ErrorAction Ignore | Select-Object)) {
         if ($cmd -match "^[\s\t]*`"(.+?)`"(.*)$") {
             try {
                 $Params = @{
