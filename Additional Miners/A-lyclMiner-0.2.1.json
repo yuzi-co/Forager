@@ -1,0 +1,15 @@
+{
+    "Path": "lyclMiner-0.2.1-windows\\lyclMiner.exe",
+    "Uri": "https://github.com/CryptoGraphics/lyclMiner/releases/download/0.2.1/lyclMiner-0.2.1-windows.zip",
+    "SHA256": "D54108C868A96ECD8604925626BA4C41609DBEE0D1F5CD1E3221BADDDC2D7B87",
+    "Type": "AMD",
+    "GenerateConfigFile": "lyclMiner-0.2.1-windows\\#GroupName#-#Algorithm#.conf",
+    "PatternConfigFile": "lyclMiner.txt",
+    "Arguments": "#GroupName#-#Algorithm#.conf",
+    "API": "Wrapper",
+    "APIPort": 4028,
+    "Algorithms": {
+        "Lyra2v3|gfx8": "gfx8",
+        "Lyra2v3|gfx9": "gfx9"
+    }
+}

@@ -29,7 +29,7 @@ $PowerShell.AddScript("$Command 2>&1 | Write-Verbose -Verbose") | Out-Null
 $Result = $PowerShell.BeginInvoke()
 
 Write-Host "Wrapper Started" -BackgroundColor Yellow -ForegroundColor Black
-# $CardsArray = @(0) * 20
+$CardsArray = @(0) * 20
 
 do {
     $PowerShell.Streams.Verbose.ReadAll() | ForEach-Object {
@@ -59,6 +59,14 @@ do {
             #     $CardsArray[$DevIndex] = $DevHash
             #     $HashRate = $CardsArray | Measure-Object -Sum | Select-Object -ExpandProperty Sum
             #     $Units = $Matches[3] -replace "gps", "h/s"
+        } elseif ($_ -match "Device #(\d+): ([0-9,.]+) ([kmgtp]?h), ([0-9,.]+) ([kmgtp]?h/s)") {
+            # Device #0: 461.37 MH, 43.88 MH/s
+            # lyclMiner per card
+            [int]$DevIndex = $Matches[1]
+            [decimal]$DevHash = $Matches[4] -replace ',', '.'
+            $CardsArray[$DevIndex] = $DevHash
+            $HashRate = $CardsArray | Measure-Object -Sum | Select-Object -ExpandProperty Sum
+            $Units = $Matches[5]
         }
 
         if ($HashRate -gt 0) {
