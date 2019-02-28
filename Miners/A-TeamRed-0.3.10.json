@@ -8,6 +8,7 @@
         "-u #Login#",
         "-p #Password#",
         "-d #Devices#",
+        "--watchdog_script",
         "--platform=#GPUPlatform#",
         "--api_listen=#ApiPort#",
         "#AlgorithmParameters#"
