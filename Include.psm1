@@ -1201,7 +1201,6 @@ function Expand-WebRequest {
         [String]$SHA256
     )
 
-    $DestinationFolder = $PSScriptRoot + $Path.Substring(1)
     $FileName = ([IO.FileInfo](Split-Path $Uri -Leaf)).name
     $CachePath = "$PSScriptRoot\Downloads\"
     $FilePath = $CachePath + $Filename
@@ -1224,7 +1223,7 @@ function Expand-WebRequest {
             } elseif (@('.msi', '.exe') -contains (Get-Item $FilePath).Extension) {
                 Start-Process $FilePath "-qb" -Wait
             } else {
-                $Command = 'x "' + $FilePath + '" -o"' + $DestinationFolder + '" -y -spe'
+                $Command = 'x "' + $FilePath + '" -o"' + $Path + '" -y -spe'
                 Start-Process $PSScriptRoot\includes\7z.exe $Command -Wait
             }
         }
