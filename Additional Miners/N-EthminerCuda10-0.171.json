@@ -1,6 +1,6 @@
 {
     "Path": "bin\\ethminer.exe",
-    "Uri": "https://github.com/ethereum-mining/ethminer/releases/download/v0.17.0/ethminer-0.17.0-cuda10.0-windows-amd64.zip",
+    "Uri": "https://github.com/ethereum-mining/ethminer/releases/download/v0.17.1/ethminer-0.17.1-cuda10.0-windows-amd64.zip",
     "SHA256": "76657D57F3E5E6FB093A3101643DC673B3C63F79A4462BD76AD9FC1A7C7F62D4",
     "Type": "NVIDIA",
     "Arguments": [
