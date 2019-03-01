@@ -45,12 +45,16 @@ if ($Querymode -eq "Wallet") {
     $Divisor = switch ($Info.Symbol) {
         'aeon' { 1e12 }
         'bittube' { 1e8 }
+        'boolberry' { 1e12 }
         'graft' { 1e10 }
         'haven' { 1e12 }
         'loki' { 1e9 }
         'masari' { 1e12 }
+        'monero' { 1e12 }
+        'purk' { 1e6 }
         'qrl' { 1e9 }
         'ryo' { 1e9 }
+        'saronite' { 1e9 }
         'stellite' { 100 }
         'turtle' { 100 }
         Default { 1e9 }
