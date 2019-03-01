@@ -1,18 +1,18 @@
 {
     "Path": "bin\\ethminer.exe",
     "Uri": "https://github.com/ethereum-mining/ethminer/releases/download/v0.17.1/ethminer-0.17.1-cuda10.0-windows-amd64.zip",
-    "SHA256": "76657D57F3E5E6FB093A3101643DC673B3C63F79A4462BD76AD9FC1A7C7F62D4",
-    "Type": "AMD",
+    "SHA256": "3D94632F65E761A30F39CC0B67050CD224E0658B9F25A4B7CA350006775E553B",
+    "Type": "NVIDIA",
     "Arguments": [
         "-P stratum2+tcp://#Login#:#Password#@#Server#:#Port#",
-        "--opencl",
-        "--opencl-platform #GPUPlatform#",
-        "--opencl-devices #DevicesETHMode#",
+        "--cuda",
+        "--cuda-devices #DevicesETHMode#",
         "--api-port #APIPort#",
         "#AlgorithmParameters#"
     ],
     "API": "Claymore",
-    "APIPort": 4028,
+    "APIPort": 4068,
+    "CUDA": 10.0,
     "Algorithms": {
         "Ethash": {
             "Mem": 3
