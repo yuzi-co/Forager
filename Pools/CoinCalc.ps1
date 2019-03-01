@@ -34,20 +34,6 @@ if ($Querymode -eq "Info") {
     }
 }
 
-if (($Querymode -eq "Speed")) {
-    if ($null -ne $PoolRealName) {
-        $Info.PoolName = $PoolRealName
-        $Result = Get-Pools -Querymode "Speed" -PoolsFilterList $Info.PoolName -Info $Info
-    }
-}
-
-if (($Querymode -eq "Wallet") -or ($Querymode -eq "ApiKey")) {
-    if ($null -ne $PoolRealName) {
-        $Info.PoolName = $PoolRealName
-        $Result = Get-Pools -Querymode $info.WalletMode -PoolsFilterList $Info.PoolName -Info $Info | select-object Pool, Currency, Balance
-    }
-}
-
 if ($Querymode -eq "Core") {
 
     #Look for pools
