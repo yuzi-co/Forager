@@ -34,26 +34,12 @@ if ($Querymode -eq "Info") {
     }
 }
 
-if (($Querymode -eq "Speed") ) {
-    if ($PoolRealName -ne $null) {
-        $Info.PoolName = $PoolRealName
-        $Result = Get-Pools -Querymode "Speed" -PoolsFilterList $Info.PoolName -Info $Info
-    }
-}
-
-if (($Querymode -eq "Wallet") -or ($Querymode -eq "ApiKey")) {
-    if ($PoolRealName -ne $null) {
-        $Info.PoolName = $PoolRealName
-        $Result = Get-Pools -Querymode $info.WalletMode -PoolsFilterList $Info.PoolName -Info $Info | Select-Object Pool, Currency, Balance
-    }
-}
-
 if ($Querymode -eq "Core") {
 
     #Look for pools
     $ConfigOrder = $Config.("PoolOrder_" + $Name) -split ','
     $HPools = foreach ($PoolToSearch in $ConfigOrder) {
-        $HPoolsTmp = Get-Pools -Querymode "core" -PoolsFilterList $PoolToSearch -location $Info.Location
+        $HPoolsTmp = Get-Pools -Querymode "Core" -PoolsFilterList $PoolToSearch -Location $Info.Location
         #Filter by minworkes variable (must be here for not selecting now a pool and after that discarded on core.ps1 filter)
         $HPoolsTmp | Where-Object {
             $_.PoolWorkers -eq $null -or
@@ -64,52 +50,53 @@ if ($Querymode -eq "Core") {
     #Common Data from WTM
 
     #Add main page coins
-    $WtmUrl = 'https://whattomine.com/coins.json?' +
-    @(
-        'bcd=true&factor[bcd_hr]=10&factor[bcd_p]=0' #BCD
-        'bk14=true&factor[bk14_hr]=10&factor[bk14_p]=0' #Decred
-        'cn=true&factor[cn_hr]=10&factor[cn_p]=0' #CryptoNight
-        'cn7=true&factor[cn7_hr]=10&factor[cn7_p]=0' #CryptoNightV7
-        'cn8=true&factor[cn8_hr]=10&factor[cn8_p]=0' #CryptoNightV8
-        'cnf=true&factor[cnf_hr]=10&factor[cnf_p]=0' #CryptoNightFast
-        'cnh=true&factor[cnh_hr]=10&factor[cnh_p]=0' #CryptoNightHeavy
-        'cnhn=true&factor[cnhn_hr]=10&factor[cnhn_p]=0' #CryptoNightHaven
-        'cns=true&factor[cns_hr]=10&factor[cns_p]=0' #CryptoNightSaber
-        'cr29=true&factor[cr29_hr]=10&factor[cr29_p]=0' #Cuckaroo29
-        'eq=true&factor[eq_hr]=10&factor[eq_p]=0' #Equihash
-        'eqa=true&factor[eqa_hr]=10&factor[eqa_p]=0' #AION (Equihash210)
-        'eth=true&factor[eth_hr]=10&factor[eth_p]=0' #Ethash
-        'grof=true&factor[gro_hr]=10&factor[gro_p]=0' #Groestl
-        'hx=true&factor[hx_hr]=10&factor[hx_p]=0' #Hex
-        'l2z=true&factor[l2z_hr]=10&factor[l2z_p]=0' #Lyra2z
-        'lbry=true&factor[lbry_hr]=10&factor[lbry_p]=0' #Lbry
-        'lre=true&factor[lrev2_hr]=10&factor[lrev2_p]=0' #Lyra2v2
-        'lrev3=true&factor[lrev3_hr]=10&factor[lrev3_p]=0' #Lyra2v3
-        'mtp=true&factor[mtp_hr]=10&factor[mtp_p]=0' #MTP
-        'n5=true&factor[n5_hr]=10&factor[n5_p]=0' #Nist5
-        'ns=true&factor[ns_hr]=10&factor[ns_p]=0' #NeoScrypt
-        'pas=true&factor[pas_hr]=10&factor[pas_p]=0' #Pascal
-        'phi=true&factor[phi_hr]=10&factor[phi_p]=0' #PHI
-        'phi2=true&factor[phi2_hr]=10&factor[phi2_p]=0' #PHI2
-        'ppw=true&factor[ppw_hr]=10&factor[ppw_p]=0' #ProgPOW
-        'skh=true&factor[skh_hr]=10&factor[skh_p]=0' #Skunk
-        'tt10=true&factor[tt10_hr]=10&factor[tt10_p]=0' #TimeTravel10
-        'x11gf=true&factor[x11g_hr]=10&factor[x11g_p]=0' #X11gost
-        'x16r=true&factor[x16r_hr]=10&factor[x16r_p]=0' #X16r
-        'x22i=true&factor[x22i_hr]=10&factor[x22i_p]=0' #X22i
-        'xn=true&factor[xn_hr]=10&factor[xn_p]=0' #Xevan
-        'zh=true&factor[zh_hr]=10&factor[zh_p]=0' #ZHash (Equihash144)
-    ) -join '&'
+    $WtmUrl = 'https://whattomine.com/coins.json?' + (
+        @(
+            'bcd=true&factor[bcd_hr]=10&factor[bcd_p]=0' #BCD
+            'bk14=true&factor[bk14_hr]=10&factor[bk14_p]=0' #Decred
+            'cn=true&factor[cn_hr]=10&factor[cn_p]=0' #CryptoNight
+            'cn7=true&factor[cn7_hr]=10&factor[cn7_p]=0' #CryptoNightV7
+            'cn8=true&factor[cn8_hr]=10&factor[cn8_p]=0' #CryptoNightV8
+            'cnf=true&factor[cnf_hr]=10&factor[cnf_p]=0' #CryptoNightFast
+            'cnh=true&factor[cnh_hr]=10&factor[cnh_p]=0' #CryptoNightHeavy
+            'cnhn=true&factor[cnhn_hr]=10&factor[cnhn_p]=0' #CryptoNightHaven
+            'cns=true&factor[cns_hr]=10&factor[cns_p]=0' #CryptoNightSaber
+            'cr29=true&factor[cr29_hr]=10&factor[cr29_p]=0' #Cuckaroo29
+            'eq=true&factor[eq_hr]=10&factor[eq_p]=0' #Equihash
+            'eqa=true&factor[eqa_hr]=10&factor[eqa_p]=0' #AION (Equihash210)
+            'eth=true&factor[eth_hr]=10&factor[eth_p]=0' #Ethash
+            'grof=true&factor[gro_hr]=10&factor[gro_p]=0' #Groestl
+            'hx=true&factor[hx_hr]=10&factor[hx_p]=0' #Hex
+            'l2z=true&factor[l2z_hr]=10&factor[l2z_p]=0' #Lyra2z
+            'lbry=true&factor[lbry_hr]=10&factor[lbry_p]=0' #Lbry
+            'lre=true&factor[lrev2_hr]=10&factor[lrev2_p]=0' #Lyra2v2
+            'lrev3=true&factor[lrev3_hr]=10&factor[lrev3_p]=0' #Lyra2v3
+            'mtp=true&factor[mtp_hr]=10&factor[mtp_p]=0' #MTP
+            'n5=true&factor[n5_hr]=10&factor[n5_p]=0' #Nist5
+            'ns=true&factor[ns_hr]=10&factor[ns_p]=0' #NeoScrypt
+            'pas=true&factor[pas_hr]=10&factor[pas_p]=0' #Pascal
+            'phi=true&factor[phi_hr]=10&factor[phi_p]=0' #PHI
+            'phi2=true&factor[phi2_hr]=10&factor[phi2_p]=0' #PHI2
+            'ppw=true&factor[ppw_hr]=10&factor[ppw_p]=0' #ProgPOW
+            'skh=true&factor[skh_hr]=10&factor[skh_p]=0' #Skunk
+            'tt10=true&factor[tt10_hr]=10&factor[tt10_p]=0' #TimeTravel10
+            'x11gf=true&factor[x11g_hr]=10&factor[x11g_p]=0' #X11gost
+            'x16r=true&factor[x16r_hr]=10&factor[x16r_p]=0' #X16r
+            'x22i=true&factor[x22i_hr]=10&factor[x22i_p]=0' #X22i
+            'xn=true&factor[xn_hr]=10&factor[xn_p]=0' #Xevan
+            'zh=true&factor[zh_hr]=10&factor[zh_p]=0' #ZHash (Equihash144)
+        ) -join '&'
+    )
 
     $WTMResponse = Invoke-APIRequest -Url $WtmUrl -Retry 3 | Select-Object -ExpandProperty coins
     if (-not $WTMResponse) {
         Write-Host $Name 'API NOT RESPONDING...ABORTING'
         Exit
     }
-    $WTMCoins = $WTMResponse.PSObject.Properties.Name | ForEach-Object {
+    [array]$WTMCoins = $WTMResponse.PSObject.Properties.Name | ForEach-Object {
         #convert response to collection
         $res = $WTMResponse.($_)
-        $res | Add-Member name (Get-CoinUnifiedName $_)
+        $res | Add-Member Name (Get-CoinUnifiedName $_)
         $res.Algorithm = Get-AlgoUnifiedName ($res.Algorithm)
         $res
     }
@@ -125,9 +112,9 @@ if ($Querymode -eq "Core") {
                 $res | Add-Member Name (Get-CoinUnifiedName $_)
                 $res.Algorithm = Get-AlgoUnifiedName ($res.Algorithm)
                 # Algo fixes
-                switch ($res.Name) {
-                    'Ryo' {$res.Algorithm = 'CnGpu'}
-                }
+                # switch ($res.Name) {
+                #     'Ryo' {$res.Algorithm = 'CnGpu'}
+                # }
                 $res
             }
         }
@@ -192,16 +179,16 @@ if ($Querymode -eq "Core") {
         }
 
         if ($WTMFactor -and ($Result | Where-Object {$_.Info -eq $HPool.Info -and $_.Algorithm -eq $HPool.Algorithm}).count -eq 0) {
-            #look that this coin is not included in result
+            # check if coin is not already included in result
 
-            #look for this coin in main page coins
+            # check if coin in main page coins
             $WtmCoin = $WTMCoins | Where-Object {
                 $_.Name -eq $HPool.Info -and
                 $_.Algorithm -eq $HPool.Algorithm
             }
 
             if (-not $WtmCoin -and $WTMSecondaryCoins) {
-                #look in secondary coins page
+                # check in secondary coins page
                 $WtmSecCoin = $WTMSecondaryCoins | Where-Object {
                     $_.Name -eq $HPool.Info -and
                     $_.Algorithm -eq $HPool.Algorithm

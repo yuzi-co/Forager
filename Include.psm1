@@ -1503,6 +1503,8 @@ function Get-CoinUnifiedName ([string]$Coin) {
             "Haven-Protocol" { "Haven" }
             "Myriad-*" { "Myriad" }
             "Myriadcoin-*" { "Myriad" }
+            "Pascalcoin" { "Pascal" }
+            "Ravencoin" { "Raven" }
             "Shield-*" { "Verge" }
             "Verge-*" { "Verge" }
             Default { $Coin }
