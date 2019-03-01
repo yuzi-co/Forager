@@ -40,8 +40,6 @@ if ($Querymode -eq "Speed") {
 
 if ($Querymode -eq "Wallet") {
     $Request = Invoke-APIRequest -Url $("https://" + $Info.Symbol + ".miner.rocks/api/stats_address?address=" + $Info.User + "&longpoll=false") -Retry 3
-    # $StatsRequest = Invoke-APIRequest -Url $("https://" + $Info.Symbol + ".miner.rocks/api/stats") -Retry 3
-    # $Divisor = $StatsRequest.config.coinUnits
     $Divisor = switch ($Info.Symbol) {
         'aeon' { 1e12 }
         'bittube' { 1e8 }
@@ -57,7 +55,10 @@ if ($Querymode -eq "Wallet") {
         'saronite' { 1e9 }
         'stellite' { 100 }
         'turtle' { 100 }
-        Default { 1e9 }
+        Default {
+            $StatsRequest = Invoke-APIRequest -Url $("https://" + $Info.Symbol + ".miner.rocks/api/stats") -Retry 3
+            $StatsRequest.config.coinUnits
+        }
     }
     if ($Request) {
         $Result = [PSCustomObject]@{
