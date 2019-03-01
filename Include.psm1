@@ -101,7 +101,7 @@ function Test-TCPPort {
     }
 }
 
-function Exit-Process {
+function Stop-SubProcess {
     param(
         [Parameter(Mandatory = $true)]
         $Process

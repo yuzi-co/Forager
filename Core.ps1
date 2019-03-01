@@ -975,17 +975,18 @@ while ($Quit -eq $false) {
                         $ActiveMiners[$BestLast.IdF].Process -and
                         $ActiveMiners[$BestLast.IdF].Process.Id -gt 0
                     ) {
-                        Log "Stopping miner $BestLastLogMsg with system process id $($ActiveMiners[$BestLast.IdF].Process.Id)"
-                        Exit-Process $ActiveMiners[$BestLast.IdF].Process
+                        Log "Stopping miner $BestLastLogMsg with pid $($ActiveMiners[$BestLast.IdF].Process.Id)"
+                        Stop-SubProcess $ActiveMiners[$BestLast.IdF].Process
                     }
 
                     $ActiveMiners[$BestLast.IdF].Process = $null
                     $ActiveMiners[$BestLast.IdF].SubMiners[$BestLast.Id].Best = $false
-                    switch ($BestLast.Status) {
-                        'Running' {$ActiveMiners[$BestLast.IdF].SubMiners[$BestLast.Id].Status = 'Idle'}
-                        'PendingStop' {$ActiveMiners[$BestLast.IdF].SubMiners[$BestLast.Id].Status = 'Idle'}
-                        'PendingFail' {$ActiveMiners[$BestLast.IdF].SubMiners[$BestLast.Id].Status = 'Idle'}
-                        'Failed' {$ActiveMiners[$BestLast.IdF].SubMiners[$BestLast.Id].Status = 'Failed'}
+                    $ActiveMiners[$BestLast.IdF].SubMiners[$BestLast.Id].Status = switch ($BestLast.Status) {
+                        'Running' { 'Idle' }
+                        'PendingStop' { 'Idle' }
+                        'PendingFail' { 'Idle' }
+                        'Failed' { 'Failed' }
+                        Default { $BestLast.Status }
                     }
                 }
 
@@ -1760,7 +1761,7 @@ Log "Exiting Forager"
 $LogFile.close()
 
 Clear-Files
-$ActiveMiners | Where-Object Process -ne $null | ForEach-Object {try {Exit-Process $_.Process} catch {}}
+$ActiveMiners | Where-Object Process -ne $null | ForEach-Object {try {Stop-SubProcess $_.Process} catch {}}
 Stop-Autoexec
 
 Stop-Process -Id $PID
