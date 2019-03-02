@@ -3,8 +3,8 @@ port=1#APIPort#
 watchdog=false
 
 [#AlgorithmParameters#]
-wallet = #Login#
-paymentId = 0
+wallet = $(('#Login#' -split '\.')[0])
+paymentId = $(if ([char[]]'#Login#' -cointains '.') { ('#Login#' -split '\.')[1] } else { 0 })
 rigName = #WorkerName#
 rigPassword = #Password#
 email = #EMail#
