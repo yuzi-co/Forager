@@ -1,0 +1,20 @@
+{
+    "Path": "rhminer.exe",
+    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.02/rhminer.1.3.Windows.CPU.7z",
+    "SHA256": "9A223F36C69EFC40EF27D2B71ED2136AB3819B8319B0597179634BEB12F4CCFA",
+    "Type": "CPU",
+    "Arguments": [
+        "-s #Protocol#://#Server#:#Port#",
+        "-su #Login#",
+        "-pw #Password#",
+        "-devfee 0",
+        "-cpu",
+        "-cputhreads $(if ($CpuThreads -ne $null){$CpuThreads} else {$DeviceGroup.Features.Cores})",
+        "-apiport #ApiPort#"
+    ],
+    "API": "RH",
+    "APIPort": 4048,
+    "Algorithms": {
+        "RandomHash": ""
+    }
+}
