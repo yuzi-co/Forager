@@ -9,7 +9,7 @@
         "-pw #Password#",
         "-devfee 0",
         "-cpu",
-        "-cputhreads $(if ($CpuThreads -ne $null){$CpuThreads} else {$DeviceGroup.Features.Cores})",
+        "-cputhreads $(if ($CpuThreads -ne $null){$CpuThreads} else {$DeviceGroup.Features.Threads})",
         "-apiport #ApiPort#"
     ],
     "API": "RH",
