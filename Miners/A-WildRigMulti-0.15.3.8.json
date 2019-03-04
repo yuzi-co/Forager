@@ -16,7 +16,7 @@
         "--api-port #ApiPort#",
         "#AlgorithmParameters#"
     ],
-    "BenchmarkArg": "$(if ($AlgoName -in @('bitcore', 'x16r', 'x16rt', 'x16s', 'hex', 'timetravel')){'--benchmark'})",
+    "BenchmarkArg": "$(if ($AlgoName -in @('bitcore', 'x16r', 'x16rt', 'x16s', 'hex', 'timetravel', 'veil')){'--benchmark'})",
     "API": "XMRig",
     "APIPort": 4028,
     "Fee": 0.01,
@@ -47,6 +47,7 @@
         "SonoA": "--algo sonoa --opencl-threads auto --opencl-launch auto",
         "Timetravel": "--algo timetravel --opencl-threads auto --opencl-launch auto",
         "Tribus": "--algo tribus --opencl-threads auto --opencl-launch auto",
+        "Veil": "--algo x16rt --opencl-threads auto --opencl-launch auto",
         "X16r": "--algo x16r --opencl-threads auto --opencl-launch auto",
         "X16rt": "--algo x16rt --opencl-threads auto --opencl-launch auto",
         "X16s": "--algo x16s --opencl-threads auto --opencl-launch auto",
