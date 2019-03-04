@@ -4,7 +4,7 @@ watchdog=false
 
 [#AlgorithmParameters#]
 wallet = $(('#Login#' -split '\.')[0])
-paymentId = $(if ([char[]]'#Login#' -cointains '.') { ('#Login#' -split '\.')[1] } else { 0 })
+paymentId = $(if (('#Login#' -split '\.')[1] -ne $null) { ('#Login#' -split '\.')[1] } else { 0 })
 rigName = #WorkerName#
 rigPassword = #Password#
 email = #EMail#
