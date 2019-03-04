@@ -1,14 +1,14 @@
 {
     "Path": "rhminer.exe",
-    "Uri": "https://github.com/polyminer1/rhminer/releases/download/v1.2/rhminer.1.2.Windows.CPU.zip",
-    "SHA256": "60CDB8F9AC5410CF910A7A7B8BEF04823E708808D41B98DA4BACD571BC773D7F",
+    "Uri": "https://github.com/polyminer1/rhminer/releases/download/V1.4/rhminer.1.4.Windows.CPU.zip",
+    "SHA256": "9B95D8E400EC93D3FEC5B3E728404E61D5D79149E6B189C7E5895B0589816476",
     "Type": "CPU",
     "Arguments": [
         "-s #Protocol#://#Server#:#Port#",
         "-su #Login#",
         "-pw #Password#",
         "-cpu",
-        "-cputhreads $(if ($CpuThreads -ne $null){$CpuThreads} else {$DeviceGroup.Features.Cores})",
+        "-cputhreads $(if ($CpuThreads -ne $null){$CpuThreads} else {$DeviceGroup.Features.Threads})",
         "-apiport #ApiPort#"
     ],
     "API": "RH",
