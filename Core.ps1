@@ -1288,29 +1288,32 @@ while ($Quit -eq $false) {
         if ($TimeToNextIntervalSeconds -lt 0) {$TimeToNextIntervalSeconds = 0}
 
         if ($RepaintScreen) {Clear-Host}
-        Set-ConsolePosition ($Host.UI.RawUI.WindowSize.Width - 28) 1
-        Write-Color "{white}| Next Interval: {green}$TimeToNextIntervalSeconds{white} sec."
-        Set-ConsolePosition 0 0
 
         #display header
+        Set-ConsolePosition 0 0
         Out-HorizontalLine
-        Write-Color @(
-            " {green}$($Release.Application) {white}$($Release.Version)"
-            " {white}|"
-            " {green}P{white}rofits"
-            " {green}C{white}urrent"
-            " {green}H{white}istory"
-            " {green}W{white}allets"
-            " {green}S{white}tats"
-            " {white}|"
-            " {green}E{white}nd Interval"
-            " {green}R{white}eset Failed"
-            " {green}Q{white}uit"
-            " {green}$([string[]]$DeviceGroups.Id -join '/'){white} Group toggle"
-        ) -join " "
+        Write-Message -Message (
+                @(
+                "{green}$($Release.Application) {white}$($Release.Version)"
+                "{white}|"
+                "{green}P{white}rofits"
+                "{green}S{white}tats"
+                "{green}H{white}istory"
+                "{green}C{white}urrent"
+                "{green}W{white}allets"
+                "{white}|"
+                "{green}E{white}nd Interval"
+                "{green}Q{white}uit"
+                "{green}$([string[]]$DeviceGroups.Id -join '/'){white} Group toggle"
+            ) -join "  "
+        ) -Line 1
+
+        Write-Message -Message "{white}  | Next Interval: {green}$TimeToNextIntervalSeconds{white} sec" -AlignRight -Line 1
 
         #display donation message
-        if ($CurrentInterval -eq "Donate") {" This interval you are donating, You can increate or decrease donation in config.ini. Thank you for your support!"}
+        if ($CurrentInterval -eq "Donate") {
+            Write-Message -Message "This interval you are donating, You can change donation in config.ini. Thank you for your support!" -Line 2
+        }
 
         #write speed
         Log ($ActiveMiners | Where-Object Best | Select-Object Id, Process.Id, GroupName, Name, Pool.PoolName, PoolDual.PoolName, Algorithm, AlgorithmDual, SpeedLive, ProfitsLive, Pool.Location, Port, Arguments | ConvertTo-Json) -Severity Debug
@@ -1321,6 +1324,7 @@ while ($Quit -eq $false) {
             $CurrentAlgos = (
                 $ActiveMiners.SubMiners |
                     Where-Object Best |
+                    Sort-Object {$ActiveMiners[$_.IdF].DeviceGroup.GroupType -eq 'CPU'} |
                     ForEach-Object {
                     $ActiveMiners[$_.IdF].Pool.Symbol + $(if ($ActiveMiners[$_.IdF].AlgorithmDual) {"_$($ActiveMiners[$_.IdF].PoolDual.Symbol)"})
                 }
@@ -1459,13 +1463,7 @@ while ($Quit -eq $false) {
         #display profits screen
         if ($Screen -eq "Profits" -and $RepaintScreen) {
 
-            Set-ConsolePosition ($Host.UI.RawUI.WindowSize.Width - 28) $YToWriteMessages
-            Write-Color @(
-                " {white}"
-                " {green}B{white}est Miners"
-                " {green}T{white}op $($InitialProfitsScreenLimit)/All"
-            ) -join " "
-
+            Write-Message -Message "{green}B{white}est Miners  {green}T{white}op $($InitialProfitsScreenLimit)/All" -AlignRight -Line $YToWriteMessages
             Set-ConsolePosition 0 $YToWriteData
 
             $ProfitMiners = @(
@@ -1515,10 +1513,7 @@ while ($Quit -eq $false) {
         }
 
         if ($Screen -eq "Current") {
-            Set-ConsolePosition 0 $YToWriteMessages
-            Write-Color "{white}Start Time: {green}$((Get-Process -PID $PID).StartTime)"
-            Set-ConsolePosition ($Host.UI.RawUI.WindowSize.Width - 26) $YToWriteMessages
-            Write-Color "{white}Running Mode: {green}$MiningMode"
+            Write-Message -Message "{white}Running Mode: {green}$MiningMode" -AlignRight -Line $YToWriteMessages
             Set-ConsolePosition 0 $YToWriteData
 
             # Display devices info
@@ -1569,8 +1564,7 @@ while ($Quit -eq $false) {
 
                 [array]$WalletStatus = $WalletsToCheck | ForEach-Object {
 
-                    Set-ConsolePosition 0 $YToWriteMessages
-                    " " * 70 | Out-Host
+                    Write-Message -Message (" " * 70) -Line $YToWriteMessages
                     Set-ConsolePosition 0 $YToWriteMessages
 
                     Log "Checking pool balance $($_.PoolName)/$($_.Symbol)"
@@ -1584,8 +1578,7 @@ while ($Quit -eq $false) {
 
                     $Ws
                 }
-                Set-ConsolePosition 0 $YToWriteMessages
-                " " * 70 | Out-Host
+                Write-Message -Message (" " * 70) -Line $YToWriteMessages
 
                 if (-not $WalletStatusAtStart) {[array]$WalletStatusAtStart = $WalletStatus}
 
@@ -1608,10 +1601,7 @@ while ($Quit -eq $false) {
 
             if ($Screen -eq "Wallets" -and $RepaintScreen) {
 
-                Set-ConsolePosition 0 $YToWriteMessages
-                Write-Color "{white}Start Time: {green}$((Get-Process -PID $PID).StartTime)                               "
-                Set-ConsolePosition ($Host.UI.RawUI.WindowSize.Width - 8) $YToWriteMessages
-                Write-Color "{green}U{white}pdate"
+                Write-Message -Message "{green}U{white}pdate wallets" -AlignRight -Line $YToWriteMessages
 
                 $WalletStatus | Where-Object Balance |
                     Sort-Object @{expression = "PoolName"; Ascending = $true}, @{expression = "balance"; Descending = $true} |
@@ -1628,10 +1618,7 @@ while ($Quit -eq $false) {
         #############################################################
         if ($Screen -eq "History" -and $RepaintScreen) {
 
-            Set-ConsolePosition 0 $YToWriteMessages
-            Write-Color "{white}Start Time: {green}$((Get-Process -PID $PID).StartTime)"
-            Set-ConsolePosition ($Host.UI.RawUI.WindowSize.Width - 26) $YToWriteMessages
-            Write-Color "{white}Running Mode: {green}$MiningMode"
+            Write-Message -Message "{white}Running Mode: {green}$MiningMode" -AlignRight -Line $YToWriteMessages
             Set-ConsolePosition 0 $YToWriteData
 
             #Display activated miners list
@@ -1651,10 +1638,7 @@ while ($Quit -eq $false) {
         #############################################################
 
         if ($Screen -eq "Stats" -and $RepaintScreen) {
-            Set-ConsolePosition 0 $YToWriteMessages
-            Write-Color "{white}Start Time: {green}$((Get-Process -PID $PID).StartTime)"
-            Set-ConsolePosition ($Host.UI.RawUI.WindowSize.Width - 26) $YToWriteMessages
-            Write-Color "{white}Running Mode: {green}$MiningMode"
+            Write-Message -Message "{green}R{white}eset Failed" -AlignRight -Line $YToWriteMessages
             Set-ConsolePosition 0 $YToWriteData
 
             #Display activated miners list
@@ -1765,3 +1749,4 @@ $ActiveMiners | Where-Object Process -ne $null | ForEach-Object {try {Stop-SubPr
 Stop-Autoexec
 
 Stop-Process -Id $PID
+top-Process -Id $PID

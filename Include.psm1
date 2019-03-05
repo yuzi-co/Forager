@@ -1450,7 +1450,7 @@ function Get-ConsolePosition ([ref]$x, [ref]$y) {
 
 function Out-HorizontalLine ([string]$Title) {
 
-    $Width = $Host.UI.RawUI.WindowSize.Width
+    $Width = $Host.UI.RawUI.WindowSize.Width - 1
     if ([string]::IsNullOrEmpty($Title)) {$str = "-" * $Width}
     else {
         $str = '{white}' + ("-" * [math]::floor(($Width - $Title.Length - 4) / 2))
@@ -1460,6 +1460,18 @@ function Out-HorizontalLine ([string]$Title) {
     Write-Color $str
 }
 
+function Write-Message {
+    param(
+        [string]$Message,
+        [int]$Line,
+        [switch]$AlignRight
+    )
+    if ($AlignRight) {
+        $X = ($Host.UI.RawUI.WindowSize.Width - ($Message -replace "({\w+})").Length - 1)
+    }
+    Set-ConsolePosition $X $Line
+    Write-Color $Message
+}
 function Set-WindowSize ([int]$Width, [int]$Height) {
     #Buffer must be always greater than windows size
 
