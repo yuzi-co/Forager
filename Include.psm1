@@ -938,6 +938,9 @@ function Get-LiveHashRate {
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
                     $HashRate = [double]$Data.HashRate.total[0]
+                    if ($Data.algo -eq 'WildKeccak') {
+                        $HashRate *= 1000
+                    }
                 }
             }
 
