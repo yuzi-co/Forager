@@ -1,7 +1,7 @@
 {
     "Path": "TT-Miner.exe",
-    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.02/TT-Miner-2.1.12.zip",
-    "SHA256": "1B75DBA805614728E18E1D77D309957BEDA84A1ABF9FFD1485242C2DD08ADE9E",
+    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.03/TT-Miner-2.1.13.zip",
+    "SHA256": "363900BD6220D0F4E63D3DA557423D26D3717B6D99E20D6653EDCF926C19DAB1",
     "Type": "NVIDIA",
     "Arguments": [
         "-o #Protocol#://#Server#:#Port#",
