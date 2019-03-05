@@ -14,7 +14,7 @@
         "--extranonce",
         "#AlgorithmParameters#"
     ],
-    "BenchmarkArg": "$(if ($AlgoName -in @('x16r', 'x16s')){'--benchmark'})",
+    "BenchmarkArg": "$(if ($AlgoName -in @('x16r')){'--benchmark'})",
     "API": "Xgminer",
     "APIPort": 4028,
     "Fee": 0.01,
