@@ -1,7 +1,7 @@
 {
     "Path": "SRBMiner-CN.exe",
-    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.02/SRBMiner-CN-V1-7-9.7z",
-    "SHA256": "6B689E87567E5E180D036244A365C204576DE6D30584E713C627F673125DA7E2",
+    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.03/SRBMiner-CN-V1-8-0.7z",
+    "SHA256": "2DC1B7335B1BC80DF04F144DAA35BF740BCFF615E8DC10FB2BE39944629413B9",
     "Type": "AMD",
     "GenerateConfigFile": "config-#GroupName#-#Algorithm#.txt",
     "PatternConfigFile": "SRBMiner.txt",
@@ -28,6 +28,7 @@
         "CnArto": "artocash",
         "CnB2N": "b2n",
         "CnDark": "dark",
+        "CnDouble": "heavyx",
         "CnFast": "fast",
         "CnFest": "festival",
         "CnFreeHaven": "freehaven",
@@ -35,7 +36,6 @@
         "CnHalf": "stellitev8",
         "CnHaven": "haven",
         "CnHeavy": "heavy",
-        "CnHeavyX": "heavyx",
         "CnHospital": "hospital",
         "CnHycon": "hycon",
         "CnItalo": "italo",
@@ -43,6 +43,7 @@
         "CnMarketCash": "marketcash",
         "CnR": "cryptonight_r",
         "CnRed": "mox",
+        "CnRwz": "cryptonight_reversewaltz",
         "CnSaber": "bittubev2",
         "CnStelliteV4": "stellitev4",
         "CnSwap": "swap",
@@ -50,6 +51,7 @@
         "CnUplexa": "upx",
         "CnV7": "normalv7",
         "CnV8": "normalv8",
-        "CnWebchain": "webchain"
+        "CnWebchain": "webchain",
+        "CnZls": "zelerius"
     }
 }
