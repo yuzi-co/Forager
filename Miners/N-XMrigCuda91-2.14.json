@@ -1,36 +1,40 @@
 {
-    "Path": "xmrig-amd-2.13.0\\xmrig-amd.exe",
-    "Uri": "https://github.com/xmrig/xmrig-amd/releases/download/v2.13.0/xmrig-amd-2.13.0-msvc-win64.zip",
-    "SHA256": "59FD8F2FEF0D6254B02D4D122F7EC846C53FD9086B7A2BE8B7AF026A246EE099",
-    "Type": "AMD",
+    "Path": "xmrig-nvidia-2.14.0\\xmrig-nvidia.exe",
+    "Uri": "https://github.com/xmrig/xmrig-nvidia/releases/download/v2.14.0/xmrig-nvidia-2.14.0-cuda9_1-win64.zip",
+    "SHA256": "42FA7FB68E7F07FEBFFC23CFEC46B0F0C7BDA3A190220F810444612CAFC2A1C3",
+    "Type": "NVIDIA",
     "Arguments": [
         "-o #Protocol#://#Server#:#Port#",
         "-u #Login#",
         "-p #Password#",
-        "--opencl-platform=#GPUPlatform#",
+        "--cuda-devices=#Devices#",
         "$(if ($Pool.PoolName -eq 'NiceHash'){'--nicehash'})",
         "--donate-level 1",
         "--api-port #APIPort#",
         "#AlgorithmParameters#"
     ],
     "API": "XMRig",
-    "APIPort": 4028,
+    "APIPort": 4068,
     "Fee": 0.01,
+    "CUDA": 9.1,
     "Algorithms": {
         "CnAlloy": "-a cn/xao",
         "CnArto": "-a cn/rto",
+        "CnDouble": "-a cn/double",
         "CnFast": "-a cn/msr",
         "CnGpu": "-a cn/gpu",
         "CnHalf": "-a cn/half",
         "CnHaven": "-a cn-heavy/xhv",
         "CnHeavy": "-a cn-heavy",
-        "CnLiteV7": "-a  cn-lite/1",
+        "CnLiteV7": "-a cn-lite/1",
         "CnR": "-a cn/r",
+        "CnRwz": "-a cn/rwz",
         "CnSaber": "-a cn-heavy/tube",
         "CnTurtle": "-a cn-pico/trtl",
         "CnV7": "-a cn/1",
         "CnV8": "-a cn/2",
         "CnWow": "-a cn/wow",
-        "CnXTL": "-a cn/xtl"
+        "CnXTL": "-a cn/xtl",
+        "CnZls": "-a cn/zls"
     }
 }

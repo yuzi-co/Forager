@@ -1,7 +1,7 @@
 {
-    "Path": "xmrig-nvidia-2.13.0\\xmrig-nvidia.exe",
-    "Uri": "https://github.com/xmrig/xmrig-nvidia/releases/download/v2.13.0/xmrig-nvidia-2.13.0-cuda9_2-win64.zip",
-    "SHA256": "5A2012DE161600F144F7C16C0EB65FD784CE4A1DC53C935AAD1D30AFB275D09E",
+    "Path": "xmrig-nvidia-2.14.0\\xmrig-nvidia.exe",
+    "Uri": "https://github.com/xmrig/xmrig-nvidia/releases/download/v2.14.0/xmrig-nvidia-2.14.0-cuda10-win64.zip",
+    "SHA256": "5392AA9BCC0F119B0C3377B5F9FB776559218FCF8EAA510CB701D562E38B2AB3",
     "Type": "NVIDIA",
     "Arguments": [
         "-o #Protocol#://#Server#:#Port#",
@@ -16,22 +16,25 @@
     "API": "XMRig",
     "APIPort": 4068,
     "Fee": 0.01,
-    "CUDA": 9.2,
+    "CUDA": 10.0,
     "Algorithms": {
         "CnAlloy": "-a cn/xao",
         "CnArto": "-a cn/rto",
+        "CnDouble": "-a cn/double",
         "CnFast": "-a cn/msr",
         "CnGpu": "-a cn/gpu",
         "CnHalf": "-a cn/half",
         "CnHaven": "-a cn-heavy/xhv",
         "CnHeavy": "-a cn-heavy",
-        "CnLiteV7": "-a  cn-lite/1",
+        "CnLiteV7": "-a cn-lite/1",
         "CnR": "-a cn/r",
+        "CnRwz": "-a cn/rwz",
         "CnSaber": "-a cn-heavy/tube",
         "CnTurtle": "-a cn-pico/trtl",
         "CnV7": "-a cn/1",
         "CnV8": "-a cn/2",
         "CnWow": "-a cn/wow",
-        "CnXTL": "-a cn/xtl"
+        "CnXTL": "-a cn/xtl",
+        "CnZls": "-a cn/zls"
     }
 }
