@@ -104,13 +104,14 @@ if ($Querymode -eq "Core") {
             }
 
             $Coin = Get-CoinUnifiedName $_.Coin
+            [int]$Port = $($PoolResponse.config.ports | Where-Object Disabled -ne $true | Sort-Object {$_.desc -like "*Modern*GPU*"} -Descending | Select-Object -First 1 -ExpandProperty port)
 
             [PSCustomObject]@{
                 Info                  = $Coin
                 Algorithm             = $Algo
                 Protocol              = "stratum+tcp"
                 Host                  = $($_.Url -split '//')[1]
-                Port                  = [int]$($PoolResponse.config.ports | Sort-Object {$_.desc -like "*Modern*GPU*"} -Descending | Select-Object -First 1 -ExpandProperty port)
+                Port                  = $Port
                 User                  = $Wallets.($PoolResponse.config.symbol)
                 Pass                  = "w=#WorkerName#"
 
