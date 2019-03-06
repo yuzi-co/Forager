@@ -1,7 +1,7 @@
 {
     "Path": "TT-Miner.exe",
-    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.03/TT-Miner-2.1.13.zip",
-    "SHA256": "363900BD6220D0F4E63D3DA557423D26D3717B6D99E20D6653EDCF926C19DAB1",
+    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.03/TT-Miner-2.1.14.zip",
+    "SHA256": "D16F88627DE4F872E4E4766EA003C1E78413282868A798F4501D8EB2BEDF3D01",
     "Type": "NVIDIA",
     "Arguments": [
         "-o #Protocol#://#Server#:#Port#",
@@ -22,6 +22,7 @@
             "Params": "-a ETHASH-100",
             "Mem": 3
         },
+        "Lyra2v3": "-a LYRA2V3-100",
         "MTP": {
             "Params": "-a MTP-100",
             "Mem": 4.5
