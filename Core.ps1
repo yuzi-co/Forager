@@ -1,6 +1,6 @@
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet('Automatic','Automatic24h','Manual')]
+    [ValidateSet('Automatic', 'Automatic24h', 'Manual')]
     [String]$MiningMode,
 
     [Parameter(Mandatory = $true)]
@@ -476,9 +476,11 @@ while ($Quit -eq $false) {
                         $Arguments = $Miner.Arguments -join " "
                         $Arguments = $Arguments -replace '#AlgorithmParameters#', $AlgoParams
                         foreach ($P in $Params.Keys) {$Arguments = $Arguments -replace $P, $Params.$P}
+                        foreach ($P in $Params.Keys) {$Arguments = $Arguments -replace $P, $Params.$P}
                         $PatternConfigFile = $Miner.PatternConfigFile -replace '#Algorithm#', $AlgoName -replace '#GroupName#', $DeviceGroup.GroupName
                         if ($PatternConfigFile -and (Test-Path -Path "$PSScriptRoot\Data\Patterns\$PatternConfigFile")) {
                             $ConfigFileArguments = Edit-ForEachDevice (Get-Content "$PSScriptRoot\Data\Patterns\$PatternConfigFile" -raw) -Devices $DeviceGroup
+                            foreach ($P in $Params.Keys) {$ConfigFileArguments = $ConfigFileArguments -replace $P, $Params.$P}
                             foreach ($P in $Params.Keys) {$ConfigFileArguments = $ConfigFileArguments -replace $P, $Params.$P}
                         } else {$ConfigFileArguments = $null}
 
@@ -500,20 +502,22 @@ while ($Quit -eq $false) {
                                 $WorkerNameDual = $Config.WorkerName + '_' + $DeviceGroup.GroupName + 'D'
                             }
 
-                            $PoolUserDual = $PoolDual.User -replace '#WorkerName#', $WorkerNameDual
-                            $PoolPassDual = $PoolDual.Pass -replace '#WorkerName#', $WorkerNameDual
+                            $PoolUserDual = $PoolDual.User -replace '#WorkerNameDual#', $WorkerNameDual
+                            $PoolPassDual = $PoolDual.Pass -replace '#WorkerNameDual#', $WorkerNameDual
 
                             $Params = @{
-                                '#PortDual#'      = $(if ($EnableDualSSL) {$PoolDual.PortSSL} else {$PoolDual.Port})
-                                '#ServerDual#'    = $(if ($EnableDualSSL) {$PoolDual.HostSSL} else {$PoolDual.Host})
-                                '#ProtocolDual#'  = $(if ($EnableDualSSL) {$PoolDual.ProtocolSSL} else {$PoolDual.Protocol})
-                                '#LoginDual#'     = $PoolUserDual
-                                '#PasswordDual#'  = $PoolPassDual
-                                '#AlgorithmDual#' = $AlgoNameDual
-                                '#WorkerName#'    = $WorkerNameDual
+                                '#PortDual#'       = $(if ($EnableDualSSL) {$PoolDual.PortSSL} else {$PoolDual.Port})
+                                '#ServerDual#'     = $(if ($EnableDualSSL) {$PoolDual.HostSSL} else {$PoolDual.Host})
+                                '#ProtocolDual#'   = $(if ($EnableDualSSL) {$PoolDual.ProtocolSSL} else {$PoolDual.Protocol})
+                                '#LoginDual#'      = $PoolUserDual
+                                '#PasswordDual#'   = $PoolPassDual
+                                '#AlgorithmDual#'  = $AlgoNameDual
+                                '#WorkerNameDual#' = $WorkerNameDual
                             }
                             foreach ($P in $Params.Keys) {$Arguments = $Arguments -replace $P, $Params.$P}
+                            foreach ($P in $Params.Keys) {$Arguments = $Arguments -replace $P, $Params.$P}
                             if ($PatternConfigFile -and (Test-Path -Path "$PSScriptRoot\Data\Patterns\$PatternConfigFile")) {
+                                foreach ($P in $Params.Keys) {$ConfigFileArguments = $ConfigFileArguments -replace $P, $Params.$P}
                                 foreach ($P in $Params.Keys) {$ConfigFileArguments = $ConfigFileArguments -replace $P, $Params.$P}
                             }
                         } else {
@@ -1293,7 +1297,7 @@ while ($Quit -eq $false) {
         Set-ConsolePosition 0 0
         Out-HorizontalLine
         Write-Message -Message (
-                @(
+            @(
                 "{green}$($Release.Application) {white}$($Release.Version)"
                 "{white}|"
                 "{green}P{white}rofits"
