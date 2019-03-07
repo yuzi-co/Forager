@@ -1,7 +1,7 @@
 {
     "Path": "lolMiner.exe",
-    "Uri": "https://github.com/Lolliedieb/lolMiner-preview/releases/download/0.7_a5/lolMiner_v07_alpha5_Win64.zip",
-    "SHA256": "E268899ED4A66E5643FCA53E7AC6742B6970F7AF4C2247CDE073C1901E1C7780",
+    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.03/lolMiner_v07_Win64.zip",
+    "SHA256": "39C70004F830906FB9CABD2DA410EA38D86312C07836FC5DC5DA70D9AB8EF44F",
     "Type": "NVIDIA",
     "Arguments": [
         "--pool #Server#",
@@ -21,9 +21,19 @@
     "APIPort": 4028,
     "SSL": true,
     "Algorithms": {
+        "Equihash144": {
+            "Params": "--coin AUTO144_5",
+            "NH": false
+        },
         "Equihash150": {
             "Params": "--coin BEAM",
-            "Mem": 3
-        }
+            "Mem": 3.5
+        },
+        "_Equihash192": {
+            "Params": "--coin AUTO192_7",
+            "Mem": 2.8
+        },
+        "Equihash210": "--coin AION",
+        "Equihash96": "--coin MNX"
     }
 }

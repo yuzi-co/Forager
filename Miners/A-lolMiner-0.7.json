@@ -1,6 +1,6 @@
 {
     "Path": "lolMiner.exe",
-    "Uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.7/lolMiner_v07_Win64.zip",
+    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.03/lolMiner_v07_Win64.zip",
     "SHA256": "39C70004F830906FB9CABD2DA410EA38D86312C07836FC5DC5DA70D9AB8EF44F",
     "Type": "AMD",
     "Arguments": [
