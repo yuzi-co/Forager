@@ -20,7 +20,7 @@
     "Fee": 0.01,
     "CUDA": 10.0,
     "Algorithms": {
-        "Aeternity": {
+        "Cuckoo29": {
             "Params": "-a aeternity --intensity 8",
             "Mem": 5.6
         },

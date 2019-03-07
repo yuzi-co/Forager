@@ -22,7 +22,7 @@
     "Fee": 0.02,
     "CUDA": 9.0,
     "Algorithms": {
-        "Aeternity": {
+        "Cuckoo29": {
             "Params": "--algo aeternity",
             "NoCpu": true,
             "Mem": 5.6

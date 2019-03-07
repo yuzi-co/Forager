@@ -16,7 +16,7 @@
     "Fee": 0.02,
     "CUDA": 9.2,
     "Algorithms": {
-        "Aeternity": {
+        "Cuckoo29": {
             "Params": "-uri aeternity",
             "NoCpu": true,
             "Mem": 5.6
