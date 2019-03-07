@@ -1,7 +1,7 @@
 {
     "Path": "NBMiner_Win\\nbminer.exe",
     "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v21.0/NBMiner_21.0_Win.zip",
-    "SHA256": "BC868693284CFB453C7C19E234C4389CC361CC18EED16391D81B7F9F47C1821B",
+    "SHA256": "0DCBE6C65E75EB8BD3254B07F17D1E224836C98D63DCE360A9729F988646FF67",
     "Type": "NVIDIA",
     "Arguments": [
         "-o #Protocol#://#Server#:#Port#",
