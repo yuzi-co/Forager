@@ -25,9 +25,9 @@ if ($Querymode -eq "Info") {
 
 if ($Querymode -eq "Core") {
     $Pools = @(
-        [PSCustomObject]@{ Coin = "Dallar"     ; Symbol = "DAL"  ; Algo = "Throestl"   ; Server = "pool.dallar.org"              ; Port = 3032 ; Fee = 0.01 ; User = $Wallets.DAL                    }
-        [PSCustomObject]@{ Coin = "Pascalcoin" ; Symbol = "PASC" ; Algo = "RandomHash" ; Server = "mine.pool.pascalpool.org"     ; Port = 3333 ; Fee = 0.01 ; User = $Wallets.PASC                   }
-        [PSCustomObject]@{ Coin = "Grin"       ; Symbol = "GRIN" ; Algo = "Cuckaroo29" ; Server = "eu-west-stratum.grinmint.com" ; Port = 3416 ; Fee = 0.01 ; User = '$($Config.Email)/#WorkerName#' }
+        [PSCustomObject]@{ Coin = "Dallar"     ; Symbol = "DAL"  ; Algo = "Throestl"   ; Server = "pool.dallar.org"              ; Port = 3032 ; Fee = 0.01 ; User = $Wallets.DAL }
+        [PSCustomObject]@{ Coin = "Pascalcoin" ; Symbol = "PASC" ; Algo = "RandomHash" ; Server = "mine.pool.pascalpool.org"     ; Port = 3333 ; Fee = 0.01 ; User = $Wallets.PASC + "`$(if ((`$Wallets.PASC -split '\.')[1] -eq `$null) {'.0'}).#WorkerName#/#Email#" }
+        [PSCustomObject]@{ Coin = "Grin"       ; Symbol = "GRIN" ; Algo = "Cuckaroo29" ; Server = "eu-west-stratum.grinmint.com" ; Port = 3416 ; Fee = 0.01 ; User = '#Email#/#WorkerName#' }
     )
 
     $Result = $Pools | ForEach-Object {
