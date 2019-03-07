@@ -1,0 +1,44 @@
+{
+    "Path": "miner.exe",
+    "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.35/gminer_1_35_minimal_windows64.zip",
+    "SHA256": "8EFE2E11130689348DE8865B7DD0C611943F9E9E05A50E2DA29361EC848061A1",
+    "Type": "AMD",
+    "Arguments": [
+        "--server #Server#",
+        "--port #Port#",
+        "--user #Login#",
+        "--pass #Password#",
+        "--api #APIPort#",
+        "--watchdog 0",
+        "--ssl $(if($EnableSSL){1}else{0})",
+        "--devices #DevicesETHMode#",
+        "--cuda 0",
+        "--opencl 1",
+        "#AlgorithmParameters#"
+    ],
+    "API": "GMiner",
+    "APIPort": 4028,
+    "SSL": true,
+    "Fee": 0.02,
+    "Algorithms": {
+        "Aeternity": {
+            "Params": "--algo aeternity",
+            "NoCpu": true,
+            "Mem": 5.6
+        },
+        "Cuckaroo29": {
+            "Params": "--algo grin29",
+            "NoCpu": true,
+            "Mem": 5.6
+        },
+        "Cuckaroo29s": {
+            "Params": "--algo swap",
+            "NoCpu": true,
+            "Mem": 5.6
+        },
+        "Equihash150": {
+            "Params": "--algo 150_5",
+            "Mem": 4
+        }
+    }
+}
