@@ -101,6 +101,7 @@ if ($Querymode -eq "Core") {
                 "Haven" { $Algo = 'CnHaven' }
                 "Masari" { $Algo = 'CnHalf' }
                 "Saronite" { $Algo = 'CnHaven' }
+                "Monero" { $Algo = 'CnR' }
             }
 
             $Coin = Get-CoinUnifiedName $_.Coin
