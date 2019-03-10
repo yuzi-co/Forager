@@ -1,7 +1,7 @@
 {
-    "Path": "teamredminer-v0.3.10-win\\teamredminer.exe",
-    "Uri": "https://github.com/todxx/teamredminer/releases/download/v0.3.10/teamredminer-v0.3.10-win.zip",
-    "SHA256": "F9587E565A67CA1898C3846583361084B0DD9F34B1ADEC1327D6B53A18AE34F6",
+    "Path": "teamredminer-v0.4.0-win\\teamredminer.exe",
+    "Uri": "https://github.com/todxx/teamredminer/releases/download/v0.4.0/teamredminer-v0.4.0-win.zip",
+    "SHA256": "8BB1709EE189FF2CD5D9C022D026D3EFAACE34B531D38EC469C35B383D6BD501",
     "Type": "AMD",
     "Arguments": [
         "-o #Protocol#://#Server#:#Port#",
@@ -15,19 +15,15 @@
     ],
     "API": "Xgminer",
     "APIPort": 4028,
+    "Fee": 0.025,
     "Algorithms": {
-        "_CnV8": {
-            "Params": "-a cnv8",
-            "Fee": 0.025
-        },
+        "_CnV8": "-a cnv8",
+        "_CnR": "-a cnr",
         "_Lyra2z": {
             "Params": "-a lyra2z",
             "Fee": 0.03
         },
-        "Lyra2v3": {
-            "Params": "-a lyra2rev3",
-            "Fee": 0.025
-        },
+        "Lyra2v3": "-a lyra2rev3",
         "_Phi2": {
             "Params": "-a phi2",
             "Fee": 0.03
