@@ -75,33 +75,16 @@ if ($Querymode -eq "Core") {
             #look that this coin is not included in result
 
             $Response | Where-Object {$_.Name -eq $Pool.Info -and $_.Algorithm -eq $Pool.Algorithm} | ForEach-Object {
-                $Result += [PSCustomObject]@{
-                    Info                  = $Pool.Info
-                    Algorithm             = $Pool.Algorithm
-                    Price                 = [decimal]($_.rewardsInDay * $_.price_btc / $_.yourHashrate)
-                    Price24h              = [decimal]($_.rewardsInDay * $_.price_btc / $_.currentDifficulty * $_.difficulty24 / $_.yourHashrate)
-                    Symbol                = $_.Symbol
-                    Host                  = $Pool.Host
-                    HostSSL               = $Pool.HostSSL
-                    Port                  = $Pool.Port
-                    PortSSL               = $Pool.PortSSL
-                    Location              = $Pool.Location
-                    SSL                   = $Pool.SSL
-                    Fee                   = $Pool.Fee
-                    User                  = $Pool.User
-                    Pass                  = $Pool.Pass
-                    Protocol              = $Pool.Protocol
-                    ProtocolSSL           = $Pool.ProtocolSSL
-                    WalletMode            = $Pool.WalletMode
-                    EthStMode             = $Pool.EthStMode
-                    WalletSymbol          = $Pool.WalletSymbol
-                    PoolName              = "CC-" + $Pool.PoolName
-                    PoolWorkers           = $Pool.PoolWorkers
-                    PoolHashRate          = $Pool.PoolHashRate
-                    RewardType            = $Pool.RewardType
-                    ActiveOnManualMode    = $ActiveOnManualMode
-                    ActiveOnAutomaticMode = $ActiveOnAutomaticMode
-                }
+                $Pool | Add-Member Price                 ([decimal]($_.rewardsInDay * $_.price_btc / $_.yourHashrate)) -Force
+                $Pool | Add-Member Price24h              ([decimal]($_.rewardsInDay * $_.price_btc / $_.currentDifficulty * $_.difficulty24 / $_.yourHashrate)) -Force
+
+                $Pool | Add-Member Symbol                $_.Symbol -Force
+                $Pool | Add-Member PoolName              ("CC-" + $Pool.PoolName) -Force
+
+                $Pool | Add-Member ActiveOnManualMode    $ActiveOnManualMode -Force
+                $Pool | Add-Member ActiveOnAutomaticMode $ActiveOnAutomaticMode -Force
+
+                $Result += $Pool
             }
         }
     } #end foreach pool

@@ -513,7 +513,7 @@ function Get-OpenCLDevices {
         try {
             $OCLPlatforms = [OpenCl.Platform]::GetPlatformIds()
         } catch {
-            Log "Error during OpenCL platform detection!" -Severity Warn
+            Log "Error during OpenCL platform detection!" -Severity Debug
         }
         if ($null -ne $OCLPlatforms) {
             $PlatformId = 0
@@ -535,7 +535,7 @@ function Get-OpenCLDevices {
                     $Devs
                 })
         } else {
-            Log "No OpenCL devices detected!" -Severity Warn
+            Log "No OpenCL devices detected!" -Severity Debug
         }
     }
     $OCLDevices
@@ -1282,11 +1282,11 @@ function Get-Pools {
 
     $AllPools = $ChildItems | ForEach-Object {
         if ($_.Content) {
-            $_.Content | Add-Member @{Name = $_.Name} -PassThru
+            $_.Content | Add-Member @{Name = $_.Name} -PassThru -Force
         }
     }
 
-    $AllPools | Add-Member LocationPriority 9999
+    $AllPools | Add-Member LocationPriority 9999 -Force
 
     #Apply filters
     $AllPools2 = @()
@@ -1413,23 +1413,13 @@ function Get-BestHashRateAlgo {
 
     $Pattern = "*_" + $Algorithm + "_*_HashRate.csv"
 
-    $BestHashRate = 0
-
     Get-ChildItem $PSScriptRoot\Stats -Filter $Pattern -File | ForEach-Object {
         $Content = $_ | Get-Content | ConvertFrom-Csv
-        $Hrs = 0
-        if ($null -ne $Content) {$Hrs = $($Content | Where-Object TimeSinceStartInterval -gt 60 | Measure-Object -property Speed -average).Average}
-
-        if ($Hrs -gt $BestHashRate) {
-            $BestHashRate = $Hrs
-            $MinerName = ($_.pschildname -split '_')[0]
+        [PSCustomObject]@{
+            HashRate = $Content.Speed | Measure-Object -Average | Select-Object -ExpandProperty Average
+            Miner    = ($_.BaseName -split '_')[0]
         }
-        $Miner = [PSCustomObject]@{
-            HashRate = $BestHashRate
-            Miner    = $MinerName
-        }
-    }
-    $Miner
+    } | Sort-Object HashRate -Descending | Select-Object -First 1
 }
 
 function Set-ConsolePosition ([int]$x, [int]$y) {
@@ -1501,6 +1491,8 @@ function Get-AlgoUnifiedName ([string]$Algo) {
         }
         if ($AlgosTable.$Algo) { $AlgosTable.$Algo }
         else { $Algo }
+    } else {
+        $null
     }
 }
 
@@ -1524,6 +1516,8 @@ function Get-CoinUnifiedName ([string]$Coin) {
             "Verge-*" { "Verge" }
             Default { $Coin }
         }
+    } else {
+        $null
     }
 }
 
@@ -1544,21 +1538,11 @@ function Get-HashRates {
     if ($AlgoLabel -eq "") {$AlgoLabel = 'X'}
     $Pattern = $PSScriptRoot + "\Stats\" + $MinerName + "_" + $Algorithm + "_" + $GroupName + "_" + $AlgoLabel + "_PL" + $PowerLimit + "_HashRate"
 
-    if (-not (Test-Path -path "$Pattern.csv")) {
-        if (Test-Path -path "$Pattern.txt") {
-            $Content = (Get-Content -path "$Pattern.txt")
-            try {$Content = $Content | ConvertFrom-Json} catch {
-            } finally {
-                if ($Content) {$Content | ConvertTo-Csv | Set-Content -Path "$Pattern.csv"}
-                Remove-Item -path "$Pattern.txt"
-            }
-        }
-    } else {
-        $Content = (Get-Content -path "$Pattern.csv")
+    if (Test-Path -path "$Pattern.csv") {
         try {
-            $Content = $Content | ConvertFrom-Csv
+            $Content = Get-Content -path "$Pattern.csv" | ConvertFrom-Csv
         } catch {
-            #if error from convert from json delete file
+            # If error - delete file
             Log "Corrupted file $Pattern.csv, deleting" -Severity Warn
             Remove-Item -path "$Pattern.csv"
         }
@@ -1621,11 +1605,11 @@ function Get-Stats {
     if ($AlgoLabel -eq "") {$AlgoLabel = 'X'}
     $Pattern = $PSScriptRoot + "\Stats\" + $MinerName + "_" + $Algorithm + "_" + $GroupName + "_" + $AlgoLabel + "_PL" + $PowerLimit + "_stats"
 
-    if (-not (Test-Path -path "$Pattern.json")) {
-        if (Test-Path -path "$Pattern.txt") {Rename-Item -Path "$Pattern.txt" -NewName "$Pattern.json"}
-    } else {
+    if (Test-Path -path "$Pattern.json") {
         $Content = (Get-Content -path "$Pattern.json")
-        try {$Content = $Content | ConvertFrom-Json} catch {
+        try {
+            $Content = $Content | ConvertFrom-Json
+        } catch {
             #if error from convert from json delete file
             Log "Corrupted file $Pattern.json, deleting" -Severity Warn
             Remove-Item -path "$Pattern.json"
@@ -1815,4 +1799,59 @@ function Write-Color() {
         Write-Host
     }
     $Host.UI.RawUI.ForegroundColor = $startColor;
+}
+
+function Get-WhatToMineURL {
+    $f = 10
+    'https://whattomine.com/coins.json?' + (
+        @(
+            "bcd=true&factor[bcd_hr]=$f&factor[bcd_p]=0" #BCD
+            "bk14=true&factor[bk14_hr]=$f&factor[bk14_p]=0" #Decred
+            "cn=true&factor[cn_hr]=$f&factor[cn_p]=0" #CryptoNight
+            "cn7=true&factor[cn7_hr]=$f&factor[cn7_p]=0" #CryptoNightV7
+            "cn8=true&factor[cn8_hr]=$f&factor[cn8_p]=0" #CryptoNightV8
+            "cnf=true&factor[cnf_hr]=$f&factor[cnf_p]=0" #CryptoNightFast
+            "cnh=true&factor[cnh_hr]=$f&factor[cnh_p]=0" #CryptoNightHeavy
+            "cnhn=true&factor[cnhn_hr]=$f&factor[cnhn_p]=0" #CryptoNightHaven
+            "cns=true&factor[cns_hr]=$f&factor[cns_p]=0" #CryptoNightSaber
+            "cr29=true&factor[cr29_hr]=$f&factor[cr29_p]=0" #Cuckaroo29
+            "eq=true&factor[eq_hr]=$f&factor[eq_p]=0" #Equihash
+            "eqa=true&factor[eqa_hr]=$f&factor[eqa_p]=0" #AION (Equihash210)
+            "eth=true&factor[eth_hr]=$f&factor[eth_p]=0" #Ethash
+            "grof=true&factor[gro_hr]=$f&factor[gro_p]=0" #Groestl
+            "hx=true&factor[hx_hr]=$f&factor[hx_p]=0" #Hex
+            "l2z=true&factor[l2z_hr]=$f&factor[l2z_p]=0" #Lyra2z
+            "lbry=true&factor[lbry_hr]=$f&factor[lbry_p]=0" #Lbry
+            "lre=true&factor[lrev2_hr]=$f&factor[lrev2_p]=0" #Lyra2v2
+            "lrev3=true&factor[lrev3_hr]=$f&factor[lrev3_p]=0" #Lyra2v3
+            "mtp=true&factor[mtp_hr]=$f&factor[mtp_p]=0" #MTP
+            "n5=true&factor[n5_hr]=$f&factor[n5_p]=0" #Nist5
+            "ns=true&factor[ns_hr]=$f&factor[ns_p]=0" #NeoScrypt
+            "pas=true&factor[pas_hr]=$f&factor[pas_p]=0" #Pascal
+            "phi=true&factor[phi_hr]=$f&factor[phi_p]=0" #PHI
+            "phi2=true&factor[phi2_hr]=$f&factor[phi2_p]=0" #PHI2
+            "ppw=true&factor[ppw_hr]=$f&factor[ppw_p]=0" #ProgPOW
+            "skh=true&factor[skh_hr]=$f&factor[skh_p]=0" #Skunk
+            "tt10=true&factor[tt10_hr]=$f&factor[tt10_p]=0" #TimeTravel10
+            "x11gf=true&factor[x11g_hr]=$f&factor[x11g_p]=0" #X11gost
+            "x16r=true&factor[x16r_hr]=$f&factor[x16r_p]=0" #X16r
+            "x22i=true&factor[x22i_hr]=$f&factor[x22i_p]=0" #X22i
+            "xn=true&factor[xn_hr]=$f&factor[xn_p]=0" #Xevan
+            "zh=true&factor[zh_hr]=$f&factor[zh_p]=0" #ZHash (Equihash144)
+        ) -join '&'
+    )
+}
+function Get-WhatToMineFactor {
+    param (
+        [string]$Algo
+    )
+    $f = 10
+    if ($Algo) {
+        if (-not $global:WTMFactorTable) {
+            $global:WTMFactorTable = Get-Content -Path $PSScriptRoot\Data\wtm_factor.json | ConvertFrom-Json
+        }
+        if ($WTMFactorTable.$Algo) {
+            $WTMFactorTable.$Algo * $f
+        }
+    }
 }
