@@ -1,7 +1,7 @@
 {
-    "Path": "teamredminer-v0.4.0-win\\teamredminer.exe",
-    "Uri": "https://github.com/todxx/teamredminer/releases/download/v0.4.0/teamredminer-v0.4.0-win.zip",
-    "SHA256": "8BB1709EE189FF2CD5D9C022D026D3EFAACE34B531D38EC469C35B383D6BD501",
+    "Path": "teamredminer-v0.4.1-win\\teamredminer.exe",
+    "Uri": "https://github.com/todxx/teamredminer/releases/download/v0.4.1/teamredminer-v0.4.1-win.zip",
+    "SHA256": "8D5EB7F401CF75E8C9AC810FCECC6594DC00FBF8CE265678D3978FAFA148EE2C",
     "Type": "AMD",
     "Arguments": [
         "-o #Protocol#://#Server#:#Port#",
@@ -9,6 +9,7 @@
         "-p #Password#",
         "-d #Devices#",
         "--watchdog_script",
+        "--disable_colors",
         "--platform=#GPUPlatform#",
         "--api_listen=#ApiPort#",
         "#AlgorithmParameters#"
