@@ -1328,12 +1328,12 @@ while ($Quit -eq $false) {
                     Where-Object Best |
                     Sort-Object {$ActiveMiners[$_.IdF].DeviceGroup.GroupType -eq 'CPU'} |
                     ForEach-Object {
-                    $ActiveMiners[$_.IdF].Pool.Symbol + $(if ($ActiveMiners[$_.IdF].AlgorithmDual) {"_$($ActiveMiners[$_.IdF].PoolDual.Symbol)"})
+                    @($ActiveMiners[$_.IdF].Pool.Symbol, $ActiveMiners[$_.IdF].PoolDual.Symbol) -ne $null -join "_"
                 }
             ) -join '/'
 
             $RunTime = $(Get-Date) - $(Get-Process -Pid $Global:PID | Select-Object -ExpandProperty StartTime)
-            $Host.UI.RawUI.WindowTitle = $(if ($RunTime.TotalDays -lt 1) {"{0:hh\:mm}" -f $RunTime} else {"{0:dd\d\ hh\:mm}" -f $RunTime}) + " : " + $CurrentAlgos
+            $Host.UI.RawUI.WindowTitle = $(if ($RunTime.TotalDays -lt 1) {"{0:h\:mm}" -f $RunTime} else {"{0:d\d\ h\:mm}" -f $RunTime}) + " : " + $CurrentAlgos
 
             # Report stats
             if ($Config.MinerStatusURL -and $Config.MinerStatusKey -and $Interval.Current -ne "Donate") {
