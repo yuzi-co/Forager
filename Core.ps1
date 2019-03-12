@@ -304,14 +304,14 @@ while ($Quit -eq $false) {
     #Filter by minworkers variable (only if there is any pool greater than minimum)
     $Pools = ($AllPools | Where-Object {
             $_.PoolWorkers -eq $null -or
-            $_.PoolWorkers -ge $(if ($Config.('MinWorkers_' + $_.PoolName) -ne $null) {$Config.('MinWorkers_' + $_.PoolName)}else{$Config.MinWorkers})
+            $_.PoolWorkers -ge $(if ($Config.('MinWorkers_' + $_.PoolName) -ne $null) {$Config.('MinWorkers_' + $_.PoolName)} else {$Config.MinWorkers})
         }
     )
     if ($Pools.Count -ge 1) {
-        Log "$($Pools.Count) pools left after min workers filter..."
+        Log "$($Pools.Count) pools left after MinWorkers filter..."
     } else {
         $Pools = $AllPools
-        Log "No pools with workers greater than minimum config, filter ignored..."
+        Log "No pools matching MinWorkers config, filter ignored..."
     }
 
     ## Select highest paying pool for each algo and check if pool is alive.
@@ -539,7 +539,7 @@ while ($Quit -eq $false) {
                                 $_.PoolDual.PoolName -eq $PoolDual.PoolName -and
                                 $_.Pool.Info -eq $Pool.Info -and
                                 $_.PoolDual.Info -eq $PoolDual.Info -and
-                                $_.DeviceGroup.Id -eq $DeviceGroup.Id
+                                $_.DeviceGroup.GroupName -eq $DeviceGroup.GroupName
                             }
 
                             if ($FoundMiner) {$FoundMiner.DeviceGroup = $DeviceGroup}
@@ -978,7 +978,9 @@ while ($Quit -eq $false) {
                         $ActiveMiners[$BestLast.IdF].Process.Id -gt 0
                     ) {
                         Log "Stopping miner $BestLastLogMsg with pid $($ActiveMiners[$BestLast.IdF].Process.Id)"
-                        Stop-SubProcess $ActiveMiners[$BestLast.IdF].Process
+                        do {
+                            Stop-SubProcess $ActiveMiners[$BestLast.IdF].Process
+                        } while (Test-TCPPort -Server 127.0.0.1 -Port $ActiveMiners[$BestLast.IdF].ApiPort)
                     }
 
                     $ActiveMiners[$BestLast.IdF].Process = $null
@@ -1412,7 +1414,7 @@ while ($Quit -eq $false) {
         @{expression = {$ActiveMiners[$_.IdF].DeviceGroup.GroupName -eq 'CPU'}; Ascending = $true},
         @{expression = {$ActiveMiners[$_.IdF].DeviceGroup.GroupName}; Ascending = $true} |
             ForEach-Object {
-                $M = $ActiveMiners[$_.IdF]
+            $M = $ActiveMiners[$_.IdF]
             [PSCustomObject]@{
                 GroupName   = $M.DeviceGroup.GroupName
                 PwLim       = $(if ($_.PowerLimit -ne 0) {$_.PowerLimit})

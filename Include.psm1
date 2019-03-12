@@ -605,8 +605,8 @@ function Get-MiningTypes () {
                 if ($null -eq $_.MemoryGB) {$_ | Add-Member MemoryGB ([int](($OCLDevice | Measure-Object -Property GlobalMemSize -Minimum).Minimum / 1GB ))}
                 if ($OCLDevice[0].Platform.Version -match "CUDA\s+([\d\.]+)") {$_ | Add-Member CUDAVersion $Matches[1] -Force}
             }
-            $_ | Add-Member OCLDeviceId (, $OCLDevice.OCLDeviceId)
-            $_ | Add-Member OCLGpuId (, $OCLDevice.OCLGpuId)
+            $_ | Add-Member OCLDeviceId @($OCLDevice.OCLDeviceId)
+            $_ | Add-Member OCLGpuId @($OCLDevice.OCLGpuId)
 
             if ($_.PowerLimits -is [string] -and $_.PowerLimits.Length -gt 0) {
                 $_ | Add-Member PowerLimits @([int[]]($_.PowerLimits -split ',') | Sort-Object -Descending -Unique) -Force
