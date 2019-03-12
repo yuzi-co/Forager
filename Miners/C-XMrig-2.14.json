@@ -4,10 +4,11 @@
     "SHA256": "30D5A88F2BFA9985DA9F6AE5C9231FE5D2583262AEF2C75A68AE38C2E0EBE70F",
     "Type": "CPU",
     "Arguments": [
-        "-o #Protocol#://#Server#:#Port#",
+        "-o #Server#:#Port#",
         "-u #Login#",
         "-p #Password#",
         "$(if ($Pool.PoolName -eq 'NiceHash'){'--nicehash'})",
+        "$(if ($EnableSSL){'--tls'})",
         "--donate-level 1",
         "--api-port #APIPort#",
         "--max-cpu-usage=$(if ($CpuThreads -ne $null){ [int](100 * $CpuThreads / $DeviceGroup.Features.Threads) } else { 100 })",
@@ -15,6 +16,7 @@
     ],
     "API": "XMRig",
     "APIPort": 4048,
+    "SSL": true,
     "Fee": 0.01,
     "Algorithms": {
         "CnAlloy": "-a cn/xao",

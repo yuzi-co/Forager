@@ -4,17 +4,19 @@
     "SHA256": "DFBC7D46E2DA1B6B8A37A0ACF6EC7F095BDCD3354FD1E93F1AB1676B555A2772",
     "Type": "NVIDIA",
     "Arguments": [
-        "-o #Protocol#://#Server#:#Port#",
+        "-o #Server#:#Port#",
         "-u #Login#",
         "-p #Password#",
         "--cuda-devices=#Devices#",
         "$(if ($Pool.PoolName -eq 'NiceHash'){'--nicehash'})",
+        "$(if ($EnableSSL){'--tls'})",
         "--donate-level 1",
         "--api-port #APIPort#",
         "#AlgorithmParameters#"
     ],
     "API": "XMRig",
     "APIPort": 4068,
+    "SSL": true,
     "Fee": 0.01,
     "CUDA": 9.2,
     "Algorithms": {

@@ -4,17 +4,19 @@
     "SHA256": "F7C4239E9315C5940B33BC0696F9079D24CF9BDF3BAA98F4EB1F3C760449D0BA",
     "Type": "AMD",
     "Arguments": [
-        "-o #Protocol#://#Server#:#Port#",
+        "-o #Server#:#Port#",
         "-u #Login#",
         "-p #Password#",
         "--opencl-platform=#GPUPlatform#",
         "$(if ($Pool.PoolName -eq 'NiceHash'){'--nicehash'})",
+        "$(if ($EnableSSL){'--tls'})",
         "--donate-level 1",
         "--api-port #APIPort#",
         "#AlgorithmParameters#"
     ],
     "API": "XMRig",
     "APIPort": 4028,
+    "SSL": true,
     "Fee": 0.01,
     "Algorithms": {
         "CnAlloy": "-a cn/xao",
