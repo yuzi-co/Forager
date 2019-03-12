@@ -1335,7 +1335,7 @@ while ($Quit -eq $false) {
             ) -join '/'
 
             $RunTime = $(Get-Date) - $(Get-Process -Pid $Global:PID | Select-Object -ExpandProperty StartTime)
-            $Host.UI.RawUI.WindowTitle = $(if ($RunTime.TotalDays -lt 1) {"{0:h\:mm}" -f $RunTime} else {"{0:d\d\ h\:mm}" -f $RunTime}) + " : " + $CurrentAlgos
+            $Host.UI.RawUI.WindowTitle = $(if ($RunTime.TotalDays -lt 1) {"{0:hh\:mm}" -f $RunTime} else {"{0:d\d\ hh\:mm}" -f $RunTime}) + " : " + $CurrentAlgos
 
             # Report stats
             if ($Config.MinerStatusURL -and $Config.MinerStatusKey -and $Interval.Current -ne "Donate") {
@@ -1448,7 +1448,7 @@ while ($Quit -eq $false) {
                 @{Label = "Profit/Day"                  ; Expression = {$_.ProfitDay} ; Align = 'right'},
                 @{Label = "PoolSpeed"                   ; Expression = {$_.PoolSpeed} ; Align = 'right'},
                 @{Label = "Workers"                     ; Expression = {$_.Workers} ; Align = 'right'},
-                @{Label = "Pool"                        ; Expression = {$_.Pool} ; Align = 'left'}
+                @{Label = "Pool "                       ; Expression = {$_.Pool + " "} ; Align = 'left'}
             ) | Out-Host
         } else {
             Write-Warning "No miners above MinProfit"
