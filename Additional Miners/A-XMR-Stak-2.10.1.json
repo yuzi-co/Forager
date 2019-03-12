@@ -1,7 +1,7 @@
 {
-    "Path": "xmr-stak-win64-2.10.0\\xmr-stak.exe",
-    "Uri": "https://github.com/fireice-uk/xmr-stak/releases/download/2.10.0/xmr-stak-win64-2.10.0.7z",
-    "SHA256": "A8FCBF48F5023CDF0D6504EC4A7AB345E596F14D517FD55142737BFE5F238A0C",
+    "Path": "xmr-stak-win64-2.10.1\\xmr-stak.exe",
+    "Uri": "https://github.com/fireice-uk/xmr-stak/releases/download/2.10.1/xmr-stak-win64-2.10.1.7z",
+    "SHA256": "CCD66E83550A985F78B569A4F8125B394ED936F75FD9B5F2E647A4194A134628",
     "Type": "AMD",
     "Arguments": [
         "$(if ($enableSSL){'-O'}else{'-o'}) #Server#:#Port#",
@@ -12,6 +12,7 @@
         "--noCPU",
         "--noUAC",
         "--noAMDCache",
+        "--openCLVendor AMD",
         "$(if ($Pool.PoolName -eq 'NiceHash'){'--use-nicehash'})",
         "--httpd #APIPort#",
         "--amd #GroupName#-#Algorithm#.txt",
@@ -23,6 +24,7 @@
     "SSL": true,
     "Algorithms": {
         "CnFast": "--currency cryptonight_masari",
+        "CnDouble": "--currency cryptonight_v8_double",
         "CnGpu": "--currency cryptonight_gpu",
         "_CnHalf": "--currency cryptonight_v8_half",
         "CnHaven": "--currency cryptonight_haven",
