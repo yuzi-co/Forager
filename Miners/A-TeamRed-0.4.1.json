@@ -4,7 +4,7 @@
     "SHA256": "8D5EB7F401CF75E8C9AC810FCECC6594DC00FBF8CE265678D3978FAFA148EE2C",
     "Type": "AMD",
     "Arguments": [
-        "-o #Protocol#://#Server#:#Port#",
+        "-o stratum$(if($EnableSSL){'+ssl'})://#Server#:#Port#",
         "-u #Login#",
         "-p #Password#",
         "-d #Devices#",
@@ -16,6 +16,7 @@
     ],
     "API": "Xgminer",
     "APIPort": 4028,
+    "SSL": true,
     "Fee": 0.025,
     "Algorithms": {
         "_CnV8": "-a cnv8",
