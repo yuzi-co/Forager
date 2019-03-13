@@ -4,7 +4,7 @@
     "SHA256": "8D5EB7F401CF75E8C9AC810FCECC6594DC00FBF8CE265678D3978FAFA148EE2C",
     "Type": "AMD",
     "Arguments": [
-        "-o stratum$(if($EnableSSL){'+ssl'})://#Server#:#Port#",
+        "-o stratum+$(if($EnableSSL){'ssl'}else{'tcp'})://#Server#:#Port#",
         "-u #Login#",
         "-p #Password#",
         "-d #Devices#",
