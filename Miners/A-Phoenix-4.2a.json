@@ -1,0 +1,37 @@
+{
+    "Path": "PhoenixMiner_4.2a_Windows\\PhoenixMiner.exe",
+    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.03/PhoenixMiner_4.2a_Windows.zip",
+    "SHA256": "",
+    "Type": "AMD",
+    "Arguments": [
+        "-pool #Protocol#://#Server#:#Port#",
+        "-wal #Login#",
+        "-pass #Password#",
+        "-dpool #ProtocolDual#://#ServerDual#:#PortDual#",
+        "-dwal #LoginDual#",
+        "-dpsw #PasswordDual#",
+        "$(if ('#EthStMode#' -ne ''){'-esm #EthStMode#'})",
+        "-mi 12",
+        "-wd 1",
+        "-r -1",
+        "-logfile #GroupName#_log.txt",
+        "-logsmaxsize 10",
+        "-amd",
+        "-di #DevicesClayMode#",
+        "-cdmport #APIPort#",
+        "-cdm 1",
+        "#AlgorithmParameters#"
+    ],
+    "API": "Claymore",
+    "APIPort": 4028,
+    "Fee": 0.0065,
+    "SSL": true,
+    "Algorithms": {
+        "ProgPOW": "-coin bci -mode 1",
+        "Ethash": "-clKernel 3 -mode 1",
+        "Ubqhash": "-coin ubq -clKernel 3 -mode 1",
+        "_Ethash_Blake2s|30": "-dcoin blake2s -sci 30 -mode 0 -clKernel 3",
+        "_Ethash_Blake2s|35": "-dcoin blake2s -sci 35 -mode 0 -clKernel 3",
+        "_Ethash_Blake2s|40": "-dcoin blake2s -sci 40 -mode 0 -clKernel 3"
+    }
+}
