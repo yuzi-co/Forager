@@ -1,0 +1,15 @@
+{
+    "Path": "nanominer-windows-1.1.1\\nanominer.exe",
+    "Uri": "https://github.com/nanopool/nanominer/releases/download/v1.1.1/nanominer-windows-1.1.1.zip",
+    "SHA256": "5C1887A26D8A0E01AE16A8957E3EDA28D4B7F4833C7771DF8D5BD18A062F2628",
+    "Type": "CPU",
+    "GenerateConfigFile": "nanominer-windows-1.1.1\\#GroupName#-#Algorithm#.conf",
+    "PatternConfigFile": "NanoMiner.txt",
+    "Arguments": "#GroupName#-#Algorithm#.conf",
+    "API": "Claymore",
+    "APIPort": 4048,
+    "Fee": 0.03,
+    "Algorithms": {
+        "RandomHash": "RandomHash"
+    }
+}
