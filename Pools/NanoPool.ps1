@@ -52,23 +52,25 @@ if ($Querymode -eq "Wallet") {
 if ($Querymode -eq "Core") {
 
     $Pools = @(
-        [PSCustomObject]@{ Coin = "Ethereum"        ; Symbol = "ETH"  ; Algo = "Ethash"    ; WalletSymbol = "ETH"    ; Port = 9999  ; Fee = 0.01 ; Divisor = 1e6 }
-        [PSCustomObject]@{ Coin = "EthereumClassic" ; Symbol = "ETC"  ; Algo = "Ethash"    ; WalletSymbol = "ETC"    ; Port = 19999 ; Fee = 0.01 ; Divisor = 1e6 }
-        [PSCustomObject]@{ Coin = "Monero"          ; Symbol = "XMR"  ; Algo = "CnV8"      ; WalletSymbol = "XMR"    ; Port = 14444 ; Fee = 0.01 ; Divisor = 1   ; PortSSL = 14433}
-        [PSCustomObject]@{ Coin = "Pascalcoin"      ; Symbol = "PASC" ; Algo = "RandomHash"; WalletSymbol = "PASC"   ; Port = 15556 ; Fee = 0.02 ; Divisor = 1   }
-        [PSCustomObject]@{ Coin = "Raven"           ; Symbol = "RVN"  ; Algo = "X16r"      ; WalletSymbol = "RVN"    ; Port = 12222 ; Fee = 0.01 ; Divisor = 1e6 }
-        [PSCustomObject]@{ Coin = "Grin"            ; Symbol = "GRIN" ; Algo = "Cuckaroo29"; WalletSymbol = "GRIN29" ; Port = 12111 ; Fee = 0.01 ; Divisor = 1e6 }
+        [PSCustomObject]@{ Coin = "Ethereum"        ; Symbol = "ETH"  ; Algo = "Ethash"     ; Port = 9999  ; Fee = 0.01 ; Divisor = 1e6 }
+        [PSCustomObject]@{ Coin = "EthereumClassic" ; Symbol = "ETC"  ; Algo = "Ethash"     ; Port = 19999 ; Fee = 0.01 ; Divisor = 1e6 }
+        [PSCustomObject]@{ Coin = "Monero"          ; Symbol = "XMR"  ; Algo = "CnV8"       ; Port = 14444 ; Fee = 0.01 ; Divisor = 1   ; PortSSL = 14433 }
+        [PSCustomObject]@{ Coin = "Pascalcoin"      ; Symbol = "PASC" ; Algo = "RandomHash" ; Port = 15556 ; Fee = 0.02 ; Divisor = 1   }
+        [PSCustomObject]@{ Coin = "Raven"           ; Symbol = "RVN"  ; Algo = "X16r"       ; Port = 12222 ; Fee = 0.01 ; Divisor = 1e6 }
+        [PSCustomObject]@{ Coin = "Grin"            ; Symbol = "GRIN" ; Algo = "Cuckaroo29" ; Port = 12111 ; Fee = 0.01 ; Divisor = 1   ; WalletSymbol = "GRIN29" }
     )
 
     #generate a pool for each location and add API data
     $Result = $Pools | Where-Object {$Wallets.($_.Symbol) -ne $null} | ForEach-Object {
-        $RequestW = Invoke-APIRequest -Url $("https://api.nanopool.org/v1/" + $_.WalletSymbol.ToLower() + "/pool/activeworkers") -Retry 1
-        $RequestP = Invoke-APIRequest -Url $("https://api.nanopool.org/v1/" + $_.WalletSymbol.ToLower() + "/approximated_earnings/1000") -Retry 1
+        $PoolSymbol = (@($_.WalletSymbol, $_.Symbol) -ne $null)[0]
+
+        $RequestP = Invoke-APIRequest -Url $("https://api.nanopool.org/v1/" + $PoolSymbol.ToLower() + "/approximated_earnings/1000") -Retry 1
+        $RequestW = Invoke-APIRequest -Url $("https://api.nanopool.org/v1/" + $PoolSymbol.ToLower() + "/pool/activeworkers") -Retry 1
 
         $Locations = @(
-            [PSCustomObject]@{ Location = "Eu"    ; Server = $_.WalletSymbol + "-eu1.nanopool.org" }
-            [PSCustomObject]@{ Location = "US"    ; Server = $_.WalletSymbol + "-us-east1.nanopool.org" }
-            [PSCustomObject]@{ Location = "Asia"  ; Server = $_.WalletSymbol + "-asia1.nanopool.org" }
+            [PSCustomObject]@{ Location = "Eu"   ; Server = $PoolSymbol.ToLower() + "-eu1.nanopool.org"      }
+            [PSCustomObject]@{ Location = "US"   ; Server = $PoolSymbol.ToLower() + "-us-east1.nanopool.org" }
+            [PSCustomObject]@{ Location = "Asia" ; Server = $PoolSymbol.ToLower() + "-asia1.nanopool.org"    }
         )
 
         ForEach ($Loc in $Locations) {
@@ -81,7 +83,7 @@ if ($Querymode -eq "Core") {
                 Host                  = $Loc.Server
                 Port                  = $_.Port
                 PortSSL               = $_.PortSSL
-                User                  = $Wallets.($_.Symbol)
+                User                  = $Wallets.($_.Symbol) + "/#WorkerName#" + (if ($Config.Email) {"/" + $Config.Email})
                 Pass                  = "x"
                 Location              = $Loc.Location
                 SSL                   = [bool]$PortSSL
@@ -91,7 +93,7 @@ if ($Querymode -eq "Core") {
                 PoolWorkers           = $RequestW.Data
                 PoolName              = $Name
                 WalletMode            = $WalletMode
-                WalletSymbol          = $_.WalletSymbol
+                WalletSymbol          = $PoolSymbol
                 Fee                   = $_.Fee
                 EthStMode             = 0
                 RewardType            = $RewardType
