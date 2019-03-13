@@ -88,7 +88,7 @@ if ($Querymode -eq "Core") {
 
     $Result = $Pools | Where-Object {
         $_.Algo -notin @('Cn') -and
-        $Wallets.($_.Symbol) -ne $null
+        $Wallets.($_.Symbol)
     } | ForEach-Object {
 
         $PoolResponse = Invoke-RestMethod -Uri ($_.Url + '/api/stats') -UseBasicParsing
@@ -105,14 +105,20 @@ if ($Querymode -eq "Core") {
             }
 
             $Coin = Get-CoinUnifiedName $_.Coin
-            [int]$Port = $($PoolResponse.config.ports | Where-Object Disabled -ne $true | Sort-Object {$_.desc -like "*Modern*GPU*"} -Descending | Select-Object -First 1 -ExpandProperty port)
+
+            $Port = $PoolResponse.config.ports |
+                Where-Object {
+                $_.disabled -ne $true -and
+                $_.virtual -ne $true
+            } | Sort-Object {if ($PoolResponse.config.ppsEnabled) {$_.rewards -eq 'pps'}}, {$_.desc -like '*Modern*GPU*'} -Descending |
+                Select-Object -First 1
 
             [PSCustomObject]@{
                 Info                  = $Coin
                 Algorithm             = $Algo
                 Protocol              = "stratum+tcp"
                 Host                  = $($_.Url -split '//')[1]
-                Port                  = $Port
+                Port                  = [int]$Port.port
                 User                  = $Wallets.($PoolResponse.config.symbol)
                 Pass                  = "w=#WorkerName#"
 
@@ -124,8 +130,8 @@ if ($Querymode -eq "Core") {
                 PoolName              = $Name
                 WalletMode            = $WalletMode
                 WalletSymbol          = $($($_.Url -split '//')[1] -split '\.')[0]
-                Fee                   = $PoolResponse.config.fee / 100
-                RewardType            = $RewardType
+                Fee                   = $(if ($Port.rewards -eq 'pps') {$PoolResponse.config.ppsFee} else {$PoolResponse.config.fee}) / 100
+                RewardType            = $(if ($Port.rewards -eq 'pps') {'PPS'} else {'PPLS'})
 
                 Hashrate              = $PoolResponse.pool.hashrate
                 Workers               = $PoolResponse.pool.workers
