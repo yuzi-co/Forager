@@ -1,0 +1,26 @@
+{
+  "Path": "wildrig.exe",
+  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.15.4p7/wildrig-multi-windows-0.15.4-preview7.7z",
+  "SHA256": "50CC1C8D8B24D57168DC8355EE5AFB114BD5248D0A6953E80D36D33A9FA8CDAE",
+  "Type": "AMD",
+  "Arguments": [
+    "-o #Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-r 10",
+    "-R 3",
+    "--opencl-platform #GpuPlatform#",
+    "--opencl-devices #Devices#",
+    "--send-stale",
+    "--donate-level 1",
+    "--api-port #ApiPort#",
+    "#AlgorithmParameters#"
+  ],
+  "API": "XMRig",
+  "APIPort": 4028,
+  "Fee": 0.01,
+  "PrelaunchCommand": "if ($env:GPU_MAX_WORKGROUP_SIZE -ne 256) { $env:GPU_MAX_WORKGROUP_SIZE = 256 }",
+  "Algorithms": {
+    "Rainforest": "--algo rainforest --opencl-threads auto --opencl-launch auto"
+  }
+}
