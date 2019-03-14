@@ -1,0 +1,21 @@
+{
+  "Path": "ccminer.exe",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.03/CCMinerVerus-3.3.7z",
+  "SHA256": "A473D706AC354CCE2294FB347DDF3D070E648F071451C7065EB55765609C2F4D",
+  "Type": "NVIDIA",
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-R 3",
+    "-r 10",
+    "-d #Devices#",
+    "-b #APIPort#",
+    "#AlgorithmParameters#"
+  ],
+  "API": "Ccminer",
+  "APIPort": 4068,
+  "Algorithms": {
+    "Verushash": "-a verus -i 18.5"
+  }
+}
