@@ -1,0 +1,22 @@
+{
+  "Path": "ccminer.exe",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.03/CCMinerVerusCPU-3.3.7z",
+  "SHA256": "3829FC92342A3F3E091137594E1D371799026CA865C2C6F961764E590BACDD51",
+  "Type": "CPU",
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-R 3",
+    "-r 10",
+    "-d #Devices#",
+    "-b #APIPort#",
+    "-t $(if ($CpuThreads -ne $null) {$CpuThreads} else {$DeviceGroup.Features.Threads})",
+    "#AlgorithmParameters#"
+  ],
+  "API": "Ccminer",
+  "APIPort": 4048,
+  "Algorithms": {
+    "Verushash": "-a verus"
+  }
+}
