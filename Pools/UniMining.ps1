@@ -64,7 +64,7 @@ if ($Querymode -eq "Wallet") {
 
 if ($Querymode -eq "Core") {
     $Request = Invoke-APIRequest -Url $($ApiUrl + "/status") -Retry 3
-    $RequestCurrencies = Invoke-APIRequest -Url $($ApiUrl + "/currencies") -Retry 3
+    $RequestCurrencies = Invoke-APIRequest -Url $($ApiUrl + "/currencies") -Retry 20
     if (-not $RequestCurrencies -or -not $Request) {
         Write-Warning "$Name API NOT RESPONDING...ABORTING"
         Exit
@@ -82,7 +82,7 @@ if ($Querymode -eq "Core") {
         $Pool_Symbol = $_
 
         $Algo = $Request.($Coin.algo)
-        $Divisor = 1000000 * $Algo.mbtc_mh_factor
+        $Divisor = 1e9 * $Algo.mbtc_mh_factor
 
         [PSCustomObject]@{
             Algorithm             = $Pool_Algo

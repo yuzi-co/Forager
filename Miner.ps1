@@ -56,7 +56,7 @@ Write-Host "Selected Pool(s): $PoolsName"
 if ($MiningMode -eq "Manual") {
 
     #Load coins from pools
-    $CoinsPool = Get-Pools -Querymode "Core" -PoolsFilterList $PoolsName -Location $Config.Location | Select-Object Info, Symbol, Algorithm, Workers, PoolHashRate, Blocks_24h, Price -Unique | Sort-Object Info
+    $CoinsPool = @(Get-Pools -Querymode "Core" -PoolsFilterList $PoolsName -Location $Config.Location | Select-Object Info, Symbol, Algorithm, Workers, PoolHashRate, Blocks_24h, Price -Unique | Sort-Object Info)
 
     $CoinsPool | ForEach-Object {
         $_ | Add-Member Option ([array]::indexof($CoinsPool, $_))

@@ -82,7 +82,7 @@ if ($Querymode -eq "Core") {
         $Pool_Symbol = $_
 
         $Algo = $Request.($Coin.algo)
-        $Divisor = 1000000 * $Algo.mbtc_mh_factor
+        $Divisor = 1e9 * $Algo.mbtc_mh_factor
 
         [PSCustomObject]@{
             Algorithm             = $Pool_Algo

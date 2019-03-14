@@ -90,25 +90,14 @@ if ($Querymode -eq "Core") {
         $Pool_Coin = Get-CoinUnifiedName $Coin.name
         $Pool_Symbol = $_
 
-        $Divisor = 1000000
-
-        switch ($Pool_Algo) {
-            "blake14r" {$Divisor *= 1000}
-            "blake2s" {$Divisor *= 1000}
-            "blakecoin" {$Divisor *= 1000}
-            "equihash" {$Divisor /= 1000}
-            "keccakc" {$Divisor *= 1000}
-            "skein" {$Divisor *= 1000}
-            "x16r" {$Divisor *= 1000}
-            "yescrypt" {$Divisor /= 1000}
-        }
+        $Divisor = 1e9
 
         foreach ($Location in $Locations.Keys) {
             [PSCustomObject]@{
                 Algorithm             = $Pool_Algo
                 Info                  = $Pool_Coin
                 Price                 = $(if ($Divisor) {[decimal]$Coin.estimate / $Divisor})
-                Price24h              = $(if ($Divisor) {(if ($Coin.'24h_btc_shared' -ne $null) {[decimal]$Coin.'24h_btc_shared'} else {[decimal]$Coin.'24h_btc'}) / $Divisor})
+                Price24h              = $(if ($Divisor) {$(if ($Coin.'24h_btc_shared' -ne $null) {[decimal]$Coin.'24h_btc_shared'} else {[decimal]$Coin.'24h_btc'}) / $Divisor})
                 Protocol              = "stratum+tcp"
                 Host                  = $Locations.$Location
                 Port                  = [int]$Coin.port

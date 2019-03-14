@@ -71,7 +71,7 @@ if ($Querymode -eq "Core") {
     }
 
     $Result = $RequestCurrencies | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | Where-Object {
-        $Wallets.($RequestCurrencies.$_.symbol) -ne $null -and
+        $Wallets.(($_ -split '-')[0]) -ne $null -and
         (
             $RequestCurrencies.$_.'24h_blocks_shared' -gt 0 -and
             $RequestCurrencies.$_.hashrate_shared -gt 0
@@ -87,16 +87,16 @@ if ($Querymode -eq "Core") {
         $Coin = $RequestCurrencies.$_
         $Pool_Algo = Get-AlgoUnifiedName $Coin.algo
         $Pool_Coin = Get-CoinUnifiedName $Coin.name
-        $Pool_Symbol = $Coin.symbol
+        $Pool_Symbol = ($_ -split '-')[0]
 
         $Algo = $Request.($Coin.algo)
-        $Divisor = 1000000 * [decimal]$Coin.mbtc_mh_factor
+        $Divisor = 1e9 * [decimal]$Coin.mbtc_mh_factor
 
         [PSCustomObject]@{
             Algorithm             = $Pool_Algo
             Info                  = $Pool_Coin
             Price                 = $(if ($Divisor) {[decimal]$Coin.estimate / $Divisor})
-            Price24h              = $(if ($Divisor) {[decimal]$Coin.'24h_btc' / $Divisor})
+            Price24h              = $(if ($Divisor) {$(if ($Coin.'24h_btc_shared' -ne $null) {[decimal]$Coin.'24h_btc_shared'} else {[decimal]$Coin.'24h_btc'}) / $Divisor})
             Protocol              = "stratum+tcp"
             Host                  = $MineUrl
             Port                  = [int]$Coin.port
