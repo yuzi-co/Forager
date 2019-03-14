@@ -1039,6 +1039,15 @@ function Get-LiveHashRate {
                     $HashRate = [double]($Data.infos.speed | Measure-Object -Sum).Sum
                 }
             }
+
+            "NHEQ" {
+                $Request = Invoke-TCPRequest -Port $Miner.ApiPort -Request "status" -Quiet
+                if ($Request) {
+                    $Data = $Request | ConvertFrom-Json
+                    $HashRate = $Data.result.speed_ips * 1e6
+                }
+            }
+
         } #end switch
 
         $HashRate
