@@ -1,7 +1,7 @@
 {
   "Path": "cpuminer-$($f=$DeviceGroup.Features;$(if($f.avx2 -and $f.sha){'avx2-sha'}elseif($f.avx2){'avx2'}elseif($f.avx){'avx'}elseif($f.aes -and $f.sse42){'aes-sse42'}elseif($f.sse42){'sse42'}else{'sse2'})).exe",
   "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.03/cpuminer-multi-1.3.6.1.7z",
-  "SHA256": "2C587F32ACCED47E44EEF74D8FBCD92C930420749873EF29295D33C4D9A17D6E",
+  "SHA256": "47BA893CB7D299E0D49BFAB8954A658066FADB4D243A5C9E7158E779574239FD",
   "Type": "CPU",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
@@ -16,6 +16,7 @@
   "API": "Ccminer",
   "APIPort": 4048,
   "Algorithms": {
+    "Balloon": "-a balloon",
     "Rainforest": "-a rainforest",
     "ScryptJane16": "-a scryptjane:16",
     "ScryptN": "-a scrypt:2048",
