@@ -63,29 +63,29 @@ if ($Querymode -eq "Core") {
     #generate a pool for each location and add API data
     $Result = $Pools | Where-Object {$Wallets.($_.Symbol) -ne $null} | ForEach-Object {
         $PoolSymbol = (@($_.WalletSymbol, $_.Symbol) -ne $null)[0]
-
-        $RequestP = Invoke-APIRequest -Url $("https://api.nanopool.org/v1/" + $PoolSymbol.ToLower() + "/approximated_earnings/1000") -Retry 1
+        $f = 1000
+        $RequestP = Invoke-APIRequest -Url $("https://api.nanopool.org/v1/" + $PoolSymbol.ToLower() + "/approximated_earnings/$f") -Retry 1
         $RequestW = Invoke-APIRequest -Url $("https://api.nanopool.org/v1/" + $PoolSymbol.ToLower() + "/pool/activeworkers") -Retry 1
 
-        $Locations = @(
-            [PSCustomObject]@{ Location = "Eu"   ; Server = $PoolSymbol.ToLower() + "-eu1.nanopool.org"      }
-            [PSCustomObject]@{ Location = "US"   ; Server = $PoolSymbol.ToLower() + "-us-east1.nanopool.org" }
-            [PSCustomObject]@{ Location = "Asia" ; Server = $PoolSymbol.ToLower() + "-asia1.nanopool.org"    }
-        )
+        $Locations = @{
+            Eu   = $PoolSymbol.ToLower() + "-eu1.nanopool.org"
+            US   = $PoolSymbol.ToLower() + "-us-east1.nanopool.org"
+            Asia = $PoolSymbol.ToLower() + "-asia1.nanopool.org"
+        }
 
-        ForEach ($Loc in $Locations) {
+        ForEach ($Loc in $Locations.Keys) {
             [PSCustomObject]@{
                 Algorithm             = $_.Algo
                 Info                  = $_.Coin
-                Price                 = [decimal]$RequestP.data.day.bitcoins / $_.Divisor / 1000
+                Price                 = [decimal]$RequestP.data.day.bitcoins / $_.Divisor / $f
                 Protocol              = "stratum+tcp"
                 ProtocolSSL           = "stratum+tls"
-                Host                  = $Loc.Server
+                Host                  = $Locations.$Loc
                 Port                  = $_.Port
                 PortSSL               = $_.PortSSL
-                User                  = $Wallets.($_.Symbol) + "/#WorkerName#" + (if ($Config.Email) {"/" + $Config.Email})
+                User                  = $Wallets.($_.Symbol) + "/#WorkerName#" + $(if ($Config.Email) {"/" + $Config.Email})
                 Pass                  = "x"
-                Location              = $Loc.Location
+                Location              = $Loc
                 SSL                   = [bool]$PortSSL
                 Symbol                = $_.Symbol
                 ActiveOnManualMode    = $ActiveOnManualMode

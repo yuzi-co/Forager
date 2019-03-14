@@ -42,7 +42,7 @@ if ($Querymode -eq "Speed") {
                 PoolName   = $Name
                 Version    = $_.version
                 Algorithm  = Get-AlgoUnifiedName $_.Algo
-                WorkerName = (($_.password -split 'id=')[1] -split ',')[0]
+                WorkerName = (($_.password -split 'ID=')[1] -split ',')[0]
                 Diff       = $_.difficulty
                 Rejected   = $_.rejected
                 HashRate   = $_.accepted
@@ -108,7 +108,7 @@ if ($Querymode -eq "Core") {
                 Host                  = $Algo.name + "." + $Locations.$Location
                 Port                  = $Algo.port
                 User                  = $Wallets.$Currency
-                Pass                  = "c=$Currency,id=#WorkerName#"
+                Pass                  = "c=$Currency,ID=#WorkerName#"
                 Location              = $Location
                 SSL                   = $false
                 Symbol                = Get-CoinSymbol -Coin $Pool_Algo

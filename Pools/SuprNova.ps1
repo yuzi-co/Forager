@@ -26,7 +26,7 @@ if ($Querymode -eq "Info") {
 }
 
 if ($Querymode -eq "ApiKey") {
-    $Request = Invoke-APIRequest -Url $("https://" + $Info.Symbol + ".suprnova.cc/index.php?page=api&action=getuserbalance&api_key=" + $Info.ApiKey + "&id=") -Retry 3 |
+    $Request = Invoke-APIRequest -Url $("https://" + $Info.Symbol + ".suprnova.cc/index.php?page=api&action=getuserbalance&api_key=" + $Info.ApiKey + "&ID=") -Retry 3 |
         Select-Object -ExpandProperty getuserbalance | Select-Object -ExpandProperty data
 
     if ($Request) {

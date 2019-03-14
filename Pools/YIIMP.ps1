@@ -39,7 +39,7 @@ if ($Querymode -eq "Speed") {
                 PoolName   = $Name
                 Version    = $_.version
                 Algorithm  = Get-AlgoUnifiedName $_.Algo
-                WorkerName = (($_.password -split 'id=')[1] -split ',')[0]
+                WorkerName = (($_.password -split 'ID=')[1] -split ',')[0]
                 Diff       = $_.difficulty
                 Rejected   = $_.rejected
                 HashRate   = $_.accepted
@@ -71,7 +71,7 @@ if ($Querymode -eq "Core") {
     }
 
     $Result = $RequestCurrencies | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | Where-Object {
-        $Wallets.$_ -ne $null
+        $Wallets.$_ -ne $null -and
         $RequestCurrencies.$_.'24h_blocks' -gt 0 -and
         $RequestCurrencies.$_.HashRate -gt 0
     } | ForEach-Object {
@@ -87,13 +87,13 @@ if ($Querymode -eq "Core") {
         [PSCustomObject]@{
             Algorithm             = $Pool_Algo
             Info                  = $Pool_Coin
-            Price                 = [decimal]$Coin.estimate / $Divisor
-            Price24h              = [decimal]$Coin.'24h_btc' / $Divisor
+            Price                 = $(if ($Divisor) {[decimal]$Coin.estimate / $Divisor})
+            Price24h              = $(if ($Divisor) {[decimal]$Coin.'24h_btc' / $Divisor})
             Protocol              = "stratum+tcp"
             Host                  = $MineUrl
             Port                  = [int]$Coin.port
             User                  = $Wallets.$Pool_Symbol
-            Pass                  = "c=$Pool_Symbol,id=#WorkerName#"
+            Pass                  = "c=$Pool_Symbol,ID=#WorkerName#"
             Location              = $Location
             SSL                   = $false
             Symbol                = $Pool_Symbol

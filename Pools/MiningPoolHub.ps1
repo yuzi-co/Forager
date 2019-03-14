@@ -28,7 +28,7 @@ if ($Querymode -eq "Info") {
 
 if ($Querymode -eq "ApiKey") {
 
-    $Request = Invoke-APIRequest -Url "https://$($Info.Symbol).miningpoolhub.com/index.php?page=api&action=getdashboarddata&api_key=$($Info.ApiKey)&id=&$(Get-Date -Format "yyyy-MM-dd_HH-mm")" -Retry 3
+    $Request = Invoke-APIRequest -Url "https://$($Info.Symbol).miningpoolhub.com/index.php?page=api&action=getdashboarddata&api_key=$($Info.ApiKey)&ID=&$(Get-Date -Format "yyyy-MM-dd_HH-mm")" -Retry 3
 
     if ($Request.getdashboarddata.data) {
         $Data = $Request.getdashboarddata.data
