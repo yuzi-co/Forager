@@ -1,0 +1,36 @@
+{
+  "Path": "teamredminer-v0.4.2-win\\teamredminer.exe",
+  "Uri": "https://github.com/todxx/teamredminer/releases/download/v0.4.2/teamredminer-v0.4.2-win.zip",
+  "SHA256": "35A36F24A3F2478A70D86FA33484FF1752060829BAFD1FF11C1ED4211BE33D9A",
+  "Type": "AMD",
+  "Arguments": [
+    "-o stratum+$(if($EnableSSL){'ssl'}else{'tcp'})://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-d #Devices#",
+    "--watchdog_script",
+    "--platform=#GPUPlatform#",
+    "--api_listen=#ApiPort#",
+    "#AlgorithmParameters#"
+  ],
+  "API": "Xgminer",
+  "APIPort": 4028,
+  "SSL": true,
+  "Fee": 0.025,
+  "Algorithms": {
+    "CnDouble": "-a cnv8_dbl",
+    "CnHalf": "-a cnv8_half",
+    "CnR": "-a cnr",
+    "CnRwz": "-a cnv8_rwz",
+    "CnV8": "-a cnv8",
+    "_Lyra2z": {
+      "Params": "-a lyra2z",
+      "Fee": 0.03
+    },
+    "Lyra2v3": "-a lyra2rev3",
+    "_Phi2": {
+      "Params": "-a phi2",
+      "Fee": 0.03
+    }
+  }
+}
