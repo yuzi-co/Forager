@@ -1753,4 +1753,3 @@ $ActiveMiners | Where-Object Process -ne $null | ForEach-Object {try {Stop-SubPr
 Stop-Autoexec
 
 Stop-Process -Id $PID
-top-Process -Id $PID
