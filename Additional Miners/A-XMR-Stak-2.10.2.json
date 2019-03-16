@@ -1,0 +1,40 @@
+{
+  "Path": "xmr-stak-win64-2.10.2\\xmr-stak.exe",
+  "Uri": "https://github.com/fireice-uk/xmr-stak/releases/download/2.10.2/xmr-stak-win64-2.10.2.7z",
+  "SHA256": "941136D26E2D2985AAD2828EDCE9728CBB3CE786F49336253AB9FE7E5EA4881F",
+  "Type": "AMD",
+  "Arguments": [
+    "$(if ($enableSSL){'-O'}else{'-o'}) #Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-r #WorkerName#",
+    "--noNVIDIA",
+    "--noCPU",
+    "--noUAC",
+    "--openCLVendor AMD",
+    "$(if ($Pool.PoolName -eq 'NiceHash'){'--use-nicehash'})",
+    "--httpd #APIPort#",
+    "--amd #GroupName#-#Algorithm#.txt",
+    "#AlgorithmParameters#"
+  ],
+  "API": "XMRig",
+  "APIPort": 4028,
+  "Fee": 0.02,
+  "SSL": true,
+  "Algorithms": {
+    "CnFast": "--currency cryptonight_masari",
+    "CnDouble": "--currency cryptonight_v8_double",
+    "CnGpu": "--currency cryptonight_gpu",
+    "CnHalf": "--currency cryptonight_v8_half",
+    "CnHaven": "--currency cryptonight_haven",
+    "CnHeavy": "--currency cryptonight_heavy",
+    "CnLiteV7": "--currency cryptonight_lite_v7",
+    "CnR": "--currency cryptonight_r",
+    "CnRwz": "--currency cryptonight_v8_reversewaltz",
+    "CnSaber": "--currency cryptonight_bittube2",
+    "CnTurtle": "--currency cryptonight_turtle",
+    "CnV7": "--currency cryptonight_v7",
+    "CnV8": "--currency cryptonight_v8",
+    "CnXTL": "--currency cryptonight_v7_stellite"
+  }
+}
