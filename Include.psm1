@@ -811,6 +811,7 @@ function Invoke-APIRequest {
     $UserAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36'
     $CachePath = "$PSScriptRoot\Cache\"
     $CacheFile = $CachePath + [System.Web.HttpUtility]::UrlEncode($Url) + '.json'
+    $Response = $null
 
     if (-not (Test-Path -Path $CachePath)) { New-Item -Path $CachePath -ItemType directory -Force | Out-Null }
     if (Test-Path -LiteralPath $CacheFile -NewerThan (Get-Date).AddMinutes( - $Age)) {
@@ -835,6 +836,7 @@ function Invoke-APIRequest {
         }
     }
     $Response
+    Remove-Variable Response
 }
 
 function Get-LiveHashRate {

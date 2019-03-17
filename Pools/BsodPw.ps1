@@ -73,7 +73,7 @@ if ($Querymode -eq "Core") {
     }
 
     $Result = $RequestCurrencies | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | Where-Object {
-        $Wallets.($RequestCurrencies.$_.symbol) -ne $null -and
+        $Wallets.(($_ -split '-')[0]) -ne $null -and
         (
             $RequestCurrencies.$_.'24h_blocks_shared' -gt 0 -and
             $RequestCurrencies.$_.hashrate_shared -gt 0
