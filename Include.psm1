@@ -1054,7 +1054,7 @@ function Get-LiveHashRate {
                     $HashRate = $Data.Value
                 }
             }
-           
+
             "GrinPro" {
                 $Request = Invoke-HTTPRequest -Port $Miner.ApiPort -Path "/api/status"
                 if ($Request) {
@@ -1295,9 +1295,9 @@ function Expand-WebRequest {
                         }
                     } else {
                         $Params = @{
-                            FilePath     = "7z" 
+                            FilePath     = "7z"
                             ArgumentList = 'x "' + $FilePath + '" -o"' + $Path + '" -y -spe'
-                        }                        
+                        }
                     }
                 } else {
                     $Params = @{
