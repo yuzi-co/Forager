@@ -16,6 +16,10 @@ param(
     [array]$GroupNames
 )
 
+# Requires -PSEdition Core
+# Requires -Version 6.0
+# Requires -RunAsAdministrator
+
 $Error.Clear()
 Import-Module ./Include.psm1
 
@@ -1051,6 +1055,7 @@ while ($Quit -eq $false) {
                         MinerWindowStyle = $Config.MinerWindowStyle
                         Priority         = if ($ActiveMiners[$BestNow.IdF].DeviceGroup.GroupType -eq "CPU") { -2 } else { 0 }
                     }
+                    Log "Starting $BestNowLogMsg --> $($ActiveMiners[$BestNow.IdF].Path) $($ActiveMiners[$BestNow.IdF].Arguments)" -Severity Debug
                     $ActiveMiners[$BestNow.IdF].Process = Start-SubProcess @ProcessParams @CommonParams
 
                     $ActiveMiners[$BestNow.IdF].SubMiners[$BestNow.Id].Status = 'Running'
@@ -1059,7 +1064,7 @@ while ($Quit -eq $false) {
                     $ActiveMiners[$BestNow.IdF].SubMiners[$BestNow.Id].Stats.StatsTime = Get-Date
                     $ActiveMiners[$BestNow.IdF].SubMiners[$BestNow.Id].StatsHistory.LastTimeActive = Get-Date
                     $ActiveMiners[$BestNow.IdF].SubMiners[$BestNow.Id].TimeSinceStartInterval = [TimeSpan]0
-                    Log "Started pid $($ActiveMiners[$BestNow.IdF].Process.Id), $BestNowLogMsg --> $($ActiveMiners[$BestNow.IdF].Path) $($ActiveMiners[$BestNow.IdF].Arguments)" -Severity Debug
+                    Log "Started $BestNowLogMsg with PID $($ActiveMiners[$BestNow.IdF].Process.Id)" -Severity Debug
                 }
             } else {
                 #Must mantain last miner by switch
@@ -1111,7 +1116,12 @@ while ($Quit -eq $false) {
     Clear-Host
     $RepaintScreen = $true
 
-    while ($Host.UI.RawUI.KeyAvailable) {$Host.UI.RawUI.FlushInputBuffer()} #keyb buffer flush
+    while ($Host.UI.RawUI.KeyAvailable) {
+        $EA = $ErrorActionPreference
+        $ErrorActionPreference = "SilentlyContinue"
+        $Host.UI.RawUI.FlushInputBuffer()
+        $ErrorActionPreference = $EA
+    } #keyb buffer flush
 
     #---------------------------------------------------------------------------
     #---------------------------------------------------------------------------
