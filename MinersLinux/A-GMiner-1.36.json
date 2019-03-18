@@ -1,0 +1,43 @@
+{
+  "Path": "miner",
+  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.36/gminer_1_36_minimal_linux64.tar.xz",
+  "SHA256": "",
+  "Type": "AMD",
+  "Arguments": [
+    "--server #Server#",
+    "--port #Port#",
+    "--user #Login#",
+    "--pass #Password#",
+    "--api #APIPort#",
+    "--watchdog 0",
+    "--ssl $(if($EnableSSL){1}else{0})",
+    "--cuda 0",
+    "--opencl 1",
+    "#AlgorithmParameters#"
+  ],
+  "API": "GMiner",
+  "APIPort": 4028,
+  "SSL": true,
+  "Fee": 0.02,
+  "Algorithms": {
+    "Cuckoo29": {
+      "Params": "--algo aeternity",
+      "NoCpu": true,
+      "Mem": 5.6
+    },
+    "Cuckaroo29": {
+      "Params": "--algo grin29",
+      "NoCpu": true,
+      "Mem": 5.6
+    },
+    "Cuckaroo29s": {
+      "Params": "--algo swap",
+      "NoCpu": true,
+      "Mem": 5.6
+    },
+    "Equihash150": {
+      "Params": "--algo 150_5",
+      "Mem": 4
+    }
+  }
+}

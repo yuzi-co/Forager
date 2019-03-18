@@ -2,7 +2,7 @@
   "Path": "xmrig-2.14.1/xmrig",
   "Uri": "https://github.com/xmrig/xmrig/releases/download/v2.14.1/xmrig-2.14.1-xenial-x64.tar.gz",
   "SHA256": "",
-  "Type": "_CPU",
+  "Type": "CPU",
   "Arguments": [
     "-o #Server#:#Port#",
     "-u #Login#",
@@ -10,8 +10,6 @@
     "$(if ($Pool.PoolName -eq 'NiceHash'){'--nicehash'})",
     "$(if ($EnableSSL){'--tls'})",
     "--donate-level 1",
-    "--no-color",
-    "--syslog",
     "--api-port #APIPort#",
     "--max-cpu-usage=$(if ($CpuThreads -ne $null){ [int](100 * $CpuThreads / $DeviceGroup.Features.Threads) } else { 100 })",
     "#AlgorithmParameters#"

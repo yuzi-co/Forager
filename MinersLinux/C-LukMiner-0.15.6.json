@@ -1,20 +1,19 @@
 ﻿{
   "Path": "luk-cpu",
-  "Uri": "http://www.lukminer.net/releases/lukMiner-0.15.6-cpu-phi.tgz",
+  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.03/lukMiner-0.15.6-cpu-phi.tar.gz",
   "SHA256": "",
-  "Type": "CPU",
+  "Type": "_CPU",
   "Arguments": [
     "--host #Server#",
     "--port #Port#",
     "--user #Login#",
     "--pass #Password#",
     "$(if ($Pool.PoolName -eq 'NiceHash'){'--nicehash'})",
-    "-t $(if ($CpuThreads -ne $null){$CpuThreads} else {$SystemInfo.Processors})",
+    "$(if ($CpuThreads -ne $null){'-t ' + $CpuThreads})",
     "--status-port #APIPort#",
-    "-l luk.log",
     "#AlgorithmParameters#"
   ],
-  "API": "Ccminer",
+  "API": "Luk",
   "APIPort": 4048,
   "Algorithms": {
     "Cn": "-a xn",
@@ -23,9 +22,9 @@
     "CnHalf": "-a xnmasari",
     "CnHaven": "-a xnhaven",
     "CnHeavy": "-a xnheavy",
-    "CnLiteV7": "-a xnlight",
+    "_CnLiteV7": "-a xnlight",
     "CnR": "-a xmr-v4r",
-    "CnTurtle": "-a xnlightv1",
+    "_CnTurtle": "-a xnlightv1",
     "CnV7": "-a xmr-v7",
     "CnV8": "-a xmr-v8",
     "CnXTL": "-a xnstellite"

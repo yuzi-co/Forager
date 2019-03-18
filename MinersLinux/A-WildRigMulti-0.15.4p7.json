@@ -1,0 +1,23 @@
+{
+  "Path": "wildrig-multi",
+  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.15.4p7/wildrig-multi-linux-0.15.4-preview7.tar.gz",
+  "SHA256": "",
+  "Type": "_AMD",
+  "Arguments": [
+    "-o #Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-r 10",
+    "-R 3",
+    "--send-stale",
+    "--donate-level 1",
+    "--api-port #ApiPort#",
+    "#AlgorithmParameters#"
+  ],
+  "API": "XMRig",
+  "APIPort": 4028,
+  "Fee": 0.01,
+  "Algorithms": {
+    "Rainforest": "--algo rainforest --opencl-threads auto --opencl-launch auto"
+  }
+}
