@@ -1,7 +1,7 @@
 #!/bin/bash
 
 Mode=Automatic
-Pools=NiceHash
+Pools=NiceHash,ZergPool,Zpool,WhatToMine
 Algos=
 Coins=
 

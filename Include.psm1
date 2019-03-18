@@ -664,9 +664,7 @@ function Format-DeviceList {
 
 function Get-SystemInfo () {
 
-    $OSVersion = [System.Environment]::OSVersion
-
-    if ($IsWindows -eq $null -and $IsLinux -eq $null -and $IsMacOS -eq $null) {
+    if (@($IsWindows, $IsLinux, $IsMacOS) -eq $null) {
         # Define flags for non-Core Powershell
         if ([System.Environment]::OSVersion.Platform -eq "Win32NT") {
             # Just making sure, since only Windows has non-Core Poweshell
@@ -756,7 +754,7 @@ function Invoke-TcpRequest {
         [String]$Server = "localhost",
         [Parameter(Mandatory = $true)]
         [String]$Port,
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $false)]
         [String]$Request,
         [Parameter(Mandatory = $false)]
         [Int]$Timeout = 10, #seconds,
@@ -781,7 +779,13 @@ function Invoke-TcpRequest {
         $client.ReceiveTimeout = $Timeout * 1000
         $Writer.AutoFlush = $true
 
-        if ($DoNotSendNewline) {$Writer.Write($Request)} else {$Writer.WriteLine($Request)}
+        if ($Request) {
+            if ($DoNotSendNewline) {
+                $Writer.Write($Request)
+            } else {
+                $Writer.WriteLine($Request)
+            }
+        }
         if (-not $WriteOnly) {
             if ($ReadToEnd) {
                 $Response = $Reader.ReadToEnd()
@@ -842,11 +846,12 @@ function Invoke-APIRequest {
 
     $UserAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36'
     $CachePath = "./Cache/"
-    $CacheFile = $CachePath + [System.Web.HttpUtility]::UrlEncode($Url) + '.json'
+    $CacheFile = $CachePath + [System.Web.HttpUtility]::UrlEncode($Url)
+    $CacheFile = $CacheFile.subString(0, [math]::min(200, $CacheFile.Length)) + '.json'
     $Response = $null
 
     if (-not (Test-Path -Path $CachePath)) { New-Item -Path $CachePath -ItemType directory -Force | Out-Null }
-    if (Test-Path -LiteralPath $CacheFile -NewerThan (Get-Date).AddMinutes( - $Age)) {
+    if (Test-Path $CacheFile -NewerThan (Get-Date).AddMinutes( - $Age)) {
         $Response = Get-Content -Path $CacheFile | ConvertFrom-Json
     } else {
         while ($Retry -gt 0) {
@@ -855,13 +860,13 @@ function Invoke-APIRequest {
                 $Response = Invoke-RestMethod -Uri $Url -UserAgent $UserAgent -UseBasicParsing -TimeoutSec $Timeout
                 if ($Response) {$Retry = 0}
             } catch {
-                Start-Sleep -Seconds 2
+                Start-Sleep -Seconds 1
                 $Error.Remove($error[$Error.Count - 1])
             }
         }
         if ($Response) {
-            if ($CacheFile.Length -lt 250) {$Response | ConvertTo-Json -Depth 100 | Set-Content -Path $CacheFile}
-        } elseif (Test-Path -LiteralPath $CacheFile -NewerThan (Get-Date).AddMinutes( - $MaxAge)) {
+            $Response | ConvertTo-Json -Depth 100 | Set-Content -Path $CacheFile
+        } elseif (Test-Path -Path $CacheFile -NewerThan (Get-Date).AddMinutes( - $MaxAge)) {
             $Response = Get-Content -Path $CacheFile | ConvertFrom-Json
         } else {
             $Response = $null
@@ -1050,11 +1055,11 @@ function Get-LiveHashRate {
             "Luk" {
                 $Request = Invoke-TCPRequest -Port $Miner.ApiPort -ReadToEnd -Quiet
                 if ($Request) {
-                    $Data = $Request -split '`n' | ConvertFrom-StringData | Where-Object Name -eq 'LOG:hash_rate'
-                    $HashRate = $Data.Value
+                    $Data = $Request -replace 'LOG:' | ConvertFrom-StringData
+                    $HashRate = [double]$Data.hash_rate
                 }
             }
-           
+
             "GrinPro" {
                 $Request = Invoke-HTTPRequest -Port $Miner.ApiPort -Path "/api/status"
                 if ($Request) {
@@ -1178,12 +1183,12 @@ function Start-SubProcess {
                 ProcessHandle = $Process.Handle
             }
 
-            $null = $ControllerProcess.Handle
-            $null = $Process.Handle
+            $ControllerProcess.Handle | Out-Null
+            $Process.Handle | Out-Null
 
             do {
                 if ($ControllerProcess.WaitForExit(1000)) {
-                    $null = $Process.CloseMainWindow()
+                    $Process.CloseMainWindow() | Out-Null
                 }
             }
             while ($Process.HasExited -eq $false)
@@ -1201,12 +1206,16 @@ function Start-SubProcess {
                 FilePath         = $FilePath
                 ArgumentList     = $(if ($ArgumentList) {$ArgumentList})
                 WorkingDirectory = $(if ($WorkingDirectory) {$WorkingDirectory})
+                PassThru         = $true
             }
             if ($IsWindows) {
                 $ProcessParam.WindowStyle = $MinerWindowStyle
+            } else {
+                $ProcessParam.RedirectStandardOutput = $(if ($WorkingDirectory) {$WorkingDirectory + '/'}) + "errors-$(Get-Date -Format "yyyyMMdd-HHmmss").log"
+                $ProcessParam.RedirectStandardError = $(if ($WorkingDirectory) {$WorkingDirectory + '/'}) + "console-$(Get-Date -Format "yyyyMMdd-HHmmss").log"
             }
 
-            $Process = Start-Process @ProcessParam -PassThru
+            $Process = Start-Process @ProcessParam
             if (-not $Process) {
                 [PSCustomObject]@{
                     ProcessId = $null
@@ -1219,28 +1228,25 @@ function Start-SubProcess {
                 ProcessHandle = $Process.Handle
             }
 
-            $null = $ControllerProcess.Handle
-            $null = $Process.Handle
+            $ControllerProcess.Handle | Out-Null
+            $Process.Handle | Out-Null
 
             do {
                 if ($ControllerProcess.WaitForExit(1000)) {
-                    $null = $Process.CloseMainWindow()
+                    $Process.CloseMainWindow() | Out-Null
                 }
-            }
-            while ($Process.HasExited -eq $false)
-
+            } until ($Process.HasExited)
         }
     }
 
     do {
         Start-Sleep -Seconds 1
         $JobOutput = Receive-Job $Job
-    }
-    while (-not $JobOutput)
+    } while (-not $JobOutput)
 
     if ($JobOutput.ProcessId -gt 0) {
         $Process = Get-Process | Where-Object Id -eq $JobOutput.ProcessId
-        $null = $Process.Handle
+        $Process.Handle | Out-Null
         $Process
 
         if ($Process) {$Process.PriorityClass = $PriorityNames.$Priority}
@@ -1295,9 +1301,9 @@ function Expand-WebRequest {
                         }
                     } else {
                         $Params = @{
-                            FilePath     = "7z" 
+                            FilePath     = "7z"
                             ArgumentList = 'x "' + $FilePath + '" -o"' + $Path + '" -y -spe'
-                        }                        
+                        }
                     }
                 } else {
                     $Params = @{
@@ -1455,7 +1461,9 @@ function Get-Updates {
 function Get-Config {
 
     $Result = @{}
-    switch -regex -file ./Config.ini {
+    # case insensitive match for linux
+    $File = Get-ChildItem . -File | Where-Object Name -imatch "config.ini" | Select-Object -First 1 -ExpandProperty Name
+    switch -regex -file $File {
         "^\s*(\w+)\s*=\s*(.*)" {
             $name, $value = $matches[1..2]
             $Result[$name] = switch -wildcard ($value.Trim()) {
@@ -1475,7 +1483,9 @@ function Get-Config {
 function Get-Wallets {
 
     $Result = @{}
-    switch -regex -file ./Config.ini {
+    # case insensitive match for linux
+    $File = Get-ChildItem . -File | Where-Object Name -imatch "config.ini" | Select-Object -First 1 -ExpandProperty Name
+    switch -regex -file $File {
         "^\s*WALLET_(\w+)\s*=\s*(.*)" {
             $name, $value = $matches[1..2]
             $Result[$name] = $value.Trim()
@@ -1492,7 +1502,7 @@ function Get-BestHashRateAlgo {
 
     $Pattern = "*_" + $Algorithm + "_*_HashRate.csv"
 
-    Get-ChildItem ./Stats -Filter $Pattern -File | ForEach-Object {
+    Get-ChildItem ./Stats -File | Where-Object Name -imatch $Pattern | Select-Object -ExpandProperty Name | ForEach-Object {
         $Content = $_ | Get-Content | ConvertFrom-Csv
         [PSCustomObject]@{
             HashRate = $Content.Speed | Measure-Object -Average | Select-Object -ExpandProperty Average
@@ -1755,31 +1765,24 @@ function Start-Downloader {
 }
 
 function Clear-Files {
-
     $Now = Get-Date
-    $Days = "3"
 
-    $TargetFolder = "./Logs"
-    $Extension = "*.log"
-    $LastWrite = $Now.AddDays( - $Days)
-    $Files = Get-Childitem $TargetFolder -Include $Extension -Exclude "empty.txt" -File -Recurse | Where-Object {$_.LastWriteTime -le "$LastWrite"}
-    $Files | ForEach-Object {Remove-Item $_.fullname}
+    $Files = @(
+        $TargetFolder = "."
+        $LastWrite = $Now.AddDays(-3)
+        Get-ChildItem $TargetFolder -Include "*.log" -File -Recurse | Where-Object LastWriteTime -le $LastWrite
 
-    $TargetFolder = "."
-    $Extension = "wrapper_*.txt"
-    $Files = Get-Childitem $TargetFolder -Include $Extension -File -Recurse
-    $Files | ForEach-Object {Remove-Item $_.fullname}
+        $TargetFolder = "."
+        Get-ChildItem $TargetFolder -File | Where-Object Name -imatch "wrapper_*.txt"
 
-    $TargetFolder = "."
-    $Extension = "*.tmp"
-    $Files = Get-Childitem $TargetFolder -Include $Extension -File -Recurse
-    $Files | ForEach-Object {Remove-Item $_.fullname}
+        $TargetFolder = "."
+        Get-ChildItem $TargetFolder -File -Include "*.tmp" -Recurse
 
-    $TargetFolder = "./Cache"
-    $Extension = "*.json"
-    $LastWrite = $Now.AddDays( - $Days)
-    $Files = Get-Childitem $TargetFolder -Include $Extension -Exclude "empty.txt" -File -Recurse | Where-Object {$_.LastWriteTime -le "$LastWrite"}
-    $Files | ForEach-Object {Remove-Item $_.fullname}
+        $TargetFolder = "./Cache"
+        $LastWrite = $Now.AddDays(-1)
+        Get-ChildItem $TargetFolder -File -Include "*.json" -Recurse | Where-Object LastWriteTime -le $LastWrite
+    )
+    $Files | Remove-Item
 }
 
 function Get-CoinSymbol ([string]$Coin) {
@@ -1794,19 +1797,20 @@ function Get-CoinSymbol ([string]$Coin) {
 }
 
 function Test-DeviceGroupsConfig ($Types) {
-    $Devices = Get-DevicesInformation $Types
-    $Types | Where-Object GroupType -ne 'CPU' | ForEach-Object {
-        $DetectedDevices = @()
-        $DetectedDevices += $Devices | Where-Object GroupName -eq $_.GroupName
-        if ($DetectedDevices.Count -eq 0) {
-            Log ("No Devices for group " + $_.GroupName + " was detected, activity based watchdog will be disabled for that group, this happen with AMD beta blockchain drivers, no Afterburner or incorrect GpuGroups config") -Severity Warn
-            Start-Sleep -Seconds 5
-        } elseif ($DetectedDevices.Count -ne $_.DevicesCount) {
-            Log ("Mismatching Devices for group " + $_.GroupName + " was detected, check GpuGroups config and DeviceList.bat output") -Severity Warn
-            Start-Sleep -Seconds 5
-        }
-    }
     if ($IsWindows) {
+        $Devices = Get-DevicesInformation $Types
+        $Types | Where-Object GroupType -ne 'CPU' | ForEach-Object {
+            $DetectedDevices = @()
+            $DetectedDevices += $Devices | Where-Object GroupName -eq $_.GroupName
+            if ($DetectedDevices.Count -eq 0) {
+                Log ("No Devices for group " + $_.GroupName + " was detected, activity based watchdog will be disabled for that group, this happen with AMD beta blockchain drivers, no Afterburner or incorrect GpuGroups config") -Severity Warn
+                Start-Sleep -Seconds 5
+            } elseif ($DetectedDevices.Count -ne $_.DevicesCount) {
+                Log ("Mismatching Devices for group " + $_.GroupName + " was detected, check GpuGroups config and DeviceList.bat output") -Severity Warn
+                Start-Sleep -Seconds 5
+            }
+        }
+
         $TotalMem = (($Types | Where-Object GroupType -ne 'CPU').OCLDevices.GlobalMemSize | Measure-Object -Sum).Sum / 1GB
         $TotalSwap = (Get-CimInstance Win32_PageFile | Select-Object -ExpandProperty FileSize | Measure-Object -Sum).Sum / 1GB
         if ($TotalMem -gt $TotalSwap) {

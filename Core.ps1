@@ -28,7 +28,7 @@ try {Set-WindowSize 170 50} catch {}
 #Start log file
 $LogPath = "./Logs/"
 if (-not (Test-Path $LogPath)) { New-Item -Path $LogPath -ItemType directory | Out-Null }
-$LogName = $LogPath + "$(Get-Date -Format "yyyy-MM-dd_HH-mm-ss").log"
+$LogName = $LogPath + "forager-$(Get-Date -Format "yyyyMMdd-HHmmss").log"
 Start-Transcript $LogName  #for start log msg
 Stop-Transcript | Out-Null
 $global:LogFile = [System.IO.StreamWriter]::new( $LogName, $true )
@@ -162,6 +162,12 @@ if ($Config.Afterburner -and $IsWindows) {
 
 $Quit = $false
 $Screen = 'Profits'
+
+$StatsPath = "./Stats/"
+$BinPath = $(if ($IsLinux) {"./BinLinux/"} else {"./Bin/"})
+$MinersPath = $(if ($IsLinux) {"./MinersLinux/"} else {"./Miners/"})
+if (-not (Test-Path $BinPath)) { New-Item -Path $BinPath -ItemType directory -Force | Out-Null }
+if (-not (Test-Path $StatsPath)) { New-Item -Path $StatsPath -ItemType directory -Force | Out-Null }
 
 #-----------------------------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------
@@ -368,7 +374,7 @@ while ($Quit -eq $false) {
     $Miners = @()
 
     $Params = @{
-        Path  = $(if ($IsWindows) { "./Miners/*" } else { "./MinersLinux/*" })
+        Path  = $MinersPath + "*"
         Include = "*.json"
     }
     $MinersFolderContent = Get-ChildItem @Params
@@ -441,10 +447,10 @@ while ($Quit -eq $false) {
                             $AlgoParams = $ExecutionContext.InvokeCommand.ExpandString($Algo.Value)
                         } else {
                             $AlgoParams = $ExecutionContext.InvokeCommand.ExpandString($Algo.Value.Params)
-                            if ($Algo.Value.Fee -ne $null) {
+                            if ($null -ne $Algo.Value.Fee) {
                                 $MinerFee = $ExecutionContext.InvokeCommand.ExpandString($Algo.Value.Fee)
                             }
-                            if ($Algo.Value.NoCpu -ne $null) {
+                            if ($null -ne $Algo.Value.NoCpu) {
                                 $NoCpu = $ExecutionContext.InvokeCommand.ExpandString($Algo.Value.NoCpu)
                             }
 
@@ -452,7 +458,7 @@ while ($Quit -eq $false) {
                             if (
                                 $Algo.Value.Enabled -eq $false -or
                                 $Algo.Value.NH -eq $false -and $Pool.PoolName -eq 'NiceHash' -or
-                                $Algo.Value.Mem -gt $DeviceGroup.MemoryGB * $(if ($SystemInfo.OSVersion.Major -eq 10) {0.9} else {1})
+                                ($Algo.Value.Mem -gt $DeviceGroup.MemoryGB * $(if ($SystemInfo.OSVersion.Major -eq 10) {0.9} else {1}) -and $DeviceGroup.MemoryGB -gt 0)
                             ) {
                                 Continue
                             }
@@ -656,12 +662,12 @@ while ($Quit -eq $false) {
                             BenchmarkArg        = $ExecutionContext.InvokeCommand.ExpandString($Miner.BenchmarkArg)
                             ConfigFileArguments = $ExecutionContext.InvokeCommand.ExpandString($ConfigFileArguments)
                             DeviceGroup         = $DeviceGroup
-                            ExtractionPath      = "./Bin/" + $MinerFile.BaseName + "/"
-                            GenerateConfigFile  = $(if ($PatternConfigFile) {"./Bin/" + $MinerFile.BaseName + "/" + $($Miner.GenerateConfigFile -replace '#GroupName#', $DeviceGroup.GroupName -replace '#Algorithm#', $AlgoName)})
+                            ExtractionPath      = $BinPath + $MinerFile.BaseName + "/"
+                            GenerateConfigFile  = $(if ($PatternConfigFile) {$BinPath + $MinerFile.BaseName + "/" + $($Miner.GenerateConfigFile -replace '#GroupName#', $DeviceGroup.GroupName -replace '#Algorithm#', $AlgoName)})
                             MinerFee            = [decimal]$MinerFee
                             Name                = $MinerFile.BaseName
                             NoCpu               = $NoCpu
-                            Path                = "./Bin/" + $MinerFile.BaseName + "/" + $ExecutionContext.InvokeCommand.ExpandString($Miner.Path)
+                            Path                = $BinPath + $MinerFile.BaseName + "/" + $ExecutionContext.InvokeCommand.ExpandString($Miner.Path)
                             Pool                = $Pool
                             PoolDual            = $PoolDual
                             PrelaunchCommand    = $Miner.PrelaunchCommand
@@ -1058,13 +1064,14 @@ while ($Quit -eq $false) {
                     Log "Starting $BestNowLogMsg --> $($ActiveMiners[$BestNow.IdF].Path) $($ActiveMiners[$BestNow.IdF].Arguments)" -Severity Debug
                     $ActiveMiners[$BestNow.IdF].Process = Start-SubProcess @ProcessParams @CommonParams
 
+                    Log "Started $BestNowLogMsg with PID $($ActiveMiners[$BestNow.IdF].Process.Id)" -Severity Debug
+
                     $ActiveMiners[$BestNow.IdF].SubMiners[$BestNow.Id].Status = 'Running'
                     $ActiveMiners[$BestNow.IdF].SubMiners[$BestNow.Id].BestBySwitch = ""
                     $ActiveMiners[$BestNow.IdF].SubMiners[$BestNow.Id].Stats.LastTimeActive = Get-Date
                     $ActiveMiners[$BestNow.IdF].SubMiners[$BestNow.Id].Stats.StatsTime = Get-Date
                     $ActiveMiners[$BestNow.IdF].SubMiners[$BestNow.Id].StatsHistory.LastTimeActive = Get-Date
                     $ActiveMiners[$BestNow.IdF].SubMiners[$BestNow.Id].TimeSinceStartInterval = [TimeSpan]0
-                    Log "Started $BestNowLogMsg with PID $($ActiveMiners[$BestNow.IdF].Process.Id)" -Severity Debug
                 }
             } else {
                 #Must mantain last miner by switch
@@ -1649,7 +1656,7 @@ while ($Quit -eq $false) {
             @{expression = {$_.Stats.LastTimeActive}; Descending = $true} |
                 Format-Table -Wrap -GroupBy @{Label = "Group"; Expression = {$ActiveMiners[$_.IdF].DeviceGroup.GroupName}} (
                 @{Label = "LastTimeActive"; Expression = {$($_.Stats.LastTimeActive).tostring("dd/MM/yy H:mm")}},
-                @{Label = "Command"; Expression = {"$($ActiveMiners[$_.IdF].Path.TrimStart((Convert-Path "./Bin/"))) $($ActiveMiners[$_.IdF].Arguments)"}}
+                @{Label = "Command"; Expression = {"$($ActiveMiners[$_.IdF].Path.TrimStart((Convert-Path $BinPath))) $($ActiveMiners[$_.IdF].Arguments)"}}
             ) | Out-Host
 
             $RepaintScreen = $false
@@ -1767,5 +1774,3 @@ $LogFile.close()
 Clear-Files
 $ActiveMiners | Where-Object Process -ne $null | ForEach-Object {try {Stop-SubProcess $_.Process} catch {}}
 Stop-Autoexec
-
-Stop-Process -Id $PID
