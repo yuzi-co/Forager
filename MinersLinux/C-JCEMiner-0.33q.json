@@ -1,5 +1,5 @@
 {
-  "Path": "jce_cn_cpu_miner$(if($DeviceGroup.Features.'64bit'){'64'}else{'32'})",
+  "Path": "jce_cn_cpu_miner64",
   "Uri": "https://github.com/jceminer/cn_cpu_miner/raw/master/jce_cn_cpu_miner.linux.033q.zip",
   "SHA256": "",
   "Type": "CPU",
