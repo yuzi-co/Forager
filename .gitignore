@@ -1,4 +1,4 @@
-Bin/*
+Bin*/*
 Logs/*
 Stats/*
 Cache/*
@@ -8,13 +8,12 @@ Archive/*
 Dump/*
 
 .vscode/
-Donation.ctr
 Wrapper_*.txt
 !empty.txt
 
-Config.ini
-Autoexec.txt
-Donations.json
+[C|c]onfig.ini
+[A|a]utoexec.txt
+[D|d]onations.json
 
 WIP/*
 *custom*
