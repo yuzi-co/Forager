@@ -677,7 +677,7 @@ function Get-SystemInfo () {
     }
 
     if ($IsWindows) {
-        $OperatingSystem = Get-CimInstance Win32_OperatingSystem
+        # $OperatingSystem = Get-CimInstance Win32_OperatingSystem
         $Features = $($feat = @{}; switch -regex ((& ./Includes/CHKCPU32.exe /x) -split "</\w+>") {"^\s*<_?(\w+)>(\d+).*" {$feat.($matches[1]) = [int]$matches[2]}}; $feat)
 
         [PSCustomObject]@{
@@ -1047,6 +1047,14 @@ function Get-LiveHashRate {
                 }
             }
 
+            "Luk" {
+                $Request = Invoke-TCPRequest -Port $Miner.ApiPort -ReadToEnd -Quiet
+                if ($Request) {
+                    $Data = $Request -split '`n' | ConvertFrom-StringData | Where-Object Name -eq 'LOG:hash_rate'
+                    $HashRate = $Data.Value
+                }
+            }
+           
             "GrinPro" {
                 $Request = Invoke-HTTPRequest -Port $Miner.ApiPort -Path "/api/status"
                 if ($Request) {
@@ -1274,19 +1282,30 @@ function Expand-WebRequest {
                 Log "Unpacking to $Path"
                 if (-not (Test-Path $Path)) {$null = New-Item -Path $Path -ItemType directory}
 
-                if ($IsLinux -and ($FileName -split '\.')[-2] -eq 'tar') {
-                    $Params = @{
-                        FilePath     = "tar"
-                        ArgumentList = "-xa -f " + $FilePath + " -C " + $Path
-                        Wait         = $true
+                if ($IsLinux) {
+                    if (($FileName -split '\.')[-2] -eq 'tar') {
+                        $Params = @{
+                            FilePath     = "tar"
+                            ArgumentList = "-xa -f " + $FilePath + " -C " + $Path
+                        }
+                    } elseif (($FileName -split '\.')[-1] -in @('tgz')) {
+                        $Params = @{
+                            FilePath     = "tar"
+                            ArgumentList = "-xz -f " + $FilePath + " -C " + $Path
+                        }
+                    } else {
+                        $Params = @{
+                            FilePath     = "7z" 
+                            ArgumentList = 'x "' + $FilePath + '" -o"' + $Path + '" -y -spe'
+                        }                        
                     }
                 } else {
                     $Params = @{
-                        FilePath     = $(if ($IsWindows) {"./includes/7z.exe"} else {"7z"} )
+                        FilePath     = "./includes/7z.exe"
                         ArgumentList = 'x "' + $FilePath + '" -o"' + $Path + '" -y -spe'
-                        Wait         = $true
                     }
                 }
+                $Params.Wait = $true
                 Start-Process @Params
             }
         }
@@ -1436,7 +1455,7 @@ function Get-Updates {
 function Get-Config {
 
     $Result = @{}
-    switch -regex -file ./config.ini {
+    switch -regex -file ./Config.ini {
         "^\s*(\w+)\s*=\s*(.*)" {
             $name, $value = $matches[1..2]
             $Result[$name] = switch -wildcard ($value.Trim()) {
@@ -1456,7 +1475,7 @@ function Get-Config {
 function Get-Wallets {
 
     $Result = @{}
-    switch -regex -file ./config.ini {
+    switch -regex -file ./Config.ini {
         "^\s*WALLET_(\w+)\s*=\s*(.*)" {
             $name, $value = $matches[1..2]
             $Result[$name] = $value.Trim()
