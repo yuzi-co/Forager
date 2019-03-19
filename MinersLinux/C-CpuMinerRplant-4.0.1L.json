@@ -10,6 +10,7 @@
     "-p #Password#",
     "-R 3",
     "-r 10",
+    "--no-color",
     "-b #APIPort#",
     "$(if ($CpuThreads -ne $null){'-t ' + $CpuThreads})",
     "#AlgorithmParameters#"

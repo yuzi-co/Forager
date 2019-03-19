@@ -11,8 +11,10 @@
     "--api #APIPort#",
     "--watchdog 0",
     "--ssl $(if($EnableSSL){1}else{0})",
+    "--devices #DevicesETHMode#",
     "--cuda 0",
     "--opencl 1",
+    "--color 0",
     "#AlgorithmParameters#"
   ],
   "API": "GMiner",

@@ -6,6 +6,9 @@
   "Arguments": [
     "-P stratum+tcp://#Login#:#Password#@#Server#:#Port#",
     "--opencl",
+    "--opencl-platform #GPUPlatform#",
+    "--opencl-devices #DevicesETHMode#",
+    "--nocolor",
     "--api-port -#APIPort#",
     "#AlgorithmParameters#"
   ],

@@ -9,10 +9,9 @@
     "--user #Login#",
     "--pass #Password#",
     "--rigname #WorkerName#",
+    "--devices #Devices#",
     "--apiport #ApiPort#",
     "--digits 2",
-    "--longstats 60",
-    "--shortstats 5",
     "--connectattempts 3",
     "--tls $(if($enableSSL){1}else{0})",
     "#AlgorithmParameters#"
@@ -22,32 +21,14 @@
   "SSL": true,
   "Algorithms": {
     "Equihash144": {
-      "Params": "--coin AUTO144_5",
-      "NH": false
-    },
-    "Equihash150": {
-      "Params": "--coin BEAM",
-      "Mem": 3.5
-    },
-    "_Equihash192": {
-      "Params": "--coin AUTO192_7",
-      "Mem": 2.8
-    },
-    "Equihash210": "--coin AION",
-    "Equihash96": "--coin MNX",
-    "Equihash144|asm": {
       "Params": "--coin AUTO144_5 --asm 1",
       "NH": false
     },
-    "Equihash150|asm": {
+    "Equihash150": {
       "Params": "--coin BEAM --asm 1",
       "Mem": 3.5
     },
-    "_Equihash192|asm": {
-      "Params": "--coin AUTO192_7 --asm 1",
-      "Mem": 2.8
-    },
-    "Equihash210|asm": "--coin AION --asm 1",
-    "Equihash96|asm": "--coin MNX --asm 1"
+    "Equihash210": "--coin AION --asm 1",
+    "Equihash96": "--coin MNX --asm 1"
   }
 }

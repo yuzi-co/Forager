@@ -7,7 +7,10 @@
     "-o stratum+$(if($EnableSSL){'ssl'}else{'tcp'})://#Server#:#Port#",
     "-u #Login#",
     "-p #Password#",
+    "-d #Devices#",
+    "--platform=#GPUPlatform#",
     "--watchdog_script",
+    "--disable_colors",
     "--api_listen=#ApiPort#",
     "#AlgorithmParameters#"
   ],
@@ -17,15 +20,10 @@
   "Fee": 0.025,
   "Algorithms": {
     "CnDouble": "-a cnv8_dbl",
-    "_CnHalf": "-a cnv8_half",
-    "_CnR": "-a cnr",
+    "CnHalf": "-a cnv8_half",
+    "CnR": "-a cnr",
     "CnRwz": "-a cnv8_rwz",
-    "_CnV8": "-a cnv8",
-    "_Lyra2z": {
-      "Params": "-a lyra2z",
-      "Fee": 0.03
-    },
-    "_Lyra2v3": "-a lyra2rev3",
+    "Lyra2v3": "-a lyra2rev3",
     "Phi2": {
       "Params": "-a phi2",
       "Fee": 0.03

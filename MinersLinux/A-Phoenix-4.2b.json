@@ -17,6 +17,7 @@
     "-logfile #GroupName#_log.txt",
     "-logsmaxsize 10",
     "-amd",
+    "-di #DevicesClayMode#",
     "-cdmport #APIPort#",
     "-cdm 1",
     "#AlgorithmParameters#"
@@ -26,11 +27,11 @@
   "Fee": 0.0065,
   "SSL": true,
   "Algorithms": {
-    "_ProgPOW": "-coin bci -mode 1",
+    "ProgPOW": "-coin bci -mode 1",
     "Ethash": "-clKernel 3 -mode 1",
     "Ubqhash": "-coin ubq -clKernel 3 -mode 1",
-    "_Ethash_Blake2s|30": "-dcoin blake2s -sci 30 -mode 0 -clKernel 3",
-    "_Ethash_Blake2s|35": "-dcoin blake2s -sci 35 -mode 0 -clKernel 3",
-    "_Ethash_Blake2s|40": "-dcoin blake2s -sci 40 -mode 0 -clKernel 3"
+    "_Ethash_Blake2s|30": "-dcoin blake2s -sci 30 -clKernel 3 -mode 0",
+    "_Ethash_Blake2s|35": "-dcoin blake2s -sci 35 -clKernel 3 -mode 0",
+    "_Ethash_Blake2s|40": "-dcoin blake2s -sci 40 -clKernel 3 -mode 0"
   }
 }

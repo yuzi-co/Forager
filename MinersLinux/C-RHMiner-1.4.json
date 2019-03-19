@@ -7,6 +7,7 @@
     "-s #Protocol#://#Server#:#Port#",
     "-su #Login#",
     "-pw #Password#",
+    "-r 5",
     "-cpu",
     "-cputhreads $(if ($CpuThreads -ne $null){$CpuThreads} else {$SystemInfo.Processors})",
     "-apiport #ApiPort#"

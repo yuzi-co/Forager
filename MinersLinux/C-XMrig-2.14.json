@@ -11,6 +11,7 @@
     "$(if ($EnableSSL){'--tls'})",
     "--donate-level 1",
     "--api-port #APIPort#",
+    "--no-color",
     "--max-cpu-usage=$(if ($CpuThreads -ne $null){ [int](100 * $CpuThreads / $DeviceGroup.Features.Threads) } else { 100 })",
     "#AlgorithmParameters#"
   ],
@@ -32,8 +33,6 @@
     "CnRwz": "-a cn/rwz",
     "CnSaber": "-a cn-heavy/tube",
     "CnTurtle": "-a cn-pico/trtl",
-    "_CnV7": "-a cn/1",
-    "_CnV8": "-a cn/2",
     "CnWow": "-a cn/wow",
     "CnXTL": "-a cn/xtl",
     "CnZls": "-a cn/zls"
