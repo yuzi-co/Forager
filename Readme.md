@@ -104,7 +104,6 @@ Run "git pull" in Forager folder to get latest master version
 
 ### Forager folder structure:
 ```
-/Additional Miners/ - Miners disabled by default, usually because of low profitability or issues
 /Bin/               - Installed miners are located in this folder
 /Cache/             - Cached API requests storage. Can be purged at will. Old files automatically cleaned on start.
 /Data/              - Data files containing different mappings and lists required for Forager
@@ -112,6 +111,7 @@ Run "git pull" in Forager folder to get latest master version
 /Includes/          - Code includes and binary helper programs
 /Logs/              - Runtime logs and session reports (if enabled). Old files automatically cleaned on start.
 /Miners/            - Miner definitions in json format
+/MinersDisabled/    - Miners disabled by default, usually because of low profitability or issues
 /Pools/             - Pool definitions
 /Stats/             - Miner benchmarks and run statistics. *_Hashrate.csv - Benchmark results, remove to re-benchmark. *_Stats.json - Runtime stats
 ```
