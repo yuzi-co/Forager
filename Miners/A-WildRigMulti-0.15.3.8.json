@@ -16,7 +16,7 @@
         "--api-port #ApiPort#",
         "#AlgorithmParameters#"
     ],
-    "BenchmarkArg": "$(if ($AlgoName -in @('x16r', 'x16rt')){'--benchmark'})",
+    "BenchmarkArg": "$(if ($AlgoName -in @('bitcore', 'x16r', 'x16rt', 'x16s', 'x21s', 'hex', 'timetravel')){'--benchmark'})",
     "API": "XMRig",
     "APIPort": 4028,
     "Fee": 0.01,

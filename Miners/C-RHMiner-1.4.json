@@ -7,7 +7,9 @@
         "-s #Protocol#://#Server#:#Port#",
         "-su #Login#",
         "-pw #Password#",
+        "-r 5",
         "-cpu",
+        "-processpriority 2",
         "-cputhreads $(if ($CpuThreads -ne $null){$CpuThreads} else {$DeviceGroup.Features.Threads})",
         "-apiport #ApiPort#"
     ],
