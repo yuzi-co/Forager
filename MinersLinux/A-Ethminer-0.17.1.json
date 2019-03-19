@@ -1,7 +1,7 @@
 {
   "Path": "bin/ethminer",
   "Uri": "https://github.com/ethereum-mining/ethminer/releases/download/v0.17.1/ethminer-0.17.1-linux-x86_64.tar.gz",
-  "SHA256": "",
+  "SHA256": "823908AB8A22B6C319EDA4922A4708AE2600061F09683325F72B330119769A1D",
   "Type": "_AMD",
   "Arguments": [
     "-P stratum2+tcp://#Login#:#Password#@#Server#:#Port#",

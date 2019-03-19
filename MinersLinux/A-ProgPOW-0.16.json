@@ -1,7 +1,7 @@
 {
   "Path": "progpow_linux_0.16_final/progpowminer_opencl_only",
   "Uri": "https://github.com/BitcoinInterestOfficial/BitcoinInterest/releases/download/2.1/progpow_linux_0.16_final.zip",
-  "SHA256": "",
+  "SHA256": "779447DA3802D6115588EBE1B065656CF9841D59CE9E0C14DB440F9D62EDF733",
   "Type": "AMD",
   "Arguments": [
     "-P stratum+tcp://#Login#:#Password#@#Server#:#Port#",

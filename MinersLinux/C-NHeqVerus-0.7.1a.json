@@ -1,0 +1,19 @@
+{
+  "Path": "nheqminer/nheqminer",
+  "Uri": "https://github.com/VerusCoin/nheqminer/releases/download/0.7.1/nheqminer-Linux-v0.7.1.tar.gz",
+  "SHA256": "36CC88266826733B356F972167897527EACB2E17471A296F756534FB61A3C966",
+  "Type": "CPU",
+  "Arguments": [
+    "-l #Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-a #APIPort#",
+    "-t $(if ($CpuThreads -ne $null) {$CpuThreads} else {$SystemInfo.Processors})",
+    "#AlgorithmParameters#"
+  ],
+  "API": "NHEQ",
+  "APIPort": 4048,
+  "Algorithms": {
+    "Verushash": "-v"
+  }
+}
