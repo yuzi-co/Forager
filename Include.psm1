@@ -681,7 +681,7 @@ function Get-SystemInfo () {
         [PSCustomObject]@{
             OSName       = [System.Environment]::OSVersion.Platform
             OSVersion    = [System.Environment]::OSVersion.Version
-            ComputerName = (Get-Culture).TextInfo.ToTitleCase([System.Environment]::MachineName.ToLower())
+            ComputerName = (Get-Culture).TextInfo.ToTitleCase([System.Environment]::MachineName.ToLower()) #Windows capitalizes this
             Processors   = [System.Environment]::ProcessorCount
             CpuCores     = $Features.cores
             CpuFeatures  = $Features
@@ -690,7 +690,7 @@ function Get-SystemInfo () {
         [PSCustomObject]@{
             OSName       = [System.Environment]::OSVersion.Platform
             OSVersion    = [System.Environment]::OSVersion.Version
-            ComputerName = (Get-Culture).TextInfo.ToTitleCase([System.Environment]::MachineName.ToLower())
+            ComputerName = [System.Environment]::MachineName
             Processors   = [System.Environment]::ProcessorCount
             # CpuCores     = $Features.cores
             # CpuFeatures  = $Features
