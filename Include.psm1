@@ -1215,6 +1215,10 @@ function Start-SubProcess {
                 $ProcessParam.RedirectStandardError = $(if ($WorkingDirectory) {$WorkingDirectory + '/'}) + "console-$(Get-Date -Format "yyyyMMdd-HHmmss").log"
             }
 
+            if ($IsLinux) {
+                & chmod +x $FilePath | Out-Null
+            }
+
             $Process = Start-Process @ProcessParam
             if (-not $Process) {
                 [PSCustomObject]@{
