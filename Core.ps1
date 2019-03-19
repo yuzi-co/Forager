@@ -61,7 +61,7 @@ $Host.UI.RawUI.WindowTitle = "$($Release.Application) v$($Release.Version)"
 
 if ($env:CUDA_DEVICE_ORDER -ne 'PCI_BUS_ID') { $env:CUDA_DEVICE_ORDER = 'PCI_BUS_ID' } #Align CUDA id with nvidia-smi order
 
-if ($env:GPU_FORCE_64BIT_PTR -ne 0) { $env:GPU_FORCE_64BIT_PTR = 0 }               #For AMD
+if ($env:GPU_FORCE_64BIT_PTR -ne 1) { $env:GPU_FORCE_64BIT_PTR = 1 }               #For AMD
 if ($env:GPU_MAX_HEAP_SIZE -ne 100) { $env:GPU_MAX_HEAP_SIZE = 100 }               #For AMD
 if ($env:GPU_USE_SYNC_OBJECTS -ne 1) { $env:GPU_USE_SYNC_OBJECTS = 1 }             #For AMD
 if ($env:GPU_MAX_ALLOC_PERCENT -ne 100) { $env:GPU_MAX_ALLOC_PERCENT = 100 }       #For AMD

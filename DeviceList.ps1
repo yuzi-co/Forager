@@ -1,7 +1,7 @@
 Import-Module .\Include.psm1
 
 $global:Config = Get-Config
-if ($Config.Afterburner) {
+if ($Config.Afterburner -and $IsWindows) {
     . .\Includes\Afterburner.ps1
 }
 Out-DevicesInformation (Get-DevicesInformation (Get-MiningTypes -All))

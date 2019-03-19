@@ -611,7 +611,7 @@ function Get-MiningTypes () {
             $OCLDevice = @($OCLDevices | Where-Object {$Pattern -contains $_.Vendor})[$_.DevicesArray]
             if ($OCLDevice) {
                 if ($null -eq $_.PlatformId) {$_ | Add-Member PlatformId ($OCLDevice.PlatformId | Select-Object -First 1)}
-                if ($null -eq $_.MemoryGB) {$_ | Add-Member MemoryGB ([int](($OCLDevice | Measure-Object -Property GlobalMemSize -Minimum).Minimum / 1GB ))}
+                if ($null -eq $_.MemoryGB) {$_ | Add-Member MemoryGB ([math]::Round((($OCLDevice | Measure-Object -Property GlobalMemSize -Minimum).Minimum / 1GB ),2))}
                 if ($OCLDevice[0].Platform.Version -match "CUDA\s+([\d\.]+)") {$_ | Add-Member CUDAVersion $Matches[1] -Force}
                 $_ | Add-Member OCLDeviceId @($OCLDevice.OCLDeviceId)
                 $_ | Add-Member OCLGpuId @($OCLDevice.OCLGpuId)
@@ -1211,11 +1211,14 @@ function Start-SubProcess {
             if ($IsWindows) {
                 $ProcessParam.WindowStyle = $MinerWindowStyle
             } else {
-                $ProcessParam.RedirectStandardOutput = $(if ($WorkingDirectory) {$WorkingDirectory + '/'}) + "errors-$(Get-Date -Format "yyyyMMdd-HHmmss").log"
-                $ProcessParam.RedirectStandardError = $(if ($WorkingDirectory) {$WorkingDirectory + '/'}) + "console-$(Get-Date -Format "yyyyMMdd-HHmmss").log"
+                # Linux requires output redirection, otherwise Receive-Job fails
+                $ProcessParam.RedirectStandardOutput = $WorkingDirectory + "/console.log"
+                $ProcessParam.RedirectStandardError = $WorkingDirectory + "/error.log"
+                # $ProcessParam.UseNewEnvironment = $true
             }
 
             if ($IsLinux) {
+                # Fix executable permissions
                 & chmod +x $FilePath | Out-Null
             }
 
