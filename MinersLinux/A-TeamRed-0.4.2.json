@@ -1,7 +1,7 @@
 {
   "Path": "teamredminer-v0.4.2-linux/teamredminer",
   "Uri": "https://github.com/todxx/teamredminer/releases/download/v0.4.2/teamredminer-v0.4.2-linux.tgz",
-  "SHA256": "",
+  "SHA256": "F03CDD9DF55089D210B9F245FB3BE07F25F96DF7EF39952BCE1F226582E09078",
   "Type": "AMD",
   "Arguments": [
     "-o stratum+$(if($EnableSSL){'ssl'}else{'tcp'})://#Server#:#Port#",
@@ -17,7 +17,7 @@
   "Fee": 0.025,
   "Algorithms": {
     "CnDouble": "-a cnv8_dbl",
-    "CnHalf": "-a cnv8_half",
+    "_CnHalf": "-a cnv8_half",
     "_CnR": "-a cnr",
     "CnRwz": "-a cnv8_rwz",
     "_CnV8": "-a cnv8",

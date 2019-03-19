@@ -1,7 +1,7 @@
 {
   "Path": "0.7.1/lolMiner",
   "Uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.71/lolMiner_v071_Lin64.tar.gz",
-  "SHA256": "",
+  "SHA256": "D5AD049B60343794E754ADAC82E44ECF20A403A7405BC9C050F082313293C02F",
   "Type": "AMD",
   "Arguments": [
     "--pool #Server#",

@@ -1,7 +1,7 @@
 {
   "Path": "miner",
   "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.36/gminer_1_36_minimal_linux64.tar.xz",
-  "SHA256": "",
+  "SHA256": "01EC5AB6F009B4B00466543B3488D2BAB51701262FDCB28C58C19B821C8CB24A",
   "Type": "AMD",
   "Arguments": [
     "--server #Server#",

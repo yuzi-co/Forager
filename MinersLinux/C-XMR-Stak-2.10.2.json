@@ -1,7 +1,7 @@
 {
   "Path": "xmr-stak-linux-2.10.2-cpu_opencl-amd/xmr-stak",
   "Uri": "https://github.com/fireice-uk/xmr-stak/releases/download/2.10.2/xmr-stak-linux-2.10.2-cpu_opencl-amd.tar.xz",
-  "SHA256": "",
+  "SHA256": "D18FAF41483F9F78E47D8182E4ABD906A7A6F61EBE3E0FB2AED1D5D93C5658A0",
   "Type": "CPU",
   "Arguments": [
     "$(if ($enableSSL){'-O'}else{'-o'}) #Server#:#Port#",

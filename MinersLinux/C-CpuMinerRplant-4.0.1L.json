@@ -1,8 +1,8 @@
-﻿{
+{
   "Path": "cpuminer-avx2",
   "_Path": "cpuminer-$($f=$DeviceGroup.Features;$(if($f.avx2 -and $f.sha){'ryzen'}elseif($f.avx2){'avx2'}elseif($f.avx){'avx'}elseif($f.aes){'aes'}else{'sse2'}))",
   "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.03/cpuminer-opt-linux-rplant-4.0.1l.tar.gz",
-  "SHA256": "",
+  "SHA256": "7B690A9EBEB1DDF91F24714DC6F2D47227002032A332CC9EF145E2F3F42EFB8D",
   "Type": "CPU",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
