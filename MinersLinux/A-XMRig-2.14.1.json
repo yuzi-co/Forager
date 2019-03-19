@@ -1,8 +1,8 @@
 {
-  "Path": "xmrig-2.14.1/xmrig",
-  "Uri": "https://github.com/xmrig/xmrig/releases/download/v2.14.1/xmrig-2.14.1-xenial-x64.tar.gz",
+  "Path": "xmrig-amd-2.14.1/xmrig-amd",
+  "Uri": "https://github.com/xmrig/xmrig-amd/releases/download/v2.14.1/xmrig-amd-2.14.1-xenial-x64.tar.gz",
   "SHA256": "",
-  "Type": "CPU",
+  "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",
     "-u #Login#",
@@ -11,11 +11,10 @@
     "$(if ($EnableSSL){'--tls'})",
     "--donate-level 1",
     "--api-port #APIPort#",
-    "--max-cpu-usage=$(if ($CpuThreads -ne $null){ [int](100 * $CpuThreads / $DeviceGroup.Features.Threads) } else { 100 })",
     "#AlgorithmParameters#"
   ],
   "API": "XMRig",
-  "APIPort": 4048,
+  "APIPort": 4028,
   "SSL": true,
   "Fee": 0.01,
   "Algorithms": {
@@ -26,7 +25,7 @@
     "CnGpu": "-a cn/gpu",
     "CnHalf": "-a cn/half",
     "CnHaven": "-a cn-heavy/xhv",
-    "CnHeavy": "-a cn-heavy",
+    "_CnHeavy": "-a cn-heavy",
     "CnLiteV7": "-a cn-lite/1",
     "CnR": "-a cn/r",
     "CnRwz": "-a cn/rwz",
