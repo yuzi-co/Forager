@@ -1,0 +1,17 @@
+{
+  "Path": "progpow_linux_0.16_final/progpowminer_opencl_only",
+  "Uri": "https://github.com/BitcoinInterestOfficial/BitcoinInterest/releases/download/2.1/progpow_linux_0.16_final.zip",
+  "SHA256": "",
+  "Type": "AMD",
+  "Arguments": [
+    "-P stratum+tcp://#Login#:#Password#@#Server#:#Port#",
+    "--opencl",
+    "--api-port -#APIPort#",
+    "#AlgorithmParameters#"
+  ],
+  "API": "Claymore",
+  "APIPort": 4028,
+  "Algorithms": {
+    "ProgPOW": ""
+  }
+}

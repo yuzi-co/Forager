@@ -1,0 +1,20 @@
+{
+  "Path": "rhminer",
+  "Uri": "https://github.com/polyminer1/rhminer/releases/download/V1.4/rhminer.1.4.Linux.CPU.zip",
+  "SHA256": "",
+  "Type": "CPU",
+  "Arguments": [
+    "-s #Protocol#://#Server#:#Port#",
+    "-su #Login#",
+    "-pw #Password#",
+    "-cpu",
+    "-cputhreads $(if ($CpuThreads -ne $null){$CpuThreads} else {$SystemInfo.Processors})",
+    "-apiport #ApiPort#"
+  ],
+  "API": "RH",
+  "APIPort": 4048,
+  "Fee": 0.01,
+  "Algorithms": {
+    "RandomHash": ""
+  }
+}
