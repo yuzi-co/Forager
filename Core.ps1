@@ -1319,6 +1319,7 @@ while ($Quit -eq $false) {
         #display header
         Set-ConsolePosition 0 0
         Out-HorizontalLine
+        Clear-Lines -Lines 1
         Write-Message -Message (
             @(
                 "{green}$($Release.Application) {white}$($Release.Version)"
@@ -1339,7 +1340,7 @@ while ($Quit -eq $false) {
 
         #display donation message
         if ($CurrentInterval -eq "Donate") {
-            Write-Message -Message "This interval you are donating, You can change donation in config.ini. Thank you for your support!" -Line 2
+            Write-Message -Message "This interval you are donating. You can change donation in config.ini. Thank you for your support!" -Line 2
         }
 
         #write speed
@@ -1439,39 +1440,40 @@ while ($Quit -eq $false) {
             ForEach-Object {
             $M = $ActiveMiners[$_.IdF]
             [PSCustomObject]@{
-                GroupName   = $M.DeviceGroup.GroupName
-                PwLim       = $(if ($_.PowerLimit -ne 0) {$_.PowerLimit})
-                LocalSpeed  = (@($_.SpeedLive, $_.SpeedLiveDual) -gt 0 | % {ConvertTo-Hash $_}) -join "/"
-                mbtcDay     = (($_.RevenueLive + $_.RevenueLiveDual) * 1000).tostring("n5")
-                RevDay      = (($_.RevenueLive + $_.RevenueLiveDual) * $localBTCvalue ).tostring("n2")
-                ProfitDay   = ($_.ProfitsLive).tostring("n2")
+                Group       = $M.DeviceGroup.GroupName
                 Algorithm   = (@($M.Algorithms, $M.AlgoLabel) -ne $null -join "|") + $_.BestBySwitch
                 Coin        = @($M.Pool.Symbol, $M.PoolDual.Symbol) -ne $null -join "_"
                 Miner       = $M.Name
-                Power       = [string]$_.PowerLive + 'W'
+                LocalSpeed  = (@($_.SpeedLive, $_.SpeedLiveDual) -gt 0 | % {ConvertTo-Hash $_}) -join "/"
+                PLim        = $(if ($_.PowerLimit -ne 0) {$_.PowerLimit})
+                Watt        = [string]$_.PowerLive + 'W'
                 EfficiencyW = if ($_.PowerLive -gt 0) {($_.ProfitsLive / $_.PowerLive).tostring("n4")} else {$null}
+                mbtcDay     = (($_.RevenueLive + $_.RevenueLiveDual) * 1000).tostring("n5")
+                RevDay      = (($_.RevenueLive + $_.RevenueLiveDual) * $localBTCvalue ).tostring("n2")
+                ProfitDay   = ($_.ProfitsLive).tostring("n2")
                 PoolSpeed   = (@($M.Pool.HashRate, $M.PoolDual.HashRate) -gt 0 | % {ConvertTo-Hash $_}) -join "/"
-                Pool        = @(($M.Pool.PoolName + "-" + $M.Pool.Location), ($M.PoolDual.PoolName + "-" + $M.PoolDual.Location)) -ne "-" -join "/"
                 Workers     = @($M.Pool.PoolWorkers, $M.PoolDual.PoolWorkers) -ne $null -join "/"
+                Pool        = @(($M.Pool.PoolName + "-" + $M.Pool.Location), ($M.PoolDual.PoolName + "-" + $M.PoolDual.Location)) -ne "-" -join "/"
             }
         }
 
         if ($ScreenOut) {
+            Clear-Lines -Lines ($ScreenOut.Count + 4)
             $ScreenOut | Format-Table (
-                @{Label = "Group"                       ; Expression = {$_.GroupName}},
+                @{Label = "Group"                       ; Expression = {$_.Group}},
                 @{Label = "Algorithm"                   ; Expression = {$_.Algorithm}},
                 @{Label = "Coin"                        ; Expression = {$_.Coin}},
                 @{Label = "Miner"                       ; Expression = {$_.Miner}},
                 @{Label = "LocalSpeed"                  ; Expression = {$_.LocalSpeed} ; Align = 'right'},
-                @{Label = "PLim"                        ; Expression = {$_.PwLim} ; Align = 'right'},
-                @{Label = "Watt"                        ; Expression = {$_.Power} ; Align = 'right'},
+                @{Label = "PLim"                        ; Expression = {$_.PLim} ; Align = 'right'},
+                @{Label = "Watt"                        ; Expression = {$_.Watt} ; Align = 'right'},
                 @{Label = $Config.LocalCurrency + "/W"  ; Expression = {$_.EfficiencyW}  ; Align = 'right'},
                 @{Label = "mBTC/Day"                    ; Expression = {$_.mbtcDay} ; Align = 'right'},
                 @{Label = $Config.LocalCurrency + "/Day"; Expression = {$_.RevDay} ; Align = 'right'},
                 @{Label = "Profit/Day"                  ; Expression = {$_.ProfitDay} ; Align = 'right'},
                 @{Label = "PoolSpeed"                   ; Expression = {$_.PoolSpeed} ; Align = 'right'},
                 @{Label = "Workers"                     ; Expression = {$_.Workers} ; Align = 'right'},
-                @{Label = "Pool "                       ; Expression = {$_.Pool + " "} ; Align = 'left'}
+                @{Label = "Pool"                        ; Expression = {$_.Pool} ; Align = 'left'}
             ) | Out-Host
         } else {
             Write-Warning "No miners above MinProfit"
@@ -1480,8 +1482,9 @@ while ($Quit -eq $false) {
         $XToWrite = [ref]0
         $YToWrite = [ref]0
         Get-ConsolePosition ([ref]$XToWrite) ([ref]$YToWrite)
-        $YToWriteMessages = $YToWrite + 1
-        $YToWriteData = $YToWrite + 2
+        Set-ConsolePosition $XToWrite ($YToWrite - 1)
+        $YToWriteMessages = $YToWrite
+        $YToWriteData = $YToWrite
         Remove-Variable XToWrite
         Remove-Variable YToWrite
 

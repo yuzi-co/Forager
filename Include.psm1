@@ -611,7 +611,7 @@ function Get-MiningTypes () {
             $OCLDevice = @($OCLDevices | Where-Object {$Pattern -contains $_.Vendor})[$_.DevicesArray]
             if ($OCLDevice) {
                 if ($null -eq $_.PlatformId) {$_ | Add-Member PlatformId ($OCLDevice.PlatformId | Select-Object -First 1)}
-                if ($null -eq $_.MemoryGB) {$_ | Add-Member MemoryGB ([math]::Round((($OCLDevice | Measure-Object -Property GlobalMemSize -Minimum).Minimum / 1GB ),2))}
+                if ($null -eq $_.MemoryGB) {$_ | Add-Member MemoryGB ([math]::Round((($OCLDevice | Measure-Object -Property GlobalMemSize -Minimum).Minimum / 1GB ), 2))}
                 if ($OCLDevice[0].Platform.Version -match "CUDA\s+([\d\.]+)") {$_ | Add-Member CUDAVersion $Matches[1] -Force}
                 $_ | Add-Member OCLDeviceId @($OCLDevice.OCLDeviceId)
                 $_ | Add-Member OCLGpuId @($OCLDevice.OCLGpuId)
@@ -1538,8 +1538,8 @@ function Get-ConsolePosition ([ref]$x, [ref]$y) {
 }
 
 function Out-HorizontalLine ([string]$Title) {
-
-    $Width = $Host.UI.RawUI.WindowSize.Width - 1
+    $MaxWidth = 170
+    $Width = [math]::min($Host.UI.RawUI.WindowSize.Width, $MaxWidth) - 1
     if ([string]::IsNullOrEmpty($Title)) {$str = "-" * $Width}
     else {
         $str = '{white}' + ("-" * [math]::floor(($Width - $Title.Length - 4) / 2))
@@ -1549,18 +1549,31 @@ function Out-HorizontalLine ([string]$Title) {
     Write-Color $str
 }
 
+function Clear-Lines ([int]$Lines) {
+    $x = $y = [ref]0
+    Get-ConsolePosition ([ref]$x) ([ref]$y)
+    $Width = $Host.UI.RawUI.WindowSize.Width
+    Write-Host (" " * $Width * $Lines)
+    Set-ConsolePosition $x $y
+    Remove-Variable x
+    Remove-Variable y
+}
+
 function Write-Message {
     param(
         [string]$Message,
         [int]$Line,
         [switch]$AlignRight
     )
+    $MaxWidth = 170
+    $Width = [math]::min($Host.UI.RawUI.WindowSize.Width, $MaxWidth) - 1
     if ($AlignRight) {
-        $X = ($Host.UI.RawUI.WindowSize.Width - ($Message -replace "({\w+})").Length - 1)
+        $X = ($Width - ($Message -replace "({\w+})").Length)
     }
     Set-ConsolePosition $X $Line
     Write-Color $Message
 }
+
 function Set-WindowSize ([int]$Width, [int]$Height) {
     #Buffer must be always greater than windows size
 
