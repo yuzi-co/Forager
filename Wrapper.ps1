@@ -22,9 +22,13 @@ Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 0 | Set-Content ".\Wrapper_$Id.txt"
 
 $PowerShell = [PowerShell]::Create()
-if ($WorkingDirectory -ne "") {$PowerShell.AddScript("Set-Location '$WorkingDirectory'") | Out-Null}
+if ($WorkingDirectory) {
+    $PowerShell.AddScript("Set-Location '$WorkingDirectory'") | Out-Null
+}
 $Command = ". '$FilePath'"
-if ($ArgumentList -ne "") {$Command += " $ArgumentList"}
+if ($ArgumentList) {
+    $Command += " $ArgumentList"
+}
 $PowerShell.AddScript("$Command 2>&1 | Write-Verbose -Verbose") | Out-Null
 $Result = $PowerShell.BeginInvoke()
 

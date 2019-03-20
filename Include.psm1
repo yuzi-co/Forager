@@ -511,7 +511,9 @@ function Get-OpenCLDevices {
         )
         # end fake
     } else {
-        Add-Type -Path ./Includes/OpenCL/*.cs
+        if (-not ('OpenCl.Platform' -as [Type])) {
+            Add-Type -Path ./Includes/OpenCL/*.cs
+        }
         try {
             $OCLPlatforms = [OpenCl.Platform]::GetPlatformIds()
         } catch {
@@ -1351,7 +1353,7 @@ function Get-Pools {
     #in detail mode returns a line for each pool/algo/coin combination, in info mode returns a line for pool
 
     $PoolsFolderContent = Get-ChildItem ./Pools/* -File -Include '*.ps1' | Where-Object {
-        $PoolsFilterList.Count -eq 0 -or $PoolsFilterList -contains $_.BaseName
+        $PoolsFilterList.Count -eq 0 -or $PoolsFilterList -icontains $_.BaseName
     }
 
     if ($null -eq ($Info | Get-Member -MemberType NoteProperty | Where-Object Name -eq Location)) {

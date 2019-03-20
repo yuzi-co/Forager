@@ -71,14 +71,16 @@ if ($env:GPU_MAX_WORKGROUP_SIZE -ne 256) { $env:GPU_MAX_WORKGROUP_SIZE = 256 }  
 #Set process priority to BelowNormal to avoid hash rate drops on systems with weak CPUs
 (Get-Process -Id $PID).PriorityClass = "BelowNormal"
 
-Import-Module NetSecurity -ErrorAction SilentlyContinue
-Import-Module Defender -ErrorAction SilentlyContinue
-Import-Module "$env:Windir\System32\WindowsPowerShell\v1.0\Modules\NetSecurity\NetSecurity.psd1" -ErrorAction SilentlyContinue
-Import-Module "$env:Windir\System32\WindowsPowerShell\v1.0\Modules\Defender\Defender.psd1" -ErrorAction SilentlyContinue
+if ($IsWindows) {
+    Import-Module NetSecurity -ErrorAction SilentlyContinue
+    Import-Module Defender -ErrorAction SilentlyContinue
+    Import-Module "$env:Windir\System32\WindowsPowerShell\v1.0\Modules\NetSecurity\NetSecurity.psd1" -ErrorAction SilentlyContinue
+    Import-Module "$env:Windir\System32\WindowsPowerShell\v1.0\Modules\Defender\Defender.psd1" -ErrorAction SilentlyContinue
 
-if (Get-Command "Unblock-File" -ErrorAction SilentlyContinue) {Get-ChildItem . -Recurse | Unblock-File}
-if ((Get-Command "Get-MpPreference" -ErrorAction SilentlyContinue) -and (Get-MpComputerStatus -ErrorAction SilentlyContinue) -and (Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) {
-    Start-Process (@{desktop = "powershell"; core = "pwsh"}.$PSEdition) "-Command Import-Module '$env:Windir\System32\WindowsPowerShell\v1.0\Modules\Defender\Defender.psd1'; Add-MpPreference -ExclusionPath '$(Convert-Path .)'" -Verb runAs
+    if (Get-Command "Unblock-File" -ErrorAction SilentlyContinue) {Get-ChildItem . -Recurse | Unblock-File}
+    if ((Get-Command "Get-MpPreference" -ErrorAction SilentlyContinue) -and (Get-MpComputerStatus -ErrorAction SilentlyContinue) -and (Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) {
+        Start-Process (@{desktop = "powershell"; core = "pwsh"}.$PSEdition) "-Command Import-Module '$env:Windir\System32\WindowsPowerShell\v1.0\Modules\Defender\Defender.psd1'; Add-MpPreference -ExclusionPath '$(Convert-Path .)'" -Verb runAs
+    }
 }
 
 $ActiveMiners = @()
@@ -141,7 +143,6 @@ $ParamsBackup = @{
 
 $Interval.StartTime = Get-Date #first initialization, must be outside loop
 
-Send-ErrorsToLog $LogFile
 
 $Msg = @("Starting Parameters: "
     "Algorithm: " + [string]($Algorithm -join ",")
@@ -168,6 +169,8 @@ $BinPath = $(if ($IsLinux) {"./BinLinux/"} else {"./Bin/"})
 $MinersPath = $(if ($IsLinux) {"./MinersLinux/"} else {"./Miners/"})
 if (-not (Test-Path $BinPath)) { New-Item -Path $BinPath -ItemType directory -Force | Out-Null }
 if (-not (Test-Path $StatsPath)) { New-Item -Path $StatsPath -ItemType directory -Force | Out-Null }
+
+Send-ErrorsToLog $LogFile
 
 #-----------------------------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------
@@ -264,7 +267,7 @@ while ($Quit -eq $false) {
             BTC = "3NoVvkGSNjPX8xBMWbP2HioWYK395wSzGL"
         }
 
-        $DonateInterval = ($Config.DonateMinutes - $DonatedTime) * 60
+        $DonateInterval = [math]::min(($Config.DonateMinutes - $DonatedTime), 5) * 60
 
         $Algorithm = $null
         $PoolsName = @("NiceHash")
@@ -394,7 +397,7 @@ while ($Quit -eq $false) {
         foreach ($DeviceGroup in ($DeviceGroups | Where-Object GroupType -eq $Miner.Type)) {
             if (
                 $Config.("ExcludeMiners_" + $DeviceGroup.GroupName) -and
-                ($Config.("ExcludeMiners_" + $DeviceGroup.GroupName).Split(',') | Where-Object {$MinerFile.BaseName -like $_})
+                ($Config.("ExcludeMiners_" + $DeviceGroup.GroupName).Split(',') | Where-Object {$MinerFile.BaseName -ilike $_})
             ) {
                 Log "$($MinerFile.BaseName) is Excluded for $($DeviceGroup.GroupName). Skipping" -Severity Debug
                 Continue
@@ -993,7 +996,7 @@ while ($Quit -eq $false) {
                         $ActiveMiners[$BestLast.IdF].Process -and
                         $ActiveMiners[$BestLast.IdF].Process.Id -gt 0
                     ) {
-                        Log "Stopping miner $BestLastLogMsg with pid $($ActiveMiners[$BestLast.IdF].Process.Id)"
+                        Log "Stopping miner $BestLastLogMsg with PID $($ActiveMiners[$BestLast.IdF].Process.Id)"
                         do {
                             Stop-SubProcess $ActiveMiners[$BestLast.IdF].Process
                         } while (Test-TCPPort -Server 127.0.0.1 -Port $ActiveMiners[$BestLast.IdF].ApiPort)
@@ -1048,7 +1051,15 @@ while ($Quit -eq $false) {
                     if ($ActiveMiners[$BestNow.IdF].Api -eq "Wrapper") {
                         $ProcessParams = @{
                             FilePath     = (Get-Process -Id $Global:PID).Path
-                            ArgumentList = "-executionpolicy bypass -command . '$(Convert-Path ./Wrapper.ps1)' -ControllerProcessID $PID -Id '$($ActiveMiners[$BestNow.IdF].ApiPort)' -FilePath '$($ActiveMiners[$BestNow.IdF].Path)' -ArgumentList '$($Arguments)' -WorkingDirectory '$(Split-Path $ActiveMiners[$BestNow.IdF].Path)'"
+                            ArgumentList = (@(
+                                "-ExecutionPolicy Bypass"
+                                "-Command . '$(Convert-Path ./Wrapper.ps1)'"
+                                "-ControllerProcessID $PID"
+                                "-Id '$($ActiveMiners[$BestNow.IdF].ApiPort)'"
+                                "-FilePath '$($ActiveMiners[$BestNow.IdF].Path)'"
+                                "-ArgumentList '$($Arguments)'"
+                                "-WorkingDirectory '$(Split-Path $ActiveMiners[$BestNow.IdF].Path)'"
+                            ) -join " ")
                         }
                     } else {
                         $ProcessParams = @{
@@ -1115,13 +1126,8 @@ while ($Quit -eq $false) {
 
     $FirstLoopExecution = $true
     $LoopStartTime = Get-Date
-
-    Send-ErrorsToLog $LogFile
     $SwitchLoop = 0
     $ActivityAverages = @()
-
-    Clear-Host
-    $RepaintScreen = $true
 
     while ($Host.UI.RawUI.KeyAvailable) {
         $EA = $ErrorActionPreference
@@ -1129,6 +1135,11 @@ while ($Quit -eq $false) {
         $Host.UI.RawUI.FlushInputBuffer()
         $ErrorActionPreference = $EA
     } #keyb buffer flush
+
+    Send-ErrorsToLog $LogFile
+
+    Clear-Host
+    $RepaintScreen = $true
 
     #---------------------------------------------------------------------------
     #---------------------------------------------------------------------------
@@ -1446,7 +1457,7 @@ while ($Quit -eq $false) {
                 Miner       = $M.Name
                 LocalSpeed  = (@($_.SpeedLive, $_.SpeedLiveDual) -gt 0 | % {ConvertTo-Hash $_}) -join "/"
                 PLim        = $(if ($_.PowerLimit -ne 0) {$_.PowerLimit})
-                Watt        = [string]$_.PowerLive + 'W'
+                Watt        = if ($_.PowerLive -gt 0) {[string]$_.PowerLive + 'W'} else {$null}
                 EfficiencyW = if ($_.PowerLive -gt 0) {($_.ProfitsLive / $_.PowerLive).tostring("n4")} else {$null}
                 mbtcDay     = (($_.RevenueLive + $_.RevenueLiveDual) * 1000).tostring("n5")
                 RevDay      = (($_.RevenueLive + $_.RevenueLiveDual) * $localBTCvalue ).tostring("n2")
@@ -1757,19 +1768,13 @@ while ($Quit -eq $false) {
         if ($ExitLoop) {break} #forced Exit
 
         Send-ErrorsToLog $LogFile
-    }
+    } # End mining loop
 
     Remove-Variable Miners
     Remove-Variable Pools
     Get-Job -State Completed | Remove-Job
     [GC]::Collect() #force garbage collector for free memory
-}
-
-#-----------------------------------------------------------------------------------------------------------------------
-#-----------------------------------------------------------------------------------------------------------------------
-#-------------------------------------------end of always running loop--------------------------------------------------
-#-----------------------------------------------------------------------------------------------------------------------
-#-----------------------------------------------------------------------------------------------------------------------
+} # End detection loop
 
 Log "Exiting Forager"
 $LogFile.close()
