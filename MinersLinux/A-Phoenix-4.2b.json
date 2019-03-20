@@ -28,10 +28,10 @@
   "SSL": true,
   "Algorithms": {
     "ProgPOW": "-coin bci -mode 1",
-    "Ethash": "-clKernel 3 -mode 1",
-    "Ubqhash": "-coin ubq -clKernel 3 -mode 1",
-    "_Ethash_Blake2s|30": "-dcoin blake2s -sci 30 -clKernel 3 -mode 0",
-    "_Ethash_Blake2s|35": "-dcoin blake2s -sci 35 -clKernel 3 -mode 0",
-    "_Ethash_Blake2s|40": "-dcoin blake2s -sci 40 -clKernel 3 -mode 0"
+    "Ethash": "-mode 1",
+    "Ubqhash": "-coin ubq -mode 1",
+    "_Ethash_Blake2s|30": "-dcoin blake2s -sci 30 -mode 0",
+    "_Ethash_Blake2s|35": "-dcoin blake2s -sci 35 -mode 0",
+    "_Ethash_Blake2s|40": "-dcoin blake2s -sci 40 -mode 0"
   }
 }

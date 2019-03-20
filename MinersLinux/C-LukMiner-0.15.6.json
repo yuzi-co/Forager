@@ -16,7 +16,6 @@
   "API": "Luk",
   "APIPort": 4048,
   "Algorithms": {
-    "_Cn": "-a xn",
     "CnAlloy": "-a xnalloy",
     "CnDark": "-a xndark",
     "_CnHalf": "-a xnmasari",
