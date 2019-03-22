@@ -1375,7 +1375,7 @@ while ($Quit -eq $false) {
             # Report stats
             if ($Config.MinerStatusURL -and $Config.MinerStatusKey) {
                 if ($ReportJob.State -eq 'Completed') {
-                    $ReportJob | Remove-Job
+                    $ReportJob | Remove-Job -ErrorAction SilentlyContinue
                 }
                 if ($null -eq $ReportJob -or $ReportJob.State -eq 'Completed') {
                     $Params = @{
