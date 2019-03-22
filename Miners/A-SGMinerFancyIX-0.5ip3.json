@@ -1,33 +1,33 @@
 {
-    "Path": "sgminer-phi2-fancyIX-win64\\sgminer.exe",
-    "Uri": "https://github.com/fancyIX/sgminer-phi2-branch/releases/download/5.6.1.3.b5ip3/sgminer-phi2-fancyIX-win64-beta5ip3.zip",
-    "SHA256": "C7462F0F0E70C11808AC3332B30F72B996EB070D069C49E88568B755D1957278",
-    "Type": "AMD",
-    "Arguments": [
-        "-o #Protocol#://#Server#:#Port#",
-        "-u #Login#",
-        "-p #Password#",
-        "--gpu-platform #GPUPlatform#",
-        "--device #Devices#",
-        "--api-listen",
-        "--api-port #APIPort#",
-        "#AlgorithmParameters#"
-    ],
-    "API": "Xgminer",
-    "APIPort": 4028,
-    "Algorithms": {
-        "Allium": "-k allium -g 1 -w 256 -I 22",
-        "Argon2d500": "-k argon2d -g 2 -w 64",
-        "_Ethash": "-k ethash -w 64 -X 1024",
-        "_Lyra2v3": "-k lyra2v3 -g 1 -w 256 -I 24",
-        "_Lyra2z": "-k lyra2z -g 1 -w 256 -I 22",
-        "Lyra2zz": "-k lyra2zz -g 1 -w 256 -I 22",
-        "MTP": {
-            "Params": "-k mtp -I 20",
-            "NH": false,
-            "Mem": 4.5
-        },
-        "_Phi2": "-k phi2 -g 1 -w 256 -I 22",
-        "_X22i": "-k x22i -g 2 -w 256 -I 22"
-    }
+  "Path": "sgminer-phi2-fancyIX-win64/sgminer.exe",
+  "Uri": "https://github.com/fancyIX/sgminer-phi2-branch/releases/download/5.6.1.3.b5ip3/sgminer-phi2-fancyIX-win64-beta5ip3.zip",
+  "SHA256": "C7462F0F0E70C11808AC3332B30F72B996EB070D069C49E88568B755D1957278",
+  "Type": "AMD",
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "--gpu-platform #GPUPlatform#",
+    "--device #Devices#",
+    "--api-listen",
+    "--api-port #APIPort#",
+    "#AlgorithmParameters#"
+  ],
+  "API": "Xgminer",
+  "APIPort": 4028,
+  "Algorithms": {
+    "Allium": "-k allium -g 1 -w 256 -I 22",
+    "Argon2d500": "-k argon2d -g 2 -w 64",
+    "_Ethash": "-k ethash -w 64 -X 1024",
+    "_Lyra2v3": "-k lyra2v3 -g 1 -w 256 -I 24",
+    "_Lyra2z": "-k lyra2z -g 1 -w 256 -I 22",
+    "Lyra2zz": "-k lyra2zz -g 1 -w 256 -I 22",
+    "MTP": {
+      "Params": "-k mtp -I 20",
+      "NH": false,
+      "Mem": 4.5
+    },
+    "_Phi2": "-k phi2 -g 1 -w 256 -I 22",
+    "_X22i": "-k x22i -g 2 -w 256 -I 22"
+  }
 }

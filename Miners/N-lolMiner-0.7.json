@@ -1,39 +1,39 @@
 {
-    "Path": "lolMiner.exe",
-    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.03/lolMiner_v07_Win64.zip",
-    "SHA256": "39C70004F830906FB9CABD2DA410EA38D86312C07836FC5DC5DA70D9AB8EF44F",
-    "Type": "NVIDIA",
-    "Arguments": [
-        "--pool #Server#",
-        "--port #Port#",
-        "--user #Login#",
-        "--pass #Password#",
-        "--devices #Devices#",
-        "--apiport #ApiPort#",
-        "--digits 2",
-        "--longstats 60",
-        "--shortstats 5",
-        "--connectattempts 3",
-        "--tls $(if($enableSSL){1}else{0})",
-        "#AlgorithmParameters#"
-    ],
-    "API": "LOL",
-    "APIPort": 4028,
-    "SSL": true,
-    "Algorithms": {
-        "Equihash144": {
-            "Params": "--coin AUTO144_5",
-            "NH": false
-        },
-        "Equihash150": {
-            "Params": "--coin BEAM",
-            "Mem": 3.5
-        },
-        "_Equihash192": {
-            "Params": "--coin AUTO192_7",
-            "Mem": 2.8
-        },
-        "Equihash210": "--coin AION",
-        "Equihash96": "--coin MNX"
-    }
+  "Path": "lolMiner.exe",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.03/lolMiner_v07_Win64.zip",
+  "SHA256": "39C70004F830906FB9CABD2DA410EA38D86312C07836FC5DC5DA70D9AB8EF44F",
+  "Type": "NVIDIA",
+  "Arguments": [
+    "--pool #Server#",
+    "--port #Port#",
+    "--user #Login#",
+    "--pass #Password#",
+    "--devices #Devices#",
+    "--apiport #ApiPort#",
+    "--digits 2",
+    "--longstats 60",
+    "--shortstats 5",
+    "--connectattempts 3",
+    "--tls $(if($enableSSL){1}else{0})",
+    "#AlgorithmParameters#"
+  ],
+  "API": "LOL",
+  "APIPort": 4028,
+  "SSL": true,
+  "Algorithms": {
+    "Equihash144": {
+      "Params": "--coin AUTO144_5",
+      "NH": false
+    },
+    "Equihash150": {
+      "Params": "--coin BEAM",
+      "Mem": 3.5
+    },
+    "_Equihash192": {
+      "Params": "--coin AUTO192_7",
+      "Mem": 2.8
+    },
+    "Equihash210": "--coin AION",
+    "Equihash96": "--coin MNX"
+  }
 }

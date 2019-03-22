@@ -1,23 +1,23 @@
 {
-    "Path": "bminer-lite-v15.3.1-8887ee1\\bminer.exe",
-    "Uri": "https://www.bminercontent.com/releases/bminer-lite-v15.3.1-8887ee1-amd64.zip",
-    "SHA256": "8c4f4fea244adc5e1f31d91426ccadac5d1416db03b0a58ea5341961e904044d",
-    "Type": "AMD",
-    "Arguments": [
-        "#AlgorithmParameters#$(if($enableSSL){'+ssl'})://$([System.Web.HttpUtility]::UrlEncode('#Login#')):$([System.Web.HttpUtility]::UrlEncode('#Password#'))@#Server#:#Port#",
-        "-devices amd:$('#Devices#' -replace ',',',amd:')",
-        "-max-network-failures=3",
-        "-watchdog=false",
-        "-api 127.0.0.1:#APIPort#"
-    ],
-    "API": "BMiner",
-    "APIPort": 4028,
-    "SSL": true,
-    "Fee": 0.02,
-    "Algorithms": {
-        "Equihash150": {
-            "Params": "-uri beam",
-            "Mem": 7
-        }
+  "Path": "bminer-lite-v15.3.1-8887ee1/bminer.exe",
+  "Uri": "https://www.bminercontent.com/releases/bminer-lite-v15.3.1-8887ee1-amd64.zip",
+  "SHA256": "8C4F4FEA244ADC5E1F31D91426CCADAC5D1416DB03B0A58EA5341961E904044D",
+  "Type": "AMD",
+  "Arguments": [
+    "#AlgorithmParameters#$(if($enableSSL){'+ssl'})://$([System.Web.HttpUtility]::UrlEncode('#Login#')):$([System.Web.HttpUtility]::UrlEncode('#Password#'))@#Server#:#Port#",
+    "-devices amd:$('#Devices#' -replace ',',',amd:')",
+    "-max-network-failures=3",
+    "-watchdog=false",
+    "-api 127.0.0.1:#APIPort#"
+  ],
+  "API": "BMiner",
+  "APIPort": 4028,
+  "SSL": true,
+  "Fee": 0.02,
+  "Algorithms": {
+    "Equihash150": {
+      "Params": "-uri beam",
+      "Mem": 7
     }
+  }
 }

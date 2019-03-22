@@ -1,25 +1,25 @@
 {
-    "Path": "ccminer.exe",
-    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.02/CCMinerMTP-1.1.14.7z",
-    "SHA256": "0E03C175E77D2D60A09A5BE8F028225A087E4CB45C73E6063057ACDC8F224EBA",
-    "Type": "NVIDIA",
-    "Arguments": [
-        "-o #Protocol#://#Server#:#Port#",
-        "-u #Login#",
-        "-p #Password#",
-        "-R 3",
-        "-r 10",
-        "-d #Devices#",
-        "-b #APIPort#",
-        "#AlgorithmParameters#"
-    ],
-    "API": "Ccminer",
-    "APIPort": 4068,
-    "Algorithms": {
-        "MTP": {
-            "Params": "-a mtp -i 20",
-            "NH": false,
-            "Mem": 4.5
-        }
+  "Path": "ccminer.exe",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.02/CCMinerMTP-1.1.14.7z",
+  "SHA256": "0E03C175E77D2D60A09A5BE8F028225A087E4CB45C73E6063057ACDC8F224EBA",
+  "Type": "NVIDIA",
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-R 3",
+    "-r 10",
+    "-d #Devices#",
+    "-b #APIPort#",
+    "#AlgorithmParameters#"
+  ],
+  "API": "Ccminer",
+  "APIPort": 4068,
+  "Algorithms": {
+    "MTP": {
+      "Params": "-a mtp -i 20",
+      "NH": false,
+      "Mem": 4.5
     }
+  }
 }

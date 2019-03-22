@@ -1,21 +1,21 @@
 {
-    "Path": "sgminer.exe",
-    "Uri": "https://github.com/Partiolainen/sgminer-gm/releases/download/5.5.5-part/sgminer-5.5.5-part-hsr.win.x64.zip",
-    "SHA256": "25b686e9dccfc088a31bfea80cf536553dfc8620af2a17a0200b51253d728316",
-    "Type": "AMD",
-    "Arguments": [
-        "-o #Protocol#://#Server#:#Port#",
-        "-u #Login#",
-        "-p #Password#",
-        "--gpu-platform #GPUPlatform#",
-        "--device #Devices#",
-        "--api-listen",
-        "--api-port #APIPort#",
-        "#AlgorithmParameters#"
-    ],
-    "API": "Xgminer",
-    "APIPort": 4028,
-    "Algorithms": {
-        "HSR": "-k hsr -g 2 -w 64 -X 64"
-    }
+  "Path": "sgminer.exe",
+  "Uri": "https://github.com/Partiolainen/sgminer-gm/releases/download/5.5.5-part/sgminer-5.5.5-part-hsr.win.x64.zip",
+  "SHA256": "25B686E9DCCFC088A31BFEA80CF536553DFC8620AF2A17A0200B51253D728316",
+  "Type": "AMD",
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "--gpu-platform #GPUPlatform#",
+    "--device #Devices#",
+    "--api-listen",
+    "--api-port #APIPort#",
+    "#AlgorithmParameters#"
+  ],
+  "API": "Xgminer",
+  "APIPort": 4028,
+  "Algorithms": {
+    "HSR": "-k hsr -g 2 -w 64 -X 64"
+  }
 }

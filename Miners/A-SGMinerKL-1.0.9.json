@@ -1,33 +1,33 @@
 {
-    "Path": "sgminer.exe",
-    "Uri": "https://github.com/KL0nLutiy/sgminer-kl/releases/download/kl-1.0.9/sgminer-kl-1.0.9-windows.zip",
-    "SHA256": "E6E928B435130E00D4C22F38BA9B042B34BD2D250E5BE5204A14E6027322A30A",
-    "Type": "AMD",
-    "Arguments": [
-        "-o #Protocol#://#Server#:#Port#",
-        "-u #Login#",
-        "-p #Password#",
-        "--gpu-platform #GPUPlatform#",
-        "--device #Devices#",
-        "--api-listen",
-        "--api-port #APIPort#",
-        "--extranonce",
-        "#AlgorithmParameters#"
-    ],
-    "BenchmarkArg": "$(if ($AlgoName -in @('x16r')){'--benchmark'})",
-    "API": "Xgminer",
-    "APIPort": 4028,
-    "Fee": 0.01,
-    "Algorithms": {
-        "_Aergo": "-k aergo -g 2 -w 64 -X 256",
-        "Geek": "-k geek -g 2 -w 64 -X 256",
-        "_Phi": "-k phi -g 2 -w 256 -X 256",
-        "_Polytimos": "-k polytimos -g 2 -w 64 -X 256",
-        "_Skunk": "-k skunk -g 2 -w 256 -X 256",
-        "_Tribus": "-k tribus -g 2 -w 64 -X 256",
-        "_X16r": "-k x16r -g 2 -w 64 -X 256",
-        "_X16s": "-k x16s -g 2 -w 64 -X 256",
-        "_X17": "-k x17 -g 2 -w 64 -X 256",
-        "Xevan": "-k xevan -g 2 -w 64 -X 256"
-    }
+  "Path": "sgminer.exe",
+  "Uri": "https://github.com/KL0nLutiy/sgminer-kl/releases/download/kl-1.0.9/sgminer-kl-1.0.9-windows.zip",
+  "SHA256": "E6E928B435130E00D4C22F38BA9B042B34BD2D250E5BE5204A14E6027322A30A",
+  "Type": "AMD",
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "--gpu-platform #GPUPlatform#",
+    "--device #Devices#",
+    "--api-listen",
+    "--api-port #APIPort#",
+    "--extranonce",
+    "#AlgorithmParameters#"
+  ],
+  "BenchmarkArg": "$(if ($AlgoName -in @('x16r')){'--benchmark'})",
+  "API": "Xgminer",
+  "APIPort": 4028,
+  "Fee": 0.01,
+  "Algorithms": {
+    "_Aergo": "-k aergo -g 2 -w 64 -X 256",
+    "Geek": "-k geek -g 2 -w 64 -X 256",
+    "_Phi": "-k phi -g 2 -w 256 -X 256",
+    "_Polytimos": "-k polytimos -g 2 -w 64 -X 256",
+    "_Skunk": "-k skunk -g 2 -w 256 -X 256",
+    "_Tribus": "-k tribus -g 2 -w 64 -X 256",
+    "_X16r": "-k x16r -g 2 -w 64 -X 256",
+    "_X16s": "-k x16s -g 2 -w 64 -X 256",
+    "_X17": "-k x17 -g 2 -w 64 -X 256",
+    "Xevan": "-k xevan -g 2 -w 64 -X 256"
+  }
 }

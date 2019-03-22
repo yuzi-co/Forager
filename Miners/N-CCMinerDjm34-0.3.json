@@ -1,21 +1,21 @@
 {
-    "Path": "ccminer.exe",
-    "Uri": "https://github.com/djm34/ccminer-msvc2015/releases/download/v0.3.0/ccminer.rar",
-    "SHA256": "b19fa7fcfa6f81620fd82068ba5f0da7dfac4d9fa885d09d9430cab4fbf509f1",
-    "Type": "NVIDIA",
-    "Arguments": [
-        "-o #Protocol#://#Server#:#Port#",
-        "-u #Login#",
-        "-p #Password#",
-        "-R 3",
-        "-r 10",
-        "-d #Devices#",
-        "-b #APIPort#",
-        "#AlgorithmParameters#"
-    ],
-    "API": "Ccminer",
-    "APIPort": 4068,
-    "Algorithms": {
-        "Lyra2h": "-a lyra2h"
-    }
+  "Path": "ccminer.exe",
+  "Uri": "https://github.com/djm34/ccminer-msvc2015/releases/download/v0.3.0/ccminer.rar",
+  "SHA256": "B19FA7FCFA6F81620FD82068BA5F0DA7DFAC4D9FA885D09D9430CAB4FBF509F1",
+  "Type": "NVIDIA",
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-R 3",
+    "-r 10",
+    "-d #Devices#",
+    "-b #APIPort#",
+    "#AlgorithmParameters#"
+  ],
+  "API": "Ccminer",
+  "APIPort": 4068,
+  "Algorithms": {
+    "Lyra2h": "-a lyra2h"
+  }
 }

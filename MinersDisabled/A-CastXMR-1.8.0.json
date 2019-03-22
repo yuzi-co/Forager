@@ -1,32 +1,32 @@
 {
-    "Path": "cast_xmr-vega.exe",
-    "Uri": "https://github.com/glph3k/cast_xmr/releases/download/v180/cast_xmr-vega-win64_180.zip",
-    "SHA256": "D20661F8229052BEF6BCC277C621E6D5EB66852CBF051F0AF8639DC3E9AB3D6F",
-    "Type": "AMD",
-    "Arguments": [
-        "--pool #Server#:#Port#",
-        "--user #Login#",
-        "--password #Password#",
-        "--remoteaccess",
-        "--remoteport #APIPort#",
-        "--opencl #GPUPlatform#",
-        "--gpu #Devices#",
-        "$(if ($Pool.PoolName -ne 'NiceHash'){'--nonicehash'})",
-        "#AlgorithmParameters#"
-    ],
-    "API": "castXMR",
-    "APIPort": 4028,
-    "Fee": 0.015,
-    "Algorithms": {
-        "CnFast": "--algo=8",
-        "CnHalf": "--algo=6",
-        "CnHaven": "--algo=7",
-        "CnHeavy": "--algo=2",
-        "CnLiteV7": "--algo=4",
-        "CnSaber": "--algo=5",
-        "CnTurtle": "--algo=9",
-        "_CnV7": "--algo=1",
-        "_CnV8": "--algo=10",
-        "CnWow": "--algo=11"
-    }
+  "Path": "cast_xmr-vega.exe",
+  "Uri": "https://github.com/glph3k/cast_xmr/releases/download/v180/cast_xmr-vega-win64_180.zip",
+  "SHA256": "D20661F8229052BEF6BCC277C621E6D5EB66852CBF051F0AF8639DC3E9AB3D6F",
+  "Type": "AMD",
+  "Arguments": [
+    "--pool #Server#:#Port#",
+    "--user #Login#",
+    "--password #Password#",
+    "--remoteaccess",
+    "--remoteport #APIPort#",
+    "--opencl #GPUPlatform#",
+    "--gpu #Devices#",
+    "$(if ($Pool.PoolName -ne 'NiceHash'){'--nonicehash'})",
+    "#AlgorithmParameters#"
+  ],
+  "API": "castXMR",
+  "APIPort": 4028,
+  "Fee": 0.015,
+  "Algorithms": {
+    "CnFast": "--algo=8",
+    "CnHalf": "--algo=6",
+    "CnHaven": "--algo=7",
+    "CnHeavy": "--algo=2",
+    "CnLiteV7": "--algo=4",
+    "CnSaber": "--algo=5",
+    "CnTurtle": "--algo=9",
+    "_CnV7": "--algo=1",
+    "_CnV8": "--algo=10",
+    "CnWow": "--algo=11"
+  }
 }

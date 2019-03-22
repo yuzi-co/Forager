@@ -1,7 +1,7 @@
 {
   "Path": "miniZ.exe",
   "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.03/miniZ_v1.2l_win-x64.zip",
-  "SHA256": "4bac06f60c0d277b5ca0b5c11b4bc3dee244cbc62f1c3bab1491965c6eab0994",
+  "SHA256": "4BAC06F60C0D277B5CA0B5C11B4BC3DEE244CBC62F1C3BAB1491965C6EAB0994",
   "Type": "NVIDIA",
   "Arguments": [
     "--server #Server#",

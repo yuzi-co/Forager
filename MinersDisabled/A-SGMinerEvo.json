@@ -1,21 +1,21 @@
 {
-    "Path": "sgminer_evo_windows\\sgminer.exe",
-    "Uri": "https://github.com/pompobit/sgminer/releases/download/5.6.2/sgminer_evo_windows.zip",
-    "SHA256": "5d3cf284608d91427564bce72a7040f37992fda19a4a66b09b8dedf2155cb9f0",
-    "Type": "AMD",
-    "Arguments": [
-        "-o #Protocol#://#Server#:#Port#",
-        "-u #Login#",
-        "-p #Password#",
-        "--gpu-platform #GPUPlatform#",
-        "--device #Devices#",
-        "--api-listen",
-        "--api-port #APIPort#",
-        "#AlgorithmParameters#"
-    ],
-    "API": "Xgminer",
-    "APIPort": 4028,
-    "Algorithms": {
-        "X11evo": "-k x11evo -w 256 -X 256"
-    }
+  "Path": "sgminer_evo_windows/sgminer.exe",
+  "Uri": "https://github.com/pompobit/sgminer/releases/download/5.6.2/sgminer_evo_windows.zip",
+  "SHA256": "5D3CF284608D91427564BCE72A7040F37992FDA19A4A66B09B8DEDF2155CB9F0",
+  "Type": "AMD",
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "--gpu-platform #GPUPlatform#",
+    "--device #Devices#",
+    "--api-listen",
+    "--api-port #APIPort#",
+    "#AlgorithmParameters#"
+  ],
+  "API": "Xgminer",
+  "APIPort": 4028,
+  "Algorithms": {
+    "X11evo": "-k x11evo -w 256 -X 256"
+  }
 }

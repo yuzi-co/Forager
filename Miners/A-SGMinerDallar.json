@@ -1,21 +1,21 @@
 {
-    "Path": "sgminer-x86\\sgminer.exe",
-    "Uri": "https://github.com/dallar-project/sgminer/releases/download/d1.0/sgminer-x86.zip",
-    "SHA256": "a7b4917eb0b13bdb90c401034170a5d92837b5aff111da3ac3dc3da60326faee",
-    "Type": "AMD",
-    "Arguments": [
-        "-o #Protocol#://#Server#:#Port#",
-        "-u #Login#",
-        "-p #Password#",
-        "--gpu-platform #GPUPlatform#",
-        "--device #Devices#",
-        "--api-listen",
-        "--api-port #APIPort#",
-        "#AlgorithmParameters#"
-    ],
-    "API": "Xgminer",
-    "APIPort": 4028,
-    "Algorithms": {
-        "Throestl": "-k dallar -g 2 -w 256 -X 256"
-    }
+  "Path": "sgminer-x86/sgminer.exe",
+  "Uri": "https://github.com/dallar-project/sgminer/releases/download/d1.0/sgminer-x86.zip",
+  "SHA256": "A7B4917EB0B13BDB90C401034170A5D92837B5AFF111DA3AC3DC3DA60326FAEE",
+  "Type": "AMD",
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "--gpu-platform #GPUPlatform#",
+    "--device #Devices#",
+    "--api-listen",
+    "--api-port #APIPort#",
+    "#AlgorithmParameters#"
+  ],
+  "API": "Xgminer",
+  "APIPort": 4028,
+  "Algorithms": {
+    "Throestl": "-k dallar -g 2 -w 256 -X 256"
+  }
 }

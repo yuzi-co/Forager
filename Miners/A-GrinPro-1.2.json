@@ -1,27 +1,27 @@
 {
-    "Path": "GrinProMiner.exe",
-    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.02/GrinPro_1_2.zip",
-    "SHA256": "F875FDCF29FC7D38F7D8027A33FACD172B703239D733A2B4762A05DCAD53350D",
-    "Type": "AMD",
-    "Arguments": [
-        "api-port=#ApiPort#",
-        "ignore-config=true",
-        "stratum-address=#Server#",
-        "stratum-port=#Port#",
-        "stratum-tls=$(if($EnableSSL){'true'}else{'false'})",
-        "stratum-login=#Login#",
-        "stratum-password=#Password#",
-        "amd=$(($DeviceGroup.DevicesArray | % {[string]$DeviceGroup.PlatformId + ':' + $_}) -join ',')"
-    ],
-    "API": "GrinPro",
-    "APIPort": 4028,
-    "Fee": 0.02,
-    "SSL": true,
-    "Algorithms": {
-        "Cuckaroo29": {
-            "Mem": 5.6,
-            "NoCpu": true,
-            "NH": false
-        }
+  "Path": "GrinProMiner.exe",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.02/GrinPro_1_2.zip",
+  "SHA256": "F875FDCF29FC7D38F7D8027A33FACD172B703239D733A2B4762A05DCAD53350D",
+  "Type": "AMD",
+  "Arguments": [
+    "api-port=#ApiPort#",
+    "ignore-config=true",
+    "stratum-address=#Server#",
+    "stratum-port=#Port#",
+    "stratum-tls=$(if($EnableSSL){'true'}else{'false'})",
+    "stratum-login=#Login#",
+    "stratum-password=#Password#",
+    "amd=$(($DeviceGroup.DevicesArray | % {[string]$DeviceGroup.PlatformId + ':' + $_}) -join ',')"
+  ],
+  "API": "GrinPro",
+  "APIPort": 4028,
+  "Fee": 0.02,
+  "SSL": true,
+  "Algorithms": {
+    "Cuckaroo29": {
+      "Mem": 5.6,
+      "NoCpu": true,
+      "NH": false
     }
+  }
 }

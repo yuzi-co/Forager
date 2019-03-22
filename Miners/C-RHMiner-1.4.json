@@ -1,22 +1,22 @@
 {
-    "Path": "rhminer.exe",
-    "Uri": "https://github.com/polyminer1/rhminer/releases/download/V1.4/rhminer.1.4.Windows.CPU.zip",
-    "SHA256": "9B95D8E400EC93D3FEC5B3E728404E61D5D79149E6B189C7E5895B0589816476",
-    "Type": "CPU",
-    "Arguments": [
-        "-s #Protocol#://#Server#:#Port#",
-        "-su #Login#",
-        "-pw #Password#",
-        "-r 5",
-        "-cpu",
-        "-processpriority 2",
-        "-cputhreads $(if ($CpuThreads -ne $null){$CpuThreads} else {$DeviceGroup.Features.Threads})",
-        "-apiport #ApiPort#"
-    ],
-    "API": "RH",
-    "APIPort": 4048,
-    "Fee": 0.01,
-    "Algorithms": {
-        "RandomHash": ""
-    }
+  "Path": "rhminer.exe",
+  "Uri": "https://github.com/polyminer1/rhminer/releases/download/V1.4/rhminer.1.4.Windows.CPU.zip",
+  "SHA256": "9B95D8E400EC93D3FEC5B3E728404E61D5D79149E6B189C7E5895B0589816476",
+  "Type": "CPU",
+  "Arguments": [
+    "-s #Protocol#://#Server#:#Port#",
+    "-su #Login#",
+    "-pw #Password#",
+    "-r 5",
+    "-cpu",
+    "-processpriority 2",
+    "-cputhreads $(if ($CpuThreads -ne $null){$CpuThreads} else {$DeviceGroup.Features.Threads})",
+    "-apiport #ApiPort#"
+  ],
+  "API": "RH",
+  "APIPort": 4048,
+  "Fee": 0.01,
+  "Algorithms": {
+    "RandomHash": ""
+  }
 }

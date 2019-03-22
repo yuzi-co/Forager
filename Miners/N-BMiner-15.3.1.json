@@ -1,45 +1,45 @@
 {
-    "Path": "bminer-lite-v15.3.1-8887ee1\\bminer.exe",
-    "Uri": "https://www.bminercontent.com/releases/bminer-lite-v15.3.1-8887ee1-amd64.zip",
-    "SHA256": "8c4f4fea244adc5e1f31d91426ccadac5d1416db03b0a58ea5341961e904044d",
-    "Type": "NVIDIA",
-    "Arguments": [
-        "#AlgorithmParameters#$(if($enableSSL){'+ssl'})://$([System.Web.HttpUtility]::UrlEncode('#Login#')):$([System.Web.HttpUtility]::UrlEncode('#Password#'))@#Server#:#Port#",
-        "-devices #Devices#",
-        "-max-network-failures=3",
-        "-watchdog=false",
-        "-api 127.0.0.1:#APIPort#"
-    ],
-    "API": "BMiner",
-    "APIPort": 4068,
-    "SSL": true,
-    "Fee": 0.02,
-    "CUDA": 9.2,
-    "Algorithms": {
-        "Cuckoo29": {
-            "Params": "-uri aeternity",
-            "NoCpu": true,
-            "Mem": 5.6
-        },
-        "Cuckaroo29": {
-            "Params": "-uri cuckaroo29",
-            "NoCpu": true,
-            "Mem": 5.6
-        },
-        "Cuckatoo31": {
-            "Params": "-uri cuckatoo31",
-            "NoCpu": true,
-            "Mem": 7.4
-        },
-        "_Equihash144": "-pers auto -uri equihash1445",
-        "Equihash150": {
-            "Params": "-uri beam",
-            "Mem": 4
-        },
-        "Ethash": {
-            "Params": "-uri ethstratum",
-            "Mem": 3
-        },
-        "Tensority": "-uri tensority"
-    }
+  "Path": "bminer-lite-v15.3.1-8887ee1/bminer.exe",
+  "Uri": "https://www.bminercontent.com/releases/bminer-lite-v15.3.1-8887ee1-amd64.zip",
+  "SHA256": "8C4F4FEA244ADC5E1F31D91426CCADAC5D1416DB03B0A58EA5341961E904044D",
+  "Type": "NVIDIA",
+  "Arguments": [
+    "#AlgorithmParameters#$(if($enableSSL){'+ssl'})://$([System.Web.HttpUtility]::UrlEncode('#Login#')):$([System.Web.HttpUtility]::UrlEncode('#Password#'))@#Server#:#Port#",
+    "-devices #Devices#",
+    "-max-network-failures=3",
+    "-watchdog=false",
+    "-api 127.0.0.1:#APIPort#"
+  ],
+  "API": "BMiner",
+  "APIPort": 4068,
+  "SSL": true,
+  "Fee": 0.02,
+  "CUDA": 9.2,
+  "Algorithms": {
+    "Cuckoo29": {
+      "Params": "-uri aeternity",
+      "NoCpu": true,
+      "Mem": 5.6
+    },
+    "Cuckaroo29": {
+      "Params": "-uri cuckaroo29",
+      "NoCpu": true,
+      "Mem": 5.6
+    },
+    "Cuckatoo31": {
+      "Params": "-uri cuckatoo31",
+      "NoCpu": true,
+      "Mem": 7.4
+    },
+    "_Equihash144": "-pers auto -uri equihash1445",
+    "Equihash150": {
+      "Params": "-uri beam",
+      "Mem": 4
+    },
+    "Ethash": {
+      "Params": "-uri ethstratum",
+      "Mem": 3
+    },
+    "Tensority": "-uri tensority"
+  }
 }

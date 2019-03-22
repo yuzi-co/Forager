@@ -1,21 +1,21 @@
 {
-    "Path": "ccminer_x86.exe",
-    "Uri": "https://github.com/nemosminer/ccminer-xevan/releases/download/ccminer-xevan/ccminer_x86.7z",
-    "SHA256": "FED1545BC5892BA4C06CB277A7DF92FB6E2F8F3A79574061BDF538186B38E914",
-    "Type": "NVIDIA",
-    "Arguments": [
-        "-o #Protocol#://#Server#:#Port#",
-        "-u #Login#",
-        "-p #Password#",
-        "-R 3",
-        "-r 10",
-        "-d #Devices#",
-        "-b #APIPort#",
-        "#AlgorithmParameters#"
-    ],
-    "API": "Ccminer",
-    "APIPort": 4068,
-    "Algorithms": {
-        "Xevan": "-a xevan -i 21 -N 1"
-    }
+  "Path": "ccminer_x86.exe",
+  "Uri": "https://github.com/nemosminer/ccminer-xevan/releases/download/ccminer-xevan/ccminer_x86.7z",
+  "SHA256": "FED1545BC5892BA4C06CB277A7DF92FB6E2F8F3A79574061BDF538186B38E914",
+  "Type": "NVIDIA",
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-R 3",
+    "-r 10",
+    "-d #Devices#",
+    "-b #APIPort#",
+    "#AlgorithmParameters#"
+  ],
+  "API": "Ccminer",
+  "APIPort": 4068,
+  "Algorithms": {
+    "Xevan": "-a xevan -i 21 -N 1"
+  }
 }

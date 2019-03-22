@@ -1,29 +1,29 @@
 {
-    "Path": "miner.exe",
-    "Uri": "https://github.com/yuzi-co/miners/releases/download/2018.10/EWBF.Equihash.miner.v0.6.7z",
-    "SHA256": "A4366042AC9E45F32DC3FCD65CF6188D8C30CE284BD1415BCDB4231FBB6B25FB",
-    "Type": "NVIDIA",
-    "Arguments": [
-        "--server #Server#",
-        "--port #Port#",
-        "--user #Login#",
-        "--pass #Password#",
-        "--pec",
-        "--fee 0",
-        "--eexit 1",
-        "--cuda_devices #DevicesETHMode#",
-        "--api 127.0.0.1:#APIPort#",
-        "#AlgorithmParameters#"
-    ],
-    "API": "EWBF",
-    "APIPort": 4068,
-    "Algorithms": {
-        "Equihash144": "--algo 144_5 --pers auto",
-        "Equihash192": {
-            "Params": "--algo 192_7 --pers auto",
-            "Mem": 2.5
-        },
-        "Equihash210": "--algo aion",
-        "Equihash96": "--algo 96_5"
-    }
+  "Path": "miner.exe",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2018.10/EWBF.Equihash.miner.v0.6.7z",
+  "SHA256": "A4366042AC9E45F32DC3FCD65CF6188D8C30CE284BD1415BCDB4231FBB6B25FB",
+  "Type": "NVIDIA",
+  "Arguments": [
+    "--server #Server#",
+    "--port #Port#",
+    "--user #Login#",
+    "--pass #Password#",
+    "--pec",
+    "--fee 0",
+    "--eexit 1",
+    "--cuda_devices #DevicesETHMode#",
+    "--api 127.0.0.1:#APIPort#",
+    "#AlgorithmParameters#"
+  ],
+  "API": "EWBF",
+  "APIPort": 4068,
+  "Algorithms": {
+    "Equihash144": "--algo 144_5 --pers auto",
+    "Equihash192": {
+      "Params": "--algo 192_7 --pers auto",
+      "Mem": 2.5
+    },
+    "Equihash210": "--algo aion",
+    "Equihash96": "--algo 96_5"
+  }
 }

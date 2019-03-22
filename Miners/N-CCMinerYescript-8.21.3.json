@@ -1,29 +1,29 @@
 {
-    "Path": "ccminerKlausT\\ccminer.exe",
-    "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.02/ccminerKlausT-8.21.3.7z",
-    "SHA256": "5A1752003013A2662BAAE462BA2F8DAFA51CA65BDDD196D446FC34C2468611A0",
-    "Type": "NVIDIA",
-    "Arguments": [
-        "-o #Protocol#://#Server#:#Port#",
-        "-u #Login#",
-        "-p #Password#",
-        "-R 3",
-        "-r 10",
-        "-d #Devices#",
-        "-b #APIPort#",
-        "#AlgorithmParameters#"
-    ],
-    "API": "Ccminer",
-    "APIPort": 4068,
-    "CUDA": 10.0,
-    "Algorithms": {
-        "Lyra2v3": "-a lyra2v3",
-        "NeoScrypt": "-a neoscrypt",
-        "Yescrypt": "-a yescrypt",
-        "YescryptR16": "-a yescryptr16 -i 13.25",
-        "YescryptR16v2": "-a yescryptr16v2",
-        "YescryptR24": "-a yescryptr24",
-        "YescryptR32": "-a yescryptr32 -i 12.5",
-        "YescryptR8": "-a yescryptr8"
-    }
+  "Path": "ccminerKlausT/ccminer.exe",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.02/ccminerKlausT-8.21.3.7z",
+  "SHA256": "5A1752003013A2662BAAE462BA2F8DAFA51CA65BDDD196D446FC34C2468611A0",
+  "Type": "NVIDIA",
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-R 3",
+    "-r 10",
+    "-d #Devices#",
+    "-b #APIPort#",
+    "#AlgorithmParameters#"
+  ],
+  "API": "Ccminer",
+  "APIPort": 4068,
+  "CUDA": 10.0,
+  "Algorithms": {
+    "Lyra2v3": "-a lyra2v3",
+    "NeoScrypt": "-a neoscrypt",
+    "Yescrypt": "-a yescrypt",
+    "YescryptR16": "-a yescryptr16 -i 13.25",
+    "YescryptR16v2": "-a yescryptr16v2",
+    "YescryptR24": "-a yescryptr24",
+    "YescryptR32": "-a yescryptr32 -i 12.5",
+    "YescryptR8": "-a yescryptr8"
+  }
 }
