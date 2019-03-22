@@ -1,9 +1,26 @@
 param(
-    [Parameter(Mandatory = $true)][String]$Key,
-    [Parameter(Mandatory = $true)][String]$WorkerName,
+    [Parameter(Mandatory = $true)]$WorkerName,
     [Parameter(Mandatory = $true)]$ActiveMiners,
+    [Parameter(Mandatory = $true)]$MinerStatusKey,
     [Parameter(Mandatory = $true)]$MinerStatusURL
 )
+
+function ConvertTo-Hash {
+    param(
+        [Parameter(Mandatory = $true)]
+        [double]$Hash
+    )
+
+    $Return = switch ([math]::truncate([math]::log($Hash, 1e3))) {
+        1 {"{0:g4} kh" -f ($Hash / 1e3)}
+        2 {"{0:g4} mh" -f ($Hash / 1e6)}
+        3 {"{0:g4} gh" -f ($Hash / 1e9)}
+        4 {"{0:g4} th" -f ($Hash / 1e12)}
+        5 {"{0:g4} ph" -f ($Hash / 1e15)}
+        default {"{0:g4} h" -f ($Hash)}
+    }
+    $Return
+}
 
 $Miners = $ActiveMiners.SubMiners | Where-Object Status -eq 'Running' | Sort-Object {$ActiveMiners[$_.IdF].DeviceGroup.GroupType -eq 'CPU'}
 $Profit = $Miners | % {[decimal]$_.RevenueLive + [decimal]$_.RevenueLiveDual} | Measure-Object -Sum | Select-Object -ExpandProperty Sum
@@ -27,5 +44,12 @@ $MinerReport = $Miners | ForEach-Object {
     }
 } | ConvertTo-Json -Compress
 try {
-    Invoke-RestMethod -Uri $MinerStatusURL -Method Post -Body @{address = $Key; workername = $WorkerName; miners = $MinerReport; profit = $Profit} | Out-Null
+    $Params = @{
+        Uri             = $MinerStatusURL
+        Method          = 'Post'
+        Body            = @{address = $MinerStatusKey; workername = $WorkerName; miners = $MinerReport; profit = $Profit}
+        UseBasicParsing = $true
+        TimeoutSec      = 10
+    }
+    Invoke-RestMethod @Params | Out-Null
 } catch {}

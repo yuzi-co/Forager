@@ -1374,13 +1374,21 @@ while ($Quit -eq $false) {
 
             # Report stats
             if ($Config.MinerStatusURL -and $Config.MinerStatusKey) {
-                $Params = @{
-                    WorkerName     = $SystemInfo.ComputerName
-                    ActiveMiners   = $ActiveMiners
-                    Key            = $Config.MinerStatusKey
-                    MinerStatusURL = $Config.MinerStatusURL
+                if ($ReportJob.State -eq 'Completed') {
+                    $ReportJob | Remove-Job
                 }
-                & ./Includes/ReportStatus.ps1 @Params
+                if ($null -eq $ReportJob -or $ReportJob.State -eq 'Completed') {
+                    $Params = @{
+                        WorkerName     = $SystemInfo.ComputerName
+                        ActiveMiners   = $ActiveMiners
+                        MinerStatusKey = $Config.MinerStatusKey
+                        MinerStatusURL = $Config.MinerStatusURL
+                    }
+                    $R = Resolve-Path ./Includes/ReportStatus.ps1
+                    $ReportJob = Start-Job {
+                        & $using:R @using:Params
+                    }
+                }
             }
 
             #To get pool speed
@@ -1765,9 +1773,9 @@ while ($Quit -eq $false) {
             Log "Interval ends by time: $($Interval.Duration)" -Severity Debug
         }
 
-        if ($ExitLoop) {break} #forced Exit
-
         Send-ErrorsToLog $LogFile
+
+        if ($ExitLoop) {break} #forced Exit
     } # End mining loop
 
     Remove-Variable Miners
