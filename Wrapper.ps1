@@ -47,6 +47,7 @@ do {
         if (
             $_ -match "Speed\s([0-9.,]+)\s?([kmgtp]?h/s)" -or # EnergiMiner
             $_ -match "Accepted.*\s([0-9.,]+)\s([kmgtp]?h/s)" -or # lyclMiner
+            $_ -match "Total\s([0-9.,]+)\s([kmgtp]?h/s)" -or # SilentArmy
             $_ -match "Results: ([\d,.]+) ([kmgtp]?gps), sub:(\d+) acc:(\d+) rej:(\d+)" -or # SwapMiner
             $false
         ) {
