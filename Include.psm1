@@ -11,11 +11,11 @@ function Set-NvidiaPowerLimit ([int]$PowerLimitPercent, [string]$Devices) {
         # )
         # $PowerDefaultLimit = [int](((& $Command $Arguments) -replace 'W').Trim())
 
-        $xpr = "$PSScriptRoot\includes\nvidia-smi.exe -i " + $Device + " --query-gpu=power.default_limit --format=csv,noheader"
+        $xpr = "./includes/nvidia-smi.exe -i " + $Device + " --query-gpu=power.default_limit --format=csv,noheader"
         $PowerDefaultLimit = [int]((invoke-expression $xpr) -replace 'W', '')
 
         #powerlimit change must run in admin mode
-        $NewProcess = New-Object System.Diagnostics.ProcessStartInfo "$PSScriptRoot\includes\nvidia-smi.exe"
+        $NewProcess = New-Object System.Diagnostics.ProcessStartInfo "./includes/nvidia-smi.exe"
         $NewProcess.Verb = "runas"
         #$NewProcess.UseShellExecute = $false
         $NewProcess.Arguments = "-i $Device -pl $([Math]::Floor([int]($PowerDefaultLimit -replace ' W', '') * ($PowerLimitPercent / 100)))"
@@ -184,11 +184,11 @@ function Get-DevicesInfoADL {
             'pci_device'
         )
     }
-    $Command = "$PSScriptRoot\Includes\OverdriveN.exe"
+    $Command = "./Includes/OverdriveN.exe"
     $Result = & $Command | Where-Object {$_ -notlike "*&???" -and $_ -notlike "*failed"} | ConvertFrom-Csv @CsvParams
 
     if (-not $global:AmdCardsTDP) {
-        $global:AmdCardsTDP = Get-Content $PSScriptRoot\Data\amd-cards-tdp.json | ConvertFrom-Json
+        $global:AmdCardsTDP = Get-Content ./Data/amd-cards-tdp.json | ConvertFrom-Json
     }
 
     $DeviceId = 0
@@ -262,7 +262,7 @@ function Get-DevicesInfoNvidiaSMI {
 "@
         $Result = $FakeData | ConvertFrom-Csv @CvsParams
     } else {
-        $Command = "$PSScriptRoot\includes\nvidia-smi.exe"
+        $Command = "./includes/nvidia-smi.exe"
         $Arguments = @(
             '--query-gpu=gpu_name,utilization.gpu,utilization.memory,temperature.gpu,power.draw,power.limit,fan.speed,pstate,clocks.current.graphics,clocks.current.memory,power.max_limit,power.default_limit'
             '--format=csv,noheader'
@@ -327,7 +327,7 @@ function Get-DevicesInfoCPU {
         }
         if (-not $CpuData.PowerDraw) {
             if (-not $global:CpuTDP) {
-                $global:CpuTDP = Get-Content $PSScriptRoot\Data\cpu-tdp.json | ConvertFrom-Json
+                $global:CpuTDP = Get-Content ./Data/cpu-tdp.json | ConvertFrom-Json
             }
             $CpuData.PowerDraw = $CpuTDP.($_.Name.Trim()) * $CpuData.Utilization / 100
         }
@@ -354,23 +354,25 @@ function Get-DevicesInformation ($Types) {
     if ($abMonitor) {$abMonitor.ReloadAll()}
     if ($abControl) {$abControl.ReloadAll()}
 
-    #AMD
-    if ($Types | Where-Object GroupType -in @('AMD')) {
-        if ($abMonitor) {
-            Get-DevicesInfoAfterburner -Types ($Types | Where-Object GroupType -eq 'AMD')
-        } else {
-            Get-DevicesInfoADL -Types ($Types | Where-Object GroupType -eq 'AMD')
+    if ($IsWindows) {
+        #AMD
+        if ($Types | Where-Object GroupType -in @('AMD')) {
+            if ($abMonitor) {
+                Get-DevicesInfoAfterburner -Types ($Types | Where-Object GroupType -eq 'AMD')
+            } else {
+                Get-DevicesInfoADL -Types ($Types | Where-Object GroupType -eq 'AMD')
+            }
         }
-    }
 
-    #NVIDIA
-    if ($Types | Where-Object GroupType -eq 'NVIDIA') {
-        Get-DevicesInfoNvidiaSMI -Types ($Types | Where-Object GroupType -eq 'NVIDIA')
-    }
+        #NVIDIA
+        if ($Types | Where-Object GroupType -eq 'NVIDIA') {
+            Get-DevicesInfoNvidiaSMI -Types ($Types | Where-Object GroupType -eq 'NVIDIA')
+        }
 
-    # CPU
-    if ($Types | Where-Object GroupType -eq 'CPU') {
-        Get-DevicesInfoCPU
+        # CPU
+        if ($Types | Where-Object GroupType -eq 'CPU') {
+            Get-DevicesInfoCPU
+        }
     }
 }
 
@@ -509,7 +511,9 @@ function Get-OpenCLDevices {
         )
         # end fake
     } else {
-        Add-Type -Path $PSScriptRoot\Includes\OpenCL\*.cs
+        if (-not ('OpenCl.Platform' -as [Type])) {
+            Add-Type -Path ./Includes/OpenCL/*.cs
+        }
         try {
             $OCLPlatforms = [OpenCl.Platform]::GetPlatformIds()
         } catch {
@@ -559,7 +563,7 @@ function Get-MiningTypes () {
             # Autodetection on
             Get-Devices -Types AMD, NVIDIA
         }
-        if ($Config.CPUMining -or $All) {
+        if ($Config.CpuMining -or $All) {
             Get-Devices -Types CPU
         }
     )
@@ -570,11 +574,18 @@ function Get-MiningTypes () {
 
     if ($Devices | Where-Object {$_.GroupType -eq 'CPU'}) {
 
-        $CpuResult = Get-CimInstance Win32_Processor
-        $Features = $($feat = @{}; switch -regex ((& $PSScriptRoot\Includes\CHKCPU32.exe /x) -split "</\w+>") {"^\s*<_?(\w+)>(\d+).*" {$feat.($matches[1]) = [int]$matches[2]}}; $feat)
-        $RealCores = [int[]](0..($CpuResult.NumberOfLogicalProcessors - 1))
-        if ($CpuResult.NumberOfLogicalProcessors -gt $CpuResult.NumberOfCores) {
-            $RealCores = $RealCores | Where-Object {-not ($_ % 2)}
+        if ($IsWindows) {
+            $CpuResult = Get-CimInstance Win32_Processor
+            $Features = $($feat = @{}; switch -regex ((& ./Includes/CHKCPU32.exe /x) -split "</\w+>") {"^\s*<_?(\w+)>(\d+).*" {$feat.($matches[1]) = [int]$matches[2]}}; $feat)
+            $RealCores = [int[]](0..($CpuResult.NumberOfLogicalProcessors - 1))
+            if ($CpuResult.NumberOfLogicalProcessors -gt $CpuResult.NumberOfCores) {
+                $RealCores = $RealCores | Where-Object {-not ($_ % 2)}
+            }
+        }
+        if ($IsLinux) {
+            $RealCores = @()
+            $Features = @{}
+
         }
         $Devices | Where-Object {$_.GroupType -eq 'CPU'} | ForEach-Object {
             $_ | Add-Member Devices "0" -Force
@@ -587,7 +598,7 @@ function Get-MiningTypes () {
 
     $TypeID = 0
     $DeviceGroups = $Devices | ForEach-Object {
-        if (-not $Filter -or (Compare-Object $_.GroupName $Filter -IncludeEqual -ExcludeDifferent)) {
+        if (-not $Filter -or $Filter -contains $_.GroupName) {
 
             $_ | Add-Member ID $TypeID
             $TypeID++
@@ -604,11 +615,11 @@ function Get-MiningTypes () {
             $OCLDevice = @($OCLDevices | Where-Object {$Pattern -contains $_.Vendor})[$_.DevicesArray]
             if ($OCLDevice) {
                 if ($null -eq $_.PlatformId) {$_ | Add-Member PlatformId ($OCLDevice.PlatformId | Select-Object -First 1)}
-                if ($null -eq $_.MemoryGB) {$_ | Add-Member MemoryGB ([int](($OCLDevice | Measure-Object -Property GlobalMemSize -Minimum).Minimum / 1GB ))}
+                if ($null -eq $_.MemoryGB) {$_ | Add-Member MemoryGB ([math]::Round((($OCLDevice | Measure-Object -Property GlobalMemSize -Minimum).Minimum / 1GB ), 2))}
                 if ($OCLDevice[0].Platform.Version -match "CUDA\s+([\d\.]+)") {$_ | Add-Member CUDAVersion $Matches[1] -Force}
+                $_ | Add-Member OCLDeviceId @($OCLDevice.OCLDeviceId)
+                $_ | Add-Member OCLGpuId @($OCLDevice.OCLGpuId)
             }
-            $_ | Add-Member OCLDeviceId @($OCLDevice.OCLDeviceId)
-            $_ | Add-Member OCLGpuId @($OCLDevice.OCLGpuId)
 
             if ($_.PowerLimits -is [string] -and $_.PowerLimits.Length -gt 0) {
                 $_ | Add-Member PowerLimits @([int[]]($_.PowerLimits -split ',') | Sort-Object -Descending -Unique) -Force
@@ -626,7 +637,7 @@ function Get-MiningTypes () {
             $_
         }
     }
-    $DeviceGroups #return
+    return $DeviceGroups
 }
 
 function Format-DeviceList {
@@ -657,16 +668,37 @@ function Format-DeviceList {
 
 function Get-SystemInfo () {
 
-    $OperatingSystem = Get-CimInstance Win32_OperatingSystem
-    $Features = $($feat = @{}; switch -regex ((& $PSScriptRoot\Includes\CHKCPU32.exe /x) -split "</\w+>") {"^\s*<_?(\w+)>(\d+).*" {$feat.($matches[1]) = [int]$matches[2]}}; $feat)
+    if (@($IsWindows, $IsLinux, $IsMacOS) -eq $null) {
+        # Define flags for non-Core Powershell
+        if ([System.Environment]::OSVersion.Platform -eq "Win32NT") {
+            # Just making sure, since only Windows has non-Core Poweshell
+            $Global:IsWindows = $true
+            $Global:IsLinux = $false
+            $Global:IsMacOS = $false
+        }
+    }
 
-    [PSCustomObject]@{
-        OSName       = $OperatingSystem.Caption
-        OSVersion    = [version]$OperatingSystem.Version
-        ComputerName = $env:COMPUTERNAME
-        CPUCores     = $Features.cores
-        CPUThreads   = $Features.threads
-        CPUFeatures  = $Features
+    if ($IsWindows) {
+        # $OperatingSystem = Get-CimInstance Win32_OperatingSystem
+        $Features = $($feat = @{}; switch -regex ((& ./Includes/CHKCPU32.exe /x) -split "</\w+>") {"^\s*<_?(\w+)>(\d+).*" {$feat.($matches[1]) = [int]$matches[2]}}; $feat)
+
+        [PSCustomObject]@{
+            OSName       = [System.Environment]::OSVersion.Platform
+            OSVersion    = [System.Environment]::OSVersion.Version
+            ComputerName = (Get-Culture).TextInfo.ToTitleCase([System.Environment]::MachineName.ToLower()) #Windows capitalizes this
+            Processors   = [System.Environment]::ProcessorCount
+            CpuCores     = $Features.cores
+            CpuFeatures  = $Features
+        }
+    } elseif ($IsLinux) {
+        [PSCustomObject]@{
+            OSName       = [System.Environment]::OSVersion.Platform
+            OSVersion    = [System.Environment]::OSVersion.Version
+            ComputerName = [System.Environment]::MachineName
+            Processors   = [System.Environment]::ProcessorCount
+            # CpuCores     = $Features.cores
+            # CpuFeatures  = $Features
+        }
     }
 }
 
@@ -726,7 +758,7 @@ function Invoke-TcpRequest {
         [String]$Server = "localhost",
         [Parameter(Mandatory = $true)]
         [String]$Port,
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $false)]
         [String]$Request,
         [Parameter(Mandatory = $false)]
         [Int]$Timeout = 10, #seconds,
@@ -751,7 +783,13 @@ function Invoke-TcpRequest {
         $client.ReceiveTimeout = $Timeout * 1000
         $Writer.AutoFlush = $true
 
-        if ($DoNotSendNewline) {$Writer.Write($Request)} else {$Writer.WriteLine($Request)}
+        if ($Request) {
+            if ($DoNotSendNewline) {
+                $Writer.Write($Request)
+            } else {
+                $Writer.WriteLine($Request)
+            }
+        }
         if (-not $WriteOnly) {
             if ($ReadToEnd) {
                 $Response = $Reader.ReadToEnd()
@@ -811,12 +849,13 @@ function Invoke-APIRequest {
     $ProgressPreference = 'SilentlyContinue' #No progress message on web requests
 
     $UserAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36'
-    $CachePath = "$PSScriptRoot\Cache\"
-    $CacheFile = $CachePath + [System.Web.HttpUtility]::UrlEncode($Url) + '.json'
+    $CachePath = "./Cache/"
+    $CacheFile = $CachePath + [System.Web.HttpUtility]::UrlEncode($Url)
+    $CacheFile = $CacheFile.subString(0, [math]::min(200, $CacheFile.Length)) + '.json'
     $Response = $null
 
     if (-not (Test-Path -Path $CachePath)) { New-Item -Path $CachePath -ItemType directory -Force | Out-Null }
-    if (Test-Path -LiteralPath $CacheFile -NewerThan (Get-Date).AddMinutes( - $Age)) {
+    if (Test-Path $CacheFile -NewerThan (Get-Date).AddMinutes( - $Age)) {
         $Response = Get-Content -Path $CacheFile | ConvertFrom-Json
     } else {
         while ($Retry -gt 0) {
@@ -825,13 +864,13 @@ function Invoke-APIRequest {
                 $Response = Invoke-RestMethod -Uri $Url -UserAgent $UserAgent -UseBasicParsing -TimeoutSec $Timeout
                 if ($Response) {$Retry = 0}
             } catch {
-                Start-Sleep -Seconds 2
+                Start-Sleep -Seconds 1
                 $Error.Remove($error[$Error.Count - 1])
             }
         }
         if ($Response) {
-            if ($CacheFile.Length -lt 250) {$Response | ConvertTo-Json -Depth 100 | Set-Content -Path $CacheFile}
-        } elseif (Test-Path -LiteralPath $CacheFile -NewerThan (Get-Date).AddMinutes( - $MaxAge)) {
+            $Response | ConvertTo-Json -Depth 100 | Set-Content -Path $CacheFile
+        } elseif (Test-Path -Path $CacheFile -NewerThan (Get-Date).AddMinutes( - $MaxAge)) {
             $Response = Get-Content -Path $CacheFile | ConvertFrom-Json
         } else {
             $Response = $null
@@ -925,7 +964,7 @@ function Get-LiveHashRate {
             }
 
             "wrapper" {
-                $wrpath = "$PSScriptRoot\Wrapper_$($Miner.ApiPort).txt"
+                $wrpath = "./Wrapper_$($Miner.ApiPort).txt"
                 $HashRate = [double]$(if (Test-Path -path $wrpath) {Get-Content $wrpath} else {0})
             }
 
@@ -1017,6 +1056,14 @@ function Get-LiveHashRate {
                 }
             }
 
+            "Luk" {
+                $Request = Invoke-TCPRequest -Port $Miner.ApiPort -ReadToEnd -Quiet
+                if ($Request) {
+                    $Data = $Request -replace 'LOG:' | ConvertFrom-StringData
+                    $HashRate = [double]$Data.hash_rate
+                }
+            }
+
             "GrinPro" {
                 $Request = Invoke-HTTPRequest -Port $Miner.ApiPort -Path "/api/status"
                 if ($Request) {
@@ -1101,7 +1148,7 @@ function Start-SubProcess {
         3  = "RealTime"
     }
 
-    if ($UseAlternateMinerLauncher) {
+    if ($UseAlternateMinerLauncher -and $IsWindows) {
 
         $ShowWindow = @{
             Normal    = "SW_SHOW"
@@ -1140,12 +1187,12 @@ function Start-SubProcess {
                 ProcessHandle = $Process.Handle
             }
 
-            $null = $ControllerProcess.Handle
-            $null = $Process.Handle
+            $ControllerProcess.Handle | Out-Null
+            $Process.Handle | Out-Null
 
             do {
                 if ($ControllerProcess.WaitForExit(1000)) {
-                    $null = $Process.CloseMainWindow()
+                    $Process.CloseMainWindow() | Out-Null
                 }
             }
             while ($Process.HasExited -eq $false)
@@ -1161,12 +1208,25 @@ function Start-SubProcess {
 
             $ProcessParam = @{
                 FilePath         = $FilePath
-                WindowStyle      = $MinerWindowStyle
                 ArgumentList     = $(if ($ArgumentList) {$ArgumentList})
                 WorkingDirectory = $(if ($WorkingDirectory) {$WorkingDirectory})
+                PassThru         = $true
+            }
+            if ($IsWindows) {
+                $ProcessParam.WindowStyle = $MinerWindowStyle
+            } else {
+                # Linux requires output redirection, otherwise Receive-Job fails
+                $ProcessParam.RedirectStandardOutput = $WorkingDirectory + "/console.log"
+                $ProcessParam.RedirectStandardError = $WorkingDirectory + "/error.log"
+                # $ProcessParam.UseNewEnvironment = $true
             }
 
-            $Process = Start-Process @ProcessParam -PassThru
+            if ($IsLinux) {
+                # Fix executable permissions
+                & chmod +x $FilePath | Out-Null
+            }
+
+            $Process = Start-Process @ProcessParam
             if (-not $Process) {
                 [PSCustomObject]@{
                     ProcessId = $null
@@ -1179,28 +1239,25 @@ function Start-SubProcess {
                 ProcessHandle = $Process.Handle
             }
 
-            $null = $ControllerProcess.Handle
-            $null = $Process.Handle
+            $ControllerProcess.Handle | Out-Null
+            $Process.Handle | Out-Null
 
             do {
                 if ($ControllerProcess.WaitForExit(1000)) {
-                    $null = $Process.CloseMainWindow()
+                    $Process.CloseMainWindow() | Out-Null
                 }
-            }
-            while ($Process.HasExited -eq $false)
-
+            } until ($Process.HasExited)
         }
     }
 
     do {
         Start-Sleep -Seconds 1
         $JobOutput = Receive-Job $Job
-    }
-    while (-not $JobOutput)
+    } while (-not $JobOutput)
 
     if ($JobOutput.ProcessId -gt 0) {
         $Process = Get-Process | Where-Object Id -eq $JobOutput.ProcessId
-        $null = $Process.Handle
+        $Process.Handle | Out-Null
         $Process
 
         if ($Process) {$Process.PriorityClass = $PriorityNames.$Priority}
@@ -1218,7 +1275,7 @@ function Expand-WebRequest {
     )
 
     $FileName = ([IO.FileInfo](Split-Path $Uri -Leaf)).name
-    $CachePath = "$PSScriptRoot\Downloads\"
+    $CachePath = "./Downloads/"
     $FilePath = $CachePath + $Filename
 
     if (-not (Test-Path -LiteralPath $CachePath)) {$null = New-Item -Path $CachePath -ItemType directory}
@@ -1239,8 +1296,34 @@ function Expand-WebRequest {
             } elseif (@('.msi', '.exe') -contains (Get-Item $FilePath).Extension) {
                 Start-Process $FilePath "-qb" -Wait
             } else {
-                $Command = 'x "' + $FilePath + '" -o"' + $Path + '" -y -spe'
-                Start-Process $PSScriptRoot\includes\7z.exe $Command -Wait
+                Log "Unpacking to $Path"
+                if (-not (Test-Path $Path)) {$null = New-Item -Path $Path -ItemType directory}
+
+                if ($IsLinux) {
+                    if (($FileName -split '\.')[-2] -eq 'tar') {
+                        $Params = @{
+                            FilePath     = "tar"
+                            ArgumentList = "-xa -f " + $FilePath + " -C " + $Path
+                        }
+                    } elseif (($FileName -split '\.')[-1] -in @('tgz')) {
+                        $Params = @{
+                            FilePath     = "tar"
+                            ArgumentList = "-xz -f " + $FilePath + " -C " + $Path
+                        }
+                    } else {
+                        $Params = @{
+                            FilePath     = "7z"
+                            ArgumentList = 'x "' + $FilePath + '" -o"' + $Path + '" -y -spe'
+                        }
+                    }
+                } else {
+                    $Params = @{
+                        FilePath     = "./includes/7z.exe"
+                        ArgumentList = 'x "' + $FilePath + '" -o"' + $Path + '" -y -spe'
+                    }
+                }
+                $Params.Wait = $true
+                Start-Process @Params
             }
         }
     } finally {
@@ -1271,8 +1354,8 @@ function Get-Pools {
     )
     #in detail mode returns a line for each pool/algo/coin combination, in info mode returns a line for pool
 
-    $PoolsFolderContent = Get-ChildItem $PSScriptRoot\Pools\* -File -Include '*.ps1' | Where-Object {
-        $PoolsFilterList.Count -eq 0 -or $PoolsFilterList -contains $_.BaseName
+    $PoolsFolderContent = Get-ChildItem ./Pools/* -File -Include '*.ps1' | Where-Object {
+        $PoolsFilterList.Count -eq 0 -or $PoolsFilterList -icontains $_.BaseName
     }
 
     if ($null -eq ($Info | Get-Member -MemberType NoteProperty | Where-Object Name -eq Location)) {
@@ -1389,7 +1472,9 @@ function Get-Updates {
 function Get-Config {
 
     $Result = @{}
-    switch -regex -file $PSScriptRoot\config.ini {
+    # case insensitive match for linux
+    $File = Get-ChildItem . -File | Where-Object Name -imatch "config.ini" | Select-Object -First 1 -ExpandProperty Name
+    switch -regex -file $File {
         "^\s*(\w+)\s*=\s*(.*)" {
             $name, $value = $matches[1..2]
             $Result[$name] = switch -wildcard ($value.Trim()) {
@@ -1409,7 +1494,9 @@ function Get-Config {
 function Get-Wallets {
 
     $Result = @{}
-    switch -regex -file $PSScriptRoot\config.ini {
+    # case insensitive match for linux
+    $File = Get-ChildItem . -File | Where-Object Name -imatch "config.ini" | Select-Object -First 1 -ExpandProperty Name
+    switch -regex -file $File {
         "^\s*WALLET_(\w+)\s*=\s*(.*)" {
             $name, $value = $matches[1..2]
             $Result[$name] = $value.Trim()
@@ -1426,7 +1513,7 @@ function Get-BestHashRateAlgo {
 
     $Pattern = "*_" + $Algorithm + "_*_HashRate.csv"
 
-    Get-ChildItem $PSScriptRoot\Stats -Filter $Pattern -File | ForEach-Object {
+    Get-ChildItem ./Stats -File | Where-Object Name -imatch $Pattern | Select-Object -ExpandProperty Name | ForEach-Object {
         $Content = $_ | Get-Content | ConvertFrom-Csv
         [PSCustomObject]@{
             HashRate = $Content.Speed | Measure-Object -Average | Select-Object -ExpandProperty Average
@@ -1455,8 +1542,8 @@ function Get-ConsolePosition ([ref]$x, [ref]$y) {
 }
 
 function Out-HorizontalLine ([string]$Title) {
-
-    $Width = $Host.UI.RawUI.WindowSize.Width - 1
+    $MaxWidth = 170
+    $Width = [math]::min($Host.UI.RawUI.WindowSize.Width, $MaxWidth) - 1
     if ([string]::IsNullOrEmpty($Title)) {$str = "-" * $Width}
     else {
         $str = '{white}' + ("-" * [math]::floor(($Width - $Title.Length - 4) / 2))
@@ -1466,18 +1553,31 @@ function Out-HorizontalLine ([string]$Title) {
     Write-Color $str
 }
 
+function Clear-Lines ([int]$Lines) {
+    $x = $y = [ref]0
+    Get-ConsolePosition ([ref]$x) ([ref]$y)
+    $Width = $Host.UI.RawUI.WindowSize.Width
+    Write-Host (" " * $Width * $Lines)
+    Set-ConsolePosition $x $y
+    Remove-Variable x
+    Remove-Variable y
+}
+
 function Write-Message {
     param(
         [string]$Message,
         [int]$Line,
         [switch]$AlignRight
     )
+    $MaxWidth = 170
+    $Width = [math]::min($Host.UI.RawUI.WindowSize.Width, $MaxWidth) - 1
     if ($AlignRight) {
-        $X = ($Host.UI.RawUI.WindowSize.Width - ($Message -replace "({\w+})").Length - 1)
+        $X = ($Width - ($Message -replace "({\w+})").Length)
     }
     Set-ConsolePosition $X $Line
     Write-Color $Message
 }
+
 function Set-WindowSize ([int]$Width, [int]$Height) {
     #Buffer must be always greater than windows size
 
@@ -1500,7 +1600,7 @@ function Get-AlgoUnifiedName ([string]$Algo) {
     if ($Algo) {
 
         if (-not $global:AlgosTable) {
-            $global:AlgosTable = Get-Content -Path $PSScriptRoot\Data\algorithms.json | ConvertFrom-Json
+            $global:AlgosTable = Get-Content -Path ./Data/algorithms.json | ConvertFrom-Json
         }
         if ($AlgosTable.$Algo) { $AlgosTable.$Algo }
         else { $Algo }
@@ -1549,7 +1649,7 @@ function Get-HashRates {
     )
 
     if ($AlgoLabel -eq "") {$AlgoLabel = 'X'}
-    $Pattern = $PSScriptRoot + "\Stats\" + $MinerName + "_" + $Algorithm + "_" + $GroupName + "_" + $AlgoLabel + "_PL" + $PowerLimit + "_HashRate"
+    $Pattern = "./Stats/" + $MinerName + "_" + $Algorithm + "_" + $GroupName + "_" + $AlgoLabel + "_PL" + $PowerLimit + "_HashRate"
 
     if (Test-Path -path "$Pattern.csv") {
         try {
@@ -1596,7 +1696,7 @@ function Set-HashRates {
 
     if ($AlgoLabel -eq "") {$AlgoLabel = 'X'}
 
-    $Path = $PSScriptRoot + "\Stats\" + $MinerName + "_" + $Algorithm + "_" + $GroupName + "_" + $AlgoLabel + "_PL" + $PowerLimit + "_HashRate.csv"
+    $Path = "./Stats/" + $MinerName + "_" + $Algorithm + "_" + $GroupName + "_" + $AlgoLabel + "_PL" + $PowerLimit + "_HashRate.csv"
 
     $Value | ConvertTo-Csv | Set-Content -Path $Path
 }
@@ -1616,7 +1716,7 @@ function Get-Stats {
     )
 
     if ($AlgoLabel -eq "") {$AlgoLabel = 'X'}
-    $Pattern = $PSScriptRoot + "\Stats\" + $MinerName + "_" + $Algorithm + "_" + $GroupName + "_" + $AlgoLabel + "_PL" + $PowerLimit + "_stats"
+    $Pattern = "./Stats/" + $MinerName + "_" + $Algorithm + "_" + $GroupName + "_" + $AlgoLabel + "_PL" + $PowerLimit + "_stats"
 
     if (Test-Path -path "$Pattern.json") {
         $Content = (Get-Content -path "$Pattern.json")
@@ -1649,7 +1749,7 @@ function Set-Stats {
 
     if ($AlgoLabel -eq "") {$AlgoLabel = 'X'}
 
-    $Path = $PSScriptRoot + "\Stats\" + $MinerName + "_" + $Algorithm + "_" + $GroupName + "_" + $AlgoLabel + "_PL" + $PowerLimit + "_stats.json"
+    $Path = "./Stats/" + $MinerName + "_" + $Algorithm + "_" + $GroupName + "_" + $AlgoLabel + "_PL" + $PowerLimit + "_stats.json"
 
     $Value | ConvertTo-Json | Set-Content -Path $Path
 }
@@ -1657,7 +1757,7 @@ function Set-Stats {
 function Start-Downloader {
     param(
         [Parameter(Mandatory = $true)]
-        [String]$URI,
+        [String]$Uri,
         [Parameter(Mandatory = $true)]
         [String]$ExtractionPath,
         [Parameter(Mandatory = $true)]
@@ -1666,12 +1766,12 @@ function Start-Downloader {
         [String]$SHA256
     )
 
-    if (-not (Test-Path -LiteralPath $Path)) {
+    if (-not (Test-Path $Path)) {
         try {
-            if ($URI -and (Split-Path $URI -Leaf) -eq (Split-Path $Path -Leaf)) {
+            if ($Uri -and (Split-Path $Uri -Leaf) -eq (Split-Path $Path -Leaf)) {
                 # downloading a single file
                 $null = New-Item (Split-Path $Path) -ItemType "Directory"
-                (New-Object System.Net.WebClient).DownloadFile($URI, $Path)
+                (New-Object System.Net.WebClient).DownloadFile($Uri, $Path)
                 if ($SHA256 -and (Get-FileHash -Path $Path -Algorithm SHA256).Hash -ne $SHA256) {
                     Log "File hash doesn't match. Removing file." -Severity Warn
                     Remove-Item $Path
@@ -1679,48 +1779,41 @@ function Start-Downloader {
             } else {
                 # downloading an archive or installer
                 Log "Downloading $URI" -Severity Info
-                Expand-WebRequest -URI $URI -Path $ExtractionPath -SHA256 $SHA256 -ErrorAction Stop
+                Expand-WebRequest -Uri $Uri -Path $ExtractionPath -SHA256 $SHA256 -ErrorAction Stop
             }
         } catch {
-            $Message = "Cannot download $URI"
+            $Message = "Cannot download $Uri"
             Log $Message -Severity Warn
         }
     }
 }
 
 function Clear-Files {
-
     $Now = Get-Date
-    $Days = "3"
 
-    $TargetFolder = "$PSScriptRoot\Logs"
-    $Extension = "*.log"
-    $LastWrite = $Now.AddDays( - $Days)
-    $Files = Get-Childitem $TargetFolder -Include $Extension -Exclude "empty.txt" -File -Recurse | Where-Object {$_.LastWriteTime -le "$LastWrite"}
-    $Files | ForEach-Object {Remove-Item $_.fullname}
+    $Files = @(
+        $TargetFolder = "."
+        $LastWrite = $Now.AddDays(-3)
+        Get-ChildItem $TargetFolder -Include "*.log" -File -Recurse | Where-Object LastWriteTime -le $LastWrite
 
-    $TargetFolder = $PSScriptRoot
-    $Extension = "wrapper_*.txt"
-    $Files = Get-Childitem $TargetFolder -Include $Extension -File -Recurse
-    $Files | ForEach-Object {Remove-Item $_.fullname}
+        $TargetFolder = "."
+        Get-ChildItem $TargetFolder -File | Where-Object Name -imatch "wrapper_*.txt"
 
-    $TargetFolder = $PSScriptRoot
-    $Extension = "*.tmp"
-    $Files = Get-Childitem $TargetFolder -Include $Extension -File -Recurse
-    $Files | ForEach-Object {Remove-Item $_.fullname}
+        $TargetFolder = "."
+        Get-ChildItem $TargetFolder -File -Include "*.tmp" -Recurse
 
-    $TargetFolder = "$PSScriptRoot\Cache"
-    $Extension = "*.json"
-    $LastWrite = $Now.AddDays( - $Days)
-    $Files = Get-Childitem $TargetFolder -Include $Extension -Exclude "empty.txt" -File -Recurse | Where-Object {$_.LastWriteTime -le "$LastWrite"}
-    $Files | ForEach-Object {Remove-Item $_.fullname}
+        $TargetFolder = "./Cache"
+        $LastWrite = $Now.AddDays(-1)
+        Get-ChildItem $TargetFolder -File -Include "*.json" -Recurse | Where-Object LastWriteTime -le $LastWrite
+    )
+    $Files | Remove-Item
 }
 
 function Get-CoinSymbol ([string]$Coin) {
     $Coin = $Coin -ireplace '[^\w]'
     if ($Coin) {
         if (-not $global:CoinsTable) {
-            $global:CoinsTable = Get-Content -Path $PSScriptRoot\Data\coins.json | ConvertFrom-Json
+            $global:CoinsTable = Get-Content -Path ./Data/coins.json | ConvertFrom-Json
         }
         if ($CoinsTable.$Coin) { $CoinsTable.$Coin }
         else { $Coin }
@@ -1728,23 +1821,26 @@ function Get-CoinSymbol ([string]$Coin) {
 }
 
 function Test-DeviceGroupsConfig ($Types) {
-    $Devices = Get-DevicesInformation $Types
-    $Types | Where-Object GroupType -ne 'CPU' | ForEach-Object {
-        $DetectedDevices = @()
-        $DetectedDevices += $Devices | Where-Object GroupName -eq $_.GroupName
-        if ($DetectedDevices.Count -eq 0) {
-            Log ("No Devices for group " + $_.GroupName + " was detected, activity based watchdog will be disabled for that group, this happen with AMD beta blockchain drivers, no Afterburner or incorrect GpuGroups config") -Severity Warn
-            Start-Sleep -Seconds 5
-        } elseif ($DetectedDevices.Count -ne $_.DevicesCount) {
-            Log ("Mismatching Devices for group " + $_.GroupName + " was detected, check GpuGroups config and DeviceList.bat output") -Severity Warn
+    if ($IsWindows) {
+        $Devices = Get-DevicesInformation $Types
+        $Types | Where-Object GroupType -ne 'CPU' | ForEach-Object {
+            $DetectedDevices = @()
+            $DetectedDevices += $Devices | Where-Object GroupName -eq $_.GroupName
+            if ($DetectedDevices.Count -eq 0) {
+                Log ("No Devices for group " + $_.GroupName + " was detected, activity based watchdog will be disabled for that group, this happen with AMD beta blockchain drivers, no Afterburner or incorrect GpuGroups config") -Severity Warn
+                Start-Sleep -Seconds 5
+            } elseif ($DetectedDevices.Count -ne $_.DevicesCount) {
+                Log ("Mismatching Devices for group " + $_.GroupName + " was detected, check GpuGroups config and DeviceList.bat output") -Severity Warn
+                Start-Sleep -Seconds 5
+            }
+        }
+
+        $TotalMem = (($Types | Where-Object GroupType -ne 'CPU').OCLDevices.GlobalMemSize | Measure-Object -Sum).Sum / 1GB
+        $TotalSwap = (Get-CimInstance Win32_PageFile | Select-Object -ExpandProperty FileSize | Measure-Object -Sum).Sum / 1GB
+        if ($TotalMem -gt $TotalSwap) {
+            Log "Make sure you have at least $TotalMem GB swap configured" -Severity Warn
             Start-Sleep -Seconds 5
         }
-    }
-    $TotalMem = (($Types | Where-Object GroupType -ne 'CPU').OCLDevices.GlobalMemSize | Measure-Object -Sum).Sum / 1GB
-    $TotalSwap = (Get-CimInstance Win32_PageFile | Select-Object -ExpandProperty FileSize | Measure-Object -Sum).Sum / 1GB
-    if ($TotalMem -gt $TotalSwap) {
-        Log "Make sure you have at least $TotalMem GB swap configured" -Severity Warn
-        Start-Sleep -Seconds 5
     }
 }
 
@@ -1755,11 +1851,11 @@ function Start-Autoexec {
         [Parameter(Mandatory = $false)]
         [Int]$Priority = 0
     )
-    if (-not (Test-Path $PSScriptRoot\Autoexec.txt) -and (Test-Path $PSScriptRoot\Data\Autoexec.default.txt)) {
-        Copy-Item $PSScriptRoot\Data\Autoexec.default.txt $PSScriptRoot\Autoexec.txt -Force -ErrorAction Ignore
+    if (-not (Test-Path ./Autoexec.txt) -and (Test-Path ./Data/Autoexec.default.txt)) {
+        Copy-Item ./Data/Autoexec.default.txt ./Autoexec.txt -Force -ErrorAction Ignore
     }
     [System.Collections.ArrayList]$Script:AutoexecCommands = @()
-    foreach ($cmd in @(Get-Content $PSScriptRoot\Autoexec.txt -ErrorAction Ignore | Select-Object)) {
+    foreach ($cmd in @(Get-Content ./Autoexec.txt -ErrorAction Ignore | Select-Object)) {
         if ($cmd -match "^[\s\t]*`"(.+?)`"(.*)$") {
             try {
                 $Params = @{
@@ -1861,7 +1957,7 @@ function Get-WhatToMineFactor {
     $f = 10
     if ($Algo) {
         if (-not $global:WTMFactorTable) {
-            $global:WTMFactorTable = Get-Content -Path $PSScriptRoot\Data\wtm_factor.json | ConvertFrom-Json
+            $global:WTMFactorTable = Get-Content -Path ./Data/wtm_factor.json | ConvertFrom-Json
         }
         if ($WTMFactorTable.$Algo) {
             $WTMFactorTable.$Algo * $f

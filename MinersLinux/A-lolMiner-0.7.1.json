@@ -1,0 +1,34 @@
+{
+  "Path": "0.7.1/lolMiner",
+  "Uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.71/lolMiner_v071_Lin64.tar.gz",
+  "SHA256": "D5AD049B60343794E754ADAC82E44ECF20A403A7405BC9C050F082313293C02F",
+  "Type": "AMD",
+  "Arguments": [
+    "--pool #Server#",
+    "--port #Port#",
+    "--user #Login#",
+    "--pass #Password#",
+    "--rigname #WorkerName#",
+    "--devices #Devices#",
+    "--apiport #ApiPort#",
+    "--digits 2",
+    "--connectattempts 3",
+    "--tls $(if($enableSSL){1}else{0})",
+    "#AlgorithmParameters#"
+  ],
+  "API": "LOL",
+  "APIPort": 4028,
+  "SSL": true,
+  "Algorithms": {
+    "Equihash144": {
+      "Params": "--coin AUTO144_5 --asm 1",
+      "NH": false
+    },
+    "Equihash150": {
+      "Params": "--coin BEAM --asm 1",
+      "Mem": 3.5
+    },
+    "Equihash210": "--coin AION --asm 1",
+    "Equihash96": "--coin MNX --asm 1"
+  }
+}

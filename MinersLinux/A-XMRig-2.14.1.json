@@ -1,21 +1,22 @@
 {
-  "Path": "xmrig-2.14.0/xmrig.exe",
-  "Uri": "https://github.com/xmrig/xmrig/releases/download/v2.14.0/xmrig-2.14.0-msvc-win64.zip",
-  "SHA256": "30D5A88F2BFA9985DA9F6AE5C9231FE5D2583262AEF2C75A68AE38C2E0EBE70F",
-  "Type": "CPU",
+  "Path": "xmrig-amd-2.14.1/xmrig-amd",
+  "Uri": "https://github.com/xmrig/xmrig-amd/releases/download/v2.14.1/xmrig-amd-2.14.1-xenial-x64.tar.gz",
+  "SHA256": "02EDC07219562A0663744D62117C01A106AC934E5538DBD51AEC3F7350302614",
+  "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",
     "-u #Login#",
     "-p #Password#",
+    "--opencl-platform=#GPUPlatform#",
     "$(if ($Pool.PoolName -eq 'NiceHash'){'--nicehash'})",
     "$(if ($EnableSSL){'--tls'})",
     "--donate-level 1",
+    "--no-color",
     "--api-port #APIPort#",
-    "--max-cpu-usage=$(if ($CpuThreads -ne $null){ [int](100 * $CpuThreads / $DeviceGroup.Features.Threads) } else { 100 })",
     "#AlgorithmParameters#"
   ],
   "API": "XMRig",
-  "APIPort": 4048,
+  "APIPort": 4028,
   "SSL": true,
   "Fee": 0.01,
   "Algorithms": {
@@ -32,8 +33,6 @@
     "CnRwz": "-a cn/rwz",
     "CnSaber": "-a cn-heavy/tube",
     "CnTurtle": "-a cn-pico/trtl",
-    "_CnV7": "-a cn/1",
-    "_CnV8": "-a cn/2",
     "CnWow": "-a cn/wow",
     "CnXTL": "-a cn/xtl",
     "CnZls": "-a cn/zls"

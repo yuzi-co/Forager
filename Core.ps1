@@ -16,15 +16,19 @@ param(
     [array]$GroupNames
 )
 
+# Requires -PSEdition Core
+# Requires -Version 6.0
+# Requires -RunAsAdministrator
+
 $Error.Clear()
-Import-Module $PSScriptRoot\Include.psm1
+Import-Module ./Include.psm1
 
 try {Set-WindowSize 170 50} catch {}
 
 #Start log file
-$LogPath = "$PSScriptRoot\Logs\"
+$LogPath = "./Logs/"
 if (-not (Test-Path $LogPath)) { New-Item -Path $LogPath -ItemType directory | Out-Null }
-$LogName = $LogPath + "$(Get-Date -Format "yyyy-MM-dd_HH-mm-ss").log"
+$LogName = $LogPath + "forager-$(Get-Date -Format "yyyyMMdd-HHmmss").log"
 Start-Transcript $LogName  #for start log msg
 Stop-Transcript | Out-Null
 $global:LogFile = [System.IO.StreamWriter]::new( $LogName, $true )
@@ -50,14 +54,14 @@ $Global:Release = @{
 }
 Log "$($Release.Application) v$($Release.Version)"
 
-$Global:SysInfo = Get-SystemInfo
-Log "System Info: $($SysInfo | ConvertTo-Json  -Depth 1)" -Severity Debug
+$Global:SystemInfo = Get-SystemInfo
+Log "System Info: $($SystemInfo | ConvertTo-Json  -Depth 1)" -Severity Debug
 
 $Host.UI.RawUI.WindowTitle = "$($Release.Application) v$($Release.Version)"
 
 if ($env:CUDA_DEVICE_ORDER -ne 'PCI_BUS_ID') { $env:CUDA_DEVICE_ORDER = 'PCI_BUS_ID' } #Align CUDA id with nvidia-smi order
 
-if ($env:GPU_FORCE_64BIT_PTR -ne 0) { $env:GPU_FORCE_64BIT_PTR = 0 }               #For AMD
+if ($env:GPU_FORCE_64BIT_PTR -ne 1) { $env:GPU_FORCE_64BIT_PTR = 1 }               #For AMD
 if ($env:GPU_MAX_HEAP_SIZE -ne 100) { $env:GPU_MAX_HEAP_SIZE = 100 }               #For AMD
 if ($env:GPU_USE_SYNC_OBJECTS -ne 1) { $env:GPU_USE_SYNC_OBJECTS = 1 }             #For AMD
 if ($env:GPU_MAX_ALLOC_PERCENT -ne 100) { $env:GPU_MAX_ALLOC_PERCENT = 100 }       #For AMD
@@ -67,14 +71,16 @@ if ($env:GPU_MAX_WORKGROUP_SIZE -ne 256) { $env:GPU_MAX_WORKGROUP_SIZE = 256 }  
 #Set process priority to BelowNormal to avoid hash rate drops on systems with weak CPUs
 (Get-Process -Id $PID).PriorityClass = "BelowNormal"
 
-Import-Module NetSecurity -ErrorAction SilentlyContinue
-Import-Module Defender -ErrorAction SilentlyContinue
-Import-Module "$env:Windir\System32\WindowsPowerShell\v1.0\Modules\NetSecurity\NetSecurity.psd1" -ErrorAction SilentlyContinue
-Import-Module "$env:Windir\System32\WindowsPowerShell\v1.0\Modules\Defender\Defender.psd1" -ErrorAction SilentlyContinue
+if ($IsWindows) {
+    Import-Module NetSecurity -ErrorAction SilentlyContinue
+    Import-Module Defender -ErrorAction SilentlyContinue
+    Import-Module "$env:Windir\System32\WindowsPowerShell\v1.0\Modules\NetSecurity\NetSecurity.psd1" -ErrorAction SilentlyContinue
+    Import-Module "$env:Windir\System32\WindowsPowerShell\v1.0\Modules\Defender\Defender.psd1" -ErrorAction SilentlyContinue
 
-if (Get-Command "Unblock-File" -ErrorAction SilentlyContinue) {Get-ChildItem . -Recurse | Unblock-File}
-if ((Get-Command "Get-MpPreference" -ErrorAction SilentlyContinue) -and (Get-MpComputerStatus -ErrorAction SilentlyContinue) -and (Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) {
-    Start-Process (@{desktop = "powershell"; core = "pwsh"}.$PSEdition) "-Command Import-Module '$env:Windir\System32\WindowsPowerShell\v1.0\Modules\Defender\Defender.psd1'; Add-MpPreference -ExclusionPath '$(Convert-Path .)'" -Verb runAs
+    if (Get-Command "Unblock-File" -ErrorAction SilentlyContinue) {Get-ChildItem . -Recurse | Unblock-File}
+    if ((Get-Command "Get-MpPreference" -ErrorAction SilentlyContinue) -and (Get-MpComputerStatus -ErrorAction SilentlyContinue) -and (Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) {
+        Start-Process (@{desktop = "powershell"; core = "pwsh"}.$PSEdition) "-Command Import-Module '$env:Windir\System32\WindowsPowerShell\v1.0\Modules\Defender\Defender.psd1'; Add-MpPreference -ExclusionPath '$(Convert-Path .)'" -Verb runAs
+    }
 }
 
 $ActiveMiners = @()
@@ -137,7 +143,6 @@ $ParamsBackup = @{
 
 $Interval.StartTime = Get-Date #first initialization, must be outside loop
 
-Send-ErrorsToLog $LogFile
 
 $Msg = @("Starting Parameters: "
     "Algorithm: " + [string]($Algorithm -join ",")
@@ -152,12 +157,20 @@ Log $Msg -Severity Debug
 Start-Autoexec
 
 # Initialize MSI Afterburner
-if ($Config.Afterburner) {
-    . $PSScriptRoot\Includes\Afterburner.ps1
+if ($Config.Afterburner -and $IsWindows) {
+    . ./Includes/Afterburner.ps1
 }
 
 $Quit = $false
 $Screen = 'Profits'
+
+$StatsPath = "./Stats/"
+$BinPath = $(if ($IsLinux) {"./BinLinux/"} else {"./Bin/"})
+$MinersPath = $(if ($IsLinux) {"./MinersLinux/"} else {"./Miners/"})
+if (-not (Test-Path $BinPath)) { New-Item -Path $BinPath -ItemType directory -Force | Out-Null }
+if (-not (Test-Path $StatsPath)) { New-Item -Path $StatsPath -ItemType directory -Force | Out-Null }
+
+Send-ErrorsToLog $LogFile
 
 #-----------------------------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------
@@ -226,7 +239,7 @@ while ($Quit -eq $false) {
     $Interval.StartTime = Get-Date
 
     #Donation
-    $DonationsFile = "$PSScriptRoot\Data\donations.json"
+    $DonationsFile = "./Data/donations.json"
     $DonationStat = if (Test-Path $DonationsFile) { Get-Content $DonationsFile | ConvertFrom-Json } else { @(0, 0) }
     $Config.DonateMinutes = [math]::Max($Config.DonateMinutes, 10)
     $MiningTime = $DonationStat[0]
@@ -254,7 +267,7 @@ while ($Quit -eq $false) {
             BTC = "3NoVvkGSNjPX8xBMWbP2HioWYK395wSzGL"
         }
 
-        $DonateInterval = ($Config.DonateMinutes - $DonatedTime) * 60
+        $DonateInterval = [math]::min(($Config.DonateMinutes - $DonatedTime), 5) * 60
 
         $Algorithm = $null
         $PoolsName = @("NiceHash")
@@ -271,7 +284,7 @@ while ($Quit -eq $false) {
         $PoolsName = $ParamsBackup.PoolsName
         $CoinsName = $ParamsBackup.CoinsName
         $MiningMode = $ParamsBackup.MiningMode
-        if (-not $Config.WorkerName) {$Config.WorkerName = (Get-Culture).TextInfo.ToTitleCase(($env:COMPUTERNAME).ToLower())}
+        if (-not $Config.WorkerName) {$Config.WorkerName = $SystemInfo.ComputerName}
 
         $Global:Wallets = Get-Wallets
     }
@@ -363,7 +376,11 @@ while ($Quit -eq $false) {
     #Load information about the Miner asociated to each Coin-Algo-Miner
     $Miners = @()
 
-    $MinersFolderContent = (Get-ChildItem "$PSScriptRoot\Miners\*" -Include "*.json")
+    $Params = @{
+        Path  = $MinersPath + "*"
+        Include = "*.json"
+    }
+    $MinersFolderContent = Get-ChildItem @Params
 
     Log "Files in miner folder: $($MinersFolderContent.count)" -Severity Debug
     Log "Number of device groups: $(($DeviceGroups | Where-Object Enabled).Count)/$($DeviceGroups.Count)" -Severity Debug
@@ -380,7 +397,7 @@ while ($Quit -eq $false) {
         foreach ($DeviceGroup in ($DeviceGroups | Where-Object GroupType -eq $Miner.Type)) {
             if (
                 $Config.("ExcludeMiners_" + $DeviceGroup.GroupName) -and
-                ($Config.("ExcludeMiners_" + $DeviceGroup.GroupName).Split(',') | Where-Object {$MinerFile.BaseName -like $_})
+                ($Config.("ExcludeMiners_" + $DeviceGroup.GroupName).Split(',') | Where-Object {$MinerFile.BaseName -ilike $_})
             ) {
                 Log "$($MinerFile.BaseName) is Excluded for $($DeviceGroup.GroupName). Skipping" -Severity Debug
                 Continue
@@ -433,10 +450,10 @@ while ($Quit -eq $false) {
                             $AlgoParams = $ExecutionContext.InvokeCommand.ExpandString($Algo.Value)
                         } else {
                             $AlgoParams = $ExecutionContext.InvokeCommand.ExpandString($Algo.Value.Params)
-                            if ($Algo.Value.Fee -ne $null) {
+                            if ($null -ne $Algo.Value.Fee) {
                                 $MinerFee = $ExecutionContext.InvokeCommand.ExpandString($Algo.Value.Fee)
                             }
-                            if ($Algo.Value.NoCpu -ne $null) {
+                            if ($null -ne $Algo.Value.NoCpu) {
                                 $NoCpu = $ExecutionContext.InvokeCommand.ExpandString($Algo.Value.NoCpu)
                             }
 
@@ -444,7 +461,7 @@ while ($Quit -eq $false) {
                             if (
                                 $Algo.Value.Enabled -eq $false -or
                                 $Algo.Value.NH -eq $false -and $Pool.PoolName -eq 'NiceHash' -or
-                                $Algo.Value.Mem -gt $DeviceGroup.MemoryGB * $(if ($SysInfo.OSVersion.Major -eq 10) {0.9} else {1})
+                                ($Algo.Value.Mem -gt $DeviceGroup.MemoryGB * $(if ($SystemInfo.OSVersion.Major -eq 10) {0.9} else {1}) -and $DeviceGroup.MemoryGB -gt 0)
                             ) {
                                 Continue
                             }
@@ -476,8 +493,8 @@ while ($Quit -eq $false) {
                         foreach ($P in $Params.Keys) {$Arguments = $Arguments -replace $P, $Params.$P}
                         foreach ($P in $Params.Keys) {$Arguments = $Arguments -replace $P, $Params.$P}
                         $PatternConfigFile = $Miner.PatternConfigFile -replace '#Algorithm#', $AlgoName -replace '#GroupName#', $DeviceGroup.GroupName
-                        if ($PatternConfigFile -and (Test-Path -Path "$PSScriptRoot\Data\Patterns\$PatternConfigFile")) {
-                            $ConfigFileArguments = Edit-ForEachDevice (Get-Content "$PSScriptRoot\Data\Patterns\$PatternConfigFile" -raw) -Devices $DeviceGroup
+                        if ($PatternConfigFile -and (Test-Path -Path "./Data/Patterns/$PatternConfigFile")) {
+                            $ConfigFileArguments = Edit-ForEachDevice (Get-Content "./Data/Patterns/$PatternConfigFile" -raw) -Devices $DeviceGroup
                             foreach ($P in $Params.Keys) {$ConfigFileArguments = $ConfigFileArguments -replace $P, $Params.$P}
                             foreach ($P in $Params.Keys) {$ConfigFileArguments = $ConfigFileArguments -replace $P, $Params.$P}
                         } else {$ConfigFileArguments = $null}
@@ -514,7 +531,7 @@ while ($Quit -eq $false) {
                             }
                             foreach ($P in $Params.Keys) {$Arguments = $Arguments -replace $P, $Params.$P}
                             foreach ($P in $Params.Keys) {$Arguments = $Arguments -replace $P, $Params.$P}
-                            if ($PatternConfigFile -and (Test-Path -Path "$PSScriptRoot\Data\Patterns\$PatternConfigFile")) {
+                            if ($PatternConfigFile -and (Test-Path -Path "./Data/Patterns/$PatternConfigFile")) {
                                 foreach ($P in $Params.Keys) {$ConfigFileArguments = $ConfigFileArguments -replace $P, $Params.$P}
                                 foreach ($P in $Params.Keys) {$ConfigFileArguments = $ConfigFileArguments -replace $P, $Params.$P}
                             }
@@ -648,12 +665,12 @@ while ($Quit -eq $false) {
                             BenchmarkArg        = $ExecutionContext.InvokeCommand.ExpandString($Miner.BenchmarkArg)
                             ConfigFileArguments = $ExecutionContext.InvokeCommand.ExpandString($ConfigFileArguments)
                             DeviceGroup         = $DeviceGroup
-                            ExtractionPath      = "$PSScriptRoot\Bin\$($MinerFile.BaseName)\"
-                            GenerateConfigFile  = $(if ($PatternConfigFile) {"$PSScriptRoot\Bin\$($MinerFile.BaseName)\$($Miner.GenerateConfigFile -replace '#GroupName#', $DeviceGroup.GroupName -replace '#Algorithm#', $AlgoName)"})
+                            ExtractionPath      = $BinPath + $MinerFile.BaseName + "/"
+                            GenerateConfigFile  = $(if ($PatternConfigFile) {$BinPath + $MinerFile.BaseName + "/" + $($Miner.GenerateConfigFile -replace '#GroupName#', $DeviceGroup.GroupName -replace '#Algorithm#', $AlgoName)})
                             MinerFee            = [decimal]$MinerFee
                             Name                = $MinerFile.BaseName
                             NoCpu               = $NoCpu
-                            Path                = "$PSScriptRoot\Bin\$($MinerFile.BaseName)\$($ExecutionContext.InvokeCommand.ExpandString($Miner.Path))"
+                            Path                = $BinPath + $MinerFile.BaseName + "/" + $ExecutionContext.InvokeCommand.ExpandString($Miner.Path)
                             Pool                = $Pool
                             PoolDual            = $PoolDual
                             PrelaunchCommand    = $Miner.PrelaunchCommand
@@ -676,12 +693,14 @@ while ($Quit -eq $false) {
     #Launch download of miners
     $Miners |
         Where-Object {
-        -not [string]::IsNullOrEmpty($_.URI) -and
+        -not [string]::IsNullOrEmpty($_.Uri) -and
         -not [string]::IsNullOrEmpty($_.ExtractionPath) -and
         -not [string]::IsNullOrEmpty($_.Path)} |
-        Select-Object URI, ExtractionPath, Path, SHA256 -Unique |
+        Select-Object Uri, ExtractionPath, Path, SHA256 -Unique |
         ForEach-Object {
-        if (-not (Test-Path $_.Path)) {Start-Downloader -URI $_.URI -ExtractionPath $_.ExtractionPath -Path $_.Path -SHA256 $_.SHA256}
+        if (-not (Test-Path $_.Path)) {
+            Start-Downloader -Uri $_.Uri -ExtractionPath $_.ExtractionPath -Path $_.Path -SHA256 $_.SHA256
+        }
     }
 
     Send-ErrorsToLog $LogFile
@@ -922,7 +941,7 @@ while ($Quit -eq $false) {
             @{Name = "IntervalRevenue"; Expression = {[decimal]$_.Revenue * $Interval.LastTime.TotalSeconds / (24 * 60 * 60)}},
             @{Name = "IntervalRevenueDual"; Expression = {[decimal]$_.RevenueDual * $Interval.LastTime.TotalSeconds / (24 * 60 * 60)}},
             @{Name = "Interval"; Expression = {[int]$Interval.LastTime.TotalSeconds}} |
-                Export-Csv -Path $("$PSScriptRoot\Logs\Stats-" + (Get-Process -PID $PID).StartTime.tostring('yyyy-MM-dd_HH-mm-ss') + ".csv") -Append -NoTypeInformation
+                Export-Csv -Path $("./Logs/Stats-" + (Get-Process -PID $PID).StartTime.tostring('yyyy-MM-dd_HH-mm-ss') + ".csv") -Append -NoTypeInformation
         }
 
         # look for best for next round
@@ -977,7 +996,7 @@ while ($Quit -eq $false) {
                         $ActiveMiners[$BestLast.IdF].Process -and
                         $ActiveMiners[$BestLast.IdF].Process.Id -gt 0
                     ) {
-                        Log "Stopping miner $BestLastLogMsg with pid $($ActiveMiners[$BestLast.IdF].Process.Id)"
+                        Log "Stopping miner $BestLastLogMsg with PID $($ActiveMiners[$BestLast.IdF].Process.Id)"
                         do {
                             Stop-SubProcess $ActiveMiners[$BestLast.IdF].Process
                         } while (Test-TCPPort -Server 127.0.0.1 -Port $ActiveMiners[$BestLast.IdF].ApiPort)
@@ -1032,7 +1051,15 @@ while ($Quit -eq $false) {
                     if ($ActiveMiners[$BestNow.IdF].Api -eq "Wrapper") {
                         $ProcessParams = @{
                             FilePath     = (Get-Process -Id $Global:PID).Path
-                            ArgumentList = "-executionpolicy bypass -command . '$(Convert-Path "$PSScriptRoot\Wrapper.ps1")' -ControllerProcessID $PID -Id '$($ActiveMiners[$BestNow.IdF].ApiPort)' -FilePath '$($ActiveMiners[$BestNow.IdF].Path)' -ArgumentList '$($Arguments)' -WorkingDirectory '$(Split-Path $ActiveMiners[$BestNow.IdF].Path)'"
+                            ArgumentList = (@(
+                                "-ExecutionPolicy Bypass"
+                                "-Command . '$(Convert-Path ./Wrapper.ps1)'"
+                                "-ControllerProcessID $PID"
+                                "-Id '$($ActiveMiners[$BestNow.IdF].ApiPort)'"
+                                "-FilePath '$($ActiveMiners[$BestNow.IdF].Path)'"
+                                "-ArgumentList '$($Arguments)'"
+                                "-WorkingDirectory '$(Split-Path $ActiveMiners[$BestNow.IdF].Path)'"
+                            ) -join " ")
                         }
                     } else {
                         $ProcessParams = @{
@@ -1045,7 +1072,10 @@ while ($Quit -eq $false) {
                         MinerWindowStyle = $Config.MinerWindowStyle
                         Priority         = if ($ActiveMiners[$BestNow.IdF].DeviceGroup.GroupType -eq "CPU") { -2 } else { 0 }
                     }
+                    Log "Starting $BestNowLogMsg --> $($ActiveMiners[$BestNow.IdF].Path) $($ActiveMiners[$BestNow.IdF].Arguments)" -Severity Debug
                     $ActiveMiners[$BestNow.IdF].Process = Start-SubProcess @ProcessParams @CommonParams
+
+                    Log "Started $BestNowLogMsg with PID $($ActiveMiners[$BestNow.IdF].Process.Id)" -Severity Debug
 
                     $ActiveMiners[$BestNow.IdF].SubMiners[$BestNow.Id].Status = 'Running'
                     $ActiveMiners[$BestNow.IdF].SubMiners[$BestNow.Id].BestBySwitch = ""
@@ -1053,7 +1083,6 @@ while ($Quit -eq $false) {
                     $ActiveMiners[$BestNow.IdF].SubMiners[$BestNow.Id].Stats.StatsTime = Get-Date
                     $ActiveMiners[$BestNow.IdF].SubMiners[$BestNow.Id].StatsHistory.LastTimeActive = Get-Date
                     $ActiveMiners[$BestNow.IdF].SubMiners[$BestNow.Id].TimeSinceStartInterval = [TimeSpan]0
-                    Log "Started pid $($ActiveMiners[$BestNow.IdF].Process.Id), $BestNowLogMsg --> $($ActiveMiners[$BestNow.IdF].Path) $($ActiveMiners[$BestNow.IdF].Arguments)" -Severity Debug
                 }
             } else {
                 #Must mantain last miner by switch
@@ -1097,15 +1126,20 @@ while ($Quit -eq $false) {
 
     $FirstLoopExecution = $true
     $LoopStartTime = Get-Date
-
-    Send-ErrorsToLog $LogFile
     $SwitchLoop = 0
     $ActivityAverages = @()
 
+    while ($Host.UI.RawUI.KeyAvailable) {
+        $EA = $ErrorActionPreference
+        $ErrorActionPreference = "SilentlyContinue"
+        $Host.UI.RawUI.FlushInputBuffer()
+        $ErrorActionPreference = $EA
+    } #keyb buffer flush
+
+    Send-ErrorsToLog $LogFile
+
     Clear-Host
     $RepaintScreen = $true
-
-    while ($Host.UI.RawUI.KeyAvailable) {$Host.UI.RawUI.FlushInputBuffer()} #keyb buffer flush
 
     #---------------------------------------------------------------------------
     #---------------------------------------------------------------------------
@@ -1296,6 +1330,7 @@ while ($Quit -eq $false) {
         #display header
         Set-ConsolePosition 0 0
         Out-HorizontalLine
+        Clear-Lines -Lines 1
         Write-Message -Message (
             @(
                 "{green}$($Release.Application) {white}$($Release.Version)"
@@ -1316,7 +1351,7 @@ while ($Quit -eq $false) {
 
         #display donation message
         if ($CurrentInterval -eq "Donate") {
-            Write-Message -Message "This interval you are donating, You can change donation in config.ini. Thank you for your support!" -Line 2
+            Write-Message -Message "This interval you are donating. You can change donation in config.ini. Thank you for your support!" -Line 2
         }
 
         #write speed
@@ -1338,14 +1373,14 @@ while ($Quit -eq $false) {
             $Host.UI.RawUI.WindowTitle = $(if ($RunTime.TotalDays -lt 1) {"{0:hh\:mm}" -f $RunTime} else {"{0:d\d\ hh\:mm}" -f $RunTime}) + " : " + $CurrentAlgos
 
             # Report stats
-            if ($Config.MinerStatusURL -and $Config.MinerStatusKey -and $Interval.Current -ne "Donate") {
+            if ($Config.MinerStatusURL -and $Config.MinerStatusKey) {
                 $Params = @{
-                    Key            = $Config.MinerStatusKey
-                    WorkerName     = $Config.WorkerName
+                    WorkerName     = $SystemInfo.ComputerName
                     ActiveMiners   = $ActiveMiners
+                    Key            = $Config.MinerStatusKey
                     MinerStatusURL = $Config.MinerStatusURL
                 }
-                & $PSScriptRoot\Includes\ReportStatus.ps1 @Params
+                & ./Includes/ReportStatus.ps1 @Params
             }
 
             #To get pool speed
@@ -1416,39 +1451,40 @@ while ($Quit -eq $false) {
             ForEach-Object {
             $M = $ActiveMiners[$_.IdF]
             [PSCustomObject]@{
-                GroupName   = $M.DeviceGroup.GroupName
-                PwLim       = $(if ($_.PowerLimit -ne 0) {$_.PowerLimit})
-                LocalSpeed  = (@($_.SpeedLive, $_.SpeedLiveDual) -gt 0 | % {ConvertTo-Hash $_}) -join "/"
-                mbtcDay     = (($_.RevenueLive + $_.RevenueLiveDual) * 1000).tostring("n5")
-                RevDay      = (($_.RevenueLive + $_.RevenueLiveDual) * $localBTCvalue ).tostring("n2")
-                ProfitDay   = ($_.ProfitsLive).tostring("n2")
+                Group       = $M.DeviceGroup.GroupName
                 Algorithm   = (@($M.Algorithms, $M.AlgoLabel) -ne $null -join "|") + $_.BestBySwitch
                 Coin        = @($M.Pool.Symbol, $M.PoolDual.Symbol) -ne $null -join "_"
                 Miner       = $M.Name
-                Power       = [string]$_.PowerLive + 'W'
+                LocalSpeed  = (@($_.SpeedLive, $_.SpeedLiveDual) -gt 0 | % {ConvertTo-Hash $_}) -join "/"
+                PLim        = $(if ($_.PowerLimit -ne 0) {$_.PowerLimit})
+                Watt        = if ($_.PowerLive -gt 0) {[string]$_.PowerLive + 'W'} else {$null}
                 EfficiencyW = if ($_.PowerLive -gt 0) {($_.ProfitsLive / $_.PowerLive).tostring("n4")} else {$null}
+                mbtcDay     = (($_.RevenueLive + $_.RevenueLiveDual) * 1000).tostring("n5")
+                RevDay      = (($_.RevenueLive + $_.RevenueLiveDual) * $localBTCvalue ).tostring("n2")
+                ProfitDay   = ($_.ProfitsLive).tostring("n2")
                 PoolSpeed   = (@($M.Pool.HashRate, $M.PoolDual.HashRate) -gt 0 | % {ConvertTo-Hash $_}) -join "/"
-                Pool        = @(($M.Pool.PoolName + "-" + $M.Pool.Location), ($M.PoolDual.PoolName + "-" + $M.PoolDual.Location)) -ne "-" -join "/"
                 Workers     = @($M.Pool.PoolWorkers, $M.PoolDual.PoolWorkers) -ne $null -join "/"
+                Pool        = @(($M.Pool.PoolName + "-" + $M.Pool.Location), ($M.PoolDual.PoolName + "-" + $M.PoolDual.Location)) -ne "-" -join "/"
             }
         }
 
         if ($ScreenOut) {
+            Clear-Lines -Lines ($ScreenOut.Count + 4)
             $ScreenOut | Format-Table (
-                @{Label = "Group"                       ; Expression = {$_.GroupName}},
+                @{Label = "Group"                       ; Expression = {$_.Group}},
                 @{Label = "Algorithm"                   ; Expression = {$_.Algorithm}},
                 @{Label = "Coin"                        ; Expression = {$_.Coin}},
                 @{Label = "Miner"                       ; Expression = {$_.Miner}},
                 @{Label = "LocalSpeed"                  ; Expression = {$_.LocalSpeed} ; Align = 'right'},
-                @{Label = "PLim"                        ; Expression = {$_.PwLim} ; Align = 'right'},
-                @{Label = "Watt"                        ; Expression = {$_.Power} ; Align = 'right'},
+                @{Label = "PLim"                        ; Expression = {$_.PLim} ; Align = 'right'},
+                @{Label = "Watt"                        ; Expression = {$_.Watt} ; Align = 'right'},
                 @{Label = $Config.LocalCurrency + "/W"  ; Expression = {$_.EfficiencyW}  ; Align = 'right'},
                 @{Label = "mBTC/Day"                    ; Expression = {$_.mbtcDay} ; Align = 'right'},
                 @{Label = $Config.LocalCurrency + "/Day"; Expression = {$_.RevDay} ; Align = 'right'},
                 @{Label = "Profit/Day"                  ; Expression = {$_.ProfitDay} ; Align = 'right'},
                 @{Label = "PoolSpeed"                   ; Expression = {$_.PoolSpeed} ; Align = 'right'},
                 @{Label = "Workers"                     ; Expression = {$_.Workers} ; Align = 'right'},
-                @{Label = "Pool "                       ; Expression = {$_.Pool + " "} ; Align = 'left'}
+                @{Label = "Pool"                        ; Expression = {$_.Pool} ; Align = 'left'}
             ) | Out-Host
         } else {
             Write-Warning "No miners above MinProfit"
@@ -1457,8 +1493,9 @@ while ($Quit -eq $false) {
         $XToWrite = [ref]0
         $YToWrite = [ref]0
         Get-ConsolePosition ([ref]$XToWrite) ([ref]$YToWrite)
-        $YToWriteMessages = $YToWrite + 1
-        $YToWriteData = $YToWrite + 2
+        Set-ConsolePosition $XToWrite ($YToWrite - 1)
+        $YToWriteMessages = $YToWrite
+        $YToWriteData = $YToWrite
         Remove-Variable XToWrite
         Remove-Variable YToWrite
 
@@ -1633,7 +1670,7 @@ while ($Quit -eq $false) {
             @{expression = {$_.Stats.LastTimeActive}; Descending = $true} |
                 Format-Table -Wrap -GroupBy @{Label = "Group"; Expression = {$ActiveMiners[$_.IdF].DeviceGroup.GroupName}} (
                 @{Label = "LastTimeActive"; Expression = {$($_.Stats.LastTimeActive).tostring("dd/MM/yy H:mm")}},
-                @{Label = "Command"; Expression = {"$($ActiveMiners[$_.IdF].Path.TrimStart((Convert-Path "$PSScriptRoot\Bin\"))) $($ActiveMiners[$_.IdF].Arguments)"}}
+                @{Label = "Command"; Expression = {"$($ActiveMiners[$_.IdF].Path.TrimStart((Convert-Path $BinPath))) $($ActiveMiners[$_.IdF].Arguments)"}}
             ) | Out-Host
 
             $RepaintScreen = $false
@@ -1687,10 +1724,10 @@ while ($Quit -eq $false) {
                 'X' {try {Set-WindowSize 170 50} catch {}; Log "Reset screen size"}
                 'Q' {$Quit = $true; $ExitLoop = $true; Log "Exit by Q key"}
                 'D' {
-                    if (-not (Test-Path "$PSScriptRoot\Dump")) { New-Item -Path $PSScriptRoot\Dump -ItemType directory -Force | Out-Null }
-                    $Pools | ConvertTo-Json -Depth 10 | Set-Content $PSScriptRoot\Dump\Pools.json
-                    $ActiveMiners | ConvertTo-Json -Depth 10 | Set-Content $PSScriptRoot\Dump\Miners.json
-                    $DeviceGroups | ConvertTo-Json -Depth 10 | Set-Content $PSScriptRoot\Dump\DeviceGroups.json
+                    if (-not (Test-Path "./Dump")) { New-Item -Path ./Dump -ItemType directory -Force | Out-Null }
+                    $Pools | ConvertTo-Json -Depth 10 | Set-Content ./Dump/Pools.json
+                    $ActiveMiners | ConvertTo-Json -Depth 10 | Set-Content ./Dump/Miners.json
+                    $DeviceGroups | ConvertTo-Json -Depth 10 | Set-Content ./Dump/DeviceGroups.json
                 }
                 'R' {
                     ## Reset failed miners
@@ -1731,19 +1768,13 @@ while ($Quit -eq $false) {
         if ($ExitLoop) {break} #forced Exit
 
         Send-ErrorsToLog $LogFile
-    }
+    } # End mining loop
 
     Remove-Variable Miners
     Remove-Variable Pools
     Get-Job -State Completed | Remove-Job
     [GC]::Collect() #force garbage collector for free memory
-}
-
-#-----------------------------------------------------------------------------------------------------------------------
-#-----------------------------------------------------------------------------------------------------------------------
-#-------------------------------------------end of always running loop--------------------------------------------------
-#-----------------------------------------------------------------------------------------------------------------------
-#-----------------------------------------------------------------------------------------------------------------------
+} # End detection loop
 
 Log "Exiting Forager"
 $LogFile.close()
@@ -1751,5 +1782,3 @@ $LogFile.close()
 Clear-Files
 $ActiveMiners | Where-Object Process -ne $null | ForEach-Object {try {Stop-SubProcess $_.Process} catch {}}
 Stop-Autoexec
-
-Stop-Process -Id $PID
