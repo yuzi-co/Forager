@@ -36,8 +36,8 @@
         "CnLiteV7": "-a aeon --intensity 8",
         "CnSaber": "-a cnsaber --intensity 8",
         "CnTurtle": "-a cnturtle --intensity 8",
-        "CnV7": "-a cnv7 --intensity 8",
-        "CnV8": "-a cnv8 --intensity 8",
+        "_CnV7": "-a cnv7 --intensity 8",
+        "_CnV8": "-a cnv8 --intensity 8",
         "CnWow": "-a cnsuperfast --intensity 8",
         "CnXTL": "-a stellite --intensity 8",
         "Cuckaroo29": {

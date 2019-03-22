@@ -22,7 +22,7 @@
     "CnHalf": "-a cnv8_half",
     "CnR": "-a cnr",
     "CnRwz": "-a cnv8_rwz",
-    "CnV8": "-a cnv8",
+    "_CnV8": "-a cnv8",
     "_Lyra2z": {
       "Params": "-a lyra2z",
       "Fee": 0.03

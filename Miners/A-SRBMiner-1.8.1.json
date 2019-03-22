@@ -49,8 +49,8 @@
     "CnSwap": "swap",
     "CnTurtle": "turtle",
     "CnUplexa": "upx",
-    "CnV7": "normalv7",
-    "CnV8": "normalv8",
+    "_CnV7": "normalv7",
+    "_CnV8": "normalv8",
     "CnWebchain": "webchain",
     "CnZls": "zelerius"
   }

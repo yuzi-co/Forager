@@ -32,8 +32,8 @@
     "CnRwz": "--currency cryptonight_v8_reversewaltz",
     "CnSaber": "--currency cryptonight_bittube2",
     "CnTurtle": "--currency cryptonight_turtle",
-    "CnV7": "--currency cryptonight_v7",
-    "CnV8": "--currency cryptonight_v8",
+    "_CnV7": "--currency cryptonight_v7",
+    "_CnV8": "--currency cryptonight_v8",
     "CnXTL": "--currency cryptonight_v7_stellite"
   }
 }
