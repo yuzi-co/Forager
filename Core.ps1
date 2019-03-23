@@ -910,7 +910,7 @@ while ($Quit -eq $false) {
             # Cancel miner if current pool workers below MinWorkers
             if (
                 $null -ne $ActiveMiners[$BestLast.IdF].PoolWorkers -and
-                $ActiveMiners[$BestLast.IdF].PoolWorkers -le $(if ($Config.("MinWorkers_" + $ActiveMiners[$BestLast.IdF].Pool.PoolName) -ne $null) {$Config.("MinWorkers_" + $ActiveMiners[$BestLast.IdF].Pool.PoolName)}else {$Config.MinWorkers})
+                $ActiveMiners[$BestLast.IdF].PoolWorkers -le $(if ($null -ne $Config.("MinWorkers_" + $ActiveMiners[$BestLast.IdF].Pool.PoolName)) {$Config.("MinWorkers_" + $ActiveMiners[$BestLast.IdF].Pool.PoolName)}else {$Config.MinWorkers})
             ) {
                 $BestLast.Status = 'PendingStop'
                 Log "Cancelling miner due to low worker count"
@@ -1463,14 +1463,14 @@ while ($Quit -eq $false) {
                 Algorithm   = (@($M.Algorithms, $M.AlgoLabel) -ne $null -join "|") + $_.BestBySwitch
                 Coin        = @($M.Pool.Symbol, $M.PoolDual.Symbol) -ne $null -join "_"
                 Miner       = $M.Name
-                LocalSpeed  = (@($_.SpeedLive, $_.SpeedLiveDual) -gt 0 | % {ConvertTo-Hash $_}) -join "/"
+                LocalSpeed  = (@($_.SpeedLive, $_.SpeedLiveDual) -gt 0 | ForEach-Object {ConvertTo-Hash $_}) -join "/"
                 PLim        = $(if ($_.PowerLimit -ne 0) {$_.PowerLimit})
                 Watt        = if ($_.PowerLive -gt 0) {[string]$_.PowerLive + 'W'} else {$null}
                 EfficiencyW = if ($_.PowerLive -gt 0) {($_.ProfitsLive / $_.PowerLive).tostring("n4")} else {$null}
                 mbtcDay     = (($_.RevenueLive + $_.RevenueLiveDual) * 1000).tostring("n5")
                 RevDay      = (($_.RevenueLive + $_.RevenueLiveDual) * $localBTCvalue ).tostring("n2")
                 ProfitDay   = ($_.ProfitsLive).tostring("n2")
-                PoolSpeed   = (@($M.Pool.HashRate, $M.PoolDual.HashRate) -gt 0 | % {ConvertTo-Hash $_}) -join "/"
+                PoolSpeed   = (@($M.Pool.HashRate, $M.PoolDual.HashRate) -gt 0 | ForEach-Object {ConvertTo-Hash $_}) -join "/"
                 Workers     = @($M.Pool.PoolWorkers, $M.PoolDual.PoolWorkers) -ne $null -join "/"
                 Pool        = @(($M.Pool.PoolName + "-" + $M.Pool.Location), ($M.PoolDual.PoolName + "-" + $M.PoolDual.Location)) -ne "-" -join "/"
             }
@@ -1545,7 +1545,7 @@ while ($Quit -eq $false) {
                 @{Label = "Algorithm"                    ; Expression = {@($_.Algorithms, $_.AlgoLabel) -ne $null -join "|"}},
                 @{Label = "Coin"                         ; Expression = {@($_.Pool.Symbol, $_.PoolDual.Symbol) -ne $null -join "_"}},
                 @{Label = "Miner"                        ; Expression = {$_.Name}},
-                @{Label = "StatsSpeed"                   ; Expression = {if ($_.NeedBenchmark) {"Bench"} else {(@($_.SubMiner.HashRate, $_.SubMiner.HashRateDual) -gt 0 | % {ConvertTo-Hash $_}) -join "/"}}; Align = 'right'},
+                @{Label = "StatsSpeed"                   ; Expression = {if ($_.NeedBenchmark) {"Bench"} else {(@($_.SubMiner.HashRate, $_.SubMiner.HashRateDual) -gt 0 | ForEach-Object {ConvertTo-Hash $_}) -join "/"}}; Align = 'right'},
                 @{Label = "PLim"                         ; Expression = {if ($_.SubMiner.PowerLimit -ne 0) {$_.SubMiner.PowerLimit}}; align = 'right'},
                 @{Label = "Watt"                         ; Expression = {if ($_.SubMiner.PowerAvg -gt 0) {$_.SubMiner.PowerAvg.tostring("n0")}}; Align = 'right'},
                 @{Label = $Config.LocalCurrency + "/W"   ; Expression = {if ($_.SubMiner.PowerAvg -gt 0) {($_.SubMiner.Profits / $_.SubMiner.PowerAvg).tostring("n4")}}; Align = 'right'},
