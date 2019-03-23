@@ -1,0 +1,45 @@
+{
+  "Path": "bminer-v15.3.1-8887ee1/bminer",
+  "Uri": "https://www.bminercontent.com/releases/bminer-v15.3.1-8887ee1-amd64.tar.xz",
+  "SHA256": "D2224B347D288DCB697A2FC2336F0178D69B9E7013E561E0087191CD7FCA0C6C",
+  "Type": "NVIDIA",
+  "Arguments": [
+    "#AlgorithmParameters#$(if($enableSSL){'+ssl'})://$([System.Web.HttpUtility]::UrlEncode('#Login#')):$([System.Web.HttpUtility]::UrlEncode('#Password#'))@#Server#:#Port#",
+    "-devices #Devices#",
+    "-max-network-failures=3",
+    "-watchdog=false",
+    "-api 127.0.0.1:#APIPort#"
+  ],
+  "API": "BMiner",
+  "APIPort": 4068,
+  "SSL": true,
+  "Fee": 0.02,
+  "CUDA": 9.2,
+  "Algorithms": {
+    "Cuckoo29": {
+      "Params": "-uri aeternity",
+      "NoCpu": true,
+      "Mem": 5.6
+    },
+    "Cuckaroo29": {
+      "Params": "-uri cuckaroo29",
+      "NoCpu": true,
+      "Mem": 5.6
+    },
+    "Cuckatoo31": {
+      "Params": "-uri cuckatoo31",
+      "NoCpu": true,
+      "Mem": 7.4
+    },
+    "Equihash144": "-pers auto -uri equihash1445",
+    "Equihash150": {
+      "Params": "-uri beam",
+      "Mem": 4
+    },
+    "Ethash": {
+      "Params": "-uri ethstratum",
+      "Mem": 3
+    },
+    "Tensority": "-uri tensority"
+  }
+}

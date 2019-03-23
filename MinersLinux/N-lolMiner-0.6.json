@@ -1,0 +1,28 @@
+{
+  "Path": "lolMiner",
+  "Uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.6/lolMiner_v06_Lin64.tar.gz",
+  "SHA256": "DAA603E0CA42373FD990F1BBD951136919A5A9C810BBA303C96F60EAA89F74A7",
+  "Type": "NVIDIA",
+  "Arguments": [
+    "--pool #Server#",
+    "--port #Port#",
+    "--user #Login#",
+    "--pass #Password#",
+    "--devices #Devices#",
+    "--apiport #ApiPort#",
+    "--digits 2",
+    "--connectattempts 3",
+    "#AlgorithmParameters#"
+  ],
+  "API": "LOL",
+  "APIPort": 4068,
+  "Algorithms": {
+    "Equihash144": "--coin AUTO144_5",
+    "Equihash192": {
+      "Params": "--coin AUTO192_7",
+      "Mem": 2.8
+    },
+    "Equihash210": "--coin AION",
+    "Equihash96": "--coin MNX --workbatch VERYHIGH"
+  }
+}

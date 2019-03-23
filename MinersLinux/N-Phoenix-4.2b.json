@@ -2,7 +2,7 @@
   "Path": "PhoenixMiner_4.2b_Linux/PhoenixMiner",
   "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.03/PhoenixMiner_4.2b_Linux.tar.gz",
   "SHA256": "ECAFBEC208F1E67E704674A3DBE52669600552BAF6516D3B28C30367D33522AC",
-  "Type": "AMD",
+  "Type": "NVIDIA",
   "Arguments": [
     "-pool #Protocol#://#Server#:#Port#",
     "-wal #Login#",
@@ -13,18 +13,17 @@
     "-r -1",
     "-logfile #GroupName#_log.txt",
     "-logsmaxsize 10",
-    "-amd",
+    "-nvidia",
     "-di #DevicesClayMode#",
     "-cdmport #APIPort#",
     "-cdm 1",
     "#AlgorithmParameters#"
   ],
   "API": "Claymore",
-  "APIPort": 4028,
+  "APIPort": 4068,
   "Fee": 0.0065,
   "SSL": true,
   "Algorithms": {
-    "ProgPOW": "-coin bci -mode 1",
     "Ethash": "-mode 1",
     "Ubqhash": "-coin ubq -mode 1",
     "_Ethash_Blake2s": "-dcoin blake2s -mode 0 -dpool #ProtocolDual#://#ServerDual#:#PortDual# -dwal #LoginDual# -dpsw #PasswordDual#"

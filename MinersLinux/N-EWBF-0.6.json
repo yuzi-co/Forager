@@ -1,0 +1,30 @@
+{
+  "Path": "miner",
+  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.03/EWBF_Equihash_miner_v0.6.tar.gz",
+  "SHA256": "37A31B0D910A70414F9AF816771D6D01BCD67BC925389CF1E1B3613F334163B3",
+  "Type": "NVIDIA",
+  "Arguments": [
+    "--server #Server#",
+    "--port #Port#",
+    "--user #Login#",
+    "--pass #Password#",
+    "--pec",
+    "--fee 0",
+    "--eexit 1",
+    "--cuda_devices #DevicesETHMode#",
+    "--api 127.0.0.1:#APIPort#",
+    "#AlgorithmParameters#"
+  ],
+  "API": "EWBF",
+  "APIPort": 4068,
+  "CUDA": 9.1,
+  "Algorithms": {
+    "Equihash144": "--algo 144_5 --pers auto",
+    "Equihash192": {
+      "Params": "--algo 192_7 --pers auto",
+      "Mem": 2.5
+    },
+    "Equihash210": "--algo aion",
+    "Equihash96": "--algo 96_5"
+  }
+}

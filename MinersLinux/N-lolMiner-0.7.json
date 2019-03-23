@@ -1,8 +1,8 @@
 {
-  "Path": "0.7.1/lolMiner",
-  "Uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.71/lolMiner_v071_Lin64.tar.gz",
-  "SHA256": "D5AD049B60343794E754ADAC82E44ECF20A403A7405BC9C050F082313293C02F",
-  "Type": "AMD",
+  "Path": "lolMiner",
+  "Uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.7/lolMiner_v07_Lin64.tar.gz",
+  "SHA256": "B86D1A69378492E6361C10509F422E23FA97A4F6FDC24130F6BB283A385E2F9A",
+  "Type": "NVIDIA",
   "Arguments": [
     "--pool #Server#",
     "--port #Port#",
@@ -16,18 +16,18 @@
     "#AlgorithmParameters#"
   ],
   "API": "LOL",
-  "APIPort": 4028,
+  "APIPort": 4068,
   "SSL": true,
   "Algorithms": {
     "Equihash144": {
-      "Params": "--coin AUTO144_5 --asm 1",
+      "Params": "--coin AUTO144_5",
       "NH": false
     },
     "Equihash150": {
-      "Params": "--coin BEAM --asm 1",
+      "Params": "--coin BEAM",
       "Mem": 3.5
     },
-    "Equihash210": "--coin AION --asm 1",
-    "Equihash96": "--coin MNX --asm 1"
+    "Equihash210": "--coin AION",
+    "Equihash96": "--coin MNX"
   }
 }
