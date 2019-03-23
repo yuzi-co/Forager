@@ -18,7 +18,7 @@
     "#AlgorithmParameters#"
   ],
   "API": "LOL",
-  "APIPort": 4028,
+  "APIPort": 4068,
   "SSL": true,
   "Algorithms": {
     "Equihash144": {
