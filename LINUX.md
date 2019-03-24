@@ -34,3 +34,10 @@ add to ~/.profile
 ```
 export CUDA_DEVICE_ORDER='PCI_BUS_ID'
 ```
+
+
+### Troubleshooting miners
+- Some miners will require additional packages installed. Most common ones are:
+- libuv1-dev libmicrohttpd-dev libcurl3 libcurl-openssl1.0-dev libssl-dev
+
+- If miner fails to start, check console.log and error.log in specific miner folder.
