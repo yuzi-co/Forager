@@ -852,10 +852,10 @@ while ($Quit -eq $false) {
                 $_.NeedBenchmark -or
                 $MiningMode -eq "Manual" -or
                 $Interval.Current -eq "Donate" -or
-                $_.Profits -gt $DeviceGroup.MinProfit -or
+                $_.Profits -gt $ActiveMiners[$_.IdF].DeviceGroup.MinProfit -or
                 -not $LocalBTCvalue -gt 0
             )
-        } | Sort-Object -Descending NeedBenchmark, {$(if ($MiningMode -eq "Manual") {$_.HashRate} elseif ($LocalBTCvalue) {$_.Profits} else {$_.Revenue + $_.RevenueDual})}, {$ActiveMiners[$_.IdF].PoolPrice}, {$ActiveMiners[$_.IdF].PoolPriceDual}, PowerLimit
+        } | Sort-Object -Descending NeedBenchmark, {$(if ($MiningMode -eq "Manual") {$_.HashRate} elseif ($LocalBTCvalue -gt 0) {$_.Profits} else {$_.Revenue + $_.RevenueDual})}, PowerLimit
     }
 
     if ($Interval.Current -eq "Donate") {
@@ -1495,7 +1495,7 @@ while ($Quit -eq $false) {
                 @{Label = "Pool"                        ; Expression = {$_.Pool} ; Align = 'left'}
             ) | Out-Host
         } else {
-            Write-Warning "No miners above MinProfit"
+            Write-Warning "No profitable miners"
         }
 
         $XToWrite = [ref]0

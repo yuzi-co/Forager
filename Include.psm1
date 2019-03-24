@@ -631,7 +631,7 @@ function Get-MiningTypes () {
                 $_ | Add-Member PowerLimits @(0) -Force
             }
 
-            $_ | Add-Member MinProfit ([math]::Max($Config.("MinProfit_" + $_.GroupName), 0))
+            $_ | Add-Member MinProfit $Config.("MinProfit_" + $_.GroupName)
             $_ | Add-Member Algorithms ($Config.("Algorithms_" + $_.GroupName) -split ',')
 
             $_
