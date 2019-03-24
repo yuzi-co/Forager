@@ -12,7 +12,6 @@
     "--opencl-platform #GpuPlatform#",
     "--opencl-devices #Devices#",
     "--send-stale",
-    "--good-risers",
     "--donate-level 1",
     "--no-color",
     "--api-port #ApiPort#",

@@ -1,0 +1,27 @@
+{
+  "Path": "wildrig.exe",
+  "Uri": "https://github.com/andru-kun/wildrig/releases/download/0.10.5/wildrig-windows-0.10.5-beta.7z",
+  "SHA256": "E76F3428D57F133395FA636D83B379453BA684978B7D486F937F03FEF90B19B9",
+  "Type": "_NVIDIA",
+  "Arguments": [
+    "-o #Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-r 10",
+    "-R 3",
+    "--cuda-devices #Devices#",
+    "--send-stale",
+    "--no-color",
+    "--api-port #ApiPort#",
+    "--scratchpad-file scratchpad-#Algorithm#.bin",
+    "#AlgorithmParameters#"
+  ],
+  "API": "XMRig",
+  "APIPort": 4068,
+  "Fee": 0.02,
+  "CUDA": 9.2,
+  "Algorithms": {
+    "Purk": "--scratchpad-url http://purk.miner.rocks:8008/scratchpad.bin --cuda-launch=1024x256",
+    "Bbr": "--scratchpad-url http://boolberry.miner.rocks:8008/scratchpad.bin --cuda-launch=1024x256"
+  }
+}

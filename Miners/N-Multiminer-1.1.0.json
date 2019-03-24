@@ -19,9 +19,9 @@
   "Fee": 0.01,
   "NoCPU": true,
   "Algorithms": {
-    "Argon2ad": "-a argon2ad --gpu-batchsize=512 -t 4",
-    "Argon2d250": "-a argon2d250 --gpu-batchsize=2048 -t 4",
-    "_Argon2d500": "-a argon2d500 --gpu-batchsize=1024 -t 4",
-    "Argon2d4096": "-a argon2d4096 --gpu-batchsize=256 -t 2"
+    "Argon2ad": "-a argon2ad --gpu-batchsize=512 -t 1",
+    "Argon2d250": "-a argon2d250 --gpu-batchsize=2048 -t 1",
+    "_Argon2d500": "-a argon2d500 --gpu-batchsize=1024 -t 1",
+    "Argon2d4096": "-a argon2d4096 --gpu-batchsize=256 -t 1"
   }
 }
