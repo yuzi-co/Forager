@@ -1,0 +1,24 @@
+{
+  "Path": "cpuminer-nosuch-m2-ubuntu18/cpuminer-$($f=$SystemInfo.CpuFeatures;$(if($f.avx2 -and $f.sha){'avx2-sha'}elseif($f.avx2){'avx2'}elseif($f.aes){'aes-sse2'}else{'sse2'}))",
+  "Uri": "https://github.com/patrykwnosuch/cpuminer-3.8.8.1-nosuch/releases/download/3.8.8.1-m2/cpuminer-nosuch-m2-ubuntu18.7z",
+  "SHA256": "CD2B734F011598988271E9757314063B2D9938408A37035652FE3E41BD846F13",
+  "Type": "CPU",
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-R 3",
+    "-r 10",
+    "--no-color",
+    "-b #APIPort#",
+    "$(if ($CpuThreads -ne $null){'-t ' + $CpuThreads})",
+    "#AlgorithmParameters#"
+  ],
+  "API": "Ccminer",
+  "APIPort": 4048,
+  "Algorithms": {
+    "HODl": "-a hodl",
+    "M7M": "-a m7m",
+    "Yescrypt": "-a yescrypt"
+  }
+}

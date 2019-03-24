@@ -1,7 +1,7 @@
 {
   "Path": "wildrig",
   "Uri": "https://github.com/andru-kun/wildrig/releases/download/0.10.5/wildrig-linux-0.10.5-beta.tar.gz",
-  "SHA256": "",
+  "SHA256": "72CC6135DBA4E856798602A1F00A6ECB988D4CABE5C4AF17018DC923F33976C2",
   "Type": "_AMD",
   "Arguments": [
     "-o #Server#:#Port#",
