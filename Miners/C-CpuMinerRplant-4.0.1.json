@@ -1,5 +1,5 @@
 {
-  "Path": "cpuminer-$($f=$DeviceGroup.Features;$(if($f.avx2 -and $f.sha){'ryzen'}elseif($f.avx2){'avx2'}elseif($f.avx){'avx'}elseif($f.aes){'aes'}else{'sse2'})).exe",
+  "Path": "cpuminer-$($f=$SystemInfo.CpuFeatures;$(if($f.avx2 -and $f.sha){'ryzen'}elseif($f.avx2){'avx2'}elseif($f.avx){'avx'}elseif($f.aes){'aes'}else{'sse2'})).exe",
   "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.03/cpuminer-opt-win-rplant-4.0.1.zip",
   "SHA256": "74F6A3D6AE7CD6342F88FC7E47D924BF6180430CB6F9D930D230C45EB88AFC90",
   "Type": "CPU",

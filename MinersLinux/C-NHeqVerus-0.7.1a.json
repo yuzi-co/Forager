@@ -8,7 +8,7 @@
     "-u #Login#",
     "-p #Password#",
     "-a #APIPort#",
-    "-t $(if ($CpuThreads -ne $null) {$CpuThreads} else {$SystemInfo.Processors})",
+    "-t $(if ($CpuThreads -ne $null) {$CpuThreads} else {$SystemInfo.CpuFeatures.threads})",
     "#AlgorithmParameters#"
   ],
   "API": "NHEQ",

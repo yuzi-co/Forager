@@ -11,7 +11,7 @@
     "-r 10",
     "-d #Devices#",
     "-b #APIPort#",
-    "-t $(if ($CpuThreads -ne $null) {$CpuThreads} else {$DeviceGroup.Features.Threads})",
+    "-t $(if ($CpuThreads -ne $null) {$CpuThreads} else {$SystemInfo.CpuFeatures.threads})",
     "#AlgorithmParameters#"
   ],
   "API": "Ccminer",

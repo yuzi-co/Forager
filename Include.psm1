@@ -545,6 +545,18 @@ function Get-OpenCLDevices {
     $OCLDevices
 }
 
+function Get-CpuFeatures {
+    if ($IsWindows) {
+        $Features = $($feat = @{}; switch -regex ((& ./Includes/CHKCPU32.exe /x) -split "</\w+>") {"^\s*<_?(\w+)>(\d+).*" {$feat.($matches[1]) = [int]$matches[2]}}; $feat)
+    } elseif ($IsLinux) {
+        $Data = Get-Content /proc/cpuinfo
+        $Features = $($feat = @{}; (($Data | Where-Object {$_ -like "flags*"})[0] -split ":")[1].Trim() -split " " | ForEach-Object { $feat.$_ = 1 }; $feat)
+        $Features.threads = [int]($Data | Where-Object {$_ -like 'processor*'}).count
+        $Features.cores = [int](($Data | Where-Object {$_ -like 'cpu cores*'})[0] -split ":")[1].Trim()
+    }
+    return $Features
+}
+
 function Get-MiningTypes () {
     param(
         [Parameter(Mandatory = $false)]
@@ -574,22 +586,9 @@ function Get-MiningTypes () {
 
     if ($Devices | Where-Object {$_.GroupType -eq 'CPU'}) {
 
-        if ($IsWindows) {
-            $CpuResult = Get-CimInstance Win32_Processor
-            $Features = $($feat = @{}; switch -regex ((& ./Includes/CHKCPU32.exe /x) -split "</\w+>") {"^\s*<_?(\w+)>(\d+).*" {$feat.($matches[1]) = [int]$matches[2]}}; $feat)
-            $RealCores = [int[]](0..($CpuResult.NumberOfLogicalProcessors - 1))
-            if ($CpuResult.NumberOfLogicalProcessors -gt $CpuResult.NumberOfCores) {
-                $RealCores = $RealCores | Where-Object {-not ($_ % 2)}
-            }
-        }
-        if ($IsLinux) {
-            $RealCores = @()
-            $Features = @{}
-
-        }
+        $Features = Get-CpuFeatures
         $Devices | Where-Object {$_.GroupType -eq 'CPU'} | ForEach-Object {
             $_ | Add-Member Devices "0" -Force
-            $_ | Add-Member RealCores ($RealCores -join ',')
             $_ | Add-Member Features $Features
         }
     }
@@ -631,7 +630,7 @@ function Get-MiningTypes () {
                 $_ | Add-Member PowerLimits @(0) -Force
             }
 
-            $_ | Add-Member MinProfit $Config.("MinProfit_" + $_.GroupName)
+            $_ | Add-Member MinProfit ([decimal]$Config.("MinProfit_" + $_.GroupName))
             $_ | Add-Member Algorithms ($Config.("Algorithms_" + $_.GroupName) -split ',')
 
             $_
@@ -678,28 +677,20 @@ function Get-SystemInfo () {
         }
     }
 
-    if ($IsWindows) {
-        # $OperatingSystem = Get-CimInstance Win32_OperatingSystem
-        $Features = $($feat = @{}; switch -regex ((& ./Includes/CHKCPU32.exe /x) -split "</\w+>") {"^\s*<_?(\w+)>(\d+).*" {$feat.($matches[1]) = [int]$matches[2]}}; $feat)
+    $Features = Get-CpuFeatures
 
-        [PSCustomObject]@{
-            OSName       = [System.Environment]::OSVersion.Platform
-            OSVersion    = [System.Environment]::OSVersion.Version
-            ComputerName = (Get-Culture).TextInfo.ToTitleCase([System.Environment]::MachineName.ToLower()) #Windows capitalizes this
-            Processors   = [System.Environment]::ProcessorCount
-            CpuCores     = $Features.cores
-            CpuFeatures  = $Features
-        }
-    } elseif ($IsLinux) {
-        [PSCustomObject]@{
-            OSName       = [System.Environment]::OSVersion.Platform
-            OSVersion    = [System.Environment]::OSVersion.Version
-            ComputerName = [System.Environment]::MachineName
-            Processors   = [System.Environment]::ProcessorCount
-            # CpuCores     = $Features.cores
-            # CpuFeatures  = $Features
-        }
+    $SystemInfo = [PSCustomObject]@{
+        OSName       = [System.Environment]::OSVersion.Platform
+        OSVersion    = [System.Environment]::OSVersion.Version
+        ComputerName = [System.Environment]::MachineName
+        Processors   = [System.Environment]::ProcessorCount
+        CpuFeatures  = $Features
     }
+    if ($IsWindows) {
+        $SystemInfo.ComputerName = (Get-Culture).TextInfo.ToTitleCase($SystemInfo.ComputerName.ToLower()) #Windows capitalizes this
+    }
+
+    return $SystemInfo
 }
 
 Function Write-Log {

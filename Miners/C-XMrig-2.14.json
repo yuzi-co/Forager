@@ -11,7 +11,7 @@
     "$(if ($EnableSSL){'--tls'})",
     "--donate-level 1",
     "--api-port #APIPort#",
-    "--max-cpu-usage=$(if ($CpuThreads -ne $null){ [int](100 * $CpuThreads / $DeviceGroup.Features.Threads) } else { 100 })",
+    "--max-cpu-usage=$(if ($CpuThreads -ne $null){ [int](100 * $CpuThreads / $SystemInfo.CpuFeatures.threads) } else { 100 })",
     "#AlgorithmParameters#"
   ],
   "API": "XMRig",

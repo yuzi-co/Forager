@@ -9,7 +9,7 @@
     "-pw #Password#",
     "-r 5",
     "-cpu",
-    "-cputhreads $(if ($CpuThreads -ne $null){$CpuThreads} else {$SystemInfo.Processors})",
+    "-cputhreads $(if ($CpuThreads -ne $null){$CpuThreads} else {$SystemInfo.CpuFeatures.threads})",
     "-apiport #ApiPort#"
   ],
   "API": "RH",

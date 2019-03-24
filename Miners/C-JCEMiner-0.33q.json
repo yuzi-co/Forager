@@ -1,5 +1,5 @@
 {
-  "Path": "jce_cn_cpu_miner$(if($DeviceGroup.Features.'64bit'){'64'}else{'32'}).exe",
+  "Path": "jce_cn_cpu_miner64.exe",
   "Uri": "https://github.com/jceminer/cn_cpu_miner/raw/master/jce_cn_cpu_miner.windows.033q.zip",
   "SHA256": "CFD59A13FF66E28D0B8166CD1F5590F071EB6D20EE1DCBCAF6DA542C51DD74A3",
   "Type": "CPU",
@@ -19,7 +19,7 @@
   ],
   "API": "XMRig",
   "APIPort": 4048,
-  "Fee": "$(if($DeviceGroup.Features.aes -and $DeviceGroup.Features.'64bit'){0.015}else{0.03})",
+  "Fee": "$(if($SystemInfo.CpuFeatures.aes){0.015}else{0.03})",
   "SSL": true,
   "Algorithms": {
     "CnAlloy": "--variation 8",

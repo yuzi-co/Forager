@@ -19,7 +19,7 @@
   ],
   "API": "XMRig",
   "APIPort": 4048,
-  "Fee": "$(if($DeviceGroup.Features.aes -and $DeviceGroup.Features.'64bit'){0.015}else{0.03})",
+  "Fee": "$(if($SystemInfo.CpuFeatures.aes){0.015}else{0.03})",
   "SSL": true,
   "Algorithms": {
     "CnAlloy": "--variation 8",
