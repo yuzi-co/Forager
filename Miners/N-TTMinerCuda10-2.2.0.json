@@ -1,7 +1,7 @@
 {
   "Path": "TT-Miner.exe",
-  "Uri": "https://tradeproject.de/download/Miner/TT-Miner-2.1.19.zip",
-  "SHA256": "0CB65D3807FBCF07C8A31084C146E70AFD4D987FCA3712C0AD730649A7E6D59C",
+  "Uri": "https://tradeproject.de/download/Miner/TT-Miner-2.2.0.zip",
+  "SHA256": "3D2D46250AB474E247810EA906E3168F28987A7ED253B5DB4B0958D260AC1821",
   "Type": "NVIDIA",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
@@ -9,6 +9,7 @@
     "-p #Password#",
     "-worker #WorkerName#",
     "--nvidia",
+    "-nui",
     "-d #Devices#",
     "-b 127.0.0.1:#APIPort#",
     "#AlgorithmParameters#"
