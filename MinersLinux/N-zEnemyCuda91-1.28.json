@@ -1,0 +1,37 @@
+{
+  "Path": "z-enemy",
+  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.03/z-enemy-1.28-cuda91.tar.gz",
+  "SHA256": "BC8EF9157D3753E98C7A6639161AC109A86C3F449EA8E2D652FFB5F54A010449",
+  "Type": "NVIDIA",
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-R 3",
+    "-r 10",
+    "-d #Devices#",
+    "-b #APIPort#",
+    "#AlgorithmParameters#"
+  ],
+  "API": "Ccminer",
+  "APIPort": 4068,
+  "Fee": 0.01,
+  "CUDA": 9.1,
+  "Algorithms": {
+    "Aergo": "-a aeriumx -i 23",
+    "BCD": "-a bcd -i 22",
+    "Bitcore": "-a bitcore -i 22",
+    "C11": "-a c11 -i 22",
+    "Hex": "-a hex -i 24",
+    "Polytimos": "-a poly -i 22",
+    "Renesis": "-a renesis -i 22",
+    "SonoA": "-a sonoa -i 22",
+    "TimeTravel": "-a timetravel -i 22",
+    "Tribus": "-a tribus -i 22",
+    "Vitalium": "-a vit -i 22",
+    "X16r": "-a x16r -i 22",
+    "X16s": "-a x16s -i 22",
+    "X17": "-a x17 -i 22",
+    "Xevan": "-a xevan -i 22"
+  }
+}
