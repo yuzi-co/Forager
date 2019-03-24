@@ -21,11 +21,12 @@
   "Algorithms": {
     "Equihash144": {
       "Params": "--coin AUTO144_5 --asm 1",
+      "Mem": 1.8,
       "NH": false
     },
     "Equihash150": {
       "Params": "--coin BEAM --asm 1",
-      "Mem": 3.5
+      "Mem": 2.7
     },
     "Equihash210": "--coin AION --asm 1",
     "Equihash96": "--coin MNX --asm 1"

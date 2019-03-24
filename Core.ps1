@@ -417,6 +417,10 @@ while ($Quit -eq $false) {
                         Continue
                     }
                 }
+                if ($null -ne $DeviceGroup.MemoryGB -and $Miner.Mem -gt $DeviceGroup.MemoryGB) {
+                    Log "$($MinerFile.BaseName) skipped due to memory constraints" -Severity Debug
+                    Continue
+                }
 
                 if ($DeviceGroup.GroupType -eq 'CPU' -and $Config.CpuThreads -gt 0) {
                     $AlgoLabel += 't' + $Config.CpuThreads

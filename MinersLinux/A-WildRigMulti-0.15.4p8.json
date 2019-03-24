@@ -21,6 +21,7 @@
   "API": "XMRig",
   "APIPort": 4028,
   "Fee": 0.01,
+  "Mem": 1.1,
   "BenchmarkArg": "$(if ($AlgoName -in @('bitcore', 'x16r', 'x16rt', 'x16s', 'x21s', 'hex', 'timetravel')){'--benchmark'})",
   "Algorithms": {
     "Aergo": "--algo aergo --opencl-threads auto --opencl-launch auto",

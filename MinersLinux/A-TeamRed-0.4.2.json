@@ -18,6 +18,7 @@
   "APIPort": 4028,
   "SSL": true,
   "Fee": 0.025,
+  "Mem": 2,
   "Algorithms": {
     "CnDouble": "-a cnv8_dbl",
     "CnHalf": "-a cnv8_half",
