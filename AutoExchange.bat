@@ -2,6 +2,13 @@
 
 cd /d %~dp0
 
+:: Use 1 if only 3GB video memory is detected
+setx GPU_FORCE_64BIT_PTR 0
+setx GPU_USE_SYNC_OBJECTS 1
+setx GPU_MAX_HEAP_SIZE 100
+setx GPU_MAX_ALLOC_PERCENT 100
+setx GPU_SINGLE_ALLOC_PERCENT 100
+
 set Mode=Automatic
 set Pools=NiceHash,Zpool,ZergPool
 
