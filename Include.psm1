@@ -1464,7 +1464,7 @@ function Get-Config {
 
     $Result = @{}
     # case insensitive match for linux
-    $File = Get-ChildItem . -File | Where-Object Name -imatch "config.ini" | Select-Object -First 1 -ExpandProperty Name
+    $File = Get-ChildItem . -File | Where-Object Name -ilike "config.ini" | Select-Object -First 1 -ExpandProperty Name
     switch -regex -file $File {
         "^\s*(\w+)\s*=\s*(.*)" {
             $name, $value = $matches[1..2]
@@ -1486,7 +1486,7 @@ function Get-Wallets {
 
     $Result = @{}
     # case insensitive match for linux
-    $File = Get-ChildItem . -File | Where-Object Name -imatch "config.ini" | Select-Object -First 1 -ExpandProperty Name
+    $File = Get-ChildItem . -File | Where-Object Name -ilike "config.ini" | Select-Object -First 1 -ExpandProperty Name
     switch -regex -file $File {
         "^\s*WALLET_(\w+)\s*=\s*(.*)" {
             $name, $value = $matches[1..2]
@@ -1504,8 +1504,8 @@ function Get-BestHashRateAlgo {
 
     $Pattern = "*_" + $Algorithm + "_*_HashRate.csv"
 
-    Get-ChildItem ./Stats -File | Where-Object Name -imatch $Pattern | Select-Object -ExpandProperty Name | ForEach-Object {
-        $Content = $_ | Get-Content | ConvertFrom-Csv
+    Get-ChildItem ./Stats -File | Where-Object Name -ilike $Pattern | ForEach-Object {
+        $Content = Get-Content $_.FullName | ConvertFrom-Csv
         [PSCustomObject]@{
             HashRate = $Content.Speed | Measure-Object -Average | Select-Object -ExpandProperty Average
             Miner    = ($_.BaseName -split '_')[0]
@@ -1788,7 +1788,7 @@ function Clear-Files {
         Get-ChildItem $TargetFolder -Include "*.log" -File -Recurse | Where-Object LastWriteTime -le $LastWrite
 
         $TargetFolder = "."
-        Get-ChildItem $TargetFolder -File | Where-Object Name -imatch "wrapper_*.txt"
+        Get-ChildItem $TargetFolder -File | Where-Object Name -ilike "wrapper_*.txt"
 
         $TargetFolder = "."
         Get-ChildItem $TargetFolder -File -Include "*.tmp" -Recurse
