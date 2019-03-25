@@ -1,0 +1,28 @@
+{
+  "Path": "GrinProMiner.exe",
+  "Uri": "https://github.com/mozkomor/GrinProMiner/releases/download/2.0b1/GrinPro_2_beta_Win64.zip",
+  "SHA256": "F94C2190D4D5C4488F1C68920463EBEBE625EE4D902438BA5E83501A54EB5954",
+  "Type": "NVIDIA",
+  "Arguments": [
+    "api-port=#ApiPort#",
+    "ignore-config=true",
+    "stratum-address=#Server#",
+    "stratum-port=#Port#",
+    "stratum-tls=$(if($EnableSSL){'true'}else{'false'})",
+    "stratum-login=#Login#",
+    "stratum-password=#Password#",
+    "nvidia=#Devices#"
+  ],
+  "API": "GrinPro",
+  "APIPort": 4068,
+  "Fee": 0.02,
+  "SSL": true,
+  "CUDA": 10.0,
+  "Algorithms": {
+    "Cuckaroo29": {
+      "Mem": 5.6,
+      "NoCpu": true,
+      "NH": false
+    }
+  }
+}
