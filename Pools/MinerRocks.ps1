@@ -72,7 +72,7 @@ if ($Querymode -eq "Wallet") {
 
 if ($Querymode -eq "Core") {
 
-    $Response = Invoke-WebRequest -Uri "https://miner.rocks"
+    $Response = Invoke-WebRequest -Uri "https://miner.rocks" -UseBasicParsing
 
     $Regex = "^{name:'(\w+)',host:'(\S+)',lastStats:null,kind:`"(\S*)`""
     $Pools = $Response.Content -split "`n" -replace "\s" -match $Regex | ForEach-Object {
