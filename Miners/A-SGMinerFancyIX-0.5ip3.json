@@ -16,7 +16,7 @@
   "API": "Xgminer",
   "APIPort": 4028,
   "Algorithms": {
-    "Allium": "-k allium -g 1 -w 256 -I 22",
+    "Allium": "-k allium -g 1 -w 256 -I 18",
     "Argon2d500": "-k argon2d -g 2 -w 64",
     "_Ethash": "-k ethash -w 64 -X 1024",
     "_Lyra2v3": "-k lyra2v3 -g 1 -w 256 -I 24",

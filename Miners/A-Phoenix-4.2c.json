@@ -26,6 +26,7 @@
   "APIPort": 4028,
   "Fee": 0.0065,
   "SSL": true,
+  "Mem": 2,
   "Algorithms": {
     "ProgPOW": "-coin bci -mode 1",
     "Ethash": "-clKernel 3 -mode 1",
