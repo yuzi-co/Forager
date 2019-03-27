@@ -1,7 +1,7 @@
 {
-  "Path": "teamredminer-v0.4.2-linux/teamredminer",
-  "Uri": "https://github.com/todxx/teamredminer/releases/download/v0.4.2/teamredminer-v0.4.2-linux.tgz",
-  "SHA256": "F03CDD9DF55089D210B9F245FB3BE07F25F96DF7EF39952BCE1F226582E09078",
+  "Path": "teamredminer-v0.4.3-linux/teamredminer",
+  "Uri": "https://github.com/todxx/teamredminer/releases/download/v0.4.3/teamredminer-v0.4.3-linux.tgz",
+  "SHA256": "4CF9199A59829C4EC9699118F4C2768CBCC772F9F9791FC3D434F71A20C90F1E",
   "Type": "AMD",
   "Arguments": [
     "-o stratum+$(if($EnableSSL){'ssl'}else{'tcp'})://#Server#:#Port#",
@@ -24,6 +24,7 @@
     "CnHalf": "-a cnv8_half",
     "CnR": "-a cnr",
     "CnRwz": "-a cnv8_rwz",
+    "CnTurtle": "-a cnv8_trtl",
     "Lyra2v3": "-a lyra2rev3",
     "Phi2": {
       "Params": "-a phi2",
