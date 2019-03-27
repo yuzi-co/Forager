@@ -1,0 +1,34 @@
+{
+  "Path": "cast_xmr-vega-ubuntu_171/cast_xmr-vega",
+  "Uri": "https://github.com/glph3k/cast_xmr/releases/download/v171/cast_xmr-vega-ubuntu_171.tar.gz",
+  "SHA256": "D52E903E47C1703571DC198AF7F469F0B4C5D5D3489D49768033ED27DA539E4C",
+  "Type": "AMD",
+  "Arguments": [
+    "--pool #Server#:#Port#",
+    "--user #Login#",
+    "--password #Password#",
+    "--remoteaccess",
+    "--remoteport #APIPort#",
+    "--opencl #GPUPlatform#",
+    "--gpu #Devices#",
+    "--ratewatchdog",
+    "$(if ($Pool.PoolName -ne 'NiceHash'){'--nonicehash'})",
+    "#AlgorithmParameters#"
+  ],
+  "API": "castXMR",
+  "APIPort": 4028,
+  "Fee": 0.015,
+  "Mem": 3.6,
+  "Algorithms": {
+    "CnFast": "--algo=8",
+    "CnHalf": "--algo=6",
+    "CnHaven": "--algo=7",
+    "CnHeavy": "--algo=2",
+    "CnLiteV7": "--algo=4",
+    "CnSaber": "--algo=5",
+    "CnTurtle": "--algo=9",
+    "CnV7": "--algo=1",
+    "CnV8": "--algo=10",
+    "CnWow": "--algo=11"
+  }
+}
