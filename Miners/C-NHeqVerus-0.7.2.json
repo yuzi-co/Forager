@@ -1,7 +1,7 @@
 {
-  "Path": "nheqminer/nheqminer",
-  "Uri": "https://github.com/VerusCoin/nheqminer/releases/download/0.7.1/nheqminer-Linux-v0.7.1.tar.gz",
-  "SHA256": "36CC88266826733B356F972167897527EACB2E17471A296F756534FB61A3C966",
+  "Path": "nheqminer/nheqminer.exe",
+  "Uri": "https://github.com/VerusCoin/nheqminer/releases/download/0.7.2/nheqminer-Windows-v0.7.2.zip",
+  "SHA256": "0E07D2A3DBC077F344D922B9D7F6C86E765048F014305714A98BD24C7BEDE11B",
   "Type": "CPU",
   "Arguments": [
     "-l #Server#:#Port#",
