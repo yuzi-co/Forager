@@ -397,7 +397,7 @@ while ($Quit -eq $false) {
         foreach ($DeviceGroup in ($DeviceGroups | Where-Object GroupType -eq $Miner.Type)) {
             if (
                 $Config.("ExcludeMiners_" + $DeviceGroup.GroupName) -and
-                ($Config.("ExcludeMiners_" + $DeviceGroup.GroupName).Split(',') | Where-Object {$MinerFile.BaseName -ilike $_})
+                ($Config.("ExcludeMiners_" + $DeviceGroup.GroupName).Split(',') | Where-Object {$MinerFile.BaseName -ilike $_.Trim()})
             ) {
                 Log "$($MinerFile.BaseName) is Excluded for $($DeviceGroup.GroupName). Skipping" -Severity Debug
                 Continue
@@ -1286,7 +1286,7 @@ while ($Quit -eq $false) {
             $WatchdogHashRateFail = $false
             if (
                 $Config.WatchdogHashRate -gt 0 -and
-                ($Config.WatchdogExcludeAlgos -split ',') -notcontains $ActiveMiners[$_.IdF].Algorithm -and
+                @($Config.WatchdogExcludeAlgos -split ','| ForEach-Object {$_.Trim()}) -notcontains $ActiveMiners[$_.IdF].Algorithm -and
                 $_.HashRate -gt 0 -and
                 $_.SpeedReads.count -gt 20
             ) {

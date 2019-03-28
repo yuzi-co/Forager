@@ -602,7 +602,7 @@ function Get-MiningTypes () {
             $_ | Add-Member ID $TypeID
             $TypeID++
 
-            $_ | Add-Member DevicesArray @([int[]]($_.Devices -split ','))   # @(0,1,2,10,11,12)
+            $_ | Add-Member DevicesArray @([int[]]($_.Devices -split ','| ForEach-Object {$_.Trim()}))   # @(0,1,2,10,11,12)
             $_ | Add-Member DevicesCount ($_.DevicesArray.count)             # 6
 
             $Pattern = switch ($_.GroupType) {
@@ -621,7 +621,7 @@ function Get-MiningTypes () {
             }
 
             if ($_.PowerLimits -is [string] -and $_.PowerLimits.Length -gt 0) {
-                $_ | Add-Member PowerLimits @([int[]]($_.PowerLimits -split ',') | Sort-Object -Descending -Unique) -Force
+                $_ | Add-Member PowerLimits @([int[]]($_.PowerLimits -split ',' | ForEach-Object {$_.Trim()} ) | Sort-Object -Descending -Unique) -Force
             } else {
                 $_ | Add-Member PowerLimits @(0) -Force
             }
@@ -631,7 +631,7 @@ function Get-MiningTypes () {
             }
 
             $_ | Add-Member MinProfit ([decimal]$Config.("MinProfit_" + $_.GroupName))
-            $_ | Add-Member Algorithms ($Config.("Algorithms_" + $_.GroupName) -split ',')
+            $_ | Add-Member Algorithms @($Config.("Algorithms_" + $_.GroupName) -split ','| ForEach-Object {$_.Trim()})
 
             $_
         }
@@ -653,7 +653,7 @@ function Format-DeviceList {
     )
 
     if ($List -and -not $Devices) {
-        $Devices = $List -split ','
+        $Devices = @($List -split ',')
     }
 
     switch ($Type) {
@@ -1386,10 +1386,10 @@ function Get-Pools {
             if (
                 (
                     $Config.("IncludeAlgos_" + $Pool.PoolName) -and
-                    @($Config.("IncludeAlgos_" + $Pool.PoolName) -split ',') -notcontains $Pool.Algorithm
+                    @($Config.("IncludeAlgos_" + $Pool.PoolName) -split ','| ForEach-Object {$_.Trim()}) -notcontains $Pool.Algorithm
                 ) -or (
                     $Config.("IncludeCoins_" + $Pool.PoolName) -and
-                    @($Config.("IncludeCoins_" + $Pool.PoolName) -split ',') -notcontains $Pool.Info
+                    @($Config.("IncludeCoins_" + $Pool.PoolName) -split ','| ForEach-Object {$_.Trim()}) -notcontains $Pool.Info
                 )
             ) {
                 Log "Excluding $($Pool.Algorithm)/$($Pool.Info) on $($Pool.PoolName) due to Include filter" -Severity Debug
@@ -1398,8 +1398,8 @@ function Get-Pools {
 
             # Exclude pool algos and coins
             if (
-                @($Config.("ExcludeAlgos_" + $Pool.PoolName) -split ',') -contains $Pool.Algorithm -or
-                @($Config.("ExcludeCoins_" + $Pool.PoolName) -split ',') -contains $Pool.Info
+                @($Config.("ExcludeAlgos_" + $Pool.PoolName) -split ','| ForEach-Object {$_.Trim()}) -contains $Pool.Algorithm -or
+                @($Config.("ExcludeCoins_" + $Pool.PoolName) -split ','| ForEach-Object {$_.Trim()}) -contains $Pool.Info
             ) {
                 Log "Excluding $($Pool.Algorithm)/$($Pool.Info) on $($Pool.PoolName) due to Exclude filter" -Severity Debug
                 continue
