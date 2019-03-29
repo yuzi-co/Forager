@@ -1,7 +1,7 @@
 {
   "Path": "wildrig-multi",
-  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.03/wildrig-multi-linux-0.15.4-preview8.tar.gz",
-  "SHA256": "B132B81A8AFB67794C8BC269594DF93770734DB6D4C9D5CFD0BA4ACCF80C6800",
+  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.15.3/wildrig-multi-linux-0.15.3.8-beta.tar.gz",
+  "SHA256": "AED5DA93A0D9C2D09A36F9BC0B0DBE0DCC4B62740E31CDD52E74D70195575350",
   "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",
@@ -43,7 +43,6 @@
     "Pawelhash": "--algo glt-pawelhash",
     "Phi": "--algo phi",
     "Polytimos": "--algo polytimos",
-    "Rainforest": "--algo rainforest",
     "Renesis": "--algo renesis",
     "SHA256q": "--algo sha256q",
     "SHA256t": "--algo sha256t",
