@@ -16,7 +16,7 @@
     "--connectattempts 3",
     "--tls $(if($enableSSL){1}else{0})",
     "#AlgorithmParameters#",
-    "CustomParameters"
+    "#CustomParameters#"
   ],
   "API": "LOL",
   "APIPort": 4068,

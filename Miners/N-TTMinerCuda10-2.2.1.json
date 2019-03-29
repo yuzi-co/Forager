@@ -13,7 +13,7 @@
     "-d #Devices#",
     "-b 127.0.0.1:#APIPort#",
     "#AlgorithmParameters#",
-    "CustomParameters"
+    "#CustomParameters#"
   ],
   "API": "Claymore",
   "APIPort": 4068,

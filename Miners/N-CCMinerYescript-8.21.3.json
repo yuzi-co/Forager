@@ -12,7 +12,7 @@
     "-d #Devices#",
     "-b #APIPort#",
     "#AlgorithmParameters#",
-    "CustomParameters"
+    "#CustomParameters#"
   ],
   "API": "Ccminer",
   "APIPort": 4068,

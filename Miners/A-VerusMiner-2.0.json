@@ -9,7 +9,7 @@
     "-p #Password#",
     "--use=$($DeviceGroup.OCLDeviceId -join ',')",
     "#AlgorithmParameters#",
-    "CustomParameters"
+    "#CustomParameters#"
   ],
   "API": "Wrapper",
   "APIPort": 4028,

@@ -15,7 +15,7 @@
     "--httpd #APIPort#",
     "--cpu #GroupName#-#Algorithm#.txt",
     "#AlgorithmParameters#",
-    "CustomParameters"
+    "#CustomParameters#"
   ],
   "API": "XMRig",
   "APIPort": 4048,

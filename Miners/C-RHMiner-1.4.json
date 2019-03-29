@@ -12,7 +12,7 @@
     "-processpriority 2",
     "-cputhreads $(if ($CpuThreads -ne $null){$CpuThreads} else {$SystemInfo.CpuFeatures.threads})",
     "-apiport #ApiPort#",
-    "CustomParameters"
+    "#CustomParameters#"
   ],
   "API": "RH",
   "APIPort": 4048,

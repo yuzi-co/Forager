@@ -12,7 +12,7 @@
     "--watchdog_script",
     "--api_listen=#ApiPort#",
     "#AlgorithmParameters#",
-    "CustomParameters"
+    "#CustomParameters#"
   ],
   "API": "Xgminer",
   "APIPort": 4028,

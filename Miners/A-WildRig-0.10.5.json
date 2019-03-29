@@ -15,7 +15,7 @@
     "--api-port #ApiPort#",
     "--scratchpad-file scratchpad-#Algorithm#.bin",
     "#AlgorithmParameters#",
-    "CustomParameters"
+    "#CustomParameters#"
   ],
   "API": "XMRig",
   "APIPort": 4028,

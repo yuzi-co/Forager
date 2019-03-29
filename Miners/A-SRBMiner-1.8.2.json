@@ -18,7 +18,7 @@
     "--apiport #ApiPort#",
     "$(if ($enableSSL){'--ctls true'})",
     "$(if ($Pool.PoolName -eq 'NiceHash'){'--cnicehash true'})",
-    "CustomParameters"
+    "#CustomParameters#"
   ],
   "API": "SRB",
   "APIPort": 4028,

@@ -13,7 +13,7 @@
     "-b #APIPort#",
     "-t $(if ($CpuThreads -ne $null) {$CpuThreads} else {$SystemInfo.CpuFeatures.threads})",
     "#AlgorithmParameters#",
-    "CustomParameters"
+    "#CustomParameters#"
   ],
   "API": "Ccminer",
   "APIPort": 4048,

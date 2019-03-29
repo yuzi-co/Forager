@@ -13,7 +13,7 @@
     "--donate-level 1",
     "--api-port #APIPort#",
     "#AlgorithmParameters#",
-    "CustomParameters"
+    "#CustomParameters#"
   ],
   "API": "XMRig",
   "APIPort": 4068,

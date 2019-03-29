@@ -15,7 +15,7 @@
     "--shortstats 5",
     "--connectattempts 3",
     "#AlgorithmParameters#",
-    "CustomParameters"
+    "#CustomParameters#"
   ],
   "API": "LOL",
   "APIPort": 4068,

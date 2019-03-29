@@ -10,7 +10,7 @@
     "--opencl-devices #DevicesETHMode#",
     "--api-port -#APIPort#",
     "#AlgorithmParameters#",
-    "CustomParameters"
+    "#CustomParameters#"
   ],
   "API": "Claymore",
   "APIPort": 4028,

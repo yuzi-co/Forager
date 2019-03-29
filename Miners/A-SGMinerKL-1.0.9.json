@@ -13,7 +13,7 @@
     "--api-port #APIPort#",
     "--extranonce",
     "#AlgorithmParameters#",
-    "CustomParameters"
+    "#CustomParameters#"
   ],
   "BenchmarkArg": "$(if ($AlgoName -in @('x16r')){'--benchmark'})",
   "API": "Xgminer",

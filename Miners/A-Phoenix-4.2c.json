@@ -21,7 +21,7 @@
     "-cdmport #APIPort#",
     "-cdm 1",
     "#AlgorithmParameters#",
-    "CustomParameters"
+    "#CustomParameters#"
   ],
   "API": "Claymore",
   "APIPort": 4028,

@@ -16,7 +16,7 @@
     "--stakjson",
     "$(if ($CpuThreads -ne $null){'-t ' + $CpuThreads})",
     "#AlgorithmParameters#",
-    "CustomParameters"
+    "#CustomParameters#"
   ],
   "API": "XMRig",
   "APIPort": 4048,

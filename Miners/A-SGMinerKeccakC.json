@@ -12,7 +12,7 @@
     "--api-listen",
     "--api-port #APIPort#",
     "#AlgorithmParameters#",
-    "CustomParameters"
+    "#CustomParameters#"
   ],
   "API": "Xgminer",
   "APIPort": 4028,

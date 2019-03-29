@@ -9,7 +9,7 @@
     "--cuda-devices #DevicesETHMode#",
     "--api-port -#APIPort#",
     "#AlgorithmParameters#",
-    "CustomParameters"
+    "#CustomParameters#"
   ],
   "API": "Claymore",
   "APIPort": 4068,
