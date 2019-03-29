@@ -1,0 +1,23 @@
+{
+  "Path": "bminer-v15.4.0-9e272fc/bminer",
+  "Uri": "https://www.bminercontent.com/releases/bminer-v15.4.0-9e272fc-amd64.tar.xz",
+  "SHA256": "910DB9ED06EB4B9C110EE5F8A563487D8A467270E5CE952A9115359AA6ED16A9",
+  "Type": "AMD",
+  "Arguments": [
+    "#AlgorithmParameters#$(if($enableSSL){'+ssl'})://$([System.Web.HttpUtility]::UrlEncode('#Login#')):$([System.Web.HttpUtility]::UrlEncode('#Password#'))@#Server#:#Port#",
+    "-devices amd:$('#Devices#' -replace ',',',amd:')",
+    "-max-network-failures=3",
+    "-watchdog=false",
+    "-api 127.0.0.1:#APIPort#"
+  ],
+  "API": "BMiner",
+  "APIPort": 4028,
+  "SSL": true,
+  "Fee": 0.02,
+  "Algorithms": {
+    "Equihash150": {
+      "Params": "-uri beam",
+      "Mem": 7
+    }
+  }
+}
