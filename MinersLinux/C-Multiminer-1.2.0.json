@@ -1,0 +1,27 @@
+{
+  "Path": "multiminer",
+  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.03/multiminer-1.2.0.tar.gz",
+  "SHA256": "B77485A29B9A77F26A1BF468AA4F992D045C47F1FA71BD3E1F53613F260B865B",
+  "Type": "CPU",
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-R 3",
+    "-r 10",
+    "--use-cpu",
+    "$(if ($CpuThreads -ne $null) {'--cpu-threads=' + $CpuThreads})",
+    "-b #APIPort#",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "API": "Ccminer",
+  "APIPort": 4048,
+  "Fee": 0.01,
+  "Algorithms": {
+    "Argon2ad": "-a argon2ad",
+    "Argon2d250": "-a argon2d250",
+    "Argon2d500": "-a argon2d500",
+    "Argon2d4096": "-a argon2d4096"
+  }
+}

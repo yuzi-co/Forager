@@ -1,0 +1,40 @@
+{
+  "Path": "multiminer",
+  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.03/multiminer-1.2.0.tar.gz",
+  "SHA256": "B77485A29B9A77F26A1BF468AA4F992D045C47F1FA71BD3E1F53613F260B865B",
+  "Type": "AMD",
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-R 3",
+    "-r 10",
+    "--use-gpu=OPENCL",
+    "--gpu-id=$(($DeviceGroup.OCLDeviceId | % {[int]$_+1}) -join ',')",
+    "-b #APIPort#",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "API": "Ccminer",
+  "APIPort": 4028,
+  "Fee": 0.01,
+  "_NoCPU": true,
+  "Algorithms": {
+    "Argon2ad": {
+      "Params": "-a argon2ad",
+      "Custom": "--gpu-batchsize=1024 --gpu-threads 1"
+    },
+    "Argon2d250": {
+      "Params": "-a argon2d250",
+      "Custom": "--gpu-batchsize=2048 --gpu-threads 1"
+    },
+    "Argon2d500": {
+      "Params": "-a argon2d500",
+      "Custom": "--gpu-batchsize=1024 --gpu-threads 1"
+    },
+    "Argon2d4096": {
+      "Params": "-a argon2d4096",
+      "Custom": "--gpu-batchsize=128 --gpu-threads 1"
+    }
+  }
+}
