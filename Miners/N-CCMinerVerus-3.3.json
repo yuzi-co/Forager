@@ -11,11 +11,13 @@
     "-r 10",
     "-d #Devices#",
     "-b #APIPort#",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "CustomParameters"
   ],
   "API": "Ccminer",
   "APIPort": 4068,
+  "Custom": "-i 18.5",
   "Algorithms": {
-    "Verushash": "-a verus -i 18.5"
+    "Verushash": "-a verus"
   }
 }

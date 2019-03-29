@@ -12,7 +12,8 @@
     "--donate-level 1",
     "--api-port #APIPort#",
     "--max-cpu-usage=$(if ($CpuThreads -ne $null){ [int](100 * $CpuThreads / $SystemInfo.CpuFeatures.threads) } else { 100 })",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "CustomParameters"
   ],
   "API": "XMRig",
   "APIPort": 4048,

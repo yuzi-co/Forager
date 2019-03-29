@@ -11,11 +11,13 @@
     "--device #Devices#",
     "--api-listen",
     "--api-port #APIPort#",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
   ],
   "API": "Xgminer",
   "APIPort": 4028,
+  "Custom": "-w 256 -X 256",
   "Algorithms": {
-    "X11evo": "-k x11evo -w 256 -X 256"
+    "X11evo": "-k x11evo"
   }
 }

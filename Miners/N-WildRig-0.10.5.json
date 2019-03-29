@@ -13,14 +13,16 @@
     "--send-stale",
     "--api-port #ApiPort#",
     "--scratchpad-file scratchpad-#Algorithm#.bin",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "CustomParameters"
   ],
   "API": "XMRig",
   "APIPort": 4068,
   "Fee": 0.02,
   "CUDA": 9.2,
+  "Custom": "--cuda-launch=1024x256",
   "Algorithms": {
-    "Purk": "--scratchpad-url http://purk.miner.rocks:8008/scratchpad.bin --cuda-launch=1024x256",
-    "Bbr": "--scratchpad-url http://boolberry.miner.rocks:8008/scratchpad.bin --cuda-launch=1024x256"
+    "Purk": "--scratchpad-url http://purk.miner.rocks:8008/scratchpad.bin",
+    "Bbr": "--scratchpad-url http://boolberry.miner.rocks:8008/scratchpad.bin"
   }
 }

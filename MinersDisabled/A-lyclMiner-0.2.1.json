@@ -8,8 +8,8 @@
   "Arguments": "#GroupName#-#Algorithm#.conf",
   "API": "Wrapper",
   "APIPort": 4028,
+  "Custom": "gfx8",
   "Algorithms": {
-    "Lyra2v3|gfx8": "gfx8",
-    "Lyra2v3|gfx9": "gfx9"
+    "Lyra2v3": ""
   }
 }

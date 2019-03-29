@@ -13,7 +13,8 @@
     "--eexit 1",
     "--cuda_devices #DevicesETHMode#",
     "--api 127.0.0.1:#APIPort#",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "CustomParameters"
   ],
   "API": "EWBF",
   "APIPort": 4068,

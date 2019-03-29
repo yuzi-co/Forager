@@ -20,7 +20,8 @@
     "-di #DevicesClayMode#",
     "-cdmport #APIPort#",
     "-cdm 1",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "CustomParameters"
   ],
   "API": "Claymore",
   "APIPort": 4028,
@@ -29,10 +30,14 @@
   "Mem": 2,
   "Algorithms": {
     "ProgPOW": "-coin bci -mode 1",
-    "Ethash": "-clKernel 3 -mode 1",
-    "Ubqhash": "-coin ubq -clKernel 3 -mode 1",
-    "_Ethash_Blake2s|30": "-dcoin blake2s -sci 30 -mode 0 -clKernel 3",
-    "_Ethash_Blake2s|35": "-dcoin blake2s -sci 35 -mode 0 -clKernel 3",
-    "_Ethash_Blake2s|40": "-dcoin blake2s -sci 40 -mode 0 -clKernel 3"
+    "Ethash": {
+      "Params": "-mode 1",
+      "Custom": "-clKernel 3"
+    },
+    "Ubqhash": {
+      "Params": "-coin ubq -mode 1",
+      "Custom": "-clKernel 3"
+    },
+    "_Ethash_Blake2s": "-dcoin blake2s -mode 0"
   }
 }

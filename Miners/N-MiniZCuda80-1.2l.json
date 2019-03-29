@@ -12,7 +12,8 @@
     "--extra",
     "-cd #DevicesETHMode#",
     "--telemetry 0.0.0.0:#APIPort#",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "CustomParameters"
   ],
   "API": "MiniZ",
   "APIPort": 4068,

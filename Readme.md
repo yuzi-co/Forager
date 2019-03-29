@@ -82,7 +82,7 @@ Install GIT (https://git-scm.com/download/win), open command line and run "git c
 
 ### Configure:
 
-Copy Config-SAMPLE.ini to Config.ini and edit it with your preferred currencies, wallets and pool users
+Copy /Config/Config-SAMPLE.ini to /Config/Config.ini and edit it with your preferred currencies, wallets and pool users
 
 Run START.bat to generate sample AutoStart.bat based on your selections or see Autostart*.bat files for examples
 
@@ -105,12 +105,15 @@ Run "git pull" in Forager folder to get latest master version
 ### Forager folder structure:
 ```
 /Bin/               - Installed miners are located in this folder
+/BinLinux/          - Installed miners are located in this folder. Linux only
 /Cache/             - Cached API requests storage. Can be purged at will. Old files automatically cleaned on start.
+/Config/            - User configuration files
 /Data/              - Data files containing different mappings and lists required for Forager
 /Downloads/         - Downloaded miner archives. Can be purged at will.
 /Includes/          - Code includes and binary helper programs
 /Logs/              - Runtime logs and session reports (if enabled). Old files automatically cleaned on start.
 /Miners/            - Miner definitions in json format
+/MinersLinux/       - Miner definitions in json format for Linux
 /MinersDisabled/    - Miners disabled by default, usually because of low profitability or issues
 /Pools/             - Pool definitions
 /Stats/             - Miner benchmarks and run statistics. *_Hashrate.csv - Benchmark results, remove to re-benchmark. *_Stats.json - Runtime stats

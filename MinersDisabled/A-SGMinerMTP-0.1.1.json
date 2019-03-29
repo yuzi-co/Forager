@@ -11,23 +11,25 @@
     "--device #Devices#",
     "--api-listen",
     "--api-port #APIPort#",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
   ],
   "API": "Xgminer",
   "APIPort": 4028,
+  "Custom": "-w 64 -I 20",
   "Algorithms": {
     "MTP": {
-      "Params": "-k mtp -w 64 -I 20",
+      "Params": "-k mtp",
       "NH": false,
       "Mem": 4.5
     },
     "MTP|vega": {
-      "Params": "-k mtp_vega -w 64 -I 20",
+      "Params": "-k mtp_vega",
       "NH": false,
       "Mem": 4.5
     },
     "_MTP|nvidia": {
-      "Params": "-k mtp_nvidia4 -w 64 -I 20",
+      "Params": "-k mtp_nvidia4",
       "NH": false,
       "Mem": 4.5
     }

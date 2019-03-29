@@ -11,11 +11,13 @@
     "--device #Devices#",
     "--api-listen",
     "--api-port #APIPort#",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "CustomParameters"
   ],
   "API": "Xgminer",
   "APIPort": 4028,
+  "Custom": "-g 2 -w 256 -X 256",
   "Algorithms": {
-    "Throestl": "-k dallar -g 2 -w 256 -X 256"
+    "Throestl": "-k dallar"
   }
 }

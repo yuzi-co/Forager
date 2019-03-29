@@ -11,3 +11,4 @@ email = #EMail#
 pool1 = #Server#:#Port#
 devices = #Devices#
 $(if ($CpuThreads -ne $null){'cpuThreads = ' + $CpuThreads})
+#CustomParameters#

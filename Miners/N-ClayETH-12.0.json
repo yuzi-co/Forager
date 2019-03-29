@@ -19,11 +19,13 @@
     "-di #DevicesClayMode#",
     "-allpools 1",
     "-mport -#APIPort#",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "CustomParameters"
   ],
   "API": "Claymore",
   "APIPort": 4068,
   "Fee": "$(if ($DeviceGroup.MemoryGB -gt 3){0.01}else{0})",
+  "Mem": 2,
   "SSL": true,
   "Algorithms": {
     "Ethash": "-mode 1",

@@ -11,13 +11,15 @@
     "-r 10",
     "-d #Devices#",
     "-b #APIPort#",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "CustomParameters"
   ],
   "API": "Ccminer",
   "APIPort": 4068,
   "Algorithms": {
     "MTP": {
-      "Params": "-a mtp -i 20",
+      "Params": "-a mtp",
+      "Custom": "-i 20",
       "NH": false,
       "Mem": 4.5
     }

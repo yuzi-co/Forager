@@ -14,7 +14,8 @@
     "--longstats 60",
     "--shortstats 5",
     "--connectattempts 3",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "CustomParameters"
   ],
   "API": "LOL",
   "APIPort": 4068,
@@ -25,6 +26,6 @@
       "Mem": 2.8
     },
     "Equihash210": "--coin AION",
-    "Equihash96": "--coin MNX --workbatch VERYHIGH"
+    "Equihash96": "--coin MNX"
   }
 }

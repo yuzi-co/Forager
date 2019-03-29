@@ -12,7 +12,8 @@
     "--apiport #ApiPort#",
     "--digits 2",
     "--connectattempts 3",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
   ],
   "API": "LOL",
   "APIPort": 4028,

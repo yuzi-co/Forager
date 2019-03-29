@@ -15,7 +15,8 @@
     "--cuda 0",
     "--opencl 1",
     "--color 0",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
   ],
   "API": "GMiner",
   "APIPort": 4028,

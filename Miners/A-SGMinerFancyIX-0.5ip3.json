@@ -11,23 +11,49 @@
     "--device #Devices#",
     "--api-listen",
     "--api-port #APIPort#",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "CustomParameters"
   ],
   "API": "Xgminer",
   "APIPort": 4028,
   "Algorithms": {
-    "Allium": "-k allium -g 1 -w 256 -I 18",
-    "Argon2d500": "-k argon2d -g 2 -w 64",
-    "_Ethash": "-k ethash -w 64 -X 1024",
-    "_Lyra2v3": "-k lyra2v3 -g 1 -w 256 -I 24",
-    "_Lyra2z": "-k lyra2z -g 1 -w 256 -I 22",
-    "Lyra2zz": "-k lyra2zz -g 1 -w 256 -I 22",
+    "Allium": {
+      "Params": "-k allium",
+      "Custom": "-g 1 -w 256 -I 18"
+    },
+    "Argon2d500": {
+      "Params": "-k argon2d",
+      "Custom": "-g 2 -w 64"
+    },
+    "_Ethash": {
+      "Params": "-k ethash",
+      "Custom": "-w 64 -X 1024"
+    },
+    "_Lyra2v3": {
+      "Params": "-k lyra2v3",
+      "Custom": "-g 1 -w 256 -I 24"
+    },
+    "_Lyra2z": {
+      "Params": "-k lyra2z",
+      "Custom": "-g 1 -w 256 -I 22"
+    },
+    "Lyra2zz": {
+      "Params": "-k lyra2zz",
+      "Custom": "-g 1 -w 256 -I 22"
+    },
     "MTP": {
-      "Params": "-k mtp -I 20",
+      "Params": "-k mtp",
+      "Custom": "-I 20",
       "NH": false,
       "Mem": 4.5
     },
-    "_Phi2": "-k phi2 -g 1 -w 256 -I 22",
-    "_X22i": "-k x22i -g 2 -w 256 -I 22"
+    "_Phi2": {
+      "Params": "-k phi2",
+      "Custom": "-g 1 -w 256 -I 22"
+    },
+    "_X22i": {
+      "Params": "-k x22i",
+      "Custom": "-g 2 -w 256 -I 22"
+    }
   }
 }

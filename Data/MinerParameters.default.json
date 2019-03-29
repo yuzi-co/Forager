@@ -1,0 +1,6 @@
+{
+  "A-SampleMiner-1.0": {
+    "Argon2ad": "-i 30",
+    "Argon2d4096": "-i 28"
+  }
+}

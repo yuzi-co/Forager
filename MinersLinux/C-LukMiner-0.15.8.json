@@ -11,7 +11,8 @@
     "$(if ($Pool.PoolName -eq 'NiceHash'){'--nicehash'})",
     "$(if ($CpuThreads -ne $null){'-t ' + $CpuThreads})",
     "--status-port #APIPort#",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
   ],
   "API": "Luk",
   "APIPort": 4048,

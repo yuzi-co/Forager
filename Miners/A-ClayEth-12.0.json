@@ -19,7 +19,8 @@
     "-di #DevicesClayMode#",
     "-mport -#APIPort#",
     "-allpools 1",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
   ],
   "API": "Claymore",
   "APIPort": 4028,
@@ -27,19 +28,17 @@
   "SSL": true,
   "Mem": 2,
   "Algorithms": {
-    "Ethash|a1": "-asm 1 -mode 1",
-    "Ethash|a2": "-asm 2 -mode 1",
-    "Ethash_Blake2s|50": "-dcoin blake2s -dcri 50 -mode 0",
-    "Ethash_Blake2s|55": "-dcoin blake2s -dcri 55 -mode 0",
-    "Ethash_Blake2s|60": "-dcoin blake2s -dcri 60 -mode 0",
-    "Ethash_Keccak|06": "-dcoin keccak -dcri 6 -mode 0",
-    "Ethash_Keccak|07": "-dcoin keccak -dcri 7 -mode 0",
-    "Ethash_Keccak|08": "-dcoin keccak -dcri 8 -mode 0",
-    "_Ethash_Decred|30": "-dcoin dcr -dcri 30 -mode 0",
-    "_Ethash_Decred|35": "-dcoin dcr -dcri 35 -mode 0",
-    "_Ethash_Lbry|25": "-dcoin lbc -dcri 25 -mode 0",
-    "_Ethash_Lbry|35": "-dcoin lbc -dcri 35 -mode 0",
-    "_Ethash_Pascal|10": "-dcoin pasc -dcri 10 -mode 0",
-    "_Ethash_Pascal|15": "-dcoin pasc -dcri 15 -mode 0"
+    "Ethash": "-mode 1",
+    "Ethash_Blake2s": {
+      "Params": "-dcoin blake2s -mode 0",
+      "Custom": "-dcri 50"
+    },
+    "Ethash_Keccak": {
+      "Params": "-dcoin keccak -mode 0",
+      "Custom": "-dcri 6"
+    },
+    "_Ethash_Decred": "-dcoin dcr -mode 0",
+    "_Ethash_Lbry": "-dcoin lbc -mode 0",
+    "_Ethash_Pascal": "-dcoin pasc -mode 0"
   }
 }

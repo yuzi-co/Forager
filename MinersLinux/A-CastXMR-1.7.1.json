@@ -13,7 +13,8 @@
     "--gpu #Devices#",
     "--ratewatchdog",
     "$(if ($Pool.PoolName -ne 'NiceHash'){'--nonicehash'})",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
   ],
   "API": "castXMR",
   "APIPort": 4028,

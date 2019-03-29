@@ -11,27 +11,35 @@
     "-r 10",
     "-d #Devices#",
     "-b #APIPort#",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "CustomParameters"
   ],
   "API": "Ccminer",
   "APIPort": 4068,
   "Fee": 0.01,
   "CUDA": 9.1,
+  "Custom": "-i 22",
   "Algorithms": {
-    "Aergo": "-a aeriumx -i 20",
-    "_BCD": "-a bcd -i 20",
-    "_Bitcore": "-a bitcore -i 20",
-    "_C11": "-a c11 -i 20",
-    "Hex": "-a hex -i 20",
-    "_Polytimos": "-a poly -i 20",
-    "_Renesis": "-a renesis -i 20",
-    "_SonoA": "-a sonoa -i 20",
-    "_TimeTravel": "-a timetravel -i 20",
-    "Tribus": "-a tribus -i 20",
-    "_Vitalium": "-a vit -i 20",
-    "_X16r": "-a x16r -i 20",
-    "_X16s": "-a x16s -i 20",
-    "_X17": "-a x17 -i 20",
-    "Xevan": "-a xevan -i 20"
+    "Aergo": {
+      "Params": "-a aeriumx",
+      "Custom": "-i 23"
+    },
+    "_BCD": "-a bcd",
+    "_Bitcore": "-a bitcore",
+    "_C11": "-a c11",
+    "Hex": {
+      "Params": "-a hex",
+      "Custom": "-i 24"
+    },
+    "_Polytimos": "-a poly",
+    "_Renesis": "-a renesis",
+    "_SonoA": "-a sonoa",
+    "_TimeTravel": "-a timetravel",
+    "Tribus": "-a tribus",
+    "_Vitalium": "-a vit",
+    "_X16r": "-a x16r",
+    "_X16s": "-a x16s",
+    "_X17": "-a x17",
+    "Xevan": "-a xevan"
   }
 }

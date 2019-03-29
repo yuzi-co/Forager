@@ -9,7 +9,8 @@
     "-devices #Devices#",
     "-max-network-failures=3",
     "-watchdog=false",
-    "-api 127.0.0.1:#APIPort#"
+    "-api 127.0.0.1:#APIPort#",
+    "#CustomParameters#"
   ],
   "API": "BMiner",
   "APIPort": 4068,

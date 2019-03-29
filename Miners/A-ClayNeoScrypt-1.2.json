@@ -13,14 +13,19 @@
     "-logfile #GroupName#_log.txt",
     "-di #DevicesClayMode#",
     "-mport -#APIPort#",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
   ],
   "API": "Claymore",
   "APIPort": 4028,
   "Fee": 0.02,
   "Mem": 1.1,
   "Algorithms": {
-    "NeoScrypt|a1": "-a 1",
-    "NeoScrypt|a2": "-a 2"
+    "NeoScrypt|a1": {
+      "Custom": "-a 1"
+    },
+    "NeoScrypt|a2": {
+      "Custom": "-a 2"
+    }
   }
 }

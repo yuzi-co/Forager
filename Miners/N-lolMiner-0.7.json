@@ -15,7 +15,8 @@
     "--shortstats 5",
     "--connectattempts 3",
     "--tls $(if($enableSSL){1}else{0})",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "CustomParameters"
   ],
   "API": "LOL",
   "APIPort": 4068,

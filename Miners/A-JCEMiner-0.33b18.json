@@ -16,7 +16,8 @@
     "--no-warmup",
     "--mport #APIPort#",
     "--stakjson",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
   ],
   "API": "XMRig",
   "APIPort": 4028,

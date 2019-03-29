@@ -11,11 +11,13 @@
     "--device #Devices#",
     "--api-listen",
     "--api-port #APIPort#",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
   ],
   "API": "Xgminer",
   "APIPort": 4028,
+  "Custom": " -g 2 -w 64 -X 64",
   "Algorithms": {
-    "HSR": "-k hsr -g 2 -w 64 -X 64"
+    "HSR": "-k hsr"
   }
 }

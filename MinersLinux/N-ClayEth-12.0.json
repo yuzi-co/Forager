@@ -17,7 +17,8 @@
     "-colors 0",
     "-mport -#APIPort#",
     "-allpools 2",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
   ],
   "API": "Claymore",
   "APIPort": 4068,

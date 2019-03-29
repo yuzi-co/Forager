@@ -27,7 +27,7 @@
 # Device config:
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
-#ForEachDevice#<Device#DeviceIndex# DeviceIndex = "#DeviceID#" BinaryFormat = "amdcl2" AsmProgram = "#AlgorithmParameters#" WorkSize = "8388608">#NL##EndForEachDevice#
+#ForEachDevice#<Device#DeviceIndex# DeviceIndex = "#DeviceID#" BinaryFormat = "amdcl2" AsmProgram = "#CustomParameters#" WorkSize = "8388608">#NL##EndForEachDevice#
 
 /*
 #ForEachPCIBus#<Device#DeviceIndex# PCIeBusId = "#DevicePCIBus#" PlatformIndex = "#GpuPlatform#" BinaryFormat = "amdcl2" AsmProgram = "gfx8" WorkSize = "1048576">#NL##EndForEachPCIBus#

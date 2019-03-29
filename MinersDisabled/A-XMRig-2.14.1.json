@@ -12,7 +12,8 @@
     "$(if ($EnableSSL){'--tls'})",
     "--donate-level 1",
     "--api-port #APIPort#",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
   ],
   "API": "XMRig",
   "APIPort": 4028,

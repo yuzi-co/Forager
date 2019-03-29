@@ -21,24 +21,17 @@
     "-di #DevicesClayMode#",
     "-cdmport #APIPort#",
     "-cdm 1",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "CustomParameters"
   ],
   "API": "Claymore",
   "APIPort": 4068,
   "Fee": 0.0065,
   "SSL": true,
+  "Mem": 2,
   "Algorithms": {
-    "Ethash": {
-      "Params": "-mode 1",
-      "Mem": 3
-    },
-    "Ubqhash": {
-      "Params": "-coin ubq -mode 1",
-      "Mem": 3
-    },
-    "_Ethash_Blake2s": {
-      "Params": "-dcoin blake2s -mode 0",
-      "Mem": 3
-    }
+    "Ethash": "-mode 1",
+    "Ubqhash": "-coin ubq -mode 1",
+    "_Ethash_Blake2s": "-dcoin blake2s -mode 0"
   }
 }

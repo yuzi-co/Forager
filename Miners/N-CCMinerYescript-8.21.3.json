@@ -11,7 +11,8 @@
     "-r 10",
     "-d #Devices#",
     "-b #APIPort#",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "CustomParameters"
   ],
   "API": "Ccminer",
   "APIPort": 4068,
@@ -20,10 +21,16 @@
     "Lyra2v3": "-a lyra2v3",
     "NeoScrypt": "-a neoscrypt",
     "Yescrypt": "-a yescrypt",
-    "YescryptR16": "-a yescryptr16 -i 13.25",
+    "YescryptR16": {
+      "Params": "-a yescryptr16",
+      "Custom": "-i 13.25"
+    },
     "YescryptR16v2": "-a yescryptr16v2",
     "YescryptR24": "-a yescryptr24",
-    "YescryptR32": "-a yescryptr32 -i 12.5",
+    "YescryptR32": {
+      "Params": "-a yescryptr32",
+      "Custom": "-i 12.5"
+    },
     "YescryptR8": "-a yescryptr8"
   }
 }

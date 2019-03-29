@@ -5,9 +5,7 @@
   "Type": "NVIDIA",
   "GenerateConfigFile": "config.xml",
   "PatternConfigFile": "SwapMiner.txt",
-  "Arguments": [
-    "mode=rolling"
-  ],
+  "Arguments": "mode=rolling",
   "API": "Wrapper",
   "APIPort": 4068,
   "SSL": true,

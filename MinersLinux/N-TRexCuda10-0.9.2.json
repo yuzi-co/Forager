@@ -11,37 +11,66 @@
     "-R 3",
     "-r 10",
     "-b 127.0.0.1:#APIPort#",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
   ],
   "API": "Ccminer",
   "APIPort": 4068,
   "Fee": 0.01,
   "CUDA": 10.0,
+  "Custom": "-i 23",
   "Algorithms": {
-    "Astralhash": "-a astralhash -i 23",
-    "Balloon": "-a balloon -i 23",
-    "BCD": "-a bcd -i 24",
-    "Bitcore": "-a bitcore -i 23",
-    "C11": "-a c11 -i 24",
-    "Dedal": "-a dedal -i 23",
-    "Hmq1725": "-a hmq1725 -i 23",
-    "HSR": "-a hsr -i 23",
-    "Jeonghash": "-a jeonghash -i 23",
-    "Padihash": "-a padihash -i 23",
-    "Pawelhash": "-a pawelhash -i 23",
-    "Polytimos": "-a polytimos -i 25",
-    "Renesis": "-a renesis -i 23",
-    "SHA256t": "-a sha256q -i 26",
-    "SHA256q": "-a sha256q -i 23",
-    "Skunk": "-a skunk -i 23",
-    "SonoA": "-a sonoa -i 23",
-    "Timetravel": "-a timetravel -i 25",
-    "Tribus": "-a tribus -i 23",
-    "X16r": "-a x16r -i 24",
-    "X16rt": "-a x16rt -i 24",
-    "X16s": "-a x16s -i 24",
-    "X17": "-a x17 -i 24",
-    "X21s": "-a x21s -i 23",
-    "X22i": "-a x22i -i 23"
+    "Astralhash": "-a astralhash",
+    "Balloon": "-a balloon",
+    "BCD": {
+      "Params": "-a bcd",
+      "Custom": "-i 24"
+    },
+    "Bitcore": "-a bitcore",
+    "C11": {
+      "Params": "-a c11",
+      "Custom": "-i 24"
+    },
+    "Dedal": "-a dedal",
+    "Hmq1725": "-a hmq1725",
+    "HSR": "-a hsr",
+    "Jeonghash": "-a jeonghash",
+    "Padihash": "-a padihash",
+    "Pawelhash": "-a pawelhash",
+    "Polytimos": {
+      "Params": "-a polytimos",
+      "Custom": "-i 25"
+    },
+    "Renesis": "-a renesis",
+    "SHA256t": {
+      "Params": "-a sha256q",
+      "Custom": "-i 26"
+    },
+    "SHA256q": "-a sha256q",
+    "Skunk": "-a skunk",
+    "SonoA": "-a sonoa",
+    "Timetravel": {
+      "Params": "-a timetravel",
+      "Custom": "-i 25"
+    },
+    "Tribus": "-a tribus",
+    "X16r": {
+      "Params": "-a x16r",
+      "Custom": "-i 24"
+    },
+    "X16rt": {
+      "Params": "-a x16rt",
+      "Custom": "-i 24"
+    },
+    "X16s": {
+      "Params": "-a x16s",
+      "Custom": "-i 24"
+    },
+    "X17": {
+      "Params": "-a x17",
+      "Custom": "-i 24"
+    },
+    "X21s": "-a x21s",
+    "X22i": "-a x22i"
   }
 }

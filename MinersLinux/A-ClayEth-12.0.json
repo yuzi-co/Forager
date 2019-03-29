@@ -17,7 +17,8 @@
     "-colors 0",
     "-mport -#APIPort#",
     "-allpools 1",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
   ],
   "API": "Claymore",
   "APIPort": 4028,
@@ -25,8 +26,14 @@
   "SSL": true,
   "Mem": 2,
   "Algorithms": {
-    "Ethash|a1": "-asm 1 -mode 1",
-    "Ethash|a2": "-asm 2 -mode 1",
+    "Ethash|a1": {
+      "Params": "-mode 1",
+      "Custom": "-asm 1"
+    },
+    "Ethash|a2": {
+      "Params": "-mode 1",
+      "Custom": "-asm 2"
+    },
     "_Ethash_Blake2s": "-dcoin blake2s -mode 0 -dpool #ProtocolDual#://#ServerDual#:#PortDual# -dwal #LoginDual# -dpsw #PasswordDual#",
     "_Ethash_Keccak": "-dcoin keccak -mode 0 -dpool #ProtocolDual#://#ServerDual#:#PortDual# -dwal #LoginDual# -dpsw #PasswordDual#"
   }

@@ -1463,8 +1463,19 @@ function Get-Updates {
 function Get-Config {
 
     $Result = @{}
-    # case insensitive match for linux
-    $File = Get-ChildItem . -File | Where-Object Name -ilike "config.ini" | Select-Object -First 1 -ExpandProperty Name
+
+    $File = "./Config/Config.ini"
+
+    if (-not (Test-Path $File) -and (Test-Path ./Config.ini)) {
+        Move-Item ./Config.ini $File -Force -ErrorAction Ignore
+        Log "Config file moved to /Config/Config.ini" -Severity Warn
+    }
+
+    if (-not (Test-Path $File)) {
+        Log "No config file! Please copy /Config/Config-SAMPLE.ini to /Config/Config.ini and edit it!" -Severity Error
+        Exit
+    }
+
     switch -regex -file $File {
         "^\s*(\w+)\s*=\s*(.*)" {
             $name, $value = $matches[1..2]
@@ -1485,14 +1496,35 @@ function Get-Config {
 function Get-Wallets {
 
     $Result = @{}
-    # case insensitive match for linux
-    $File = Get-ChildItem . -File | Where-Object Name -ilike "config.ini" | Select-Object -First 1 -ExpandProperty Name
+    $File = "./Config/Config.ini"
+
+    if (-not (Test-Path $File) -and (Test-Path ./Config.ini)) {
+        Move-Item ./Config.ini $File -Force -ErrorAction Ignore
+        Log "Config file moved to /Config/Config.ini" -Severity Warn
+    }
+
+    if (-not (Test-Path $File)) {
+        Log "No config file! Please copy /Config/Config-SAMPLE.ini to /Config/Config.ini and edit it!" -Severity Error
+        Exit
+    }
+
     switch -regex -file $File {
         "^\s*WALLET_(\w+)\s*=\s*(.*)" {
             $name, $value = $matches[1..2]
             $Result[$name] = $value.Trim()
         }
     }
+    $Result # Return Value
+}
+
+function Get-MinerParameters {
+
+    if (-not (Test-Path ./Config/MinerParameters.json) -and (Test-Path ./Data/MinerParameters.default.json)) {
+        Copy-Item ./Data/MinerParameters.default.json ./Config/MinerParameters.json -Force -ErrorAction Ignore
+    }
+
+    $Result = Get-Content ./Config/MinerParameters.json | ConvertFrom-Json
+
     $Result # Return Value
 }
 
@@ -1842,8 +1874,12 @@ function Start-Autoexec {
         [Parameter(Mandatory = $false)]
         [Int]$Priority = 0
     )
-    if (-not (Test-Path ./Autoexec.txt) -and (Test-Path ./Data/Autoexec.default.txt)) {
-        Copy-Item ./Data/Autoexec.default.txt ./Autoexec.txt -Force -ErrorAction Ignore
+    if (-not (Test-Path ./Config/Autoexec.txt) -and (Test-Path ./Autoexec.txt)) {
+        Move-Item ./Autoexec.txt ./Config/Autoexec.txt -Force -ErrorAction Ignore
+        Log "Autoexec file moved to /Config/Autoexec.txt" -Severity Warn
+    }
+    if (-not (Test-Path ./Config/Autoexec.txt) -and (Test-Path ./Data/Autoexec.default.txt)) {
+        Copy-Item ./Data/Autoexec.default.txt ./Config/Autoexec.txt -Force -ErrorAction Ignore
     }
     [System.Collections.ArrayList]$Script:AutoexecCommands = @()
     foreach ($cmd in @(Get-Content ./Autoexec.txt -ErrorAction Ignore | Select-Object)) {

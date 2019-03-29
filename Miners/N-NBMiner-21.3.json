@@ -8,7 +8,8 @@
     "-u #Login#",
     "-d #Devices#",
     "--api 127.0.0.1:#ApiPort#",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "CustomParameters"
   ],
   "API": "NBMiner",
   "APIPort": 4068,

@@ -12,7 +12,8 @@
     "--apiport #ApiPort#",
     "--digits 2",
     "--connectattempts 3",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
   ],
   "API": "LOL",
   "APIPort": 4068,
@@ -28,7 +29,7 @@
     },
     "Equihash210": "--coin AION",
     "Equihash96": {
-      "Params": "--coin MNX --workbatch VERYHIGH",
+      "Params": "--coin MNX",
       "Mem": 1.3
     }
   }

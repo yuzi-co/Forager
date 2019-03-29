@@ -15,7 +15,8 @@
     "$(if ($Pool.PoolName -eq 'NiceHash'){'--use-nicehash'})",
     "--httpd #APIPort#",
     "--amd #GroupName#-#Algorithm#.txt",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
   ],
   "API": "XMRig",
   "APIPort": 4028,

@@ -7,8 +7,8 @@ Currently only AMD and CPU miners are tested
 ### Prerequisites
 - Powershell Core (Latest Release: https://github.com/PowerShell/PowerShell/releases/tag/v6.1.3). Do not use version from Snap
 - Ubuntu 18.04+, Linux Mint 19.1
-- Packages: p7zip-full
-- AMD Drivers: AMDGPU-PRO drivers require kernel 4.15.0 currently. ROCm Drivers untested
+- Packages required: p7zip-full (for unpacking the downloaded miners)
+- AMD Drivers: AMDGPU-PRO drivers require kernel 4.15.0 currently. ROCm Drivers untested, and many miners don't support it
 - To install the drivers on Mint or Ubuntu 19.10, you must (temporary) set the following values in /etc/os-release
 ```
 ID=ubuntu

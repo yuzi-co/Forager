@@ -187,6 +187,8 @@ while ($Quit -eq $false) {
     $Global:Config = Get-Config
     Log "Config File: $($Config | ConvertTo-Json -Depth 1)" -Severity Debug
 
+    $Global:MinerParameters = Get-MinerParameters
+
     Clear-Host
     $RepaintScreen = $true
 
@@ -450,14 +452,19 @@ while ($Quit -eq $false) {
 
                         $MinerFee = $ExecutionContext.InvokeCommand.ExpandString($Miner.Fee)
                         $NoCpu = $ExecutionContext.InvokeCommand.ExpandString($Miner.NoCpu)
+                        $CustomParams = $ExecutionContext.InvokeCommand.ExpandString($Miner.Custom)
+
                         if ($Algo.Value -is [string]) {
                             $AlgoParams = $ExecutionContext.InvokeCommand.ExpandString($Algo.Value)
                         } else {
                             $AlgoParams = $ExecutionContext.InvokeCommand.ExpandString($Algo.Value.Params)
-                            if ($null -ne $Algo.Value.Fee) {
+                            if ($Algo.Value.PSObject.Properties['Custom']) {
+                                $CustomParams = $ExecutionContext.InvokeCommand.ExpandString($Algo.Value.Custom)
+                            }
+                            if ($Algo.Value.PSObject.Properties['Fee']) {
                                 $MinerFee = $ExecutionContext.InvokeCommand.ExpandString($Algo.Value.Fee)
                             }
-                            if ($null -ne $Algo.Value.NoCpu) {
+                            if ($Algo.Value.PSObject.Properties['NoCpu']) {
                                 $NoCpu = $ExecutionContext.InvokeCommand.ExpandString($Algo.Value.NoCpu)
                             }
 
@@ -471,8 +478,13 @@ while ($Quit -eq $false) {
                             }
                         }
 
+                        if ($MinerParameters.($Miner.BaseName).($Algo.Name) -is [string] ) {
+                            $CustomParams = $MinerParameters.($Miner.BaseName).($Algo.Name)
+                        }
+
                         $Params = @{
                             '#AlgorithmParameters#' = $AlgoParams
+                            '#CustomParameters#'    = $CustomParams
                             '#Algorithm#'           = $AlgoName
 
                             '#Protocol#'            = $(if ($EnableSSL) {$Pool.ProtocolSSL} else {$Pool.Protocol})
@@ -813,7 +825,7 @@ while ($Quit -eq $false) {
     }
 
     ## Reset failed miners after 4 hours
-    $ActiveMiners.SubMiners | Where-Object {$_.Status -eq 'Failed' -and $_.Stats.LastTimeActive -lt (Get-Date).AddHours(-4)} | ForEach-Object {
+    $ActiveMiners.SubMiners | Where-Object {$_.Status -eq 'Failed' -and $_.Stats.LastTimeActive -lt (Get-Date).AddHours(-2)} | ForEach-Object {
         $_.Status = 'Idle'
         $_.Stats.FailedTimes = 0
         Log "Reset failed miner status: $($ActiveMiners[$_.IdF].Name)/$($ActiveMiners[$_.IdF].Algorithms)"

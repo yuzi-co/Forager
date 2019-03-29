@@ -12,7 +12,8 @@
     "--watchdog_script",
     "--disable_colors",
     "--api_listen=#ApiPort#",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
   ],
   "API": "Xgminer",
   "APIPort": 4028,

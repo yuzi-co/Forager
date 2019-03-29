@@ -11,7 +11,8 @@
     "--platform=#GPUPlatform#",
     "--watchdog_script",
     "--api_listen=#ApiPort#",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "CustomParameters"
   ],
   "API": "Xgminer",
   "APIPort": 4028,
