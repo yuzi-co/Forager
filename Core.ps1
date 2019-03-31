@@ -676,7 +676,7 @@ while ($Quit -eq $false) {
                             AlgorithmDual       = $AlgoNameDual
                             Algorithms          = $Algorithms
                             Api                 = $Miner.Api
-                            ApiPort             = $(if (($DeviceGroups | Where-Object GroupType -eq $DeviceGroup.GroupType).Count -le 1 -and -not $Config.ForceDynamicPorts) { $Miner.ApiPort })
+                            ApiPort             = $( if (-not $Config.ForceDynamicPorts) { $DeviceGroup.ApiPort} )
                             Arguments           = $ExecutionContext.InvokeCommand.ExpandString($Arguments)
                             BenchmarkArg        = $ExecutionContext.InvokeCommand.ExpandString($Miner.BenchmarkArg)
                             ConfigFileArguments = $ExecutionContext.InvokeCommand.ExpandString($ConfigFileArguments)
@@ -1048,7 +1048,9 @@ while ($Quit -eq $false) {
 
                     $ActiveMiners[$BestNow.IdF].SubMiners[$BestNow.Id].Best = $true
 
-                    if ($null -eq $ActiveMiners[$BestNow.IdF].ApiPort) { $ActiveMiners[$BestNow.IdF].ApiPort = Get-NextFreePort (Get-Random -minimum 2000 -maximum 48000)}
+                    if ($null -eq $ActiveMiners[$BestNow.IdF].ApiPort) {
+                        $ActiveMiners[$BestNow.IdF].ApiPort = Get-NextFreePort (Get-Random -minimum 4000 -maximum 6000)
+                    }
                     $ActiveMiners[$BestNow.IdF].Arguments = $ActiveMiners[$BestNow.IdF].Arguments -replace '#APIPort#', $ActiveMiners[$BestNow.IdF].ApiPort
 
                     if ($ActiveMiners[$BestNow.IdF].GenerateConfigFile) {

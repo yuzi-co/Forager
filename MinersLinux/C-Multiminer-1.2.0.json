@@ -16,7 +16,6 @@
     "#CustomParameters#"
   ],
   "API": "Ccminer",
-  "APIPort": 4048,
   "Fee": 0.01,
   "Algorithms": {
     "Argon2ad": "-a argon2ad",

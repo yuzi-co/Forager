@@ -16,7 +16,6 @@
   ],
   "Env": "LD_LIBRARY_PATH=./",
   "API": "Xgminer",
-  "APIPort": 4028,
   "SSL": true,
   "Algorithms": {
     "Cuckoo29": "--algorithm ae-cuckoo29",

@@ -19,7 +19,6 @@
     "#CustomParameters#"
   ],
   "API": "XMRig",
-  "APIPort": 4028,
   "Fee": 0.02,
   "Custom": "--opencl-launch 256x0",
   "Algorithms": {

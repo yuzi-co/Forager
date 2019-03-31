@@ -17,7 +17,6 @@
     "#CustomParameters#"
   ],
   "API": "EWBF",
-  "APIPort": 4068,
   "CUDA": 9.1,
   "Algorithms": {
     "Equihash144": "--algo 144_5 --pers auto",

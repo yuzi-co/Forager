@@ -15,7 +15,6 @@
     "#CustomParameters#"
   ],
   "API": "Ccminer",
-  "APIPort": 4068,
   "Algorithms": {
     "Lyra2h": "-a lyra2h"
   }

@@ -16,7 +16,6 @@
     "#CustomParameters#"
   ],
   "API": "Xgminer",
-  "APIPort": 4028,
   "SSL": true,
   "Fee": 0.025,
   "Mem": 1.1,

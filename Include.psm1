@@ -633,7 +633,15 @@ function Get-MiningTypes () {
             $_ | Add-Member MinProfit ([decimal]$Config.("MinProfit_" + $_.GroupName))
             $_ | Add-Member Algorithms @($Config.("Algorithms_" + $_.GroupName) -split ','| ForEach-Object {$_.Trim()})
 
-            $_
+            $ApiPorts = @{
+                'AMD'    = 4028
+                'CPU'    = 4048
+                'NVIDIA' = 4068
+            }
+
+            $_ | Add-Member ApiPort $($ApiPorts.($_.GroupType) + [array]::indexof(@($Devices | Where-Object GroupType -eq $_.GroupType), $_))
+
+            $_ #return
         }
     }
     return $DeviceGroups

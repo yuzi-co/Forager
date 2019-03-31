@@ -16,7 +16,6 @@
     "#CustomParameters#"
   ],
   "API": "XMRig",
-  "APIPort": 4068,
   "SSL": true,
   "Fee": 0.01,
   "CUDA": 9.2,

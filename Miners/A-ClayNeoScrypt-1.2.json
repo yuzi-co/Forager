@@ -17,7 +17,6 @@
     "#CustomParameters#"
   ],
   "API": "Claymore",
-  "APIPort": 4028,
   "Fee": 0.02,
   "Mem": 1.1,
   "Algorithms": {

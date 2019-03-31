@@ -13,7 +13,6 @@
     "#CustomParameters#"
   ],
   "API": "Claymore",
-  "APIPort": 4028,
   "Mem": 1.1,
   "Algorithms": {
     "ProgPOW": ""

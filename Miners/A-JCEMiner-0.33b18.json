@@ -20,7 +20,6 @@
     "#CustomParameters#"
   ],
   "API": "XMRig",
-  "APIPort": 4028,
   "Fee": 0.009,
   "SSL": true,
   "Algorithms": {

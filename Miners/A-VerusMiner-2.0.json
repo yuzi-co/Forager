@@ -12,7 +12,6 @@
     "#CustomParameters#"
   ],
   "API": "Wrapper",
-  "APIPort": 4028,
   "Algorithms": {
     "Verushash": ""
   }

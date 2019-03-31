@@ -13,7 +13,6 @@
     "#CustomParameters#"
   ],
   "API": "Claymore",
-  "APIPort": 4068,
   "Algorithms": {
     "Ethash": ""
   }

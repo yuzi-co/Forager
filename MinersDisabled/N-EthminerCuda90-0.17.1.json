@@ -12,7 +12,6 @@
     "#CustomParameters#"
   ],
   "API": "Claymore",
-  "APIPort": 4068,
   "CUDA": 9.0,
   "Ethash": {
     "Mem": 3

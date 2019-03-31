@@ -14,7 +14,6 @@
     "#CustomParameters#"
   ],
   "API": "RH",
-  "APIPort": 4048,
   "Fee": 0.01,
   "Algorithms": {
     "RandomHash": ""

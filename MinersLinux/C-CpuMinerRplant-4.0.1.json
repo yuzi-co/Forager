@@ -16,7 +16,6 @@
     "#CustomParameters#"
   ],
   "API": "Ccminer",
-  "APIPort": 4048,
   "Algorithms": {
     "Argon2ad": "-a argon2ad",
     "Argon2d250": "-a argon2d250",

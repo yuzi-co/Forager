@@ -13,7 +13,6 @@
     "#CustomParameters#"
   ],
   "API": "NHEQ",
-  "APIPort": 4048,
   "Algorithms": {
     "Verushash": "-v"
   }

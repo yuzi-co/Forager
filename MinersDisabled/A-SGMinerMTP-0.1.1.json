@@ -15,7 +15,6 @@
     "#CustomParameters#"
   ],
   "API": "Xgminer",
-  "APIPort": 4028,
   "Custom": "-w 64 -I 20",
   "Algorithms": {
     "MTP": {

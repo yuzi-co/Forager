@@ -16,7 +16,6 @@
     "#CustomParameters#"
   ],
   "API": "castXMR",
-  "APIPort": 4028,
   "Fee": 0.015,
   "Algorithms": {
     "CnFast": "--algo=8",

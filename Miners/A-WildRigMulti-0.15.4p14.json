@@ -18,7 +18,6 @@
     "#CustomParameters#"
   ],
   "API": "XMRig",
-  "APIPort": 4028,
   "Fee": 0.01,
   "Mem": 1.1,
   "NoCpu": true,

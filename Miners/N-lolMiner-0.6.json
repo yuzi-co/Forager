@@ -18,7 +18,6 @@
     "#CustomParameters#"
   ],
   "API": "LOL",
-  "APIPort": 4068,
   "Algorithms": {
     "Equihash144": "--coin AUTO144_5",
     "Equihash192": {

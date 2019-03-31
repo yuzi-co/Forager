@@ -15,7 +15,6 @@
     "#CustomParameters#"
   ],
   "API": "Luk",
-  "APIPort": 4048,
   "Fee": 0.01,
   "Algorithms": {
     "CnAlloy": "-a xnalloy",

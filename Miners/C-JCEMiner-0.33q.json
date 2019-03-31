@@ -19,7 +19,6 @@
     "#CustomParameters#"
   ],
   "API": "XMRig",
-  "APIPort": 4048,
   "Fee": "$(if($SystemInfo.CpuFeatures.aes){0.015}else{0.03})",
   "SSL": true,
   "Algorithms": {

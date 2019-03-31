@@ -7,7 +7,6 @@
   "PatternConfigFile": "lyclMiner.txt",
   "Arguments": "#GroupName#-#Algorithm#.conf",
   "API": "Wrapper",
-  "APIPort": 4028,
   "Custom": "gfx8",
   "Algorithms": {
     "Lyra2v3": ""

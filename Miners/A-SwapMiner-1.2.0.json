@@ -7,7 +7,6 @@
   "PatternConfigFile": "SwapMiner.txt",
   "Arguments": "mode=rolling",
   "API": "Wrapper",
-  "APIPort": 4028,
   "SSL": true,
   "Algorithms": {
     "Cuckaroo29s": {

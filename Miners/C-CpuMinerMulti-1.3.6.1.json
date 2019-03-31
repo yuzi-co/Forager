@@ -15,7 +15,6 @@
     "#CustomParameters#"
   ],
   "API": "Ccminer",
-  "APIPort": 4048,
   "Algorithms": {
     "Balloon": "-a balloon",
     "Rainforest": "-a rainforest",

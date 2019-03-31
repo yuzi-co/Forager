@@ -19,7 +19,6 @@
     "#CustomParameters#"
   ],
   "API": "LOL",
-  "APIPort": 4068,
   "SSL": true,
   "Algorithms": {
     "Equihash144": {

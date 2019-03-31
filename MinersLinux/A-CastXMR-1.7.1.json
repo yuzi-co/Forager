@@ -17,7 +17,6 @@
     "#CustomParameters#"
   ],
   "API": "castXMR",
-  "APIPort": 4028,
   "Fee": 0.015,
   "Mem": 3.6,
   "Algorithms": {

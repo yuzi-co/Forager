@@ -19,7 +19,6 @@
     "#CustomParameters#"
   ],
   "API": "GMiner",
-  "APIPort": 4068,
   "SSL": true,
   "Fee": 0.02,
   "CUDA": 9.0,

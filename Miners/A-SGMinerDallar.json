@@ -15,7 +15,6 @@
     "#CustomParameters#"
   ],
   "API": "Xgminer",
-  "APIPort": 4028,
   "Custom": "-g 2 -w 256 -X 256",
   "Algorithms": {
     "Throestl": "-k dallar"

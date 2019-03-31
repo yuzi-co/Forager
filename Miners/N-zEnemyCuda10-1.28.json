@@ -15,7 +15,6 @@
     "#CustomParameters#"
   ],
   "API": "Ccminer",
-  "APIPort": 4068,
   "Fee": 0.01,
   "CUDA": 10.0,
   "Custom": "-i 22",

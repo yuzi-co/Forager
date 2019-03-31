@@ -16,7 +16,6 @@
     "#CustomParameters#"
   ],
   "API": "MiniZ",
-  "APIPort": 4068,
   "Fee": 0.02,
   "CUDA": 8.0,
   "Algorithms": {

@@ -15,7 +15,6 @@
     "#CustomParameters#"
   ],
   "API": "Ccminer",
-  "APIPort": 4068,
   "CUDA": 10.0,
   "Algorithms": {
     "Lyra2v3": "-a lyra2v3",

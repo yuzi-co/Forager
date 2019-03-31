@@ -15,7 +15,6 @@
     "#CustomParameters#"
   ],
   "API": "Xgminer",
-  "APIPort": 4028,
   "Algorithms": {
     "Allium": {
       "Params": "-k allium",

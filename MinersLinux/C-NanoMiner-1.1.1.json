@@ -7,7 +7,6 @@
   "PatternConfigFile": "NanoMiner.txt",
   "Arguments": "#GroupName#-#Algorithm#.conf",
   "API": "Claymore",
-  "APIPort": 4048,
   "Fee": 0.03,
   "Algorithms": {
     "RandomHash": "RandomHash"

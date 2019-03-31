@@ -17,7 +17,6 @@
   ],
   "BenchmarkArg": "$(if ($AlgoName -in @('x16r')){'--benchmark'})",
   "API": "Xgminer",
-  "APIPort": 4028,
   "Fee": 0.01,
   "Custom": "-g 2 -w 64 -X 256",
   "Algorithms": {

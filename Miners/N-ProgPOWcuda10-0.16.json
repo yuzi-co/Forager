@@ -12,7 +12,6 @@
     "#CustomParameters#"
   ],
   "API": "Claymore",
-  "APIPort": 4068,
   "CUDA": 10.0,
   "Algorithms": {
     "ProgPOW": ""

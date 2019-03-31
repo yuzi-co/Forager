@@ -12,7 +12,6 @@
     "#CustomParameters#"
   ],
   "API": "NBMiner",
-  "APIPort": 4068,
   "SSL": true,
   "Algorithms": {
     "Aethernity": {

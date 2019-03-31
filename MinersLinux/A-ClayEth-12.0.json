@@ -21,7 +21,6 @@
     "#CustomParameters#"
   ],
   "API": "Claymore",
-  "APIPort": 4028,
   "Fee": "$(if ($DeviceGroup.MemoryGB -gt 3){0.01}else{0})",
   "SSL": true,
   "Mem": 2,
