@@ -1192,8 +1192,7 @@ function Start-SubProcess {
                 if ($ControllerProcess.WaitForExit(1000)) {
                     $Process.CloseMainWindow() | Out-Null
                 }
-            }
-            while ($Process.HasExited -eq $false)
+            } until ($Process.HasExited)
         }
     } else {
         $Job = Start-Job -ArgumentList $PID, $FilePath, $ArgumentList, $WorkingDirectory, $MinerWindowStyle {
@@ -1222,6 +1221,9 @@ function Start-SubProcess {
             if ($IsLinux) {
                 # Fix executable permissions
                 & chmod +x $FilePath | Out-Null
+
+                # Set lib path to local
+                $env:LD_LIBRARY_PATH = $env:LD_LIBRARY_PATH + ":./"
             }
 
             $Process = Start-Process @ProcessParam
