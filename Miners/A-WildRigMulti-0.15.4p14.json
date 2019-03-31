@@ -1,7 +1,7 @@
 {
   "Path": "wildrig.exe",
-  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.15.4p12/wildrig-multi-windows-0.15.4-preview12.7z",
-  "SHA256": "64E40F5D6273BB5C08E70F80901DEC99ABB4006EB316C1768AE18E0643757635",
+  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.15.4p14/wildrig-multi-windows-0.15.4-preview14.7z",
+  "SHA256": "3F82F689C6432962FA524BDC028D6816C8274F1769A37FDB4007C09970BCA29B",
   "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",
@@ -21,7 +21,7 @@
   "APIPort": 4028,
   "Fee": 0.01,
   "Mem": 1.1,
-  "PrelaunchCommand": "if ($env:GPU_MAX_WORKGROUP_SIZE -ne 256) { $env:GPU_MAX_WORKGROUP_SIZE = 256 }",
+  "NoCpu": true,
   "Custom": "--opencl-threads auto --opencl-launch auto",
   "Algorithms": {
     "Rainforest": "--algo rainforest"

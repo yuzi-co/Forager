@@ -1,7 +1,7 @@
 {
   "Path": "wildrig-multi",
-  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.15.4p12/wildrig-multi-linux-0.15.4-preview12.tar.gz",
-  "SHA256": "9C61362656D11AB5CAC6913B6450BFF5F1D27DD01D91F3E1C1D3B192D7154689",
+  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.15.4p14/wildrig-multi-linux-0.15.4-preview14.tar.gz",
+  "SHA256": "F0E12C7009FBAC29570F5793719BB51E0CB22E4DAFD2942F2F2B4E5C4EBFA056",
   "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",
@@ -22,6 +22,7 @@
   "APIPort": 4028,
   "Fee": 0.01,
   "Mem": 1.1,
+  "NoCpu": true,
   "Custom": " --opencl-threads auto --opencl-launch auto",
   "Algorithms": {
     "Rainforest": "--algo rainforest"
