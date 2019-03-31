@@ -1147,6 +1147,13 @@ while ($Quit -eq $false) {
     $SwitchLoop = 0
     $ActivityAverages = @()
 
+    while ($Host.UI.RawUI.KeyAvailable) {
+        $EA = $ErrorActionPreference
+        $ErrorActionPreference = "SilentlyContinue"
+        $Host.UI.RawUI.FlushInputBuffer()
+        $ErrorActionPreference = $EA
+    } #keyb buffer flush
+
     Send-ErrorsToLog $LogFile
 
     Clear-Host

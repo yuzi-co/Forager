@@ -739,13 +739,14 @@ Function Read-KeyboardTimed {
     $LoopStart = Get-Date
     $KeyPressed = $null
 
-    do {
-        $KeyPressed = [System.Console]::ReadKey($true).Key
-        if ($KeyPressed -match "D(\d)") {
-            $KeyPressed = $Matches[1]
+    while ((New-TimeSpan $LoopStart (Get-Date)).Seconds -le $SecondsToWait -and $ValidKeys -notcontains $KeyPressed) {
+        if ($Host.UI.RawUI.KeyAvailable) {
+            $Key = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyUp")
+            $KeyPressed = $Key.character
+            while ($Host.UI.RawUI.KeyAvailable) {$Host.UI.RawUI.FlushInputBuffer()} #keyb buffer flush
         }
-        Start-Sleep -Milliseconds 50
-    } until ((New-TimeSpan $LoopStart (Get-Date)).Seconds -gt $SecondsToWait -or $ValidKeys -contains $KeyPressed)
+        Start-Sleep -Milliseconds 30
+    }
     $KeyPressed
 }
 
