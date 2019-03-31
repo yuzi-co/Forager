@@ -1147,87 +1147,58 @@ function Start-SubProcess {
         3  = "RealTime"
     }
 
-    if ($UseAlternateMinerLauncher -and $IsWindows) {
-
-        $ShowWindow = @{
-            Normal    = "SW_SHOW"
-            Maximized = "SW_SHOWMAXIMIZE"
-            Minimized = "SW_SHOWMINNOACTIVE"
+        $JobParams = @{
+            ArgumentList = $PID, $FilePath, $ArgumentList, $MinerWindowStyle, $WorkingDirectory, $UseAlternateMinerLauncher
         }
 
-        $Job = Start-Job `
-            -InitializationScript ([scriptblock]::Create("Set-Location('$(Get-Location)');. .\Includes\CreateProcess.ps1")) `
-            -ArgumentList $PID, $FilePath, $ArgumentList, $ShowWindow.$MinerWindowStyle, $PriorityNames.$Priority, $WorkingDirectory {
-            param($ControllerProcessID, $FilePath, $ArgumentList, $ShowWindow, $Priority, $WorkingDirectory)
-
-            . .\Includes\CreateProcess.ps1
-            $ControllerProcess = Get-Process -Id $ControllerProcessID
-            if (-not $ControllerProcess) {return}
-
-            $ProcessParams = @{
-                Binary           = $FilePath
-                Arguments        = $ArgumentList
-                CreationFlags    = [CreationFlags]::CREATE_NEW_CONSOLE
-                ShowWindow       = $ShowWindow
-                StartF           = [STARTF]::STARTF_USESHOWWINDOW
-                Priority         = $Priority
-                WorkingDirectory = $WorkingDirectory
-            }
-            $Process = Invoke-CreateProcess @ProcessParams
-            if (-not $Process) {
-                [PSCustomObject]@{
-                    ProcessId = $null
-                }
-                return
-            }
-
-            [PSCustomObject]@{
-                ProcessId     = $Process.Id
-                ProcessHandle = $Process.Handle
-            }
-
-            $ControllerProcess.Handle | Out-Null
-            $Process.Handle | Out-Null
-
-            do {
-                if ($ControllerProcess.WaitForExit(1000)) {
-                    $Process.CloseMainWindow() | Out-Null
-                }
-            } until ($Process.HasExited)
+        if ($UseAlternateMinerLauncher -and $IsWindows) {
+            $JobParams.InitializationScript = $([scriptblock]::Create("Set-Location('$(Get-Location)');. ./Includes/CreateProcess.ps1"))
         }
-    } else {
-        $Job = Start-Job -ArgumentList $PID, $FilePath, $ArgumentList, $WorkingDirectory, $MinerWindowStyle {
-            param($ControllerProcessID, $FilePath, $ArgumentList, $WorkingDirectory, $MinerWindowStyle)
+
+
+        $Job = Start-Job @JobParams {
+            param($ControllerProcessID, $FilePath, $ArgumentList, $MinerWindowStyle, $WorkingDirectory, $UseAlternateMinerLauncher)
 
             $ControllerProcess = Get-Process -Id $ControllerProcessID
             if (-not $ControllerProcess) {
                 return
             }
 
-            $ProcessParam = @{
+            $ProcessParams = @{
                 FilePath         = $FilePath
-                ArgumentList     = $(if ($ArgumentList) {$ArgumentList})
-                WorkingDirectory = $(if ($WorkingDirectory) {$WorkingDirectory})
-                PassThru         = $true
+                ArgumentList     = $ArgumentList
+                WorkingDirectory = $WorkingDirectory
             }
+
             if ($IsWindows) {
-                $ProcessParam.WindowStyle = $MinerWindowStyle
+                $ProcessParams.WindowStyle = $MinerWindowStyle
+            }
+
+            if ($UseAlternateMinerLauncher -and $IsWindows) {
+                . ./Includes/CreateProcess.ps1
+
+                $ProcessParams.CreationFlags = [CreationFlags]::CREATE_NEW_CONSOLE
+                $ProcessParams.StartF = [STARTF]::STARTF_USESHOWWINDOW
+
+                $Process = Invoke-CreateProcess @ProcessParams
             } else {
-                # Linux requires output redirection, otherwise Receive-Job fails
-                $ProcessParam.RedirectStandardOutput = $WorkingDirectory + "/console.log"
-                $ProcessParam.RedirectStandardError = $WorkingDirectory + "/error.log"
-                # $ProcessParam.UseNewEnvironment = $true
+                $ProcessParams.PassThru = $true
+
+                if ($IsLinux) {
+                    # Linux requires output redirection, otherwise Receive-Job fails
+                    $ProcessParams.RedirectStandardOutput = $WorkingDirectory + "/console.log"
+                    $ProcessParams.RedirectStandardError = $WorkingDirectory + "/error.log"
+
+                    # Fix executable permissions
+                    & chmod +x $FilePath | Out-Null
+
+                    # Set lib path to local
+                    $env:LD_LIBRARY_PATH = $env:LD_LIBRARY_PATH + ":./"
+                }
+
+                $Process = Start-Process @ProcessParams
             }
 
-            if ($IsLinux) {
-                # Fix executable permissions
-                & chmod +x $FilePath | Out-Null
-
-                # Set lib path to local
-                $env:LD_LIBRARY_PATH = $env:LD_LIBRARY_PATH + ":./"
-            }
-
-            $Process = Start-Process @ProcessParam
             if (-not $Process) {
                 [PSCustomObject]@{
                     ProcessId = $null
@@ -1248,8 +1219,7 @@ function Start-SubProcess {
                     $Process.CloseMainWindow() | Out-Null
                 }
             } until ($Process.HasExited)
-        }
-    }
+        } # End job definition
 
     do {
         Start-Sleep -Seconds 1

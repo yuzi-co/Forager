@@ -18,22 +18,10 @@ enum CreationFlags {
     CREATE_NO_WINDOW = 0x08000000
 }
 
-enum ShowWindow {
-    SW_HIDE = 0
-    SW_SHOWNORMAL = 1
-    SW_NORMAL = 1
-    SW_SHOWMINIMIZED = 2
-    SW_SHOWMAXIMIZED = 3
-    SW_MAXIMIZE = 3
-    SW_SHOWNOACTIVATE = 4
-    SW_SHOW = 5
-    SW_MINIMIZE = 6
-    SW_SHOWMINNOACTIVE = 7
-    SW_SHOWNA = 8
-    SW_RESTORE = 9
-    SW_SHOWDEFAULT = 10
-    SW_FORCEMINIMIZE = 11
-    SW_MAX = 11
+enum WindowStyle {
+    Normal = 5
+    Maximized = 3
+    Minimized = 7
 }
 
 enum STARTF {
@@ -48,24 +36,14 @@ enum STARTF {
     STARTF_USESTDHANDLES = 0x00000100
 }
 
-enum Priority {
-    Idle
-    BelowNormal
-    Normal
-    AboveNormal
-    High
-    RealTime
-}
-
 function Invoke-CreateProcess {
     param (
-        [Parameter(Mandatory = $True)][string]$Binary,
-        [Parameter(Mandatory = $False)][string]$Arguments = $null,
-        [CreationFlags][Parameter(Mandatory = $True)]$CreationFlags,
-        [ShowWindow][Parameter(Mandatory = $True)]$ShowWindow,
-        [StartF][Parameter(Mandatory = $True)]$StartF,
-        [Priority][Parameter(Mandatory = $True)]$Priority,
-        [Parameter(Mandatory = $False)][String]$WorkingDirectory = ""
+        [parameter(mandatory = $true)][string]$FilePath,
+        [parameter(mandatory = $false)][string]$ArgumentList = $null,
+        [CreationFlags][parameter(mandatory = $true)]$CreationFlags,
+        [WindowStyle][parameter(mandatory = $true)]$WindowStyle,
+        [StartF][parameter(mandatory = $true)]$StartF,
+        [parameter(Mandatory = $false)][string]$WorkingDirectory = ""
     )
 
     Add-Type -TypeDefinition @"
@@ -109,7 +87,7 @@ function Invoke-CreateProcess {
     # StartupInfo Struct
     $StartupInfo = New-Object STARTUPINFO
     $StartupInfo.dwFlags = $StartF # StartupInfo.dwFlag
-    $StartupInfo.wShowWindow = $ShowWindow # StartupInfo.ShowWindow
+    $StartupInfo.wShowWindow = $WindowStyle # StartupInfo.ShowWindow
     $StartupInfo.cb = [System.Runtime.InteropServices.Marshal]::SizeOf($StartupInfo) # Struct Size
 
     # ProcessInfo Struct
@@ -124,14 +102,12 @@ function Invoke-CreateProcess {
         $WorkingDirectory = (Get-Item -Path ".\" -Verbose).FullName
     }
 
-    $Arguments = '"' + $Binary + '" ' + $Arguments
+    $ArgumentList = '"' + $FilePath + '" ' + $ArgumentList
 
     # Call CreateProcess
-    [Kernel32]::CreateProcess($Binary, $Arguments, [ref]$SecAttr, [ref]$SecAttr, $false, $CreationFlags, [IntPtr]::Zero, $WorkingDirectory, [ref]$StartupInfo, [ref]$ProcessInfo) | Out-Null
+    [Kernel32]::CreateProcess($FilePath, $ArgumentList, [ref]$SecAttr, [ref]$SecAttr, $false, $CreationFlags, [IntPtr]::Zero, $WorkingDirectory, [ref]$StartupInfo, [ref]$ProcessInfo) | Out-Null
 
     $Process = Get-Process -Id $ProcessInfo.dwProcessId
     $Process.Handle | Out-Null
     $Process
-
-    $Process.PriorityClass = "$Priority"
 }
