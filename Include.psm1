@@ -885,6 +885,8 @@ function Get-LiveHashRate {
         [Object]$Miner
     )
 
+    $HashRate = $Shares = @($null, $null)
+
     try {
         switch ($Miner.Api) {
 
@@ -914,6 +916,10 @@ function Get-LiveHashRate {
                             [double]$Data.SUMMARY."PHS av" * 1e15
                         ) | Where-Object {$_ -gt 0} | Select-Object -First 1
                     }
+                    $Shares = @(
+                        [int]$Data.SUMMARY.Accepted
+                        [int]$Data.SUMMARY.Rejected
+                    )
                 }
             }
 
@@ -929,6 +935,10 @@ function Get-LiveHashRate {
                         [double]$Data.THS * 1e12
                         [double]$Data.PHS * 1e15
                     ) | Where-Object {$_ -gt 0} | Select-Object -First 1
+                    $Shares = @(
+                        [int]$Data.ACC
+                        [int]$Data.REJ
+                    )
                 }
             }
 
@@ -955,9 +965,19 @@ function Get-LiveHashRate {
                             Ubqhash* { $Multiplier *= 1000 }
                         }
                     }
+                    $R = $Data.result[2].Split(";")
+                    $S = $Data.result[4].Split(";")
                     $HashRate = @(
-                        [double]$Data.result[2].Split(";")[0] * $Multiplier
-                        [double]$Data.result[4].Split(";")[0] * $Multiplier
+                        [double]$Multiplier * $R[0]
+                        [double]$Multiplier * $S[0]
+                    )
+                    $Shares = @(
+                        [int]$R[1]
+                        [int]$R[2]
+                        $(if ($HashRate[1] -gt 0) {
+                            [int]$S[1]
+                            [int]$S[2]
+                        })
                     )
                 }
             }
@@ -979,10 +999,14 @@ function Get-LiveHashRate {
                 $Request = Invoke-HTTPRequest -Port $Miner.ApiPort -Path "/api.json"
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
-                    $HashRate = [double]$Data.HashRate.total[0]
+                    $HashRate = [double]$Data.hashrate.total[0]
                     if ($Data.algo -eq 'WildKeccak') {
                         $HashRate *= 1000
                     }
+                    $Shares = @(
+                        [int]$Data.results.shares_good
+                        $([int]$Data.results.shares_total - [int]$Data.results.shares_good)
+                    )
                 }
             }
 
@@ -1068,6 +1092,10 @@ function Get-LiveHashRate {
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
                     $HashRate = [double](($Data.workers.graphsPerSecond) | Measure-Object -Sum).Sum
+                    $Shares = @(
+                        [int]$Data.shares.accepted
+                        [int]$Data.shares.tooLate
+                    )
                 }
             }
 
@@ -1079,6 +1107,20 @@ function Get-LiveHashRate {
                         [double]$Data.miner.total_hashrate_raw
                         [double]$Data.miner.total_hashrate2_raw
                     )
+                    $Shares = @(
+                        [int]$Data.stratum.accepted_shares
+                        [int]$Data.stratum.rejected_shares
+                    )
+                }
+            }
+
+            "KBMiner" {
+                $Request = Invoke-HTTPRequest -Port $Miner.ApiPort
+                if ($Request) {
+                    $Data = $Request | ConvertFrom-Json
+                    $HashRate = @(
+                        [double]$Data.hashrates
+                    )
                 }
             }
 
@@ -1087,6 +1129,10 @@ function Get-LiveHashRate {
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
                     $HashRate = [double]($Data.infos.speed | Measure-Object -Sum).Sum
+                    $Shares = @(
+                        $([int]$Data.infos.accepted | Measure-Object -Sum).Sum
+                        $([int]$Data.infos.rejected | Measure-Object -Sum).Sum
+                    )
                 }
             }
 
@@ -1100,9 +1146,15 @@ function Get-LiveHashRate {
 
         } #end switch
 
-        $HashRate
+        return @{
+            HashRates = @($HashRate)
+            Shares    = @($Shares)
+        }
+
     } catch {}
 }
+
+Set-Alias Get-LiveMinerStats Get-LiveHashRate
 
 function ConvertTo-Hash {
     param(

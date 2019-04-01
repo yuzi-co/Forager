@@ -659,6 +659,7 @@ while ($Quit -eq $false) {
                                     RevenueDual            = $SubMinerRevenueDual
                                     RevenueLive            = 0
                                     RevenueLiveDual        = 0
+                                    SharesLive             = @($null, $null)
                                     SpeedLive              = 0
                                     SpeedLiveDual          = 0
                                     SpeedReads             = if ($null -ne $Hrs) {[array]$Hrs} else {@()}
@@ -1190,11 +1191,14 @@ while ($Quit -eq $false) {
             $_.RevenueLiveDual = 0
 
             $Miner_HashRates = $null
-            $Miner_HashRates = Get-LiveHashRate -Miner $ActiveMiners[$_.IdF]
+            $MinerStats = Get-LiveHashRate -Miner $ActiveMiners[$_.IdF]
+            $Miner_HashRates = $MinerStats.HashRates
+            $MinerShares = $MinerStats.Shares
 
             if ($Miner_HashRates) {
                 $_.SpeedLive = [decimal]($Miner_HashRates[0])
                 $_.SpeedLiveDual = [decimal]($Miner_HashRates[1])
+                $_.SharesLive = $MinerShares
                 $_.RevenueLive = $_.SpeedLive * $ActiveMiners[$_.IdF].Pool.Estimate
                 $_.RevenueLiveDual = $_.SpeedLiveDual * $ActiveMiners[$_.IdF].PoolDual.Estimate
 
@@ -1475,6 +1479,7 @@ while ($Quit -eq $false) {
                 Coin        = @($M.Pool.Symbol, $M.PoolDual.Symbol) -ne $null -join "_"
                 Miner       = $M.Name
                 LocalSpeed  = (@($_.SpeedLive, $_.SpeedLiveDual) -gt 0 | ForEach-Object {ConvertTo-Hash $_}) -join "/"
+                Shares      = @($_.SharesLive) -ne $null -join '/'
                 PLim        = $(if ($_.PowerLimit -ne 0) {$_.PowerLimit})
                 Watt        = if ($_.PowerLive -gt 0) {[string]$_.PowerLive + 'W'} else {$null}
                 EfficiencyW = if ($_.PowerLive -gt 0) {($_.ProfitsLive / $_.PowerLive).tostring("n4")} else {$null}
@@ -1495,6 +1500,7 @@ while ($Quit -eq $false) {
                 @{Label = "Coin"                        ; Expression = {$_.Coin}},
                 @{Label = "Miner"                       ; Expression = {$_.Miner}},
                 @{Label = "LocalSpeed"                  ; Expression = {$_.LocalSpeed} ; Align = 'right'},
+                @{Label = "Shares"                      ; Expression = {$_.Shares} ; Align = 'right'},
                 @{Label = "PLim"                        ; Expression = {$_.PLim} ; Align = 'right'},
                 @{Label = "Watt"                        ; Expression = {$_.Watt} ; Align = 'right'},
                 @{Label = $Config.LocalCurrency + "/W"  ; Expression = {$_.EfficiencyW}  ; Align = 'right'},
