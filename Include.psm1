@@ -1108,6 +1108,9 @@ function Get-LiveHashRate {
                 if ($Request) {
                     $Data = $Request -replace 'LOG:' | ConvertFrom-StringData
                     $HashRate = [double]$Data.hash_rate
+                    $Shares = @(
+                        [int64]$Data.num_shares_accepted
+                    )
                 }
             }
 
