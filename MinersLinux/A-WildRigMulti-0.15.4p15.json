@@ -1,7 +1,7 @@
 {
-  "Path": "wildrig.exe",
-  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.15.4p14/wildrig-multi-windows-0.15.4-preview14.7z",
-  "SHA256": "3F82F689C6432962FA524BDC028D6816C8274F1769A37FDB4007C09970BCA29B",
+  "Path": "wildrig-multi",
+  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.15.4p15/wildrig-multi-linux-0.15.4-preview15.tar.gz",
+  "SHA256": "7D0CD452177B4AF4BD8199437C78C909E4C73AC7970EEDF72B09F66AF5080CC0",
   "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",
@@ -13,6 +13,7 @@
     "--opencl-devices #Devices#",
     "--send-stale",
     "--donate-level 1",
+    "--no-color",
     "--api-port #ApiPort#",
     "#AlgorithmParameters#",
     "#CustomParameters#"
@@ -21,7 +22,7 @@
   "Fee": 0.01,
   "Mem": 1.1,
   "NoCpu": true,
-  "Custom": "--opencl-threads auto --opencl-launch auto",
+  "Custom": " --opencl-threads auto --opencl-launch auto",
   "Algorithms": {
     "Rainforest": "--algo rainforest"
   }
