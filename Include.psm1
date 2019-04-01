@@ -936,8 +936,8 @@ function Get-LiveHashRate {
                         [double]$Data.PHS * 1e15
                     ) | Where-Object {$_ -gt 0} | Select-Object -First 1
                     $Shares = @(
-                        [int]$Data.ACC
-                        [int]$Data.REJ
+                        [int64]$Data.ACC
+                        [int64]$Data.REJ
                     )
                 }
             }
@@ -972,11 +972,11 @@ function Get-LiveHashRate {
                         [double]$Multiplier * $S[0]
                     )
                     $Shares = @(
-                        [int]$R[1]
-                        [int]$R[2]
+                        [int64]$R[1]
+                        [int64]$R[2]
                         $(if ($HashRate[1] -gt 0) {
-                            [int]$S[1]
-                            [int]$S[2]
+                            [int64]$S[1]
+                            [int64]$S[2]
                         })
                     )
                 }
@@ -992,6 +992,10 @@ function Get-LiveHashRate {
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
                     $HashRate = [double]($Data.devices.hash_rate | Measure-Object -Sum).Sum / 1000
+                    $Shares = @(
+                        [int64]$Data.shares.num_accepted
+                        [int64]$Data.shares.num_rejected + [int64]$Data.shares.num_rejected + [int64]$Data.shares.num_network_fail + [int64]$Data.shares.num_outdated
+                    )
                 }
             }
 
@@ -1004,8 +1008,8 @@ function Get-LiveHashRate {
                         $HashRate *= 1000
                     }
                     $Shares = @(
-                        [int]$Data.results.shares_good
-                        $([int]$Data.results.shares_total - [int]$Data.results.shares_good)
+                        [int64]$Data.results.shares_good
+                        [int64]$Data.results.shares_total - [int64]$Data.results.shares_good
                     )
                 }
             }
@@ -1035,6 +1039,10 @@ function Get-LiveHashRate {
                         [double]$Data.HashRate_total_now
                         [double]$Data.HashRate_total_5min
                     ) | Where-Object {$_ -gt 0} | Select-Object -First 1
+                    $Shares = @(
+                        [int64]$Data.shares.accepted
+                        [int64]$Data.shares.rejected
+                    )
                 }
             }
 
@@ -1043,6 +1051,10 @@ function Get-LiveHashRate {
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
                     $HashRate = [double]$Data.HashRate.total
+                    $Shares = @(
+                        [int64]$Data.results.shares_good
+                        [int64]$Data.results.shares_total - [int64]$Data.results.shares_good
+                    )
                 }
             }
 
@@ -1050,7 +1062,11 @@ function Get-LiveHashRate {
                 $Request = Invoke-HTTPRequest -Port $Miner.ApiPort -Path "/summary"
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
-                    $HashRate = [double]$Data.'Session'.'Performance_Summary'
+                    $HashRate = [double]$Data.Session.Performance_Summary
+                    $Shares = @(
+                        [int64]$Data.Session.Accepted
+                        [int64]$Data.Session.Submitted - [int64]$Data.Session.Accepted
+                    )
                 }
             }
 
@@ -1060,6 +1076,10 @@ function Get-LiveHashRate {
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
                     $HashRate = [double](($Data.result.speed_sps) | Measure-Object -Sum).Sum
+                    $Shares = @(
+                        [int64]($Data.result.accepted_shares | Measure-Object -Sum).Sum
+                        [int64]($Data.result.rejected_shares | Measure-Object -Sum).Sum
+                    )
                 }
             }
 
@@ -1068,6 +1088,10 @@ function Get-LiveHashRate {
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
                     $HashRate = [double](($Data.devices.speed) | Measure-Object -Sum).Sum
+                    $Shares = @(
+                        [int64]$($Data.devices.accepted_shares | Measure-Object -Sum).Sum
+                        [int64]$($Data.devices.rejected_shares | Measure-Object -Sum).Sum
+                    )
                 }
             }
 
@@ -1093,8 +1117,8 @@ function Get-LiveHashRate {
                     $Data = $Request | ConvertFrom-Json
                     $HashRate = [double](($Data.workers.graphsPerSecond) | Measure-Object -Sum).Sum
                     $Shares = @(
-                        [int]$Data.shares.accepted
-                        [int]$Data.shares.tooLate
+                        [int64]$Data.shares.accepted
+                        [int64]$Data.shares.submitted - [int64]$Data.shares.accepted
                     )
                 }
             }
@@ -1108,8 +1132,8 @@ function Get-LiveHashRate {
                         [double]$Data.miner.total_hashrate2_raw
                     )
                     $Shares = @(
-                        [int]$Data.stratum.accepted_shares
-                        [int]$Data.stratum.rejected_shares
+                        [int64]$Data.stratum.accepted_shares
+                        [int64]$Data.stratum.rejected_shares
                     )
                 }
             }
@@ -1130,8 +1154,8 @@ function Get-LiveHashRate {
                     $Data = $Request | ConvertFrom-Json
                     $HashRate = [double]($Data.infos.speed | Measure-Object -Sum).Sum
                     $Shares = @(
-                        $([int]$Data.infos.accepted | Measure-Object -Sum).Sum
-                        $([int]$Data.infos.rejected | Measure-Object -Sum).Sum
+                        [int64]$($Data.infos.accepted | Measure-Object -Sum).Sum
+                        [int64]$($Data.infos.rejected | Measure-Object -Sum).Sum
                     )
                 }
             }

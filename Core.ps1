@@ -1500,7 +1500,7 @@ while ($Quit -eq $false) {
                 @{Label = "Coin"                        ; Expression = {$_.Coin}},
                 @{Label = "Miner"                       ; Expression = {$_.Miner}},
                 @{Label = "LocalSpeed"                  ; Expression = {$_.LocalSpeed} ; Align = 'right'},
-                @{Label = "Shares"                      ; Expression = {$_.Shares} ; Align = 'right'},
+                @{Label = "Acc/Rej"                     ; Expression = {$_.Shares} ; Align = 'right'},
                 @{Label = "PLim"                        ; Expression = {$_.PLim} ; Align = 'right'},
                 @{Label = "Watt"                        ; Expression = {$_.Watt} ; Align = 'right'},
                 @{Label = $Config.LocalCurrency + "/W"  ; Expression = {$_.EfficiencyW}  ; Align = 'right'},
