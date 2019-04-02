@@ -1,7 +1,7 @@
 {
   "Path": "luk-cpu",
   "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.4/lukMiner-0.15.9-cpu-phi.tar.gz",
-  "SHA256": "",
+  "SHA256": "2D970C6BA3E1B2C1698D5385138E824BFEC44BF878D05AD31AED163CFF517669",
   "Type": "CPU",
   "Arguments": [
     "--host #Server#",

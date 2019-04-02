@@ -1,19 +1,20 @@
 {
-  "Path": "xmr-stak-linux-2.10.2-cpu_opencl-amd/xmr-stak",
-  "Uri": "https://github.com/fireice-uk/xmr-stak/releases/download/2.10.2/xmr-stak-linux-2.10.2-cpu_opencl-amd.tar.xz",
-  "SHA256": "D18FAF41483F9F78E47D8182E4ABD906A7A6F61EBE3E0FB2AED1D5D93C5658A0",
-  "Type": "CPU",
+  "Path": "xmr-stak-win64-2.10.4/xmr-stak.exe",
+  "Uri": "https://github.com/fireice-uk/xmr-stak/releases/download/2.10.4/xmr-stak-win64-2.10.4.7z",
+  "SHA256": "80FE3F459B75876F0F4B8D3C567E5DFDB4726DE27A921FB2D83E0B6321486B95",
+  "Type": "AMD",
   "Arguments": [
     "$(if ($enableSSL){'-O'}else{'-o'}) #Server#:#Port#",
     "-u #Login#",
     "-p #Password#",
     "-r #WorkerName#",
     "--noNVIDIA",
-    "--noAMD",
+    "--noCPU",
     "--noUAC",
+    "--openCLVendor AMD",
     "$(if ($Pool.PoolName -eq 'NiceHash'){'--use-nicehash'})",
     "--httpd #APIPort#",
-    "--cpu #GroupName#-#Algorithm#.txt",
+    "--amd #GroupName#-#Algorithm#.txt",
     "#AlgorithmParameters#",
     "#CustomParameters#"
   ],
@@ -23,7 +24,7 @@
   "Algorithms": {
     "CnFast": "--currency cryptonight_masari",
     "CnDouble": "--currency cryptonight_v8_double",
-    "_CnGpu": "--currency cryptonight_gpu",
+    "CnGpu": "--currency cryptonight_gpu",
     "CnHalf": "--currency cryptonight_v8_half",
     "CnHaven": "--currency cryptonight_haven",
     "CnHeavy": "--currency cryptonight_heavy",
@@ -32,6 +33,8 @@
     "CnRwz": "--currency cryptonight_v8_reversewaltz",
     "CnSaber": "--currency cryptonight_bittube2",
     "CnTurtle": "--currency cryptonight_turtle",
+    "_CnV7": "--currency cryptonight_v7",
+    "_CnV8": "--currency cryptonight_v8",
     "CnXTL": "--currency cryptonight_v7_stellite"
   }
 }

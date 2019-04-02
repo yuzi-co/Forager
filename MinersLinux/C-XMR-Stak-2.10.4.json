@@ -1,7 +1,7 @@
 {
-  "Path": "xmr-stak-win64-2.10.2/xmr-stak.exe",
-  "Uri": "https://github.com/fireice-uk/xmr-stak/releases/download/2.10.2/xmr-stak-win64-2.10.2.7z",
-  "SHA256": "941136D26E2D2985AAD2828EDCE9728CBB3CE786F49336253AB9FE7E5EA4881F",
+  "Path": "xmr-stak-linux-2.10.4-cpu_opencl-amd/xmr-stak",
+  "Uri": "https://github.com/fireice-uk/xmr-stak/releases/download/2.10.4/xmr-stak-linux-2.10.4-cpu_opencl-amd.tar.xz",
+  "SHA256": "D133D86B0947C114A236957DC3723E14BCDA735EC632982A32846BF46FBCAE0F",
   "Type": "CPU",
   "Arguments": [
     "$(if ($enableSSL){'-O'}else{'-o'}) #Server#:#Port#",
@@ -32,8 +32,6 @@
     "CnRwz": "--currency cryptonight_v8_reversewaltz",
     "CnSaber": "--currency cryptonight_bittube2",
     "CnTurtle": "--currency cryptonight_turtle",
-    "_CnV7": "--currency cryptonight_v7",
-    "_CnV8": "--currency cryptonight_v8",
     "CnXTL": "--currency cryptonight_v7_stellite"
   }
 }
