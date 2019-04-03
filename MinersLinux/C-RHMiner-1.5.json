@@ -1,7 +1,7 @@
 {
   "Path": "rhminer",
-  "Uri": "https://github.com/polyminer1/rhminer/releases/download/V1.4/rhminer.1.4.Linux.CPU.zip",
-  "SHA256": "BF6E9F0E1DDF0670EB4041559FDDF4C1AFCF89C461A87EA6E2E32E5B774D1FFD",
+  "Uri": "https://github.com/polyminer1/rhminer/releases/download/1.5/rhminer.1.5.Linux.CPU.zip",
+  "SHA256": "5BC107FAFF495F74B661C38666758055905E9D1BDF99650C226D84DF63C25A68",
   "Type": "CPU",
   "Arguments": [
     "-s #Protocol#://#Server#:#Port#",
@@ -13,7 +13,7 @@
     "-apiport #ApiPort#",
     "#CustomParameters#"
   ],
-  "API": "RH",
+  "API": "Claymore",
   "Fee": 0.01,
   "Algorithms": {
     "RandomHash": ""

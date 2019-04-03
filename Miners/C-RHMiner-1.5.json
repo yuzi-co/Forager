@@ -1,7 +1,7 @@
 {
   "Path": "rhminer.exe",
-  "Uri": "https://github.com/polyminer1/rhminer/releases/download/V1.4/rhminer.1.4.Windows.CPU.zip",
-  "SHA256": "9B95D8E400EC93D3FEC5B3E728404E61D5D79149E6B189C7E5895B0589816476",
+  "Uri": "https://github.com/polyminer1/rhminer/releases/download/1.5/rhminer.1.5.Windows.CPU.zip",
+  "SHA256": "6C044041B30EC8E70C49A4E5F64E025D063A837A84916C6AC2F3AF6B7A79FF6A",
   "Type": "CPU",
   "Arguments": [
     "-s #Protocol#://#Server#:#Port#",
@@ -14,7 +14,7 @@
     "-apiport #ApiPort#",
     "#CustomParameters#"
   ],
-  "API": "RH",
+  "API": "Claymore",
   "Fee": 0.01,
   "Algorithms": {
     "RandomHash": ""
