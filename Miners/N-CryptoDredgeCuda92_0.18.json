@@ -1,8 +1,9 @@
 {
-  "Path": "CryptoDredge_0.17.0/CryptoDredge.exe",
-  "Uri": "https://github.com/technobyl/CryptoDredge/releases/download/v0.17.0/CryptoDredge_0.17.0_cuda_9.2_windows.zip",
-  "SHA256": "162E7ECB7FC2AEF1DBF0D7E04FABBFD3D71889305C0B96F106FC3F3EA1D474E4",
+  "Path": "CryptoDredge_0.18.0/CryptoDredge.exe",
+  "Uri": "https://github.com/technobyl/CryptoDredge/releases/download/v0.18.0/CryptoDredge_0.18.0_cuda_9.2_windows.zip",
+  "SHA256": "029DCC7A835C7C1EF884163562197C6B735FE7286FB634D5BC6E955A4CC36783",
   "Type": "NVIDIA",
+  "CUDA": 9.2,
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
     "-u #Login#",
@@ -18,14 +19,10 @@
   ],
   "API": "Ccminer",
   "Fee": 0.01,
-  "CUDA": 9.2,
   "Custom": "--intensity 8",
   "Algorithms": {
-    "Cuckoo29": {
-      "Params": "-a aeternity",
-      "Mem": 5.6
-    },
     "Allium": "-a allium",
+    "Argon2d500": "-a argon2d",
     "_BCD": "-a bcd",
     "_Bitcore": "-a bitcore",
     "_C11": "-a c11",
@@ -41,11 +38,14 @@
     "_CnV8": "-a cnv8",
     "CnWow": "-a cnsuperfast",
     "CnXTL": "-a stellite",
+    "Cuckoo29": {
+      "Params": "-a aeternity",
+      "Mem": 5.6
+    },
     "Cuckaroo29": {
       "Params": "-a cuckaroo29",
       "NoCpu": true,
-      "Mem": 5.6,
-      "NH": false
+      "Mem": 5.6
     },
     "_Dedal": "-a dedal",
     "Hmq1725": "-a hmq1725",
@@ -55,7 +55,6 @@
     "Lyra2zz": "-a lyra2zz",
     "MTP": {
       "Params": "-a mtp",
-      "NH": false,
       "Mem": 4.5,
       "Fee": 0.02
     },

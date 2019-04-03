@@ -1,8 +1,9 @@
 {
-  "Path": "CryptoDredge_0.17.0/CryptoDredge",
-  "Uri": "https://github.com/technobyl/CryptoDredge/releases/download/v0.17.0/CryptoDredge_0.17.0_cuda_9.1_linux.tar.gz",
-  "SHA256": "8F528F8A6094FC102B00CCD878362AE928D9B4732C14DA798A2A6FD1B362CCDD",
+  "Path": "CryptoDredge_0.18.0/CryptoDredge",
+  "Uri": "https://github.com/technobyl/CryptoDredge/releases/download/v0.18.0/CryptoDredge_0.18.0_cuda_9.2_linux.tar.gz",
+  "SHA256": "CF5233621E2EC0DD9E1CD6A7D46E42615AE23822B00F37879DC8EC72DF460D95",
   "Type": "NVIDIA",
+  "CUDA": 9.2,
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
     "-u #Login#",
@@ -13,21 +14,18 @@
     "--timeout 5",
     "--no-watchdog",
     "-b 127.0.0.1:#APIPort#",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
   ],
   "API": "Ccminer",
   "Fee": 0.01,
-  "CUDA": 9.1,
   "Custom": "--intensity 8",
   "Algorithms": {
-    "Cuckoo29": {
-      "Params": "-a aeternity",
-      "Mem": 5.6
-    },
     "Allium": "-a allium",
-    "BCD": "-a bcd",
-    "Bitcore": "-a bitcore",
-    "C11": "-a c11",
+    "Argon2d500": "-a argon2d",
+    "_BCD": "-a bcd",
+    "_Bitcore": "-a bitcore",
+    "_C11": "-a c11",
     "CnFast": "-a cnfast",
     "CnGpu": "-a cngpu ",
     "CnHalf": "-a cnfast2",
@@ -40,21 +38,23 @@
     "_CnV8": "-a cnv8",
     "CnWow": "-a cnsuperfast",
     "CnXTL": "-a stellite",
+    "Cuckoo29": {
+      "Params": "-a aeternity",
+      "Mem": 2
+    },
     "Cuckaroo29": {
       "Params": "-a cuckaroo29",
       "NoCpu": true,
-      "Mem": 5.6,
-      "NH": false
+      "Mem": 4
     },
-    "Dedal": "-a dedal",
+    "_Dedal": "-a dedal",
     "Hmq1725": "-a hmq1725",
-    "Lyra2v3": "-a lyra2rev3",
+    "_Lyra2v3": "-a lyra2rev3",
     "Lyra2vc0ban": "-a lyra2vc0banhash",
     "Lyra2z": "-a lyra2z",
     "Lyra2zz": "-a lyra2zz",
     "MTP": {
       "Params": "-a mtp",
-      "NH": false,
       "Mem": 4.5,
       "Fee": 0.02
     },
@@ -67,11 +67,11 @@
     "Pipe ": "-a pipe",
     "Skunk": "-a skunk",
     "Tribus": "-a tribus",
-    "X16r": "-a x16r",
-    "X16rt": "-a x16rt",
-    "X16s": "-a x16s",
-    "X17": "-a x17",
+    "_X16r": "-a x16r",
+    "_X16rt": "-a x16rt",
+    "_X16s": "-a x16s",
+    "_X17": "-a x17",
     "X21s": "-a x21s",
-    "X22i": "-a x22i"
+    "_X22i": "-a x22i"
   }
 }
