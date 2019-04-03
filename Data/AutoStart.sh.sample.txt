@@ -1,0 +1,10 @@
+#!/bin/bash
+
+Mode=$($MiningMode)
+Pools=$($PoolsName)
+Algos=$($AlgosName)
+Coins=$($CoinsName)
+
+Command="& .\Core.ps1 -MiningMode `${Mode} -PoolsName `${Pools}$(if ($AlgosName) {' -Algorithm ${Algos}'})$(if ($CoinsName) {' -CoinsName ${Coins}'})"
+
+pwsh -executionpolicy bypass -command `${Command}

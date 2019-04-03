@@ -4,14 +4,15 @@ Import-Module .\Include.psm1
 $global:Config = Get-Config
 $global:Wallets = Get-Wallets
 
+$SystemInfo = Get-SystemInfo
 
 ### Select Mining mode
 Out-HorizontalLine "Select Mining Mode"
 
 [array]$Modes = @(
-    [PSCustomObject]@{Option = 0 ; Mode = 'Automatic'    ; Description = 'Automatically choose most profitable coin based on pools current statistics'}
-    [PSCustomObject]@{Option = 1 ; Mode = 'Automatic24h' ; Description = 'Automatically choose most profitable coin based on pools 24 hour statistics'}
-    [PSCustomObject]@{Option = 2 ; Mode = 'Manual'       ; Description = 'Manual coin selection'}
+    [PSCustomObject]@{Option = 0 ; Mode = 'Automatic'    ; Description = 'Automatically choose most profitable coin based on pools current statistics' }
+    [PSCustomObject]@{Option = 1 ; Mode = 'Automatic24h' ; Description = 'Automatically choose most profitable coin based on pools 24 hour statistics' }
+    [PSCustomObject]@{Option = 2 ; Mode = 'Manual'       ; Description = 'Manual coin selection' }
 )
 $Modes | Format-Table
 
@@ -46,7 +47,7 @@ do {
     if ($SelectedOption -eq "999") {
         $PoolsName = $Pools.Name -join ',' -replace "\s+"
     } else {
-        $PoolsName = ($SelectedOption -split ',' | ForEach-Object {$Pools[$_].name}) -join ',' -replace "\s+"
+        $PoolsName = ($SelectedOption -split ',' | ForEach-Object { $Pools[$_].name }) -join ',' -replace "\s+"
     }
 } until ($PoolsName)
 Write-Host "Selected Pool(s): $PoolsName"
@@ -74,7 +75,7 @@ if ($MiningMode -eq "Manual") {
         Write-Host "Not responding"
     }
 
-    if (($CoinsPool | Where-Object {[decimal]$_.Price -eq 0}).Count -gt 0) {
+    if (($CoinsPool | Where-Object { [decimal]$_.Price -eq 0 }).Count -gt 0) {
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
         #Add main page coins
@@ -108,13 +109,13 @@ if ($MiningMode -eq "Manual") {
 
     Out-HorizontalLine "Select Coin to mine"
     $CoinsPool | Format-Table -Wrap (
-        @{Label = "Opt."; Expression = {$_.Option}; Align = 'right'} ,
-        @{Label = "Name"; Expression = {$_.Info}; Align = 'left'} ,
-        @{Label = "Symbol"; Expression = {$_.Symbol}; Align = 'left'},
-        @{Label = "Algorithm"; Expression = {$_.Algorithm}; Align = 'left'},
-        @{Label = "HashRate"; Expression = {(ConvertTo-Hash ($_.YourHashRate))}; Align = 'right'},
-        @{Label = "mBTC/day"; Expression = {if ($_.BtcProfit -gt 0 ) {($_.BtcProfit * 1000).ToString("n3")}}; Align = 'right'},
-        @{Label = $Config.LocalCurrency + "/Day"; Expression = {if ($_.LocalProfit -gt 0 ) {[math]::Round($_.LocalProfit, 2)}}; Align = 'right'}
+        @{Label = "Opt."; Expression = { $_.Option }; Align = 'right' } ,
+        @{Label = "Name"; Expression = { $_.Info }; Align = 'left' } ,
+        @{Label = "Symbol"; Expression = { $_.Symbol }; Align = 'left' },
+        @{Label = "Algorithm"; Expression = { $_.Algorithm }; Align = 'left' },
+        @{Label = "HashRate"; Expression = { (ConvertTo-Hash ($_.YourHashRate)) }; Align = 'right' },
+        @{Label = "mBTC/day"; Expression = { if ($_.BtcProfit -gt 0 ) { ($_.BtcProfit * 1000).ToString("n3") } }; Align = 'right' },
+        @{Label = $Config.LocalCurrency + "/Day"; Expression = { if ($_.LocalProfit -gt 0 ) { [math]::Round($_.LocalProfit, 2) } }; Align = 'right' }
     )
 
     do {
@@ -134,19 +135,28 @@ $Params = @{
 }
 if ($MiningMode -eq 'Manual') {
     $Params.Algorithm = $AlgosName
-    if ($CoinsName) {$Params.CoinsName = $CoinsName}
+    if ($CoinsName) { $Params.CoinsName = $CoinsName }
 }
 
-if (Test-Path .\Data\AutoStart.sample.txt) {
-    Out-HorizontalLine "Sample AutoStart.bat"
+if ($IsWindows) {
+    $SampleFile = "./Data/AutoStart.sample.txt"
+    $Autostart = "AutoStart.bat"
+} else {
+    $SampleFile = "./Data/AutoStart.sh.sample.txt"
+    $Autostart = "autostart.sh"
+}
+if (Test-Path $SampleFile) {
 
-    $Sample = Get-Content .\Data\AutoStart.sample.txt -Raw
+    Out-HorizontalLine "Sample $Autostart"
+
+    $Sample = Get-Content $SampleFile -Raw
+
     Write-Host ""
     Write-Host $ExecutionContext.InvokeCommand.ExpandString($Sample)
     Write-Host ""
 
-    Out-HorizontalLine "End Sample AutoStart.bat"
+    Out-HorizontalLine "End Sample $Autostart"
 }
 
 Pause
-& .\Core.ps1 @Params
+& Core.ps1 @Params
