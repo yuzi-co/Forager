@@ -1452,7 +1452,7 @@ while ($Quit -eq $false) {
         }
 
         #Log Miners
-        Log ($ScreenOut | ConvertTo-Json) -Severity Debug
+        Log ($ScreenOut | ConvertTo-Json -Compress) -Severity Debug
 
         if ($RepaintScreen) {Clear-Host}
 
