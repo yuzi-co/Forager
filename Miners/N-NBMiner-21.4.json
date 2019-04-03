@@ -1,7 +1,7 @@
 {
-  "Path": "NBMiner_Linux/nbminer",
-  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v21.3/NBMiner_21.3_Linux.tgz",
-  "SHA256": "97F9396F7FCCB91F42A196273EB32F18DEDF895C840B230A1DEB43D33E243AD5",
+  "Path": "NBMiner_Win/nbminer.exe",
+  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v21.4/NBMiner_21.4_Win.zip",
+  "SHA256": "ADC7DADCA9E248A9C0D91D714C591ED30BCDF6E52B35A3E51700FA3866AD62A8",
   "Type": "NVIDIA",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
@@ -13,24 +13,22 @@
   ],
   "API": "NBMiner",
   "SSL": true,
+  "Fee": 0.02,
   "Algorithms": {
     "Aethernity": {
       "Params": "-a cuckoo_ae",
       "NoCpu": true,
-      "Mem": 5.6,
-      "Fee": 0.02
+      "Mem": 5
     },
     "Cuckaroo29": {
       "Params": "-a cuckaroo",
       "NoCpu": true,
-      "Mem": 5.6,
-      "Fee": 0.02
+      "Mem": 5
     },
     "Cuckatoo31": {
       "Params": "-a cuckatoo",
       "NoCpu": true,
-      "Mem": 7.4,
-      "Fee": 0.02
+      "Mem": 7.4
     },
     "Ethash": {
       "Params": "-a ethash -o $(if ($Pool.PoolName -eq 'NiceHash') {'ethnh'} else {'ethproxy'})+tcp://#Server#:#Port#",
@@ -43,8 +41,7 @@
       "Fee": 0.03
     },
     "Tensority": {
-      "Params": "-a tensority",
-      "Fee": 0.02
+      "Params": "-a tensority"
     }
   }
 }
