@@ -1335,43 +1335,6 @@ while ($Quit -eq $false) {
             $ExitLoop = $true
         }
 
-        #display interval
-        $TimeToNextInterval = New-TimeSpan (Get-Date) ($LoopStartTime.AddSeconds($Interval.Duration))
-        $TimeToNextIntervalSeconds = [int]$TimeToNextInterval.TotalSeconds
-        if ($TimeToNextIntervalSeconds -lt 0) {$TimeToNextIntervalSeconds = 0}
-
-        if ($RepaintScreen) {Clear-Host}
-
-        #display header
-        Set-ConsolePosition 0 0
-        Out-HorizontalLine
-        Clear-Lines -Lines 1
-        Write-Message -Message (
-            @(
-                "{green}$($Release.Application) {white}$($Release.Version)"
-                "{white}|"
-                "{green}P{white}rofits"
-                "{green}S{white}tats"
-                "{green}H{white}istory"
-                "{green}C{white}urrent"
-                "{green}W{white}allets"
-                "{white}|"
-                "{green}E{white}nd Interval"
-                "{green}Q{white}uit"
-                "{green}$([string[]]$DeviceGroups.Id -join '/'){white} Group toggle"
-            ) -join "  "
-        ) -Line 1
-
-        Write-Message -Message "{white}  | Next Interval: {green}$TimeToNextIntervalSeconds{white} sec" -AlignRight -Line 1
-
-        #display donation message
-        if ($CurrentInterval -eq "Donate") {
-            Write-Message -Message "This interval you are donating. You can change donation in config.ini. Thank you for your support!" -Line 2
-        }
-
-        #write speed
-        Log ($ActiveMiners | Where-Object Best | Select-Object Id, Process.Id, GroupName, Name, Pool.PoolName, PoolDual.PoolName, Algorithm, AlgorithmDual, SpeedLive, ProfitsLive, Pool.Location, Port, Arguments | ConvertTo-Json) -Severity Debug
-
         #get pool reported speed (1 or each 10 executions to not saturate pool)
         if ($SwitchLoop -eq 0) {
 
@@ -1463,10 +1426,6 @@ while ($Quit -eq $false) {
         $SwitchLoop++
         if ($SwitchLoop -gt 5) {$SwitchLoop = 0} #reduces 10-1 ratio of execution
 
-        #display current mining info
-
-        Out-HorizontalLine
-
         $ScreenOut = $ActiveMiners.Subminers |
             Where-Object Best | Sort-Object `
         @{expression = {$ActiveMiners[$_.IdF].DeviceGroup.GroupName -eq 'CPU'}; Ascending = $true},
@@ -1492,6 +1451,45 @@ while ($Quit -eq $false) {
             }
         }
 
+        #Log Miners
+        Log ($ScreenOut | ConvertTo-Json) -Severity Debug
+
+        if ($RepaintScreen) {Clear-Host}
+
+        #display interval
+        $TimeToNextInterval = New-TimeSpan (Get-Date) ($LoopStartTime.AddSeconds($Interval.Duration))
+        $TimeToNextIntervalSeconds = [int]$TimeToNextInterval.TotalSeconds
+        if ($TimeToNextIntervalSeconds -lt 0) {$TimeToNextIntervalSeconds = 0}
+
+        #display header
+        Set-ConsolePosition 0 0
+        Out-HorizontalLine
+        Clear-Lines -Lines 1
+        Write-Message -Message (
+            @(
+                "{green}$($Release.Application) {white}$($Release.Version)"
+                "{white}|"
+                "{green}P{white}rofits"
+                "{green}S{white}tats"
+                "{green}H{white}istory"
+                "{green}C{white}urrent"
+                "{green}W{white}allets"
+                "{white}|"
+                "{green}E{white}nd Interval"
+                "{green}Q{white}uit"
+                "{green}$([string[]]$DeviceGroups.Id -join '/'){white} Group toggle"
+            ) -join "  "
+        ) -Line 1
+
+        Write-Message -Message "{white}  | Next Interval: {green}$TimeToNextIntervalSeconds{white} sec" -AlignRight -Line 1
+        Out-HorizontalLine
+
+        #display donation message
+        if ($Interval.Current -eq "Donate") {
+            Write-Message -Message "{yellow}This interval you are donating. You can change donation in config.ini. Thank you for your support!" -Line 3 -AlignCenter
+        }
+
+        #display current mining info
         if ($ScreenOut) {
             Clear-Lines -Lines ($ScreenOut.Count + 4)
             $ScreenOut | Format-Table (
@@ -1726,6 +1724,8 @@ while ($Quit -eq $false) {
                 @{Label = "LastTimeActive"; Expression = {$($_.Stats.LastTimeActive).tostring("dd/MM/yy H:mm")}},
                 @{Label = "Status"; Expression = {$_.Status}}
             ) | Out-Host
+
+            $RepaintScreen = $false
         }
 
         $FirstLoopExecution = $false

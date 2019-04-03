@@ -1649,12 +1649,15 @@ function Write-Message {
     param(
         [string]$Message,
         [int]$Line,
-        [switch]$AlignRight
+        [switch]$AlignRight,
+        [switch]$AlignCenter
     )
     $MaxWidth = 170
     $Width = [math]::min($Host.UI.RawUI.WindowSize.Width, $MaxWidth) - 1
     if ($AlignRight) {
-        $X = ($Width - ($Message -replace "({\w+})").Length)
+        [int]$X = ($Width - ($Message -replace "({\w+})").Length)
+    } elseif ($AlignCenter) {
+        [int]$X = ($Width - ($Message -replace "({\w+})").Length) / 2
     }
     Set-ConsolePosition $X $Line
     Write-Color $Message
