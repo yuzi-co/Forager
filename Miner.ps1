@@ -159,4 +159,4 @@ if (Test-Path $SampleFile) {
 }
 
 Pause
-& Core.ps1 @Params
+& ./Core.ps1 @Params
