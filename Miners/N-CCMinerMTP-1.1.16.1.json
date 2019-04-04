@@ -1,8 +1,9 @@
 {
-  "Path": "ccminerMTP1.16.1/ccminer.exe",
-  "Uri": "https://github.com/nemosminer/ccminerMTP/releases/download/v1.16.1/ccminerMTP1.16.1.7z",
-  "SHA256": "7B21EAA34CDF618838F0A2644BE3E0F6A95D0EFC80B5791EC65EBF5700659020",
+  "Path": "ccminerMTP1.1.16.1/ccminer.exe",
+  "Uri": "https://github.com/nemosminer/ccminerMTP/releases/download/v1.1.16.1/ccminerMTP1.1.16.1.7z",
+  "SHA256": "FC2F885EE966F9D961011A0F287143974E2AF2D3E11780DF1A616E54E2C56C59",
   "Type": "NVIDIA",
+  "CUDA": 10.0,
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
     "-u #Login#",
