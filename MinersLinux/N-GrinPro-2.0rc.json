@@ -1,8 +1,9 @@
 {
-  "Path": "GrinProMiner.exe",
-  "Uri": "https://github.com/mozkomor/GrinProMiner/releases/download/2.0b1/GrinPro_2_beta_Win64.zip",
-  "SHA256": "F94C2190D4D5C4488F1C68920463EBEBE625EE4D902438BA5E83501A54EB5954",
+  "Path": "GrinPro2/Bin/GrinProMiner",
+  "Uri": "https://github.com/mozkomor/GrinProMiner/releases/download/2.0rc/GrinPro_2_RC_Linux64.tar.gz",
+  "SHA256": "2F30E508974AEB1BFAD9813FD0CE4B0BBDCA781903192D5AED5FE810EE7973B1",
   "Type": "NVIDIA",
+  "CUDA": 10.0,
   "Arguments": [
     "api-port=#ApiPort#",
     "ignore-config=true",
@@ -16,7 +17,6 @@
   "API": "GrinPro",
   "Fee": 0.02,
   "SSL": true,
-  "CUDA": 10.0,
   "Algorithms": {
     "Cuckaroo29": {
       "Mem": 5.6,

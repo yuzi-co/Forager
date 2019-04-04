@@ -1,7 +1,7 @@
 {
   "Path": "GrinPro2/Bin/GrinProMiner",
-  "Uri": "https://github.com/mozkomor/GrinProMiner/releases/download/2.0b1/GrinPro_2_beta_Linux64.tar.gz",
-  "SHA256": "C1909EECA48DF07177B72F8783CA722FC4B860E2919428055976A545A42E612D",
+  "Uri": "https://github.com/mozkomor/GrinProMiner/releases/download/2.0rc/GrinPro_2_RC_Linux64.tar.gz",
+  "SHA256": "2F30E508974AEB1BFAD9813FD0CE4B0BBDCA781903192D5AED5FE810EE7973B1",
   "Type": "AMD",
   "Arguments": [
     "api-port=#ApiPort#",
