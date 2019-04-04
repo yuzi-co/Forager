@@ -74,15 +74,16 @@ if ($Querymode -eq "Core") {
 
     $Response = Invoke-WebRequest -Uri "https://miner.rocks" -UseBasicParsing
 
-    $Regex = "^{name:'(\w+)',host:'(\S+)',lastStats:null,kind:`"(\S*)`""
+    $Regex = "^{name:'([a-zA-Z0-9+]+)',host:'(\S+)',lastStats:null,kind:`"(\S*)`""
     $Pools = $Response.Content -split "`n" -replace "\s" -match $Regex | ForEach-Object {
         $_ -match $Regex | Out-Null
 
         [PSCustomObject]@{
-            Coin   = $Matches[1]
-            Url    = $Matches[2]
-            Algo   = if ($Matches[3]) {$Matches[3]} else {'Cn'}
-            Symbol = Get-CoinSymbol -Coin $Matches[1]
+            Coin            = $Matches[1]
+            Url             = $Matches[2]
+            Algo            = if ($Matches[3]) { $Matches[3] } else { 'Cn' }
+            Symbol          = Get-CoinSymbol -Coin $Matches[1].Split('+')[0]
+            SymbolSecondary = Get-CoinSymbol -Coin $Matches[1].Split('+')[1]
         }
     } | Sort-Object -Property Coin -Unique
 
@@ -107,11 +108,11 @@ if ($Querymode -eq "Core") {
             $Coin = Get-CoinUnifiedName $_.Coin
 
             $Port = $PoolResponse.config.ports |
-                Where-Object {
+            Where-Object {
                 $_.disabled -ne $true -and
                 $_.virtual -ne $true
-            } | Sort-Object {if ($PoolResponse.config.ppsEnabled) {$_.rewards -eq 'pps'}}, {$_.desc -like '*Modern*GPU*'} -Descending |
-                Select-Object -First 1
+            } | Sort-Object { if ($PoolResponse.config.ppsEnabled) { $_.rewards -eq 'pps' } }, { $_.desc -like '*Modern*GPU*' } -Descending |
+            Select-Object -First 1
 
             [PSCustomObject]@{
                 Info                  = $Coin
@@ -130,14 +131,21 @@ if ($Querymode -eq "Core") {
                 PoolName              = $Name
                 WalletMode            = $WalletMode
                 WalletSymbol          = $($($_.Url -split '//')[1] -split '\.')[0]
-                Fee                   = $(if ($Port.rewards -eq 'pps') {$PoolResponse.config.ppsFee} else {$PoolResponse.config.fee}) / 100
-                RewardType            = $(if ($Port.rewards -eq 'pps') {'PPS'} else {'PPLS'})
+                Fee                   = $(if ($Port.rewards -eq 'pps') { $PoolResponse.config.ppsFee } else { $PoolResponse.config.fee }) / 100
+                RewardType            = $(if ($Port.rewards -eq 'pps') { 'PPS' } else { 'PPLS' })
 
                 Hashrate              = $PoolResponse.pool.hashrate
                 Workers               = $PoolResponse.pool.workers
 
                 Price                 = $PoolResponse.charts.profitBtc[-1][1] / 1e6
             }
+        }
+    }
+    # Support Merge Mining pools
+    foreach ($Pool in ($Pools | Where-Object { $_.SymbolSecondary -and $Wallets.($_.Symbol) -and $Wallets.($_.SymbolSecondary) })) {
+        $Result | Where-Object Symbol -eq $Pool.Symbol | ForEach-Object {
+            $_.Pass += ';mm=' + $Wallets.($Pool.SymbolSecondary)
+            $_.Price += $Result | Where-Object { $_.Symbol -eq $Pool.SymbolSecondary } | Select-Object -First 1 -ExpandProperty Price
         }
     }
 }
