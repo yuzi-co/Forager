@@ -1,7 +1,7 @@
 {
-  "Path": "cpuminer-$($f=$SystemInfo.CpuFeatures;$(if($f.avx2 -and $f.sha){'ryzen'}elseif($f.avx2){'avx2'}elseif($f.avx){'avx'}elseif($f.aes){'aes'}else{'sse2'}))",
-  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.03/cpuminer-opt-linux-rplant-4.0.1l.tar.gz",
-  "SHA256": "7B690A9EBEB1DDF91F24714DC6F2D47227002032A332CC9EF145E2F3F42EFB8D",
+  "Path": "cpuminer-$($f=$SystemInfo.CpuFeatures;$(if($f.avx2 -and $f.sha){'ryzen'}elseif($f.avx2){'avx2'}elseif($f.avx){'avx'}elseif($f.aes){'aes'}else{'sse2'})).exe",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.04/cpuminer-opt-rplant-4.0.4.zip",
+  "SHA256": "449F826046EF511211342E462BF8190E799E52C91F53351F2468BB335B02403A",
   "Type": "CPU",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
@@ -9,7 +9,6 @@
     "-p #Password#",
     "-R 3",
     "-r 10",
-    "--no-color",
     "-b #APIPort#",
     "$(if ($CpuThreads -ne $null){'-t ' + $CpuThreads})",
     "#AlgorithmParameters#",
@@ -28,10 +27,10 @@
     "ScryptJane16": "-a scryptjane:16",
     "ScryptN": "-a scrypt:2048",
     "Verium": "-a scrypt:1048576",
-    "YescryptR16": "-a yescryptr16",
-    "YescryptR32": "-a yescryptr32",
     "YescryptR8": "-a yescryptr8",
     "YescryptR8g": "-a yescryptr8g",
+    "YescryptR16": "-a yescryptr16",
+    "YescryptR32": "-a yescryptr32",
     "Yespower": "-a yespower",
     "YespowerR16": "-a yespowerr16"
   }

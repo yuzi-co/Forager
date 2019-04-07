@@ -1,0 +1,38 @@
+{
+  "Path": "cpuminer-$($f=$SystemInfo.CpuFeatures;$(if($f.avx2 -and $f.sha){'ryzen'}elseif($f.avx2){'avx2'}elseif($f.avx){'avx'}elseif($f.aes){'aes'}else{'sse2'}))",
+  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.4/cpuminer-opt-rplant-4.0.4.tar.gz",
+  "SHA256": "309577C7875ADDAFFF54AB17335FDF22DC28E6B26A446CFCCCDB4CFB4B38785D",
+  "Type": "CPU",
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-R 3",
+    "-r 10",
+    "--no-color",
+    "-b #APIPort#",
+    "$(if ($CpuThreads -ne $null){'-t ' + $CpuThreads})",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "API": "Ccminer",
+  "Algorithms": {
+    "Argon2ad": "-a argon2ad",
+    "Argon2d250": "-a argon2d250",
+    "Argon2d500": "-a argon2d500",
+    "Argon2d4096": "-a argon2d4096",
+    "Argon2m": "-a argon2m",
+    "Binarium": "-a Binarium_hash_v1",
+    "Lyra2h": "-a lyra2h",
+    "Lyra2z330": "-a lyra2z330",
+    "ScryptJane16": "-a scryptjane:16",
+    "ScryptN": "-a scrypt:2048",
+    "Verium": "-a scrypt:1048576",
+    "YescryptR16": "-a yescryptr16",
+    "YescryptR32": "-a yescryptr32",
+    "YescryptR8": "-a yescryptr8",
+    "YescryptR8g": "-a yescryptr8g",
+    "Yespower": "-a yespower",
+    "YespowerR16": "-a yespowerr16"
+  }
+}
