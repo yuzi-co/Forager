@@ -547,7 +547,7 @@ function Get-OpenCLDevices {
 
 function Get-CpuFeatures {
     if ($IsWindows) {
-        $Features = $($feat = @{ }; switch -regex ((& CHKCPU32.exe /x) -split "</\w+>") { "^\s*<_?(\w+)>(\d+).*" { $feat.($matches[1]) = [int]$matches[2] } }; $feat)
+        $Features = $($feat = @{ }; switch -regex ((& "$PSScriptRoot/Includes/CHKCPU32.exe" /x) -split "</\w+>") { "^\s*<_?(\w+)>(\d+).*" { $feat.($matches[1]) = [int]$matches[2] } }; $feat)
     } elseif ($IsLinux) {
         $Data = Get-Content /proc/cpuinfo
         $Features = $($feat = @{ }; (($Data | Where-Object { $_ -like "flags*" })[0] -split ":")[1].Trim() -split " " | ForEach-Object { $feat.$_ = 1 }; $feat)
