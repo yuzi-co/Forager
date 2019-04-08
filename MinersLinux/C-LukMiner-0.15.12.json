@@ -1,7 +1,7 @@
 {
   "Path": "luk-cpu",
-  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.4/lukMiner-0.15.9-cpu-phi.tar.gz",
-  "SHA256": "2D970C6BA3E1B2C1698D5385138E824BFEC44BF878D05AD31AED163CFF517669",
+  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.4/lukMiner-0.15.12-cpu-phi.tar.gz",
+  "SHA256": "17A887D819C78C298CB8396EAA7F761757F29F5FBFC723604D796FF2BC188A14",
   "Type": "CPU",
   "Arguments": [
     "--host #Server#",
@@ -19,7 +19,7 @@
   "Algorithms": {
     "CnAlloy": "-a xnalloy",
     "CnDark": "-a xndark",
-    "CnHalf": "-a xnmasari",
+    "_CnHalf": "-a xnmasari",
     "CnHaven": "-a xnhaven",
     "CnHeavy": "-a xnheavy",
     "_CnLiteV7": "-a xnlight",
