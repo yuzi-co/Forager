@@ -70,7 +70,7 @@ if ($Querymode -eq "Core") {
         Exit
     }
 
-    $Currency = if ($Config.("Currency_" + $Name)) {$Config.("Currency_" + $Name)} else {$Config.Currency}
+    $Currency = if ($Config.("Currency_" + $Name)) { $Config.("Currency_" + $Name) } else { $Config.Currency }
 
     if (
         @('BTC', 'LTC', 'DASH') -notcontains $Currency -and
@@ -109,7 +109,7 @@ if ($Querymode -eq "Core") {
             Symbol                = Get-CoinSymbol -Coin $Pool_Algo
             ActiveOnManualMode    = $ActiveOnManualMode
             ActiveOnAutomaticMode = $ActiveOnAutomaticMode
-            PoolWorkers           = $(if ($Algo.workers_shared -ne $null) {[int]$Algo.workers_shared} else {[int]$Algo.workers})
+            PoolWorkers           = $(if ($Algo.workers_shared -ne $null) { [int]$Algo.workers_shared } else { [int]$Algo.workers })
             PoolHashRate          = [decimal]$Algo.HashRate
             WalletMode            = $WalletMode
             WalletSymbol          = $Currency

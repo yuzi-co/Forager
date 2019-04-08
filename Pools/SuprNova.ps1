@@ -27,7 +27,7 @@ if ($Querymode -eq "Info") {
 
 if ($Querymode -eq "ApiKey") {
     $Request = Invoke-APIRequest -Url $("https://" + $Info.Symbol + ".suprnova.cc/index.php?page=api&action=getuserbalance&api_key=" + $Info.ApiKey + "&ID=") -Retry 3 |
-        Select-Object -ExpandProperty getuserbalance | Select-Object -ExpandProperty data
+    Select-Object -ExpandProperty getuserbalance | Select-Object -ExpandProperty data
 
     if ($Request) {
         $Result = [PSCustomObject]@{
@@ -40,7 +40,7 @@ if ($Querymode -eq "ApiKey") {
 
 if ($Querymode -eq "Speed") {
     $Request = Invoke-APIRequest -Url $("https://" + $Info.Symbol + ".suprnova.cc/index.php?page=api&action=getuserworkers&api_key=" + $Info.ApiKey) -Retry 1 |
-        Select-Object -ExpandProperty getuserworkers | Select-Object -ExpandProperty data
+    Select-Object -ExpandProperty getuserworkers | Select-Object -ExpandProperty data
 
     if ($Request) {
         $Request | ForEach-Object {
@@ -97,7 +97,7 @@ if ($Querymode -eq "Core") {
             HostSSL               = $_.WalletSymbol + ".suprnova.cc"
             Port                  = $_.Port
             PortSSL               = $_.PortSSL
-            User                  = $(if ($Config.("UserName_" + $Name)) {$Config.("UserName_" + $Name)} else {$Config.UserName}) + ".#WorkerName#"
+            User                  = $(if ($Config.("UserName_" + $Name)) { $Config.("UserName_" + $Name) } else { $Config.UserName }) + ".#WorkerName#"
             Pass                  = "x"
             Location              = "US"
             SSL                   = [bool]($_.PortSSL)

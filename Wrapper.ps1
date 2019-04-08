@@ -37,7 +37,7 @@ $CardsArray = @(0) * 20
 
 do {
     $PowerShell.Streams.Verbose.ReadAll() | ForEach-Object {
-        $Param = @{}
+        $Param = @{ }
         if (
             $PSVersionTable.PSVersion.Major -lt 6 -and
             $Command -like '*energiminer.exe*'
@@ -88,6 +88,6 @@ do {
             $HashRate -replace ',', '.' | Set-Content ".\Wrapper_$Id.txt"
         }
     }
-    if (-not (Get-Process | Where-Object Id -EQ $ControllerProcessID)) {$PowerShell.Stop() | Out-Null}
+    if (-not (Get-Process | Where-Object Id -EQ $ControllerProcessID)) { $PowerShell.Stop() | Out-Null }
     Start-Sleep -Seconds 1
 } until($Result.IsCompleted)

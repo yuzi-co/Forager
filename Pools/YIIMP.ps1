@@ -87,8 +87,8 @@ if ($Querymode -eq "Core") {
         [PSCustomObject]@{
             Algorithm             = $Pool_Algo
             Info                  = $Pool_Coin
-            Price                 = $(if ($Divisor) {[decimal]$Coin.estimate / $Divisor})
-            Price24h              = $(if ($Divisor) {[decimal]$Coin.'24h_btc' / $Divisor})
+            Price                 = $(if ($Divisor) { [decimal]$Coin.estimate / $Divisor })
+            Price24h              = $(if ($Divisor) { [decimal]$Coin.'24h_btc' / $Divisor })
             Protocol              = "stratum+tcp"
             Host                  = $MineUrl
             Port                  = [int]$Coin.port

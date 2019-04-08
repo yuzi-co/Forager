@@ -43,7 +43,7 @@ if ($Querymode -eq "Core") {
         #Filter by minworkes variable (must be here for not selecting now a pool and after that discarded on core.ps1 filter)
         $PoolsTmp | Where-Object {
             $_.PoolWorkers -eq $null -or
-            $_.PoolWorkers -ge $(if ($Config.("MinWorkers_" + $Name)) {$Config.("MinWorkers_" + $Name)} else {$Config.MinWorkers})
+            $_.PoolWorkers -ge $(if ($Config.("MinWorkers_" + $Name)) { $Config.("MinWorkers_" + $Name) } else { $Config.MinWorkers })
         }
     }
 
@@ -59,8 +59,8 @@ if ($Querymode -eq "Core") {
 
         # Algo fixes
         switch ($Coin.Algorithm) {
-            'WildKeccak' {$Coin.Algorithm += $Coin.Symbol }
-            'Argon2d' {$Coin.Algorithm += $Coin.Symbol }
+            'WildKeccak' { $Coin.Algorithm += $Coin.Symbol }
+            'Argon2d' { $Coin.Algorithm += $Coin.Symbol }
         }
         $Coin.Algorithm = Get-AlgoUnifiedName $Coin.Algorithm
     }
@@ -71,10 +71,10 @@ if ($Querymode -eq "Core") {
         $Pool.Algorithm = Get-AlgoUnifiedName $Pool.Algorithm
         $Pool.Info = Get-CoinUnifiedName $Pool.Info
 
-        if (($Result | Where-Object {$_.Info -eq $Pool.Info -and $_.Algorithm -eq $Pool.Algorithm}).count -eq 0) {
+        if (($Result | Where-Object { $_.Info -eq $Pool.Info -and $_.Algorithm -eq $Pool.Algorithm }).count -eq 0) {
             #look that this coin is not included in result
 
-            $Response | Where-Object {$_.Name -eq $Pool.Info -and $_.Algorithm -eq $Pool.Algorithm} | ForEach-Object {
+            $Response | Where-Object { $_.Name -eq $Pool.Info -and $_.Algorithm -eq $Pool.Algorithm } | ForEach-Object {
                 $Pool | Add-Member Price                 ([decimal]($_.rewardsInDay * $_.price_btc / $_.yourHashrate)) -Force
                 $Pool | Add-Member Price24h              ([decimal]($_.rewardsInDay * $_.price_btc / $_.currentDifficulty * $_.difficulty24 / $_.yourHashrate)) -Force
 

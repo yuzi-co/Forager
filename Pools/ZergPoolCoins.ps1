@@ -95,8 +95,8 @@ if ($Querymode -eq "Core") {
         [PSCustomObject]@{
             Algorithm             = $Pool_Algo
             Info                  = $Pool_Coin
-            Price                 = $(if ($Divisor) {[decimal]$Coin.estimate / $Divisor})
-            Price24h              = $(if ($Divisor) {$(if ($Coin.'24h_btc_shared' -ne $null) {[decimal]$Coin.'24h_btc_shared'} else {[decimal]$Coin.'24h_btc'}) / $Divisor})
+            Price                 = $(if ($Divisor) { [decimal]$Coin.estimate / $Divisor })
+            Price24h              = $(if ($Divisor) { $(if ($Coin.'24h_btc_shared' -ne $null) { [decimal]$Coin.'24h_btc_shared' } else { [decimal]$Coin.'24h_btc' }) / $Divisor })
             Protocol              = "stratum+tcp"
             Host                  = $MineUrl
             Port                  = [int]$Coin.port
@@ -107,8 +107,8 @@ if ($Querymode -eq "Core") {
             Symbol                = $Pool_Symbol
             ActiveOnManualMode    = $ActiveOnManualMode
             ActiveOnAutomaticMode = $ActiveOnAutomaticMode
-            PoolWorkers           = [int]$(if ($Coin.workers_shared -ne $null) {$Coin.workers_shared} else {$Coin.workers})
-            PoolHashRate          = [int64]$(if ($Coin.hashrate_shared -ne $null) {$Coin.hashrate_shared} else {$Coin.hashrate})
+            PoolWorkers           = [int]$(if ($Coin.workers_shared -ne $null) { $Coin.workers_shared } else { $Coin.workers })
+            PoolHashRate          = [int64]$(if ($Coin.hashrate_shared -ne $null) { $Coin.hashrate_shared } else { $Coin.hashrate })
             WalletMode            = $WalletMode
             Walletsymbol          = $Pool_Symbol
             PoolName              = $Name

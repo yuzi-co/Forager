@@ -43,7 +43,7 @@ if ($Querymode -eq "Core") {
         #Filter by minworkes variable (must be here for not selecting now a pool and after that discarded on core.ps1 filter)
         $HPoolsTmp | Where-Object {
             $_.PoolWorkers -eq $null -or
-            $_.PoolWorkers -ge $(if ($Config.("MinWorkers_" + $PoolToSearch)) {$Config.("MinWorkers_" + $PoolToSearch)} else {$Config.MinWorkers})
+            $_.PoolWorkers -ge $(if ($Config.("MinWorkers_" + $PoolToSearch)) { $Config.("MinWorkers_" + $PoolToSearch) } else { $Config.MinWorkers })
         }
     }
 
@@ -94,7 +94,7 @@ if ($Querymode -eq "Core") {
         #we must add units for each algo, this value must be filled if we want a coin to be selected
         $WTMFactor = Get-WhatToMineFactor -Algo $HPool.Algorithm
 
-        if ($WTMFactor -and ($Result | Where-Object {$_.Info -eq $HPool.Info -and $_.Algorithm -eq $HPool.Algorithm}).count -eq 0) {
+        if ($WTMFactor -and ($Result | Where-Object { $_.Info -eq $HPool.Info -and $_.Algorithm -eq $HPool.Algorithm }).count -eq 0) {
             # check if coin is not already included in result
 
             # check if coin in main page coins

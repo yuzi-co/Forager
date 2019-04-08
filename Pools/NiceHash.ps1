@@ -34,11 +34,11 @@ if ($Querymode -eq "Speed") {
     if ($Request.Result.Workers) {
         $Request.Result.Workers | ForEach-Object {
             $Multiplier = switch ($_[6]) {
-                {@(16, 17, 18, 21, 23, 25, 28) -contains $PSItem} {1e9} #GH
-                {@(5, 7, 8, 9, 10, 14, 20, 26, 29, 32) -contains $PSItem} {1e6} #MH
-                {@(19, 22, 30, 31) -contains $PSItem} {1e3} #KH
-                {@(24, 37) -contains $PSItem} {1}
-                Default {1}
+                { @(16, 17, 18, 21, 23, 25, 28) -contains $PSItem } { 1e9 } #GH
+                { @(5, 7, 8, 9, 10, 14, 20, 26, 29, 32) -contains $PSItem } { 1e6 } #MH
+                { @(19, 22, 30, 31) -contains $PSItem } { 1e3 } #KH
+                { @(24, 37) -contains $PSItem } { 1 }
+                Default { 1 }
             }
             $Result += [PSCustomObject]@{
                 PoolName   = $name
@@ -54,7 +54,7 @@ if ($Querymode -eq "Speed") {
 if ($Querymode -eq "Wallet") {
     $Info.user = ($Info.user -split '\.')[0]
     $Request = Invoke-APIRequest -Url $("https://api.nicehash.com/api?method=stats.provider&addr=" + $Info.user) -Retry 3 |
-        Select-Object -ExpandProperty result | Select-Object -ExpandProperty stats
+    Select-Object -ExpandProperty result | Select-Object -ExpandProperty stats
 
     if ($Request) {
         $Result = [PSCustomObject]@{
@@ -74,7 +74,7 @@ if ($Querymode -eq "Core") {
     }
 
     $Request = Invoke-APIRequest -Url "https://api.nicehash.com/api?method=simplemultialgo.info" -Retry 3 |
-        Select-Object -expand result | Select-Object -expand simplemultialgo
+    Select-Object -expand result | Select-Object -expand simplemultialgo
 
     if (-not $Request) {
         Write-Warning "$Name API NOT RESPONDING...ABORTING"
@@ -87,7 +87,7 @@ if ($Querymode -eq "Core") {
         Asia = 'hk'
     }
 
-    $Result = $Request | Where-Object {$_.paying -gt 0} | ForEach-Object {
+    $Result = $Request | Where-Object { $_.paying -gt 0 } | ForEach-Object {
 
         $Algo = Get-AlgoUnifiedName ($_.name)
 
@@ -107,7 +107,7 @@ if ($Querymode -eq "Core") {
                 HostSSL               = $_.name + "." + $Locations.$Location + ".nicehash.com"
                 Port                  = $_.port
                 PortSSL               = $_.port + 30000
-                User                  = $(if ($Wallets.BTC_NICE) {$Wallets.BTC_NICE} else {$Wallets.BTC}) + '.' + "#WorkerName#"
+                User                  = $(if ($Wallets.BTC_NICE) { $Wallets.BTC_NICE } else { $Wallets.BTC }) + '.' + "#WorkerName#"
                 Pass                  = "x"
                 Location              = $Location
                 SSL                   = $EnableSSL
@@ -117,7 +117,7 @@ if ($Querymode -eq "Core") {
                 PoolName              = $Name
                 WalletMode            = $WalletMode
                 WalletSymbol          = "BTC"
-                Fee                   = $(if ($Wallets.BTC_NICE) {0.02} else {0.05})
+                Fee                   = $(if ($Wallets.BTC_NICE) { 0.02 } else { 0.05 })
                 EthStMode             = 3
                 RewardType            = $RewardType
             }

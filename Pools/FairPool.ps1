@@ -42,14 +42,14 @@ if ($Querymode -eq "Wallet") {
     $Request = Invoke-APIRequest -Url $("https://" + $Info.Symbol + ".fairpool.xyz/api/stats?login=" + ($Info.User -split "\+")[0]) -Retry 3
     if ($Request) {
         switch ($Info.Symbol) {
-            'loki' { $Divisor = 1e9}
-            'msr' { $Divisor = 1e12}
+            'loki' { $Divisor = 1e9 }
+            'msr' { $Divisor = 1e12 }
             'pasl' { $Divisor = 1e4 }
-            'purk' { $Divisor = 1e6}
-            'sumo' { $Divisor = 1e9}
-            'xfh' { $Divisor = 1e12}
-            'xhv' { $Divisor = 1e12}
-            'xrn' { $Divisor = 1e9}
+            'purk' { $Divisor = 1e6 }
+            'sumo' { $Divisor = 1e9 }
+            'xfh' { $Divisor = 1e12 }
+            'xhv' { $Divisor = 1e12 }
+            'xrn' { $Divisor = 1e9 }
             Default { $Divisor = 1e9 }
         }
         $Result = [PSCustomObject]@{
@@ -84,7 +84,7 @@ if ($Querymode -eq "Core") {
         [PSCustomObject]@{ Coin = "Wownero"         ; Symbol = "WOW"    ; Algo = "CnWow"       ; WalletSymbol = "wow"     ; Port = 6090 }
     )
 
-    $Result = $Pools | Where-Object {$Wallets.($_.Symbol) -ne $null} | ForEach-Object {
+    $Result = $Pools | Where-Object { $Wallets.($_.Symbol) -ne $null } | ForEach-Object {
         $ApiResponse = Invoke-APIRequest -Url ("https://" + $_.WalletSymbol + ".fairpool.xyz/api/poolStats")
         [PSCustomObject]@{
             Algorithm             = $_.Algo

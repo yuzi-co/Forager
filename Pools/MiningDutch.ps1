@@ -66,7 +66,7 @@ if ($Querymode -eq "Core") {
             Protocol              = "stratum+tcp"
             Host                  = $_.Algo + ".mining-dutch.nl"
             Port                  = $_.Port
-            User                  = $(if ($Config.("UserName_" + $Name)) {$Config.("UserName_" + $Name)} else {$Config.UserName}) + ".#WorkerName#"
+            User                  = $(if ($Config.("UserName_" + $Name)) { $Config.("UserName_" + $Name) } else { $Config.UserName }) + ".#WorkerName#"
             Pass                  = "x"
             Location              = "EU"
             SSL                   = $false

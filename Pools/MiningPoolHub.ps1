@@ -97,7 +97,7 @@ if ($Querymode -eq "Core") {
 
         foreach ($Location in $Locations) {
 
-            $Server = $MiningPoolHub_Hosts | Sort-Object {$_ -like "$Location*"} -Descending | Select-Object -First 1
+            $Server = $MiningPoolHub_Hosts | Sort-Object { $_ -like "$Location*" } -Descending | Select-Object -First 1
 
             [PSCustomObject]@{
                 Algorithm             = $MiningPoolHub_Algorithm
@@ -106,7 +106,7 @@ if ($Querymode -eq "Core") {
                 Protocol              = "stratum+tcp"
                 Host                  = $Server
                 Port                  = $MiningPoolHub_Port
-                User                  = $(if ($Config.("UserName_" + $Name)) {$Config.("UserName_" + $Name)} else {$Config.UserName}) + ".#WorkerName#"
+                User                  = $(if ($Config.("UserName_" + $Name)) { $Config.("UserName_" + $Name) } else { $Config.UserName }) + ".#WorkerName#"
                 Pass                  = "x"
                 Location              = $Location
                 Symbol                = Get-CoinSymbol -Coin $MiningPoolHub_Coin

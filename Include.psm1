@@ -12,7 +12,7 @@ function Set-NvidiaPowerLimit ([int]$PowerLimitPercent, [string]$Devices) {
         # $PowerDefaultLimit = [int](((& $Command $Arguments) -replace 'W').Trim())
 
         $xpr = "./includes/nvidia-smi.exe -i " + $Device + " --query-gpu=power.default_limit --format=csv,noheader"
-        $PowerDefaultLimit = [int]((invoke-expression $xpr) -replace 'W', '')
+        $PowerDefaultLimit = [int]((Invoke-Expression $xpr) -replace 'W', '')
 
         #powerlimit change must run in admin mode
         $NewProcess = New-Object System.Diagnostics.ProcessStartInfo "./includes/nvidia-smi.exe"
@@ -78,8 +78,8 @@ function Get-NextFreePort {
         [int]$LastUsedPort
     )
 
-    if ($LastUsedPort -lt 2000) {$FreePort = 2001} else {$FreePort = $LastUsedPort + 1} #not allow use of <2000 ports
-    while (Test-TCPPort -Server 127.0.0.1 -Port $FreePort -timeout 100) {$FreePort = $LastUsedPort + 1}
+    if ($LastUsedPort -lt 2000) { $FreePort = 2001 } else { $FreePort = $LastUsedPort + 1 } #not allow use of <2000 ports
+    while (Test-TCPPort -Server 127.0.0.1 -Port $FreePort -timeout 100) { $FreePort = $LastUsedPort + 1 }
     $FreePort
 }
 
@@ -91,7 +91,7 @@ function Test-TCPPort {
     try {
         $Connection.SendTimeout = $Timeout
         $Connection.ReceiveTimeout = $Timeout
-        $Connection.Connect($Server, $Port) | out-Null
+        $Connection.Connect($Server, $Port) | Out-Null
         $Connection.Close
         $Connection.Dispose
         return $true #port is occupied
@@ -149,12 +149,12 @@ function Get-DevicesInfoAfterburner {
                 AdapterId         = [int]$_.Index
                 Name              = $_.Device
                 Utilization       = [int]$($CardData | Where-Object SrcName -match "^(GPU\d* )?usage$").Data
-                UtilizationMem    = [int]$($mem = $CardData | Where-Object SrcName -match "^(GPU\d* )?memory usage$"; if ($mem.MaxLimit) {$mem.Data / $mem.MaxLimit * 100})
+                UtilizationMem    = [int]$($mem = $CardData | Where-Object SrcName -match "^(GPU\d* )?memory usage$"; if ($mem.MaxLimit) { $mem.Data / $mem.MaxLimit * 100 })
                 Clock             = [int]$($CardData | Where-Object SrcName -match "^(GPU\d* )?core clock$").Data
                 ClockMem          = [int]$($CardData | Where-Object SrcName -match "^(GPU\d* )?memory clock$").Data
                 FanSpeed          = [int]$($CardData | Where-Object SrcName -match "^(GPU\d* )?fan speed$").Data
                 Temperature       = [int]$($CardData | Where-Object SrcName -match "^(GPU\d* )?temperature$").Data
-                PowerDraw         = [int]$($CardData | Where-Object {$_.SrcName -match "^(GPU\d* )?power$" -and $_.SrcUnits -eq 'W'}).Data
+                PowerDraw         = [int]$($CardData | Where-Object { $_.SrcName -match "^(GPU\d* )?power$" -and $_.SrcUnits -eq 'W' }).Data
                 PowerLimitPercent = [int]$($abControl.GpuEntries[$_.Index].PowerLimitCur)
                 PCIBus            = [int]$($null = $_.GpuId -match "&BUS_(\d+)&"; $matches[1])
             }
@@ -185,7 +185,7 @@ function Get-DevicesInfoADL {
         )
     }
     $Command = "./Includes/OverdriveN.exe"
-    $Result = & $Command | Where-Object {$_ -notlike "*&???" -and $_ -notlike "*failed"} | ConvertFrom-Csv @CsvParams
+    $Result = & $Command | Where-Object { $_ -notlike "*&???" -and $_ -notlike "*failed" } | ConvertFrom-Csv @CsvParams
 
     if (-not $global:AmdCardsTDP) {
         $global:AmdCardsTDP = Get-Content ./Data/amd-cards-tdp.json | ConvertFrom-Json
@@ -279,7 +279,7 @@ function Get-DevicesInfoNvidiaSMI {
             GroupType         = 'NVIDIA'
             Id                = $DeviceId
             Name              = $_.gpu_name
-            Utilization       = [int]$(if ($_.utilization_gpu) {$_.utilization_gpu -replace "[^0-9.,]"} else {100}) #If we dont have real Utilization, at least make the watchdog happy
+            Utilization       = [int]$(if ($_.utilization_gpu) { $_.utilization_gpu -replace "[^0-9.,]" } else { 100 }) #If we dont have real Utilization, at least make the watchdog happy
             UtilizationMem    = [int]$($_.utilization_memory -replace "[^0-9.,]")
             Temperature       = [int]$($_.temperature_gpu -replace "[^0-9.,]")
             PowerDraw         = [int]$($_.power_draw -replace "[^0-9.,]")
@@ -306,12 +306,12 @@ function Get-DevicesInfoCPU {
     if ($abMonitor) {
         $CpuData = @{
             Clock       = $($abMonitor.Entries | Where-Object SrcName -match '^(CPU\d* )clock' | Measure-Object -Property Data -Maximum).Maximum
-            Utilization = $($abMonitor.Entries | Where-Object SrcName -match '^(CPU\d* )usage'| Measure-Object -Property Data -Average).Average
+            Utilization = $($abMonitor.Entries | Where-Object SrcName -match '^(CPU\d* )usage' | Measure-Object -Property Data -Average).Average
             PowerDraw   = $($abMonitor.Entries | Where-Object SrcName -eq 'CPU power').Data
             Temperature = $($abMonitor.Entries | Where-Object SrcName -match "^(CPU\d* )temperature" | Measure-Object -Property Data -Maximum).Maximum
         }
     } else {
-        $CpuData = @{}
+        $CpuData = @{ }
     }
 
     $Devices = $CpuResult | ForEach-Object {
@@ -331,7 +331,7 @@ function Get-DevicesInfoCPU {
             }
             $CpuData.PowerDraw = $CpuTDP.($_.Name.Trim()) * $CpuData.Utilization / 100
         }
-        if (-not $CpuData.Clock) {$CpuData.Clock = $_.MaxClockSpeed}
+        if (-not $CpuData.Clock) { $CpuData.Clock = $_.MaxClockSpeed }
         [PSCustomObject]@{
             GroupName   = 'CPU'
             GroupType   = 'CPU'
@@ -351,8 +351,8 @@ function Get-DevicesInfoCPU {
 
 function Get-DevicesInformation ($Types) {
     $Devices = @()
-    if ($abMonitor) {$abMonitor.ReloadAll()}
-    if ($abControl) {$abControl.ReloadAll()}
+    if ($abMonitor) { $abMonitor.ReloadAll() }
+    if ($abControl) { $abControl.ReloadAll() }
 
     if ($IsWindows) {
         #AMD
@@ -379,31 +379,31 @@ function Get-DevicesInformation ($Types) {
 function Out-DevicesInformation ($Devices) {
 
     $Devices | Where-Object GroupType -ne 'CPU' | Sort-Object GroupType | Format-Table -Wrap (
-        @{Label = "Id"; Expression = {$_.Id}; Align = 'right'},
-        @{Label = "Group"; Expression = {$_.GroupName}; Align = 'right'},
-        @{Label = "Name"; Expression = {$_.Name}},
-        @{Label = "Load"; Expression = {[string]$_.Utilization + "%"}; Align = 'right'},
-        @{Label = "Power"; Expression = {[string]$_.PowerDraw + "W"}; Align = 'right'},
-        @{Label = "Temp"; Expression = {$_.Temperature}; Align = 'right'},
-        @{Label = "Clock"; Expression = {[string]$_.Clock + "Mhz"}; Align = 'right'},
-        @{Label = "ClkMem"; Expression = {[string]$_.ClockMem + "Mhz"}; Align = 'right'},
-        @{Label = "Mem"; Expression = {[string]$_.UtilizationMem + "%"}; Align = 'right'},
-        @{Label = "Fan"; Expression = {[string]$_.FanSpeed + "%"}; Align = 'right'},
-        @{Label = "PwLim"; Expression = {[string]$_.PowerLimitPercent + '%'}; Align = 'right'},
-        @{Label = "Pstate"; Expression = {$_.pstate}; Align = 'right'}
+        @{Label = "Id"; Expression = { $_.Id }; Align = 'right' },
+        @{Label = "Group"; Expression = { $_.GroupName }; Align = 'right' },
+        @{Label = "Name"; Expression = { $_.Name } },
+        @{Label = "Load"; Expression = { [string]$_.Utilization + "%" }; Align = 'right' },
+        @{Label = "Power"; Expression = { [string]$_.PowerDraw + "W" }; Align = 'right' },
+        @{Label = "Temp"; Expression = { $_.Temperature }; Align = 'right' },
+        @{Label = "Clock"; Expression = { [string]$_.Clock + "Mhz" }; Align = 'right' },
+        @{Label = "ClkMem"; Expression = { [string]$_.ClockMem + "Mhz" }; Align = 'right' },
+        @{Label = "Mem"; Expression = { [string]$_.UtilizationMem + "%" }; Align = 'right' },
+        @{Label = "Fan"; Expression = { [string]$_.FanSpeed + "%" }; Align = 'right' },
+        @{Label = "PwLim"; Expression = { [string]$_.PowerLimitPercent + '%' }; Align = 'right' },
+        @{Label = "Pstate"; Expression = { $_.pstate }; Align = 'right' }
     ) -GroupBy GroupType | Out-Host
 
     $Devices | Where-Object GroupType -eq 'CPU' | Format-Table -Wrap (
-        @{Label = "Id"; Expression = {$_.Id}; Align = 'right'},
-        @{Label = "Group"; Expression = {$_.GroupName}; Align = 'right'},
-        @{Label = "Name"; Expression = {$_.Name}},
-        @{Label = "Load"; Expression = {[string]$_.Utilization + "%"}; Align = 'right'},
-        @{Label = "Power"; Expression = {[string]$_.PowerDraw + "W"}; Align = 'right'},
-        @{Label = "Temp"; Expression = {$_.Temperature}; Align = 'right'},
-        @{Label = "Clock"; Expression = {[string]$_.Clock + "Mhz"}; Align = 'right'},
-        @{Label = "Cores"; Expression = {$_.Cores}},
-        @{Label = "Threads"; Expression = {$_.Threads}},
-        @{Label = "CacheL3"; Expression = {[string]$_.CacheL3 + "MB"}; Align = 'right'}
+        @{Label = "Id"; Expression = { $_.Id }; Align = 'right' },
+        @{Label = "Group"; Expression = { $_.GroupName }; Align = 'right' },
+        @{Label = "Name"; Expression = { $_.Name } },
+        @{Label = "Load"; Expression = { [string]$_.Utilization + "%" }; Align = 'right' },
+        @{Label = "Power"; Expression = { [string]$_.PowerDraw + "W" }; Align = 'right' },
+        @{Label = "Temp"; Expression = { $_.Temperature }; Align = 'right' },
+        @{Label = "Clock"; Expression = { [string]$_.Clock + "Mhz" }; Align = 'right' },
+        @{Label = "Cores"; Expression = { $_.Cores } },
+        @{Label = "Threads"; Expression = { $_.Threads } },
+        @{Label = "CacheL3"; Expression = { [string]$_.CacheL3 + "MB" }; Align = 'right' }
     ) -GroupBy GroupType | Out-Host
 }
 
@@ -501,13 +501,13 @@ function Get-OpenCLDevices {
     if ($Fake) {
         # start fake
         $OCLDevices = @(
-            [PSCustomObject]@{Name = 'Ellesmere'; Vendor = 'Advanced Micro Devices, Inc.'; GlobalMemSize = 8GB; PlatformId = 0; Type = 'Gpu'; DeviceIndex = 0; MaxComputeUnits = 30}
-            [PSCustomObject]@{Name = 'Ellesmere'; Vendor = 'Advanced Micro Devices, Inc.'; GlobalMemSize = 8GB; PlatformId = 0; Type = 'Gpu'; DeviceIndex = 1; MaxComputeUnits = 30}
-            [PSCustomObject]@{Name = 'Ellesmere'; Vendor = 'Advanced Micro Devices, Inc.'; GlobalMemSize = 4GB; PlatformId = 0; Type = 'Gpu'; DeviceIndex = 2; MaxComputeUnits = 30}
-            [PSCustomObject]@{Name = 'GeForce 1060'; Vendor = 'NVIDIA Corporation'; GlobalMemSize = 3GB; PlatformId = 1; Type = 'Gpu'; DeviceIndex = 0; MaxComputeUnits = 30}
-            [PSCustomObject]@{Name = 'GeForce 1060'; Vendor = 'NVIDIA Corporation'; GlobalMemSize = 3GB; PlatformId = 1; Type = 'Gpu'; DeviceIndex = 1; MaxComputeUnits = 30}
-            [PSCustomObject]@{Name = 'GeForce 1080'; Vendor = 'NVIDIA Corporation'; GlobalMemSize = 8GB; PlatformId = 1; Type = 'Gpu'; DeviceIndex = 2; MaxComputeUnits = 60}
-            [PSCustomObject]@{Name = 'Intel CPU'; Vendor = 'Intel'; GlobalMemSize = 8GB; PlatformId = 1; Type = 'Cpu'; DeviceIndex = 1; MaxComputeUnits = 4}
+            [PSCustomObject]@{Name = 'Ellesmere'; Vendor = 'Advanced Micro Devices, Inc.'; GlobalMemSize = 8GB; PlatformId = 0; Type = 'Gpu'; DeviceIndex = 0; MaxComputeUnits = 30 }
+            [PSCustomObject]@{Name = 'Ellesmere'; Vendor = 'Advanced Micro Devices, Inc.'; GlobalMemSize = 8GB; PlatformId = 0; Type = 'Gpu'; DeviceIndex = 1; MaxComputeUnits = 30 }
+            [PSCustomObject]@{Name = 'Ellesmere'; Vendor = 'Advanced Micro Devices, Inc.'; GlobalMemSize = 4GB; PlatformId = 0; Type = 'Gpu'; DeviceIndex = 2; MaxComputeUnits = 30 }
+            [PSCustomObject]@{Name = 'GeForce 1060'; Vendor = 'NVIDIA Corporation'; GlobalMemSize = 3GB; PlatformId = 1; Type = 'Gpu'; DeviceIndex = 0; MaxComputeUnits = 30 }
+            [PSCustomObject]@{Name = 'GeForce 1060'; Vendor = 'NVIDIA Corporation'; GlobalMemSize = 3GB; PlatformId = 1; Type = 'Gpu'; DeviceIndex = 1; MaxComputeUnits = 30 }
+            [PSCustomObject]@{Name = 'GeForce 1080'; Vendor = 'NVIDIA Corporation'; GlobalMemSize = 8GB; PlatformId = 1; Type = 'Gpu'; DeviceIndex = 2; MaxComputeUnits = 60 }
+            [PSCustomObject]@{Name = 'Intel CPU'; Vendor = 'Intel'; GlobalMemSize = 8GB; PlatformId = 1; Type = 'Cpu'; DeviceIndex = 1; MaxComputeUnits = 4 }
         )
         # end fake
     } else {
@@ -547,12 +547,12 @@ function Get-OpenCLDevices {
 
 function Get-CpuFeatures {
     if ($IsWindows) {
-        $Features = $($feat = @{}; switch -regex ((& ./Includes/CHKCPU32.exe /x) -split "</\w+>") {"^\s*<_?(\w+)>(\d+).*" {$feat.($matches[1]) = [int]$matches[2]}}; $feat)
+        $Features = $($feat = @{ }; switch -regex ((& CHKCPU32.exe /x) -split "</\w+>") { "^\s*<_?(\w+)>(\d+).*" { $feat.($matches[1]) = [int]$matches[2] } }; $feat)
     } elseif ($IsLinux) {
         $Data = Get-Content /proc/cpuinfo
-        $Features = $($feat = @{}; (($Data | Where-Object {$_ -like "flags*"})[0] -split ":")[1].Trim() -split " " | ForEach-Object { $feat.$_ = 1 }; $feat)
-        $Features.threads = [int]($Data | Where-Object {$_ -like 'processor*'}).count
-        $Features.cores = [int](($Data | Where-Object {$_ -like 'cpu cores*'})[0] -split ":")[1].Trim()
+        $Features = $($feat = @{ }; (($Data | Where-Object { $_ -like "flags*" })[0] -split ":")[1].Trim() -split " " | ForEach-Object { $feat.$_ = 1 }; $feat)
+        $Features.threads = [int]($Data | Where-Object { $_ -like 'processor*' }).count
+        $Features.cores = [int](($Data | Where-Object { $_ -like 'cpu cores*' })[0] -split ":")[1].Trim()
     }
     return $Features
 }
@@ -584,10 +584,10 @@ function Get-MiningTypes () {
         if ($null -eq $_.Enabled) { $_ | Add-Member Enabled $true }
     }
 
-    if ($Devices | Where-Object {$_.GroupType -eq 'CPU'}) {
+    if ($Devices | Where-Object { $_.GroupType -eq 'CPU' }) {
 
         $Features = Get-CpuFeatures
-        $Devices | Where-Object {$_.GroupType -eq 'CPU'} | ForEach-Object {
+        $Devices | Where-Object { $_.GroupType -eq 'CPU' } | ForEach-Object {
             $_ | Add-Member Devices "0" -Force
             $_ | Add-Member Features $Features
         }
@@ -602,7 +602,7 @@ function Get-MiningTypes () {
             $_ | Add-Member ID $TypeID
             $TypeID++
 
-            $_ | Add-Member DevicesArray @([int[]]($_.Devices -split ','| ForEach-Object {$_.Trim()}))   # @(0,1,2,10,11,12)
+            $_ | Add-Member DevicesArray @([int[]]($_.Devices -split ',' | ForEach-Object { $_.Trim() }))   # @(0,1,2,10,11,12)
             $_ | Add-Member DevicesCount ($_.DevicesArray.count)             # 6
 
             $Pattern = switch ($_.GroupType) {
@@ -611,17 +611,17 @@ function Get-MiningTypes () {
                 'INTEL' { @('Intel(R) Corporation') }
                 'CPU' { @('GenuineIntel', 'AuthenticAMD') }
             }
-            $OCLDevice = @($OCLDevices | Where-Object {$Pattern -contains $_.Vendor})[$_.DevicesArray]
+            $OCLDevice = @($OCLDevices | Where-Object { $Pattern -contains $_.Vendor })[$_.DevicesArray]
             if ($OCLDevice) {
-                if ($null -eq $_.PlatformId) {$_ | Add-Member PlatformId ($OCLDevice.PlatformId | Select-Object -First 1)}
-                if ($null -eq $_.MemoryGB) {$_ | Add-Member MemoryGB ([math]::Round((($OCLDevice | Measure-Object -Property GlobalMemSize -Minimum).Minimum / 1GB ), 2))}
-                if ($OCLDevice[0].Platform.Version -match "CUDA\s+([\d\.]+)") {$_ | Add-Member CUDAVersion $Matches[1] -Force}
+                if ($null -eq $_.PlatformId) { $_ | Add-Member PlatformId ($OCLDevice.PlatformId | Select-Object -First 1) }
+                if ($null -eq $_.MemoryGB) { $_ | Add-Member MemoryGB ([math]::Round((($OCLDevice | Measure-Object -Property GlobalMemSize -Minimum).Minimum / 1GB ), 2)) }
+                if ($OCLDevice[0].Platform.Version -match "CUDA\s+([\d\.]+)") { $_ | Add-Member CUDAVersion $Matches[1] -Force }
                 $_ | Add-Member OCLDeviceId @($OCLDevice.OCLDeviceId)
                 $_ | Add-Member OCLGpuId @($OCLDevice.OCLGpuId)
             }
 
             if ($_.PowerLimits -is [string] -and $_.PowerLimits.Length -gt 0) {
-                $_ | Add-Member PowerLimits @([int[]]($_.PowerLimits -split ',' | ForEach-Object {$_.Trim()} ) | Sort-Object -Descending -Unique) -Force
+                $_ | Add-Member PowerLimits @([int[]]($_.PowerLimits -split ',' | ForEach-Object { $_.Trim() } ) | Sort-Object -Descending -Unique) -Force
             } else {
                 $_ | Add-Member PowerLimits @(0) -Force
             }
@@ -631,7 +631,7 @@ function Get-MiningTypes () {
             }
 
             $_ | Add-Member MinProfit ([decimal]$Config.("MinProfit_" + $_.GroupName))
-            $_ | Add-Member Algorithms @($Config.("Algorithms_" + $_.GroupName) -split ','| ForEach-Object {$_.Trim()})
+            $_ | Add-Member Algorithms @($Config.("Algorithms_" + $_.GroupName) -split ',' | ForEach-Object { $_.Trim() })
 
             $ApiPorts = @{
                 'AMD'    = 4028
@@ -665,8 +665,8 @@ function Format-DeviceList {
     }
 
     switch ($Type) {
-        Clay { ($Devices | ForEach-Object {'{0:X}' -f $_}) -join '' }    # 012ABC
-        Nsg { ($Devices | ForEach-Object { "-d " + $_}) -join ' ' }      # -d 0 -d 1 -d 2 -d 10 -d 11 -d 12
+        Clay { ($Devices | ForEach-Object { '{0:X}' -f $_ }) -join '' }  # 012ABC
+        Nsg { ($Devices | ForEach-Object { "-d " + $_ }) -join ' ' }     # -d 0 -d 1 -d 2 -d 10 -d 11 -d 12
         Eth { $Devices -join ' ' }                                       # 0 1 2 10 11 12
         Count { $Devices.count }                                         # 6
         Mask { '{0:X}' -f [int]($Devices | ForEach-Object { [System.Math]::Pow(2, $_) } | Measure-Object -Sum).Sum }
@@ -771,13 +771,13 @@ function Invoke-TcpRequest {
         [Switch]$ReadToEnd
     )
     $Response = $null
-    if ($Server -eq "localhost") {$Server = "127.0.0.1"}
+    if ($Server -eq "localhost") { $Server = "127.0.0.1" }
     #try {$ipaddress = [ipaddress]$Server} catch {$ipaddress = [system.Net.Dns]::GetHostByName($Server).AddressList | select-object -index 0}
     try {
         $Client = New-Object System.Net.Sockets.TcpClient $Server, $Port
         $Stream = $Client.GetStream()
         $Writer = New-Object System.IO.StreamWriter $Stream
-        if (-not $WriteOnly) {$Reader = New-Object System.IO.StreamReader $Stream}
+        if (-not $WriteOnly) { $Reader = New-Object System.IO.StreamReader $Stream }
         $client.SendTimeout = $Timeout * 1000
         $client.ReceiveTimeout = $Timeout * 1000
         $Writer.AutoFlush = $true
@@ -797,13 +797,13 @@ function Invoke-TcpRequest {
             }
         }
     } catch {
-        if ($Error.Count) {$Error.RemoveAt(0)}
-        if (-not $Quiet) {Log "Could not request from $($Server):$($Port)" -Severity Warn}
+        if ($Error.Count) { $Error.RemoveAt(0) }
+        if (-not $Quiet) { Log "Could not request from $($Server):$($Port)" -Severity Warn }
     } finally {
-        if ($Reader) {$Reader.Close(); $Reader.Dispose()}
-        if ($Writer) {$Writer.Close(); $Writer.Dispose()}
-        if ($Stream) {$Stream.Close(); $Stream.Dispose()}
-        if ($Client) {$Client.Close(); $Client.Dispose()}
+        if ($Reader) { $Reader.Close(); $Reader.Dispose() }
+        if ($Writer) { $Writer.Close(); $Writer.Dispose() }
+        if ($Stream) { $Stream.Close(); $Stream.Dispose() }
+        if ($Client) { $Client.Close(); $Client.Dispose() }
     }
     $Response
 }
@@ -861,7 +861,7 @@ function Invoke-APIRequest {
             try {
                 $Retry--
                 $Response = Invoke-RestMethod -Uri $Url -UserAgent $UserAgent -UseBasicParsing -TimeoutSec $Timeout
-                if ($Response) {$Retry = 0}
+                if ($Response) { $Retry = 0 }
             } catch {
                 Start-Sleep -Seconds 1
                 $Error.Remove($error[$Error.Count - 1])
@@ -891,7 +891,7 @@ function Get-LiveHashRate {
         switch ($Miner.Api) {
 
             "xgminer" {
-                $Message = @{command = "summary"; parameter = ""} | ConvertTo-Json -Compress
+                $Message = @{command = "summary"; parameter = "" } | ConvertTo-Json -Compress
                 $Request = Invoke-TCPRequest -Port $Miner.ApiPort -Request $Message -Quiet
 
                 if ($Request) {
@@ -904,7 +904,7 @@ function Get-LiveHashRate {
                         [double]$Data.SUMMARY."GHS 5s" * 1e9
                         [double]$Data.SUMMARY."THS 5s" * 1e12
                         [double]$Data.SUMMARY."PHS 5s" * 1e15
-                    ) | Where-Object {$_ -gt 0} | Select-Object -First 1
+                    ) | Where-Object { $_ -gt 0 } | Select-Object -First 1
 
                     if (-not $HashRate) {
                         $HashRate = @(
@@ -914,7 +914,7 @@ function Get-LiveHashRate {
                             [double]$Data.SUMMARY."GHS av" * 1e9
                             [double]$Data.SUMMARY."THS av" * 1e12
                             [double]$Data.SUMMARY."PHS av" * 1e15
-                        ) | Where-Object {$_ -gt 0} | Select-Object -First 1
+                        ) | Where-Object { $_ -gt 0 } | Select-Object -First 1
                     }
                     $Shares = @(
                         [int]$Data.SUMMARY.Accepted
@@ -934,7 +934,7 @@ function Get-LiveHashRate {
                         [double]$Data.GHS * 1e9
                         [double]$Data.THS * 1e12
                         [double]$Data.PHS * 1e15
-                    ) | Where-Object {$_ -gt 0} | Select-Object -First 1
+                    ) | Where-Object { $_ -gt 0 } | Select-Object -First 1
                     $Shares = @(
                         [int64]$Data.ACC
                         [int64]$Data.REJ
@@ -943,7 +943,7 @@ function Get-LiveHashRate {
             }
 
             "ewbf" {
-                $Message = @{id = 1; method = "getstat"} | ConvertTo-Json -Compress
+                $Message = @{id = 1; method = "getstat" } | ConvertTo-Json -Compress
                 $Request = Invoke-TCPRequest -Port $Miner.ApiPort -Request $Message -Quiet
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
@@ -952,7 +952,7 @@ function Get-LiveHashRate {
             }
 
             "Claymore" {
-                $Message = @{id = 0; jsonrpc = "2.0"; method = "miner_getstat1"} | ConvertTo-Json -Compress
+                $Message = @{id = 0; jsonrpc = "2.0"; method = "miner_getstat1" } | ConvertTo-Json -Compress
                 $Request = Invoke-TCPRequest -Port $Miner.ApiPort -Request $Message -Quiet
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
@@ -975,16 +975,16 @@ function Get-LiveHashRate {
                         [int64]$R[1]
                         [int64]$R[2]
                         $(if ($HashRate[1] -gt 0) {
-                            [int64]$S[1]
-                            [int64]$S[2]
-                        })
+                                [int64]$S[1]
+                                [int64]$S[2]
+                            })
                     )
                 }
             }
 
             "wrapper" {
                 $wrpath = "./Wrapper_$($Miner.ApiPort).txt"
-                $HashRate = [double]$(if (Test-Path -path $wrpath) {Get-Content $wrpath} else {0})
+                $HashRate = [double]$(if (Test-Path -path $wrpath) { Get-Content $wrpath } else { 0 })
             }
 
             "castXMR" {
@@ -1019,14 +1019,14 @@ function Get-LiveHashRate {
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
                     $HashRate = $Data.devices |
-                        Get-Member -MemberType NoteProperty |
-                        ForEach-Object {$Data.devices.($_.name).solvers} |
-                        Group-Object algorithm |
-                        ForEach-Object {
+                    Get-Member -MemberType NoteProperty |
+                    ForEach-Object { $Data.devices.($_.name).solvers } |
+                    Group-Object algorithm |
+                    ForEach-Object {
                         @(
                             $_.group.speed_info.hash_rate | Measure-Object -Sum | Select-Object -ExpandProperty Sum
                             $_.group.speed_info.solution_rate | Measure-Object -Sum | Select-Object -ExpandProperty Sum
-                        ) | Where-Object {$_ -gt 0}
+                        ) | Where-Object { $_ -gt 0 }
                     }
                 }
             }
@@ -1038,7 +1038,7 @@ function Get-LiveHashRate {
                     $HashRate = @(
                         [double]$Data.HashRate_total_now
                         [double]$Data.HashRate_total_5min
-                    ) | Where-Object {$_ -gt 0} | Select-Object -First 1
+                    ) | Where-Object { $_ -gt 0 } | Select-Object -First 1
                     $Shares = @(
                         [int64]$Data.shares.accepted
                         [int64]$Data.shares.rejected
@@ -1178,7 +1178,7 @@ function Get-LiveHashRate {
             Shares    = @($Shares)
         }
 
-    } catch {}
+    } catch { }
 }
 
 Set-Alias Get-LiveMinerStats Get-LiveHashRate
@@ -1190,12 +1190,12 @@ function ConvertTo-Hash {
     )
 
     $Return = switch ([math]::truncate([math]::log($Hash, 1e3))) {
-        1 {"{0:g4} kh" -f ($Hash / 1e3)}
-        2 {"{0:g4} mh" -f ($Hash / 1e6)}
-        3 {"{0:g4} gh" -f ($Hash / 1e9)}
-        4 {"{0:g4} th" -f ($Hash / 1e12)}
-        5 {"{0:g4} ph" -f ($Hash / 1e15)}
-        default {"{0:g4} h" -f ($Hash)}
+        1 { "{0:g4} kh" -f ($Hash / 1e3) }
+        2 { "{0:g4} mh" -f ($Hash / 1e6) }
+        3 { "{0:g4} gh" -f ($Hash / 1e9) }
+        4 { "{0:g4} th" -f ($Hash / 1e12) }
+        5 { "{0:g4} ph" -f ($Hash / 1e15) }
+        default { "{0:g4} h" -f ($Hash) }
     }
     $Return
 }
@@ -1226,79 +1226,79 @@ function Start-SubProcess {
         3  = "RealTime"
     }
 
-        $JobParams = @{
-            ArgumentList = $PID, $FilePath, $ArgumentList, $MinerWindowStyle, $WorkingDirectory, $UseAlternateMinerLauncher
+    $JobParams = @{
+        ArgumentList = $PID, $FilePath, $ArgumentList, $MinerWindowStyle, $WorkingDirectory, $UseAlternateMinerLauncher
+    }
+
+    if ($UseAlternateMinerLauncher -and $IsWindows) {
+        $JobParams.InitializationScript = $([scriptblock]::Create("Set-Location('$(Get-Location)');. ./Includes/CreateProcess.ps1"))
+    }
+
+
+    $Job = Start-Job @JobParams {
+        param($ControllerProcessID, $FilePath, $ArgumentList, $MinerWindowStyle, $WorkingDirectory, $UseAlternateMinerLauncher)
+
+        $ControllerProcess = Get-Process -Id $ControllerProcessID
+        if (-not $ControllerProcess) {
+            return
+        }
+
+        $ProcessParams = @{
+            FilePath         = $FilePath
+            ArgumentList     = $ArgumentList
+            WorkingDirectory = $WorkingDirectory
+        }
+
+        if ($IsWindows) {
+            $ProcessParams.WindowStyle = $MinerWindowStyle
         }
 
         if ($UseAlternateMinerLauncher -and $IsWindows) {
-            $JobParams.InitializationScript = $([scriptblock]::Create("Set-Location('$(Get-Location)');. ./Includes/CreateProcess.ps1"))
+            . "$PSScriptRoot/Includes/CreateProcess.ps1"
+
+            $ProcessParams.CreationFlags = [CreationFlags]::CREATE_NEW_CONSOLE
+            $ProcessParams.StartF = [STARTF]::STARTF_USESHOWWINDOW
+
+            $Process = Invoke-CreateProcess @ProcessParams
+        } else {
+            $ProcessParams.PassThru = $true
+
+            if ($IsLinux) {
+                # Linux requires output redirection, otherwise Receive-Job fails
+                $ProcessParams.RedirectStandardOutput = $WorkingDirectory + "/console.log"
+                $ProcessParams.RedirectStandardError = $WorkingDirectory + "/error.log"
+
+                # Fix executable permissions
+                & chmod +x $FilePath | Out-Null
+
+                # Set lib path to local
+                $env:LD_LIBRARY_PATH = $env:LD_LIBRARY_PATH + ":./"
+            }
+
+            $Process = Start-Process @ProcessParams
         }
 
-
-        $Job = Start-Job @JobParams {
-            param($ControllerProcessID, $FilePath, $ArgumentList, $MinerWindowStyle, $WorkingDirectory, $UseAlternateMinerLauncher)
-
-            $ControllerProcess = Get-Process -Id $ControllerProcessID
-            if (-not $ControllerProcess) {
-                return
-            }
-
-            $ProcessParams = @{
-                FilePath         = $FilePath
-                ArgumentList     = $ArgumentList
-                WorkingDirectory = $WorkingDirectory
-            }
-
-            if ($IsWindows) {
-                $ProcessParams.WindowStyle = $MinerWindowStyle
-            }
-
-            if ($UseAlternateMinerLauncher -and $IsWindows) {
-                . ./Includes/CreateProcess.ps1
-
-                $ProcessParams.CreationFlags = [CreationFlags]::CREATE_NEW_CONSOLE
-                $ProcessParams.StartF = [STARTF]::STARTF_USESHOWWINDOW
-
-                $Process = Invoke-CreateProcess @ProcessParams
-            } else {
-                $ProcessParams.PassThru = $true
-
-                if ($IsLinux) {
-                    # Linux requires output redirection, otherwise Receive-Job fails
-                    $ProcessParams.RedirectStandardOutput = $WorkingDirectory + "/console.log"
-                    $ProcessParams.RedirectStandardError = $WorkingDirectory + "/error.log"
-
-                    # Fix executable permissions
-                    & chmod +x $FilePath | Out-Null
-
-                    # Set lib path to local
-                    $env:LD_LIBRARY_PATH = $env:LD_LIBRARY_PATH + ":./"
-                }
-
-                $Process = Start-Process @ProcessParams
-            }
-
-            if (-not $Process) {
-                [PSCustomObject]@{
-                    ProcessId = $null
-                }
-                return
-            }
-
+        if (-not $Process) {
             [PSCustomObject]@{
-                ProcessId     = $Process.Id
-                ProcessHandle = $Process.Handle
+                ProcessId = $null
             }
+            return
+        }
 
-            $ControllerProcess.Handle | Out-Null
-            $Process.Handle | Out-Null
+        [PSCustomObject]@{
+            ProcessId     = $Process.Id
+            ProcessHandle = $Process.Handle
+        }
 
-            do {
-                if ($ControllerProcess.WaitForExit(1000)) {
-                    $Process.CloseMainWindow() | Out-Null
-                }
-            } until ($Process.HasExited)
-        } # End job definition
+        $ControllerProcess.Handle | Out-Null
+        $Process.Handle | Out-Null
+
+        do {
+            if ($ControllerProcess.WaitForExit(1000)) {
+                $Process.CloseMainWindow() | Out-Null
+            }
+        } until ($Process.HasExited)
+    } # End job definition
 
     do {
         Start-Sleep -Seconds 1
@@ -1310,7 +1310,7 @@ function Start-SubProcess {
         $Process.Handle | Out-Null
         $Process
 
-        if ($Process) {$Process.PriorityClass = $PriorityNames.$Priority}
+        if ($Process) { $Process.PriorityClass = $PriorityNames.$Priority }
     }
 }
 
@@ -1328,7 +1328,7 @@ function Expand-WebRequest {
     $CachePath = "./Downloads/"
     $FilePath = $CachePath + $Filename
 
-    if (-not (Test-Path -LiteralPath $CachePath)) {$null = New-Item -Path $CachePath -ItemType directory}
+    if (-not (Test-Path -LiteralPath $CachePath)) { $null = New-Item -Path $CachePath -ItemType directory }
 
     try {
         if (Test-Path -LiteralPath $FilePath) {
@@ -1347,7 +1347,7 @@ function Expand-WebRequest {
                 Start-Process $FilePath "-qb" -Wait
             } else {
                 Log "Unpacking to $Path"
-                if (-not (Test-Path $Path)) {$null = New-Item -Path $Path -ItemType directory}
+                if (-not (Test-Path $Path)) { $null = New-Item -Path $Path -ItemType directory }
 
                 if ($IsLinux) {
                     if (($FileName -split '\.')[-2] -eq 'tar') {
@@ -1400,7 +1400,7 @@ function Get-Pools {
         [array]$AlgoFilterList,
 
         [Parameter(Mandatory = $false)]
-        [PSCustomObject]$Info = @{}
+        [PSCustomObject]$Info = @{ }
     )
     #in detail mode returns a line for each pool/algo/coin combination, in info mode returns a line for pool
 
@@ -1428,7 +1428,7 @@ function Get-Pools {
 
     $AllPools = $ChildItems | ForEach-Object {
         if ($_.Content) {
-            $_.Content | Add-Member @{Name = $_.Name} -PassThru -Force
+            $_.Content | Add-Member @{Name = $_.Name } -PassThru -Force
         }
     }
 
@@ -1437,18 +1437,16 @@ function Get-Pools {
     #Apply filters
     $AllPools2 = @()
     if ($Querymode -eq "Core" -or $Querymode -eq "Menu" ) {
-        foreach ($Pool in $AllPools) {
-            #must have wallet
-            if (-not $Pool.User) {continue}
+        foreach ($Pool in ($AllPools | Where-Object User)) {
 
             # Include pool algos and coins
             if (
                 (
                     $Config.("IncludeAlgos_" + $Pool.PoolName) -and
-                    @($Config.("IncludeAlgos_" + $Pool.PoolName) -split ','| ForEach-Object {$_.Trim()}) -notcontains $Pool.Algorithm
+                    @($Config.("IncludeAlgos_" + $Pool.PoolName) -split ',' | ForEach-Object { $_.Trim() }) -notcontains $Pool.Algorithm
                 ) -or (
                     $Config.("IncludeCoins_" + $Pool.PoolName) -and
-                    @($Config.("IncludeCoins_" + $Pool.PoolName) -split ','| ForEach-Object {$_.Trim()}) -notcontains $Pool.Info
+                    @($Config.("IncludeCoins_" + $Pool.PoolName) -split ',' | ForEach-Object { $_.Trim() }) -notcontains $Pool.Info
                 )
             ) {
                 Log "Excluding $($Pool.Algorithm)/$($Pool.Info) on $($Pool.PoolName) due to Include filter" -Severity Debug
@@ -1457,38 +1455,38 @@ function Get-Pools {
 
             # Exclude pool algos and coins
             if (
-                @($Config.("ExcludeAlgos_" + $Pool.PoolName) -split ','| ForEach-Object {$_.Trim()}) -contains $Pool.Algorithm -or
-                @($Config.("ExcludeCoins_" + $Pool.PoolName) -split ','| ForEach-Object {$_.Trim()}) -contains $Pool.Info
+                @($Config.("ExcludeAlgos_" + $Pool.PoolName) -split ',' | ForEach-Object { $_.Trim() }) -contains $Pool.Algorithm -or
+                @($Config.("ExcludeCoins_" + $Pool.PoolName) -split ',' | ForEach-Object { $_.Trim() }) -contains $Pool.Info
             ) {
                 Log "Excluding $($Pool.Algorithm)/$($Pool.Info) on $($Pool.PoolName) due to Exclude filter" -Severity Debug
                 continue
             }
 
             #must be in algo filter list or no list
-            if ($AlgoFilterList) {$Algofilter = Compare-Object $AlgoFilterList $Pool.Algorithm -IncludeEqual -ExcludeDifferent}
+            if ($AlgoFilterList) { $Algofilter = Compare-Object $AlgoFilterList $Pool.Algorithm -IncludeEqual -ExcludeDifferent }
             if ($AlgoFilterList.count -eq 0 -or $Algofilter) {
 
                 #must be in coin filter list or no list
-                if ($CoinFilterList) {$CoinFilter = Compare-Object $CoinFilterList $Pool.info -IncludeEqual -ExcludeDifferent}
+                if ($CoinFilterList) { $CoinFilter = Compare-Object $CoinFilterList $Pool.info -IncludeEqual -ExcludeDifferent }
                 if ($CoinFilterList.count -eq 0 -or $CoinFilter) {
-                    if ($Pool.Location -eq $Location) {$Pool.LocationPriority = 1}
-                    elseif ($Pool.Location -eq 'EU' -and $Location -eq 'US') {$Pool.LocationPriority = 2}
-                    elseif ($Pool.Location -eq 'US' -and $Location -eq 'EU') {$Pool.LocationPriority = 2}
+                    if ($Pool.Location -eq $Location) { $Pool.LocationPriority = 1 }
+                    elseif ($Pool.Location -eq 'EU' -and $Location -eq 'US') { $Pool.LocationPriority = 2 }
+                    elseif ($Pool.Location -eq 'US' -and $Location -eq 'EU') { $Pool.LocationPriority = 2 }
 
                     ## factor actual24h if price differs by factor of 10
                     if ($Pool.Actual24h) {
                         $factor = 0.2
-                        if ($Pool.Price -gt ($Pool.Actual24h * 10)) {$Pool.Price = $Pool.Price * $factor + $Pool.Actual24h * (1 - $factor)}
-                        if ($Pool.Price24h -gt ($Pool.Actual24h * 10)) {$Pool.Price24h = $Pool.Price24h * $factor + $Pool.Actual24h * (1 - $factor)}
+                        if ($Pool.Price -gt ($Pool.Actual24h * 10)) { $Pool.Price = $Pool.Price * $factor + $Pool.Actual24h * (1 - $factor) }
+                        if ($Pool.Price24h -gt ($Pool.Actual24h * 10)) { $Pool.Price24h = $Pool.Price24h * $factor + $Pool.Actual24h * (1 - $factor) }
                     }
                     ## Apply pool fees and pool factors
                     if ($Pool.Price) {
                         $Pool.Price *= 1 - [double]$Pool.Fee
-                        $Pool.Price *= $(if ($Config."PoolProfitFactor_$($Pool.Name)") {[double]$Config."PoolProfitFactor_$($Pool.Name)"} else {1})
+                        $Pool.Price *= $(if ($Config."PoolProfitFactor_$($Pool.Name)") { [double]$Config."PoolProfitFactor_$($Pool.Name)" } else { 1 })
                     }
                     if ($Pool.Price24h) {
                         $Pool.Price24h *= 1 - [double]$Pool.Fee
-                        $Pool.Price24h *= $(if ($Config."PoolProfitFactor_$($Pool.Name)") {[double]$Config."PoolProfitFactor_$($Pool.Name)"} else {1})
+                        $Pool.Price24h *= $(if ($Config."PoolProfitFactor_$($Pool.Name)") { [double]$Config."PoolProfitFactor_$($Pool.Name)" } else { 1 })
                     }
                     $AllPools2 += $Pool
                 }
@@ -1497,8 +1495,8 @@ function Get-Pools {
         $Return = $AllPools2
     } else { $Return = $AllPools }
 
-    Remove-variable AllPools
-    Remove-variable AllPools2
+    Remove-Variable AllPools
+    Remove-Variable AllPools2
 
     $Return
 }
@@ -1521,7 +1519,7 @@ function Get-Updates {
 
 function Get-Config {
 
-    $Result = @{}
+    $Result = @{ }
 
     $File = "./Config/Config.ini"
 
@@ -1539,13 +1537,13 @@ function Get-Config {
         "^\s*(\w+)\s*=\s*(.*)" {
             $name, $value = $matches[1..2]
             $Result[$name] = switch -wildcard ($value.Trim()) {
-                'enable*' {$true}
-                'disable*' {$false}
-                'on' {$true}
-                'off' {$false}
-                'yes' {$true}
-                'no' {$false}
-                Default {$value.Trim()}
+                'enable*' { $true }
+                'disable*' { $false }
+                'on' { $true }
+                'off' { $false }
+                'yes' { $true }
+                'no' { $false }
+                Default { $value.Trim() }
             }
         }
     }
@@ -1554,7 +1552,7 @@ function Get-Config {
 
 function Get-Wallets {
 
-    $Result = @{}
+    $Result = @{ }
     $File = "./Config/Config.ini"
 
     if (-not (Test-Path $File) -and (Test-Path ./Config.ini)) {
@@ -1612,7 +1610,7 @@ function Set-ConsolePosition ([int]$x, [int]$y) {
     $position.y = $y
     # Place modified location back to $HOST
     $host.ui.rawui.cursorposition = $position
-    remove-variable position
+    Remove-Variable position
 }
 
 function Get-ConsolePosition ([ref]$x, [ref]$y) {
@@ -1620,13 +1618,13 @@ function Get-ConsolePosition ([ref]$x, [ref]$y) {
     $position = $host.UI.RawUI.CursorPosition
     $x.value = $position.x
     $y.value = $position.y
-    remove-variable position
+    Remove-Variable position
 }
 
 function Out-HorizontalLine ([string]$Title) {
     $MaxWidth = 170
     $Width = [math]::min($Host.UI.RawUI.WindowSize.Width, $MaxWidth) - 1
-    if ([string]::IsNullOrEmpty($Title)) {$str = "-" * $Width}
+    if ([string]::IsNullOrEmpty($Title)) { $str = "-" * $Width }
     else {
         $str = '{white}' + ("-" * [math]::floor(($Width - $Title.Length - 4) / 2))
         $str += "{green}  " + $Title + "  "
@@ -1667,14 +1665,14 @@ function Set-WindowSize ([int]$Width, [int]$Height) {
     #Buffer must be always greater than windows size
 
     $BSize = $Host.UI.RawUI.BufferSize
-    if ($Width -ne 0 -and $Width -gt $BSize.Width) {$BSize.Width = $Width}
-    if ($Height -ne 0 -and $Height -gt $BSize.Height) {$BSize.Width = $Height}
+    if ($Width -ne 0 -and $Width -gt $BSize.Width) { $BSize.Width = $Width }
+    if ($Height -ne 0 -and $Height -gt $BSize.Height) { $BSize.Width = $Height }
 
     $Host.UI.RawUI.BufferSize = $BSize
 
     $WSize = $Host.UI.RawUI.WindowSize
-    if ($Width -ne 0) {$WSize.Width = $Width}
-    if ($Height -ne 0) {$WSize.Height = $Height}
+    if ($Width -ne 0) { $WSize.Width = $Width }
+    if ($Height -ne 0) { $WSize.Height = $Height }
 
     $Host.UI.RawUI.WindowSize = $WSize
 }
@@ -1733,7 +1731,7 @@ function Get-HashRates {
         [String]$AlgoLabel
     )
 
-    if ($AlgoLabel -eq "") {$AlgoLabel = 'X'}
+    if ($AlgoLabel -eq "") { $AlgoLabel = 'X' }
     $Pattern = "./Stats/" + $MinerName + "_" + $Algorithm + "_" + $GroupName + "_" + $AlgoLabel + "_PL" + $PowerLimit + "_HashRate"
 
     if (Test-Path -path "$Pattern.csv") {
@@ -1779,7 +1777,7 @@ function Set-HashRates {
         [String]$Powerlimit
     )
 
-    if ($AlgoLabel -eq "") {$AlgoLabel = 'X'}
+    if ($AlgoLabel -eq "") { $AlgoLabel = 'X' }
 
     $Path = "./Stats/" + $MinerName + "_" + $Algorithm + "_" + $GroupName + "_" + $AlgoLabel + "_PL" + $PowerLimit + "_HashRate.csv"
 
@@ -1800,7 +1798,7 @@ function Get-Stats {
         [String]$AlgoLabel
     )
 
-    if ($AlgoLabel -eq "") {$AlgoLabel = 'X'}
+    if ($AlgoLabel -eq "") { $AlgoLabel = 'X' }
     $Pattern = "./Stats/" + $MinerName + "_" + $Algorithm + "_" + $GroupName + "_" + $AlgoLabel + "_PL" + $PowerLimit + "_stats"
 
     if (Test-Path -path "$Pattern.json") {
@@ -1832,7 +1830,7 @@ function Set-Stats {
         [String]$Powerlimit
     )
 
-    if ($AlgoLabel -eq "") {$AlgoLabel = 'X'}
+    if ($AlgoLabel -eq "") { $AlgoLabel = 'X' }
 
     $Path = "./Stats/" + $MinerName + "_" + $Algorithm + "_" + $GroupName + "_" + $AlgoLabel + "_PL" + $PowerLimit + "_stats.json"
 
@@ -1962,13 +1960,13 @@ function Start-Autoexec {
                     Log "Autoexec command started: $($Params.FilePath) $($Params.ArgumentList)" -Severity Info
                     $Script:AutoexecCommands.Add($Job) | Out-Null
                 }
-            } catch {}
+            } catch { }
         }
     }
 }
 
 function Stop-Autoexec {
-    $Script:AutoexecCommands | Where-Object Process | Foreach-Object {
+    $Script:AutoexecCommands | Where-Object Process | ForEach-Object {
         Stop-SubProcess -Job $_ -Title "Autoexec command" -Name "$($_.FilePath) $($_.Arguments)"
     }
 }

@@ -41,7 +41,7 @@ if ($Querymode -eq "Core") {
             Host                  = $_.Server
             Port                  = $_.Port
             User                  = $_.User
-            Pass                  = if ([string]::IsNullOrEmpty($_.Pass)) {"x"} else {$_.Pass}
+            Pass                  = if ([string]::IsNullOrEmpty($_.Pass)) { "x" } else { $_.Pass }
             Location              = "EU"
             SSL                   = $false
             Symbol                = $_.symbol
