@@ -198,7 +198,7 @@ while ($Quit -ne $true) {
     }
 
     # Get electricity cost for current time
-    @($Config.ElectricityCost | ConvertFrom-Json) | ForEach-Object {
+    ($Config.ElectricityCost | ConvertFrom-Json) | ForEach-Object {
         if ((
                 $_.HourStart -lt $_.HourEnd -and
                 @(($_.HourStart)..($_.HourEnd)) -contains (Get-Date).Hour
