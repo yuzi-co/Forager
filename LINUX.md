@@ -5,8 +5,10 @@ Currently only AMD and CPU miners are tested
 
 
 ### Prerequisites
-- Powershell Core (Latest Release: https://github.com/PowerShell/PowerShell/releases/tag/v6.1.3). Do not use version from Snap
-- Ubuntu 18.04+, Linux Mint 19.1
+- Powershell Core (Latest Release: https://github.com/PowerShell/PowerShell/releases/tag/v6.2.0).
+- Get the relevant version for your distribution. On HiveOS you can check which Ubuntu release it is based on using ```cat /etc/os-release```
+- Install using ```dpkg -i powershell-xxx.deb; apt install -f```
+- Tested on Ubuntu 18.04, Linux Mint 19.1, HiveOS
 - Packages required: p7zip-full (for unpacking the downloaded miners)
 - AMD Drivers: AMDGPU-PRO drivers require kernel 4.15.0 currently. ROCm Drivers untested, and many miners don't support it
 - To install the drivers on Mint or Ubuntu 19.10, you must (temporary) set the following values in /etc/os-release
@@ -21,7 +23,7 @@ VERSION_ID="18.04"
 ### AMD Configuration
 add to ~/.profile
 ```
-export GPU_FORCE_64BIT_PTR=0    # Use 1 if only 3GB video memory is detected
+export GPU_FORCE_64BIT_PTR=0    # Use 1 if only 3GB video memory is detected. 64bit PTR is slightly slower.
 export GPU_MAX_HEAP_SIZE=100
 export GPU_USE_SYNC_OBJECTS=1
 export GPU_MAX_ALLOC_PERCENT=100
