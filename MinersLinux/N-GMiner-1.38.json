@@ -1,7 +1,7 @@
 {
   "Path": "miner",
-  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.37/gminer_1_37_linux64.tar.xz",
-  "SHA256": "8D67591D8013039FF83867C172EB95FA0962255891C40A59EB96A5988B70F9C6",
+  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.38/gminer_1_38_linux64.tar.xz",
+  "SHA256": "27701BEAF8DA8244763B0F23CE42944CD812A0C666D7C838D00AE1ADDFBBDA51",
   "Type": "NVIDIA",
   "CUDA": 9.0,
   "Arguments": [
@@ -31,12 +31,12 @@
     "Cuckaroo29": {
       "Params": "--algo grin29",
       "NoCpu": true,
-      "Mem": 5
+      "Mem": 4
     },
     "Cuckaroo29s": {
       "Params": "--algo swap",
       "NoCpu": true,
-      "Mem": 5
+      "Mem": 4
     },
     "Cuckatoo31": {
       "Params": "--algo grin31",
