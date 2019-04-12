@@ -21,19 +21,19 @@
   "Algorithms": {
     "Argon2ad": {
       "Params": "-a argon2ad",
-      "Custom": "--gpu-batchsize=512 -t 4"
+      "Custom": "--gpu-batchsize=1024 -t 1"
     },
     "Argon2d250": {
       "Params": "-a argon2d250",
-      "Custom": "--gpu-batchsize=2048 -t 4"
+      "Custom": "--gpu-batchsize=2048 -t 1"
     },
     "_Argon2d500": {
       "Params": "-a argon2d500",
-      "Custom": "--gpu-batchsize=1024 -t 4"
+      "Custom": "--gpu-batchsize=1024 -t 1"
     },
     "Argon2d4096": {
       "Params": "-a argon2d4096",
-      "Custom": "--gpu-batchsize=128 -t 2"
+      "Custom": "--gpu-batchsize=128 -t 1"
     }
   }
 }
