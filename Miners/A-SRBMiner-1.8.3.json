@@ -1,7 +1,7 @@
 {
   "Path": "SRBMiner-CN.exe",
-  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.03/SRBMiner-CN-V1-8-2.7z",
-  "SHA256": "62C884A61FB1EF5504F50D6EA1B553970E2A663997ACF6453EFC628756F1A269",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.04/SRBMiner-CN-V1-8-3.7z",
+  "SHA256": "A7C6EAEF384813A39801289AFD6BA9F53F76DC28171F18CE3C80D2E5FAB82D14",
   "Type": "AMD",
   "GenerateConfigFile": "config-#GroupName#-#Algorithm#.txt",
   "PatternConfigFile": "SRBMiner.txt",
@@ -13,7 +13,7 @@
     "--disablegpuwatchdog",
     "--sendallstales",
     "--enablecoinforking",
-    "--maxnosharesent 120",
+    "--preparedata",
     "--apienable",
     "--apiport #ApiPort#",
     "$(if ($enableSSL){'--ctls true'})",
@@ -49,9 +49,6 @@
     "CnSwap": "swap",
     "CnTurtle": "turtle",
     "CnUplexa": "upx",
-    "_CnV7": "normalv7",
-    "_CnV8": "normalv8",
-    "CnWebchain": "webchain",
     "CnZls": "zelerius"
   }
 }
