@@ -1,6 +1,7 @@
 mport=-#APIPort#
 port=1#APIPort#
 watchdog=false
+noColor=true
 
 [#AlgorithmParameters#]
 wallet = $(('#Login#' -split '\.')[0])
