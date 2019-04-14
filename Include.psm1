@@ -41,66 +41,68 @@ function Get-DevicesInfoADL {
     param (
         $Types
     )
+    if ($IsWindows) {
 
-    $CsvParams = @{
-        Header = @(
-            'id'
-            'fan_speed'
-            'fan_max'
-            'clock'
-            'clock_mem'
-            'load'
-            'temp'
-            'power_limit'
-            'name'
-            'pci_device'
-        )
-    }
-    $Command = "./Includes/OverdriveN.exe"
-    $Result = & $Command | Where-Object { $_ -notlike "*&???" -and $_ -notlike "*failed" } | ConvertFrom-Csv @CsvParams
+        $CsvParams = @{
+            Header = @(
+                'id'
+                'fan_speed'
+                'fan_max'
+                'clock'
+                'clock_mem'
+                'load'
+                'temp'
+                'power_limit'
+                'name'
+                'pci_device'
+            )
+        }
+        $Command = "./Includes/OverdriveN.exe"
+        $Result = & $Command | Where-Object { $_ -notlike "*&???" -and $_ -notlike "*failed" } | ConvertFrom-Csv @CsvParams
 
-    if (-not $global:AmdCardsTDP) {
-        $global:AmdCardsTDP = Get-Content ./Data/amd-cards-tdp.json | ConvertFrom-Json
-    }
-
-    $DeviceId = 0
-    $Devices = $Result | Where-Object name -ne $null | ForEach-Object {
-
-        $GroupName = ($Types | Where-Object DevicesArray -contains $DeviceId).GroupName
-
-        $CardName = $($_.name `
-                -replace 'ASUS' `
-                -replace 'AMD' `
-                -replace '\(?TM\)?' `
-                -replace 'Series' `
-                -replace 'Graphics' `
-                -replace "\s+", ' '
-        ).Trim()
-
-        $CardName = $CardName -replace '.*Radeon.*([4-5]\d0).*', 'Radeon RX $1'     # RX 400/500 series
-        $CardName = $CardName -replace '.*\s(Vega).*(56|64).*', 'Radeon Vega $2'    # Vega series
-        $CardName = $CardName -replace '.*\s(R\d)\s(\w+).*', 'Radeon $1 $2'         # R3/R5/R7/R9 series
-        $CardName = $CardName -replace '.*\s(HD)\s?(\w+).*', 'Radeon HD $2'         # HD series
-
-        [PSCustomObject]@{
-            GroupName         = $GroupName
-            GroupType         = 'AMD'
-            Id                = $DeviceId
-            AdapterId         = [int]$_.id
-            FanSpeed          = [int]($_.fan_speed / $_.fan_max * 100)
-            Clock             = [int]($_.clock / 100)
-            ClockMem          = [int]($_.clock_mem / 100)
-            Utilization       = [int]$_.load
-            Temperature       = [int]$_.temp / 1000
-            PowerLimitPercent = 100 + [int]$_.power_limit
-            PowerDraw         = $AmdCardsTDP.$CardName * ((100 + [int]$_.power_limit) / 100) * ([int]$_.load / 100)
-            Name              = $CardName
+        if (-not $global:AmdCardsTDP) {
+            $global:AmdCardsTDP = Get-Content ./Data/amd-cards-tdp.json | ConvertFrom-Json
         }
 
-        $DeviceId++
+        $DeviceId = 0
+        $Devices = $Result | Where-Object name -ne $null | ForEach-Object {
+
+            $GroupName = ($Types | Where-Object DevicesArray -contains $DeviceId).GroupName
+
+            $CardName = $($_.name `
+                    -replace 'ASUS' `
+                    -replace 'AMD' `
+                    -replace '\(?TM\)?' `
+                    -replace 'Series' `
+                    -replace 'Graphics' `
+                    -replace "\s+", ' '
+            ).Trim()
+
+            $CardName = $CardName -replace '.*Radeon.*([4-5]\d0).*', 'Radeon RX $1'     # RX 400/500 series
+            $CardName = $CardName -replace '.*\s(Vega).*(56|64).*', 'Radeon Vega $2'    # Vega series
+            $CardName = $CardName -replace '.*\s(R\d)\s(\w+).*', 'Radeon $1 $2'         # R3/R5/R7/R9 series
+            $CardName = $CardName -replace '.*\s(HD)\s?(\w+).*', 'Radeon HD $2'         # HD series
+
+            [PSCustomObject]@{
+                GroupName         = $GroupName
+                GroupType         = 'AMD'
+                Id                = $DeviceId
+                AdapterId         = [int]$_.id
+                FanSpeed          = [int]($_.fan_speed / $_.fan_max * 100)
+                Clock             = [int]($_.clock / 100)
+                ClockMem          = [int]($_.clock_mem / 100)
+                Utilization       = [int]$_.load
+                Temperature       = [int]$_.temp / 1000
+                PowerLimitPercent = 100 + [int]$_.power_limit
+                PowerDraw         = $AmdCardsTDP.$CardName * ((100 + [int]$_.power_limit) / 100) * ([int]$_.load / 100)
+                Name              = $CardName
+            }
+
+            $DeviceId++
+        }
+        Clear-Variable AmdCardsTDP
+        $Devices
     }
-    Clear-Variable AmdCardsTDP
-    $Devices
 }
 
 function Get-DevicesInfoNvidiaSMI {
@@ -109,70 +111,71 @@ function Get-DevicesInfoNvidiaSMI {
         [switch]$Fake = $false
     )
 
-    $CvsParams = @{
-        Header = @(
-            'gpu_name'
-            'utilization_gpu'
-            'utilization_memory'
-            'temperature_gpu'
-            'power_draw'
-            'power_limit'
-            'fan_speed'
-            'pstate'
-            'clocks_current_graphics'
-            'clocks_current_memory'
-            'power_max_limit'
-            'power_default_limit'
-        )
-    }
+    if ($IsWindows) {
+        $CvsParams = @{
+            Header = @(
+                'gpu_name'
+                'utilization_gpu'
+                'utilization_memory'
+                'temperature_gpu'
+                'power_draw'
+                'power_limit'
+                'fan_speed'
+                'pstate'
+                'clocks_current_graphics'
+                'clocks_current_memory'
+                'power_max_limit'
+                'power_default_limit'
+            )
+        }
 
-    if ($Fake) {
-        $FakeData = @"
+        if ($Fake) {
+            $FakeData = @"
         GeForce GTX 1060 6GB, 0 %, 3 %, 46, 9.34 W, 180.00 W, 0 %, P8, 139 MHz, 405 MHz, 200.00 W, 180.00 W
         GeForce GTX 1060 6GB, 0 %, 3 %, 46, 9.34 W, 180.00 W, 0 %, P8, 139 MHz, 405 MHz, 200.00 W, 180.00 W
         GeForce GTX 1080, 0 %, 0 %, 29, 6.54 W, 90.00 W, 39 %, P8, 135 MHz, 405 MHz, 108.00 W, 90.00 W
 "@
-        $Result = $FakeData | ConvertFrom-Csv @CvsParams
-    } else {
-        $Command = "./includes/nvidia-smi.exe"
-        $Arguments = @(
-            '--query-gpu=gpu_name,utilization.gpu,utilization.memory,temperature.gpu,power.draw,power.limit,fan.speed,pstate,clocks.current.graphics,clocks.current.memory,power.max_limit,power.default_limit'
-            '--format=csv,noheader'
-        )
-        $Result = & $Command $Arguments | ConvertFrom-Csv @CvsParams
-    }
-
-    $DeviceId = 0
-    $Devices = $Result | Where-Object pstate -ne $null | ForEach-Object {
-        $GroupName = ($Types | Where-Object DevicesArray -contains $DeviceId).GroupName
-
-        $Card = [PSCustomObject]@{
-            GroupName         = $GroupName
-            GroupType         = 'NVIDIA'
-            Id                = $DeviceId
-            Name              = $_.gpu_name
-            Utilization       = [int]$(if ($_.utilization_gpu) { $_.utilization_gpu -replace "[^0-9.,]" } else { 100 }) #If we dont have real Utilization, at least make the watchdog happy
-            UtilizationMem    = [int]$($_.utilization_memory -replace "[^0-9.,]")
-            Temperature       = [int]$($_.temperature_gpu -replace "[^0-9.,]")
-            PowerDraw         = [int]$($_.power_draw -replace "[^0-9.,]")
-            PowerLimit        = [int]$($_.power_limit -replace "[^0-9.,]")
-            FanSpeed          = [int]$($_.fan_speed -replace "[^0-9.,]")
-            Pstate            = $_.pstate
-            Clock             = [int]$($_.clocks_current_graphics -replace "[^0-9.,]")
-            ClockMem          = [int]$($_.clocks_current_memory -replace "[^0-9.,]")
-            PowerMaxLimit     = [int]$($_.power_max_limit -replace "[^0-9.,]")
-            PowerDefaultLimit = [int]$($_.power_default_limit -replace "[^0-9.,]")
+            $Result = $FakeData | ConvertFrom-Csv @CvsParams
+        } else {
+            $Command = "./includes/nvidia-smi.exe"
+            $Arguments = @(
+                '--query-gpu=gpu_name,utilization.gpu,utilization.memory,temperature.gpu,power.draw,power.limit,fan.speed,pstate,clocks.current.graphics,clocks.current.memory,power.max_limit,power.default_limit'
+                '--format=csv,noheader'
+            )
+            $Result = & $Command $Arguments | ConvertFrom-Csv @CvsParams
         }
-        if ($Card.PowerDefaultLimit -gt 0) { $Card | Add-Member PowerLimitPercent ([int](($Card.PowerLimit * 100) / $Card.PowerDefaultLimit)) }
-        $Card
-        $DeviceId++
+
+        $DeviceId = 0
+        $Devices = $Result | Where-Object pstate -ne $null | ForEach-Object {
+            $GroupName = ($Types | Where-Object DevicesArray -contains $DeviceId).GroupName
+
+            $Card = [PSCustomObject]@{
+                GroupName         = $GroupName
+                GroupType         = 'NVIDIA'
+                Id                = $DeviceId
+                Name              = $_.gpu_name
+                Utilization       = [int]$(if ($_.utilization_gpu) { $_.utilization_gpu -replace "[^0-9.,]" } else { 100 }) #If we dont have real Utilization, at least make the watchdog happy
+                UtilizationMem    = [int]$($_.utilization_memory -replace "[^0-9.,]")
+                Temperature       = [int]$($_.temperature_gpu -replace "[^0-9.,]")
+                PowerDraw         = [int]$($_.power_draw -replace "[^0-9.,]")
+                PowerLimit        = [int]$($_.power_limit -replace "[^0-9.,]")
+                FanSpeed          = [int]$($_.fan_speed -replace "[^0-9.,]")
+                Pstate            = $_.pstate
+                Clock             = [int]$($_.clocks_current_graphics -replace "[^0-9.,]")
+                ClockMem          = [int]$($_.clocks_current_memory -replace "[^0-9.,]")
+                PowerMaxLimit     = [int]$($_.power_max_limit -replace "[^0-9.,]")
+                PowerDefaultLimit = [int]$($_.power_default_limit -replace "[^0-9.,]")
+            }
+            if ($Card.PowerDefaultLimit -gt 0) { $Card | Add-Member PowerLimitPercent ([int](($Card.PowerLimit * 100) / $Card.PowerDefaultLimit)) }
+            $Card
+            $DeviceId++
+        }
+        $Devices
     }
-    $Devices
 }
 
 function Get-DevicesInfoCPU {
 
-    $CpuResult = @(Get-CimInstance Win32_Processor)
 
     ### Not sure how Afterburner results look with more than 1 CPU
     if ($abMonitor) {
@@ -186,64 +189,88 @@ function Get-DevicesInfoCPU {
         $CpuData = @{ }
     }
 
-    $Devices = $CpuResult | ForEach-Object {
-        if (-not $CpuData.Utilization) {
-            # Get-Counter is more accurate and is preferable, but currently not available in Poweshell 6
-            if (Get-Command "Get-Counter" -Type Cmdlet -errorAction SilentlyContinue) {
-                # Language independent version of Get-Counter '\Processor(_Total)\% Processor Time'
-                $CpuData.Utilization = (Get-Counter -Counter '\238(_Total)\6').CounterSamples.CookedValue
-            } else {
-                $Error.Remove($Error[$Error.Count - 1])
-                $CpuData.Utilization = $_.LoadPercentage
+    $Devices = if ($IsWindows) {
+        $CpuResult = @(Get-CimInstance Win32_Processor)
+        $CpuResult | ForEach-Object {
+            if (-not $CpuData.Utilization) {
+                # Get-Counter is more accurate and is preferable, but currently not available in Poweshell 6
+                if (Get-Command "Get-Counter" -Type Cmdlet -errorAction SilentlyContinue) {
+                    # Language independent version of Get-Counter '\Processor(_Total)\% Processor Time'
+                    $CpuData.Utilization = (Get-Counter -Counter '\238(_Total)\6').CounterSamples.CookedValue
+                } else {
+                    $Error.Remove($Error[$Error.Count - 1])
+                    $CpuData.Utilization = $_.LoadPercentage
+                }
+            }
+            if (-not $CpuData.PowerDraw) {
+                if (-not $global:CpuTDP) {
+                    $global:CpuTDP = Get-Content ./Data/cpu-tdp.json | ConvertFrom-Json
+                }
+                $CpuData.PowerDraw = $CpuTDP.($_.Name.Trim()) * $CpuData.Utilization / 100
+            }
+            if (-not $CpuData.Clock) { $CpuData.Clock = $_.MaxClockSpeed }
+            [PSCustomObject]@{
+                GroupName   = 'CPU'
+                GroupType   = 'CPU'
+                Id          = [int]($_.DeviceID -replace "[^0-9]")
+                Name        = $_.Name.Trim()
+                Cores       = [int]$_.NumberOfCores
+                Threads     = [int]$_.NumberOfLogicalProcessors
+                CacheL3     = [int]($_.L3CacheSize / 1024)
+                Clock       = [int]$CpuData.Clock
+                Utilization = [int]$CpuData.Utilization
+                PowerDraw   = [int]$CpuData.PowerDraw
+                Temperature = [int]$CpuData.Temperature
             }
         }
-        if (-not $CpuData.PowerDraw) {
-            if (-not $global:CpuTDP) {
-                $global:CpuTDP = Get-Content ./Data/cpu-tdp.json | ConvertFrom-Json
-            }
-            $CpuData.PowerDraw = $CpuTDP.($_.Name.Trim()) * $CpuData.Utilization / 100
+    } else {
+        $Features = Get-CpuFeatures
+        if (-not $global:CpuTDP) {
+            $global:CpuTDP = Get-Content ./Data/cpu-tdp.json | ConvertFrom-Json
         }
-        if (-not $CpuData.Clock) { $CpuData.Clock = $_.MaxClockSpeed }
+        # cpu  10268107 24517932 234919 631202 6447 0 15475 0 0 0
+        [int]$CpuData.Utilization = Get-Content /proc/stat | Where-Object { $_ -match "cpu\s+(\d+)\s(\d+)\s(\d+)\s(\d+)" } | ForEach-Object {
+            ([int64]$Matches[1] + [int64]$Matches[3]) * 100 / ([int64]$Matches[1] + [int64]$Matches[3] + [int64]$Matches[4])
+        }
+
+        [int]$CpuData.PowerDraw = $CpuTDP.($Features.Name) * $CpuData.Utilization / 100
         [PSCustomObject]@{
             GroupName   = 'CPU'
             GroupType   = 'CPU'
-            Id          = [int]($_.DeviceID -replace "[^0-9]")
-            Name        = $_.Name.Trim()
-            Cores       = [int]$_.NumberOfCores
-            Threads     = [int]$_.NumberOfLogicalProcessors
-            CacheL3     = [int]($_.L3CacheSize / 1024)
-            Clock       = [int]$CpuData.Clock
-            Utilization = [int]$CpuData.Utilization
-            PowerDraw   = [int]$CpuData.PowerDraw
-            Temperature = [int]$CpuData.Temperature
+            Id          = 0
+            Name        = $Features.Name
+            Cores       = $Features.Cores
+            Threads     = $Features.Threads
+            CacheL3     = $Features.CacheL3 / 1024
+            Clock       = $Features.Clock
+            Utilization = $CpuData.Utilization
+            PowerDraw   = $CpuData.PowerDraw
         }
     }
-    $Devices
+    @($Devices)
 }
 
 function Get-DevicesInformation ($Types) {
     if ($abMonitor) { $abMonitor.ReloadAll() }
     if ($abControl) { $abControl.ReloadAll() }
 
-    if ($IsWindows) {
-        #AMD
-        if ($Types | Where-Object GroupType -in @('AMD')) {
-            if ($abMonitor) {
-                Get-DevicesInfoAfterburner -Types ($Types | Where-Object GroupType -eq 'AMD')
-            } else {
-                Get-DevicesInfoADL -Types ($Types | Where-Object GroupType -eq 'AMD')
-            }
+    #AMD
+    if ($Types | Where-Object GroupType -in @('AMD')) {
+        if ($abMonitor) {
+            Get-DevicesInfoAfterburner -Types ($Types | Where-Object GroupType -eq 'AMD')
+        } else {
+            Get-DevicesInfoADL -Types ($Types | Where-Object GroupType -eq 'AMD')
         }
+    }
 
-        #NVIDIA
-        if ($Types | Where-Object GroupType -eq 'NVIDIA') {
-            Get-DevicesInfoNvidiaSMI -Types ($Types | Where-Object GroupType -eq 'NVIDIA')
-        }
+    #NVIDIA
+    if ($Types | Where-Object GroupType -eq 'NVIDIA') {
+        Get-DevicesInfoNvidiaSMI -Types ($Types | Where-Object GroupType -eq 'NVIDIA')
+    }
 
-        # CPU
-        if ($Types | Where-Object GroupType -eq 'CPU') {
-            Get-DevicesInfoCPU
-        }
+    # CPU
+    if ($Types | Where-Object GroupType -eq 'CPU') {
+        Get-DevicesInfoCPU
     }
 }
 
@@ -425,6 +452,8 @@ function Get-CpuFeatures {
         $Features.threads = [int]($Data | Where-Object { $_ -like 'processor*' }).count
         $Features.cores = [int](($Data | Where-Object { $_ -like 'cpu cores*' })[0] -split ":")[1].Trim()
         $Features.name = (($Data | Where-Object { $_ -like 'model name*' })[0] -split ":")[1].Trim()
+        $Features.cachel3 = ((($Data | Where-Object { $_ -like 'cache size*' })[0] -split ":")[1].Trim() -split " ")[0].Trim()
+        $Features.clock = [int](($Data | Where-Object { $_ -like 'cpu MHz*' })[0] -split ":")[1].Trim()
     }
     return $Features
 }
@@ -2067,4 +2096,3 @@ function Set-WindowSize ([int]$Width, [int]$Height) {
 
     $Host.UI.RawUI.WindowSize = $WSize
 }
-
