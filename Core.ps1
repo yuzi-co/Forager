@@ -291,7 +291,7 @@ while ($Quit -ne $true) {
         }
     } while ($AllPools.Count -eq 0)
 
-    $AllPools | Select-Object Name -Unique | ForEach-Object { Log "Pool $($_.Name) was responsive" }
+    $AllPools | Select-Object -ExpandProperty Name -Unique | ForEach-Object { Log "Pool $_ was responsive" }
 
     Log "Found $($AllPools.Count) pool/algo variations"
 
