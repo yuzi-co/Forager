@@ -1,132 +1,4 @@
-function Set-NvidiaPowerLimit ([int]$PowerLimitPercent, [string]$Devices) {
-
-    if ($PowerLimitPercent -eq 0) { return }
-    foreach ($Device in @($Devices -split ',')) {
-
-        # $Command = (Resolve-Path -Path '.\includes\nvidia-smi.exe').Path
-        # $Arguments = @(
-        #     "-i $Device"
-        #     "--query-gpu=power.default_limit"
-        #     "--format=csv,noheader"
-        # )
-        # $PowerDefaultLimit = [int](((& $Command $Arguments) -replace 'W').Trim())
-
-        $xpr = "./includes/nvidia-smi.exe -i " + $Device + " --query-gpu=power.default_limit --format=csv,noheader"
-        $PowerDefaultLimit = [int]((Invoke-Expression $xpr) -replace 'W', '')
-
-        #powerlimit change must run in admin mode
-        $NewProcess = New-Object System.Diagnostics.ProcessStartInfo "./includes/nvidia-smi.exe"
-        $NewProcess.Verb = "runas"
-        #$NewProcess.UseShellExecute = $false
-        $NewProcess.Arguments = "-i $Device -pl $([Math]::Floor([int]($PowerDefaultLimit -replace ' W', '') * ($PowerLimitPercent / 100)))"
-        [System.Diagnostics.Process]::Start($NewProcess) | Out-Null
-    }
-    Remove-Variable NewProcess
-}
-
-function Send-ErrorsToLog ($LogFile) {
-
-    for ($i = 0; $i -lt $error.count; $i++) {
-        if ($error[$i].InnerException.Paramname -ne "scopeId") {
-            # errors in debug
-            $Msg = "###### ERROR ##### " + [string]($error[$i]) + ' ' + $error[$i].ScriptStackTrace
-            Log $msg -Severity Error -NoEcho
-        }
-    }
-    $error.clear()
-}
-
-function Edit-ForEachDevice {
-    param(
-        [Parameter(Mandatory = $true)]
-        [string]$ConfigFileArguments,
-        [Parameter(Mandatory = $false)]
-        $Devices
-    )
-
-    #search string to replace
-    $ConfigFileArguments = $ConfigFileArguments -replace [Environment]::NewLine, "#NL#" #replace carriage return for Select-string search (only search in each line)
-
-    $Match = $ConfigFileArguments | Select-String -Pattern "#ForEachDevice#.*?#EndForEachDevice#"
-    if ($null -ne $Match) {
-
-        $Match.Matches | ForEach-Object {
-            $Base = $_.value -replace "#ForEachDevice#" -replace "#EndForEachDevice#"
-            $Index = 0
-            $Final = $Devices.Devices -split ',' | ForEach-Object {
-                $Base -replace "#DeviceID#", $_ -replace "#DeviceIndex#", $Index
-                $Index++
-            }
-            $ConfigFileArguments = $ConfigFileArguments.Substring(0, $_.index) + $Final + $ConfigFileArguments.Substring($_.index + $_.Length, $ConfigFileArguments.Length - ($_.index + $_.Length))
-        }
-    }
-
-    $Match = $ConfigFileArguments | Select-String -Pattern "#RemoveLastCharacter#"
-    if ($null -ne $Match) {
-        $Match.Matches | ForEach-Object {
-            $ConfigFileArguments = $ConfigFileArguments.Substring(0, $_.index - 1) + $ConfigFileArguments.Substring($_.index + $_.Length, $ConfigFileArguments.Length - ($_.index + $_.Length))
-        }
-    }
-
-    $ConfigFileArguments = $ConfigFileArguments -replace "#NL#", [Environment]::NewLine #replace carriage return for Select-string search (only search in each line)
-    $ConfigFileArguments
-}
-
-function Get-NextFreePort {
-    param(
-        [Parameter(Mandatory = $true)]
-        [int]$LastUsedPort
-    )
-
-    if ($LastUsedPort -lt 2000) { $FreePort = 2001 } else { $FreePort = $LastUsedPort + 1 } #not allow use of <2000 ports
-    while (Test-TCPPort -Server 127.0.0.1 -Port $FreePort -timeout 100) { $FreePort = $LastUsedPort + 1 }
-    $FreePort
-}
-
-function Test-TCPPort {
-    param([string]$Server, [int]$Port, [int]$Timeout)
-
-    $Connection = New-Object System.Net.Sockets.TCPClient
-
-    try {
-        $Connection.SendTimeout = $Timeout
-        $Connection.ReceiveTimeout = $Timeout
-        $Connection.Connect($Server, $Port) | Out-Null
-        $Connection.Close
-        $Connection.Dispose
-        return $true #port is occupied
-    } catch {
-        $Error.Remove($error[$Error.Count - 1])
-        return $false #port is free
-    }
-}
-
-function Stop-SubProcess {
-    param(
-        [Parameter(Mandatory = $true)]
-        $Process
-    )
-
-    $sw = [Diagnostics.Stopwatch]::new()
-    try {
-        $Process.CloseMainWindow() | Out-Null
-        $sw.Start()
-        do {
-            if ($sw.Elapsed.TotalSeconds -gt 1) {
-                Stop-Process -InputObject $Process -Force
-            }
-            if (-not $Process.HasExited) {
-                Start-Sleep -Milliseconds 1
-            }
-        } while (-not $Process.HasExited)
-    } finally {
-        $sw.Stop()
-        if (-not $Process.HasExited) {
-            Stop-Process -InputObject $Process -Force
-        }
-    }
-    Remove-Variable sw
-}
+### Hardware
 
 function Get-DevicesInfoAfterburner {
     param (
@@ -350,7 +222,6 @@ function Get-DevicesInfoCPU {
 }
 
 function Get-DevicesInformation ($Types) {
-    $Devices = @()
     if ($abMonitor) { $abMonitor.ReloadAll() }
     if ($abControl) { $abControl.ReloadAll() }
 
@@ -553,6 +424,7 @@ function Get-CpuFeatures {
         $Features = $($feat = @{ }; (($Data | Where-Object { $_ -like "flags*" })[0] -split ":")[1].Trim() -split " " | ForEach-Object { $feat.$_ = 1 }; $feat)
         $Features.threads = [int]($Data | Where-Object { $_ -like 'processor*' }).count
         $Features.cores = [int](($Data | Where-Object { $_ -like 'cpu cores*' })[0] -split ":")[1].Trim()
+        $Features.name = (($Data | Where-Object { $_ -like 'model name*' })[0] -split ":")[1].Trim()
     }
     return $Features
 }
@@ -590,6 +462,9 @@ function Get-MiningTypes () {
         $Devices | Where-Object { $_.GroupType -eq 'CPU' } | ForEach-Object {
             $_ | Add-Member Devices "0" -Force
             $_ | Add-Member Features $Features
+            if ($Features.Name -and (-not $_.Name -or $_.Name -eq 'CPU')) {
+                $_ | Add-Member Name $Features.Name -Force
+            }
         }
     }
 
@@ -701,182 +576,94 @@ function Get-SystemInfo () {
     return $SystemInfo
 }
 
-Function Write-Log {
-    param(
-        [Parameter()]
-        [string]$Message,
-
-        [Parameter()]
-        [ValidateSet('Info', 'Warn', 'Error', 'Debug')]
-        [string]$Severity = 'Info',
-
-        [Parameter()]
-        [switch]$NoEcho = $false
-    )
-    if ($Message) {
-        if ($LogFile) {
-            $LogFile.WriteLine("$(Get-Date -f "HH:mm:ss.ff")`t$Severity`t$Message")
-        }
-        if ($NoEcho -eq $false) {
-            switch ($Severity) {
-                Info { Write-Host "$Message" -ForegroundColor Green }
-                Warn { Write-Warning "$Message" }
-                Error { Write-Error "$Message" }
+function Test-DeviceGroupsConfig ($Types) {
+    if ($IsWindows) {
+        $Devices = Get-DevicesInformation $Types
+        $Types | Where-Object GroupType -ne 'CPU' | ForEach-Object {
+            $DetectedDevices = @()
+            $DetectedDevices += $Devices | Where-Object GroupName -eq $_.GroupName
+            if ($DetectedDevices.Count -eq 0) {
+                Log ("No Devices for group " + $_.GroupName + " was detected, activity based watchdog will be disabled for that group, this happen with AMD beta blockchain drivers, no Afterburner or incorrect GpuGroups config") -Severity Warn
+                Start-Sleep -Seconds 5
+            } elseif ($DetectedDevices.Count -ne $_.DevicesCount) {
+                Log ("Mismatching Devices for group " + $_.GroupName + " was detected, check GpuGroups config and DeviceList.bat output") -Severity Warn
+                Start-Sleep -Seconds 5
             }
+        }
+
+        $TotalMem = (($Types | Where-Object GroupType -ne 'CPU').OCLDevices.GlobalMemSize | Measure-Object -Sum).Sum / 1GB
+        $TotalSwap = (Get-CimInstance Win32_PageFile | Select-Object -ExpandProperty FileSize | Measure-Object -Sum).Sum / 1GB
+        if ($TotalMem -gt $TotalSwap) {
+            Log "Make sure you have at least $TotalMem GB swap configured" -Severity Warn
+            Start-Sleep -Seconds 5
         }
     }
 }
-Set-Alias Log Write-Log
 
-Function Read-KeyboardTimed {
-    param(
-        [Parameter(Mandatory = $true)]
-        [int]$SecondsToWait,
-        [Parameter(Mandatory = $true)]
-        [array]$ValidKeys
-    )
+function Set-NvidiaPowerLimit ([int]$PowerLimitPercent, [string]$Devices) {
 
-    $LoopStart = Get-Date
-    $KeyPressed = $null
+    if ($PowerLimitPercent -eq 0) { return }
+    foreach ($Device in @($Devices -split ',')) {
 
-    do {
-        if ($Host.UI.RawUI.KeyAvailable) {
-            $Key = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyUp")
-            $KeyPressed = $Key.character
-        }
-        Start-Sleep -Milliseconds 30
-    } until ((New-TimeSpan $LoopStart (Get-Date)).Seconds -gt $SecondsToWait -or $ValidKeys -contains $KeyPressed)
+        # $Command = (Resolve-Path -Path '.\includes\nvidia-smi.exe').Path
+        # $Arguments = @(
+        #     "-i $Device"
+        #     "--query-gpu=power.default_limit"
+        #     "--format=csv,noheader"
+        # )
+        # $PowerDefaultLimit = [int](((& $Command $Arguments) -replace 'W').Trim())
 
-    $KeyPressed
+        $xpr = "./includes/nvidia-smi.exe -i " + $Device + " --query-gpu=power.default_limit --format=csv,noheader"
+        $PowerDefaultLimit = [int]((Invoke-Expression $xpr) -replace 'W', '')
+
+        #powerlimit change must run in admin mode
+        $NewProcess = New-Object System.Diagnostics.ProcessStartInfo "./includes/nvidia-smi.exe"
+        $NewProcess.Verb = "runas"
+        #$NewProcess.UseShellExecute = $false
+        $NewProcess.Arguments = "-i $Device -pl $([Math]::Floor([int]($PowerDefaultLimit -replace ' W', '') * ($PowerLimitPercent / 100)))"
+        [System.Diagnostics.Process]::Start($NewProcess) | Out-Null
+    }
+    Remove-Variable NewProcess
 }
 
-function Invoke-TcpRequest {
-    [CmdletBinding()]
-    param(
-        [Parameter(Mandatory = $false)]
-        [String]$Server = "localhost",
-        [Parameter(Mandatory = $true)]
-        [String]$Port,
-        [Parameter(Mandatory = $false)]
-        [String]$Request,
-        [Parameter(Mandatory = $false)]
-        [Int]$Timeout = 10, #seconds,
-        [Parameter(Mandatory = $false)]
-        [Switch]$DoNotSendNewline,
-        [Parameter(Mandatory = $false)]
-        [Switch]$Quiet,
-        [Parameter(Mandatory = $false)]
-        [Switch]$WriteOnly,
-        [Parameter(Mandatory = $false)]
-        [Switch]$ReadToEnd
-    )
-    $Response = $null
-    if ($Server -eq "localhost") { $Server = "127.0.0.1" }
-    #try {$ipaddress = [ipaddress]$Server} catch {$ipaddress = [system.Net.Dns]::GetHostByName($Server).AddressList | select-object -index 0}
-    try {
-        $Client = New-Object System.Net.Sockets.TcpClient $Server, $Port
-        $Stream = $Client.GetStream()
-        $Writer = New-Object System.IO.StreamWriter $Stream
-        if (-not $WriteOnly) { $Reader = New-Object System.IO.StreamReader $Stream }
-        $client.SendTimeout = $Timeout * 1000
-        $client.ReceiveTimeout = $Timeout * 1000
-        $Writer.AutoFlush = $true
 
-        if ($Request) {
-            if ($DoNotSendNewline) {
-                $Writer.Write($Request)
-            } else {
-                $Writer.WriteLine($Request)
-            }
-        }
-        if (-not $WriteOnly) {
-            if ($ReadToEnd) {
-                $Response = $Reader.ReadToEnd()
-            } else {
-                $Response = $Reader.ReadLine()
-            }
-        }
-    } catch {
-        if ($Error.Count) { $Error.RemoveAt(0) }
-        if (-not $Quiet) { Log "Could not request from $($Server):$($Port)" -Severity Warn }
-    } finally {
-        if ($Reader) { $Reader.Close(); $Reader.Dispose() }
-        if ($Writer) { $Writer.Close(); $Writer.Dispose() }
-        if ($Stream) { $Stream.Close(); $Stream.Dispose() }
-        if ($Client) { $Client.Close(); $Client.Dispose() }
-    }
-    $Response
-}
 
-function Invoke-HTTPRequest {
-    param(
-        [Parameter(Mandatory = $false)]
-        [String]$Server = "localhost",
-        [Parameter(Mandatory = $true)]
-        [String]$Port,
-        [Parameter(Mandatory = $false)]
-        [String]$Path,
-        [Parameter(Mandatory = $false)]
-        [Int]$Timeout = 5 #seconds
-    )
+### Miners
 
-    $ProgressPreference = 'SilentlyContinue' #No progress message on web requests
-
-    try {
-        $Response = Invoke-WebRequest "http://$($Server):$Port$Path" -UseBasicParsing -TimeoutSec $timeout
-    } catch {
-        $Error.Remove($error[$Error.Count - 1])
-        $Response = $null
-    }
-    $Response
-}
-
-function Invoke-APIRequest {
+function Edit-ForEachDevice {
     param(
         [Parameter(Mandatory = $true)]
-        [String]$Url,
+        [string]$ConfigFileArguments,
         [Parameter(Mandatory = $false)]
-        [Int]$Timeout = 5, # Request timeout in seconds
-        [Parameter(Mandatory = $false)]
-        [Int]$Retry = 3, # Amount of retries for request from origin
-        [Parameter(Mandatory = $false)]
-        [Int]$MaxAge = 10, # Max cache age if request failed, in minutes
-        [Parameter(Mandatory = $false)]
-        [Int]$Age = 3 # Cache age after which to request from origin, in minutes
+        $Devices
     )
 
-    $ProgressPreference = 'SilentlyContinue' #No progress message on web requests
+    #search string to replace
+    $ConfigFileArguments = $ConfigFileArguments -replace [Environment]::NewLine, "#NL#" #replace carriage return for Select-string search (only search in each line)
 
-    $UserAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36'
-    $CachePath = "./Cache/"
-    $CacheFile = $CachePath + [System.Web.HttpUtility]::UrlEncode($Url)
-    $CacheFile = $CacheFile.subString(0, [math]::min(200, $CacheFile.Length)) + '.json'
-    $Response = $null
+    $Match = $ConfigFileArguments | Select-String -Pattern "#ForEachDevice#.*?#EndForEachDevice#"
+    if ($null -ne $Match) {
 
-    if (-not (Test-Path -Path $CachePath)) { New-Item -Path $CachePath -ItemType directory -Force | Out-Null }
-    if (Test-Path $CacheFile -NewerThan (Get-Date).AddMinutes( - $Age)) {
-        $Response = Get-Content -Path $CacheFile | ConvertFrom-Json
-    } else {
-        while ($Retry -gt 0) {
-            try {
-                $Retry--
-                $Response = Invoke-RestMethod -Uri $Url -UserAgent $UserAgent -UseBasicParsing -TimeoutSec $Timeout
-                if ($Response) { $Retry = 0 }
-            } catch {
-                Start-Sleep -Seconds 1
-                $Error.Remove($error[$Error.Count - 1])
+        $Match.Matches | ForEach-Object {
+            $Base = $_.value -replace "#ForEachDevice#" -replace "#EndForEachDevice#"
+            $Index = 0
+            $Final = $Devices.Devices -split ',' | ForEach-Object {
+                $Base -replace "#DeviceID#", $_ -replace "#DeviceIndex#", $Index
+                $Index++
             }
-        }
-        if ($Response) {
-            $Response | ConvertTo-Json -Depth 100 | Set-Content -Path $CacheFile
-        } elseif (Test-Path -Path $CacheFile -NewerThan (Get-Date).AddMinutes( - $MaxAge)) {
-            $Response = Get-Content -Path $CacheFile | ConvertFrom-Json
-        } else {
-            $Response = $null
+            $ConfigFileArguments = $ConfigFileArguments.Substring(0, $_.index) + $Final + $ConfigFileArguments.Substring($_.index + $_.Length, $ConfigFileArguments.Length - ($_.index + $_.Length))
         }
     }
-    $Response
-    Remove-Variable Response
+
+    $Match = $ConfigFileArguments | Select-String -Pattern "#RemoveLastCharacter#"
+    if ($null -ne $Match) {
+        $Match.Matches | ForEach-Object {
+            $ConfigFileArguments = $ConfigFileArguments.Substring(0, $_.index - 1) + $ConfigFileArguments.Substring($_.index + $_.Length, $ConfigFileArguments.Length - ($_.index + $_.Length))
+        }
+    }
+
+    $ConfigFileArguments = $ConfigFileArguments -replace "#NL#", [Environment]::NewLine #replace carriage return for Select-string search (only search in each line)
+    $ConfigFileArguments
 }
 
 function Get-LiveHashRate {
@@ -1181,23 +968,194 @@ function Get-LiveHashRate {
     } catch { }
 }
 
-Set-Alias Get-LiveMinerStats Get-LiveHashRate
 
-function ConvertTo-Hash {
+
+
+### Helper
+
+function Get-NextFreePort {
     param(
         [Parameter(Mandatory = $true)]
-        [double]$Hash
+        [int]$LastUsedPort
     )
 
-    $Return = switch ([math]::truncate([math]::log($Hash, 1e3))) {
-        1 { "{0:g4} kh" -f ($Hash / 1e3) }
-        2 { "{0:g4} mh" -f ($Hash / 1e6) }
-        3 { "{0:g4} gh" -f ($Hash / 1e9) }
-        4 { "{0:g4} th" -f ($Hash / 1e12) }
-        5 { "{0:g4} ph" -f ($Hash / 1e15) }
-        default { "{0:g4} h" -f ($Hash) }
+    if ($LastUsedPort -lt 2000) { $FreePort = 2001 } else { $FreePort = $LastUsedPort + 1 } #not allow use of <2000 ports
+    while (Test-TCPPort -Server 127.0.0.1 -Port $FreePort -timeout 100) { $FreePort = $LastUsedPort + 1 }
+    $FreePort
+}
+
+function Test-TCPPort {
+    param([string]$Server, [int]$Port, [int]$Timeout)
+
+    $Connection = New-Object System.Net.Sockets.TCPClient
+
+    try {
+        $Connection.SendTimeout = $Timeout
+        $Connection.ReceiveTimeout = $Timeout
+        $Connection.Connect($Server, $Port) | Out-Null
+        $Connection.Close
+        $Connection.Dispose
+        return $true #port is occupied
+    } catch {
+        $Error.Remove($error[$Error.Count - 1])
+        return $false #port is free
     }
-    $Return
+}
+
+function Stop-SubProcess {
+    param(
+        [Parameter(Mandatory = $true)]
+        $Process
+    )
+
+    $sw = [Diagnostics.Stopwatch]::new()
+    try {
+        $Process.CloseMainWindow() | Out-Null
+        $sw.Start()
+        do {
+            if ($sw.Elapsed.TotalSeconds -gt 1) {
+                Stop-Process -InputObject $Process -Force
+            }
+            if (-not $Process.HasExited) {
+                Start-Sleep -Milliseconds 1
+            }
+        } while (-not $Process.HasExited)
+    } finally {
+        $sw.Stop()
+        if (-not $Process.HasExited) {
+            Stop-Process -InputObject $Process -Force
+        }
+    }
+    Remove-Variable sw
+}
+
+function Invoke-TcpRequest {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $false)]
+        [String]$Server = "localhost",
+        [Parameter(Mandatory = $true)]
+        [String]$Port,
+        [Parameter(Mandatory = $false)]
+        [String]$Request,
+        [Parameter(Mandatory = $false)]
+        [Int]$Timeout = 10, #seconds,
+        [Parameter(Mandatory = $false)]
+        [Switch]$DoNotSendNewline,
+        [Parameter(Mandatory = $false)]
+        [Switch]$Quiet,
+        [Parameter(Mandatory = $false)]
+        [Switch]$WriteOnly,
+        [Parameter(Mandatory = $false)]
+        [Switch]$ReadToEnd
+    )
+    $Response = $null
+    if ($Server -eq "localhost") { $Server = "127.0.0.1" }
+    #try {$ipaddress = [ipaddress]$Server} catch {$ipaddress = [system.Net.Dns]::GetHostByName($Server).AddressList | select-object -index 0}
+    try {
+        $Client = New-Object System.Net.Sockets.TcpClient $Server, $Port
+        $Stream = $Client.GetStream()
+        $Writer = New-Object System.IO.StreamWriter $Stream
+        if (-not $WriteOnly) { $Reader = New-Object System.IO.StreamReader $Stream }
+        $client.SendTimeout = $Timeout * 1000
+        $client.ReceiveTimeout = $Timeout * 1000
+        $Writer.AutoFlush = $true
+
+        if ($Request) {
+            if ($DoNotSendNewline) {
+                $Writer.Write($Request)
+            } else {
+                $Writer.WriteLine($Request)
+            }
+        }
+        if (-not $WriteOnly) {
+            if ($ReadToEnd) {
+                $Response = $Reader.ReadToEnd()
+            } else {
+                $Response = $Reader.ReadLine()
+            }
+        }
+    } catch {
+        if ($Error.Count) { $Error.RemoveAt(0) }
+        if (-not $Quiet) { Log "Could not request from $($Server):$($Port)" -Severity Warn }
+    } finally {
+        if ($Reader) { $Reader.Close(); $Reader.Dispose() }
+        if ($Writer) { $Writer.Close(); $Writer.Dispose() }
+        if ($Stream) { $Stream.Close(); $Stream.Dispose() }
+        if ($Client) { $Client.Close(); $Client.Dispose() }
+    }
+    $Response
+}
+
+function Invoke-HTTPRequest {
+    param(
+        [Parameter(Mandatory = $false)]
+        [String]$Server = "localhost",
+        [Parameter(Mandatory = $true)]
+        [String]$Port,
+        [Parameter(Mandatory = $false)]
+        [String]$Path,
+        [Parameter(Mandatory = $false)]
+        [Int]$Timeout = 5 #seconds
+    )
+
+    $ProgressPreference = 'SilentlyContinue' #No progress message on web requests
+
+    try {
+        $Response = Invoke-WebRequest "http://$($Server):$Port$Path" -UseBasicParsing -TimeoutSec $timeout
+    } catch {
+        $Error.Remove($error[$Error.Count - 1])
+        $Response = $null
+    }
+    $Response
+}
+
+function Invoke-APIRequest {
+    param(
+        [Parameter(Mandatory = $true)]
+        [String]$Url,
+        [Parameter(Mandatory = $false)]
+        [Int]$Timeout = 5, # Request timeout in seconds
+        [Parameter(Mandatory = $false)]
+        [Int]$Retry = 3, # Amount of retries for request from origin
+        [Parameter(Mandatory = $false)]
+        [Int]$MaxAge = 10, # Max cache age if request failed, in minutes
+        [Parameter(Mandatory = $false)]
+        [Int]$Age = 3 # Cache age after which to request from origin, in minutes
+    )
+
+    $ProgressPreference = 'SilentlyContinue' #No progress message on web requests
+
+    $UserAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36'
+    $CachePath = "./Cache/"
+    $CacheFile = $CachePath + [System.Web.HttpUtility]::UrlEncode($Url)
+    $CacheFile = $CacheFile.subString(0, [math]::min(200, $CacheFile.Length)) + '.json'
+    $Response = $null
+
+    if (-not (Test-Path -Path $CachePath)) { New-Item -Path $CachePath -ItemType directory -Force | Out-Null }
+    if (Test-Path $CacheFile -NewerThan (Get-Date).AddMinutes( - $Age)) {
+        $Response = Get-Content -Path $CacheFile | ConvertFrom-Json
+    } else {
+        while ($Retry -gt 0) {
+            try {
+                $Retry--
+                $Response = Invoke-RestMethod -Uri $Url -UserAgent $UserAgent -UseBasicParsing -TimeoutSec $Timeout
+                if ($Response) { $Retry = 0 }
+            } catch {
+                Start-Sleep -Seconds 1
+                $Error.Remove($error[$Error.Count - 1])
+            }
+        }
+        if ($Response) {
+            $Response | ConvertTo-Json -Depth 100 | Set-Content -Path $CacheFile
+        } elseif (Test-Path -Path $CacheFile -NewerThan (Get-Date).AddMinutes( - $MaxAge)) {
+            $Response = Get-Content -Path $CacheFile | ConvertFrom-Json
+        } else {
+            $Response = $null
+        }
+    }
+    $Response
+    Remove-Variable Response
 }
 
 function Start-SubProcess {
@@ -1602,81 +1560,6 @@ function Get-BestHashRateAlgo {
     } | Sort-Object HashRate -Descending | Select-Object -First 1
 }
 
-function Set-ConsolePosition ([int]$x, [int]$y) {
-    # Get current cursor position and store away
-    $position = $host.ui.rawui.cursorposition
-    # Store new X Co-ordinate away
-    $position.x = $x
-    $position.y = $y
-    # Place modified location back to $HOST
-    $host.ui.rawui.cursorposition = $position
-    Remove-Variable position
-}
-
-function Get-ConsolePosition ([ref]$x, [ref]$y) {
-
-    $position = $host.UI.RawUI.CursorPosition
-    $x.value = $position.x
-    $y.value = $position.y
-    Remove-Variable position
-}
-
-function Out-HorizontalLine ([string]$Title) {
-    $MaxWidth = 170
-    $Width = [math]::min($Host.UI.RawUI.WindowSize.Width, $MaxWidth) - 1
-    if ([string]::IsNullOrEmpty($Title)) { $str = "-" * $Width }
-    else {
-        $str = '{white}' + ("-" * [math]::floor(($Width - $Title.Length - 4) / 2))
-        $str += "{green}  " + $Title + "  "
-        $str += '{white}' + ("-" * [math]::floor(($Width + 1 - $Title.Length - 4) / 2))
-    }
-    Write-Color $str
-}
-
-function Clear-Lines ([int]$Lines) {
-    $x = $y = [ref]0
-    Get-ConsolePosition ([ref]$x) ([ref]$y)
-    $Width = $Host.UI.RawUI.WindowSize.Width
-    Write-Host (" " * $Width * $Lines)
-    Set-ConsolePosition $x $y
-    Remove-Variable x
-    Remove-Variable y
-}
-
-function Write-Message {
-    param(
-        [string]$Message,
-        [int]$Line,
-        [switch]$AlignRight,
-        [switch]$AlignCenter
-    )
-    $MaxWidth = 170
-    $Width = [math]::min($Host.UI.RawUI.WindowSize.Width, $MaxWidth) - 1
-    if ($AlignRight) {
-        [int]$X = ($Width - ($Message -replace "({\w+})").Length)
-    } elseif ($AlignCenter) {
-        [int]$X = ($Width - ($Message -replace "({\w+})").Length) / 2
-    }
-    Set-ConsolePosition $X $Line
-    Write-Color $Message
-}
-
-function Set-WindowSize ([int]$Width, [int]$Height) {
-    #Buffer must be always greater than windows size
-
-    $BSize = $Host.UI.RawUI.BufferSize
-    if ($Width -ne 0 -and $Width -gt $BSize.Width) { $BSize.Width = $Width }
-    if ($Height -ne 0 -and $Height -gt $BSize.Height) { $BSize.Width = $Height }
-
-    $Host.UI.RawUI.BufferSize = $BSize
-
-    $WSize = $Host.UI.RawUI.WindowSize
-    if ($Width -ne 0) { $WSize.Width = $Width }
-    if ($Height -ne 0) { $WSize.Height = $Height }
-
-    $Host.UI.RawUI.WindowSize = $WSize
-}
-
 function Get-AlgoUnifiedName ([string]$Algo) {
 
     $Algo = $Algo -ireplace '[^\w]'
@@ -1903,30 +1786,6 @@ function Get-CoinSymbol ([string]$Coin) {
     }
 }
 
-function Test-DeviceGroupsConfig ($Types) {
-    if ($IsWindows) {
-        $Devices = Get-DevicesInformation $Types
-        $Types | Where-Object GroupType -ne 'CPU' | ForEach-Object {
-            $DetectedDevices = @()
-            $DetectedDevices += $Devices | Where-Object GroupName -eq $_.GroupName
-            if ($DetectedDevices.Count -eq 0) {
-                Log ("No Devices for group " + $_.GroupName + " was detected, activity based watchdog will be disabled for that group, this happen with AMD beta blockchain drivers, no Afterburner or incorrect GpuGroups config") -Severity Warn
-                Start-Sleep -Seconds 5
-            } elseif ($DetectedDevices.Count -ne $_.DevicesCount) {
-                Log ("Mismatching Devices for group " + $_.GroupName + " was detected, check GpuGroups config and DeviceList.bat output") -Severity Warn
-                Start-Sleep -Seconds 5
-            }
-        }
-
-        $TotalMem = (($Types | Where-Object GroupType -ne 'CPU').OCLDevices.GlobalMemSize | Measure-Object -Sum).Sum / 1GB
-        $TotalSwap = (Get-CimInstance Win32_PageFile | Select-Object -ExpandProperty FileSize | Measure-Object -Sum).Sum / 1GB
-        if ($TotalMem -gt $TotalSwap) {
-            Log "Make sure you have at least $TotalMem GB swap configured" -Severity Warn
-            Start-Sleep -Seconds 5
-        }
-    }
-}
-
 function Start-Autoexec {
     [cmdletbinding()]
     param(
@@ -1969,32 +1828,6 @@ function Stop-Autoexec {
     $Script:AutoexecCommands | Where-Object Process | ForEach-Object {
         Stop-SubProcess -Job $_ -Title "Autoexec command" -Name "$($_.FilePath) $($_.Arguments)"
     }
-}
-
-function Write-Color() {
-    Param (
-        [string] $text = $(Write-Error "You must specify some text"),
-        [switch] $NoNewLine = $false
-    )
-
-    $startColor = $Host.UI.RawUI.ForegroundColor;
-
-    $text.Split( [char]"{", [char]"}" ) | ForEach-Object { $i = 0; } {
-        if ($i % 2 -eq 0) {
-            Write-Host $_ -NoNewline;
-        } else {
-            if ([enum]::GetNames("ConsoleColor") -contains $_) {
-                $Host.UI.RawUI.ForegroundColor = ($_ -as [System.ConsoleColor]);
-            }
-        }
-
-        $i++;
-    }
-
-    if (-not $NoNewLine) {
-        Write-Host
-    }
-    $Host.UI.RawUI.ForegroundColor = $startColor;
 }
 
 function Get-WhatToMineURL {
@@ -2051,3 +1884,187 @@ function Get-WhatToMineFactor {
         }
     }
 }
+
+
+
+### Console and logging
+
+function Send-ErrorsToLog ($LogFile) {
+
+    for ($i = 0; $i -lt $error.count; $i++) {
+        if ($error[$i].InnerException.Paramname -ne "scopeId") {
+            # errors in debug
+            $Msg = "###### ERROR ##### " + [string]($error[$i]) + ' ' + $error[$i].ScriptStackTrace
+            Log $msg -Severity Error -NoEcho
+        }
+    }
+    $error.clear()
+}
+
+Function Write-Log {
+    param(
+        [Parameter()]
+        [string]$Message,
+
+        [Parameter()]
+        [ValidateSet('Info', 'Warn', 'Error', 'Debug')]
+        [string]$Severity = 'Info',
+
+        [Parameter()]
+        [switch]$NoEcho = $false
+    )
+    if ($Message) {
+        if ($LogFile) {
+            $LogFile.WriteLine("$(Get-Date -f "HH:mm:ss.ff")`t$Severity`t$Message")
+        }
+        if ($NoEcho -eq $false) {
+            switch ($Severity) {
+                Info { Write-Host "$Message" -ForegroundColor Green }
+                Warn { Write-Warning "$Message" }
+                Error { Write-Error "$Message" }
+            }
+        }
+    }
+}
+Set-Alias Log Write-Log
+
+Function Read-KeyboardTimed {
+    param(
+        [Parameter(Mandatory = $true)]
+        [int]$SecondsToWait,
+        [Parameter(Mandatory = $true)]
+        [array]$ValidKeys
+    )
+
+    $LoopStart = Get-Date
+    $KeyPressed = $null
+
+    do {
+        if ($Host.UI.RawUI.KeyAvailable) {
+            $Key = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyUp")
+            $KeyPressed = $Key.character
+        }
+        Start-Sleep -Milliseconds 30
+    } until ((New-TimeSpan $LoopStart (Get-Date)).Seconds -gt $SecondsToWait -or $ValidKeys -contains $KeyPressed)
+
+    $KeyPressed
+}
+
+function ConvertTo-Hash {
+    param(
+        [Parameter(Mandatory = $true)]
+        [double]$Hash
+    )
+
+    $Return = switch ([math]::truncate([math]::log($Hash, 1e3))) {
+        1 { "{0:g4} kh" -f ($Hash / 1e3) }
+        2 { "{0:g4} mh" -f ($Hash / 1e6) }
+        3 { "{0:g4} gh" -f ($Hash / 1e9) }
+        4 { "{0:g4} th" -f ($Hash / 1e12) }
+        5 { "{0:g4} ph" -f ($Hash / 1e15) }
+        default { "{0:g4} h" -f ($Hash) }
+    }
+    $Return
+}
+
+function Write-Color() {
+    Param (
+        [string] $text = $(Write-Error "You must specify some text"),
+        [switch] $NoNewLine = $false
+    )
+
+    $startColor = $Host.UI.RawUI.ForegroundColor;
+
+    $text.Split( [char]"{", [char]"}" ) | ForEach-Object -Begin { $i = 0; } -Process {
+        if ($i % 2 -eq 0) {
+            Write-Host $_ -NoNewline;
+        } else {
+            if ([enum]::GetNames("ConsoleColor") -contains $_) {
+                $Host.UI.RawUI.ForegroundColor = ($_ -as [System.ConsoleColor]);
+            }
+        }
+
+        $i++;
+    }
+
+    if (-not $NoNewLine) {
+        Write-Host
+    }
+    $Host.UI.RawUI.ForegroundColor = $startColor;
+}
+
+function Set-ConsolePosition ([int]$x, [int]$y) {
+    # Get current cursor position and store away
+    $position = $host.ui.rawui.cursorposition
+    # Store new X Co-ordinate away
+    $position.x = $x
+    $position.y = $y
+    # Place modified location back to $HOST
+    $host.ui.rawui.cursorposition = $position
+    Remove-Variable position
+}
+
+function Get-ConsolePosition ([ref]$x, [ref]$y) {
+
+    $position = $host.UI.RawUI.CursorPosition
+    $x.value = $position.x
+    $y.value = $position.y
+    Remove-Variable position
+}
+
+function Out-HorizontalLine ([string]$Title) {
+    $MaxWidth = 170
+    $Width = [math]::min($Host.UI.RawUI.WindowSize.Width, $MaxWidth) - 1
+    if ([string]::IsNullOrEmpty($Title)) { $str = "-" * $Width }
+    else {
+        $str = '{white}' + ("-" * [math]::floor(($Width - $Title.Length - 4) / 2))
+        $str += "{green}  " + $Title + "  "
+        $str += '{white}' + ("-" * [math]::floor(($Width + 1 - $Title.Length - 4) / 2))
+    }
+    Write-Color $str
+}
+
+function Clear-Lines ([int]$Lines) {
+    $x = $y = [ref]0
+    Get-ConsolePosition ([ref]$x) ([ref]$y)
+    $Width = $Host.UI.RawUI.WindowSize.Width
+    Write-Host (" " * $Width * $Lines)
+    Set-ConsolePosition $x $y
+    Remove-Variable x
+    Remove-Variable y
+}
+
+function Write-Message {
+    param(
+        [string]$Message,
+        [int]$Line,
+        [switch]$AlignRight,
+        [switch]$AlignCenter
+    )
+    $MaxWidth = 170
+    $Width = [math]::min($Host.UI.RawUI.WindowSize.Width, $MaxWidth) - 1
+    if ($AlignRight) {
+        [int]$X = ($Width - ($Message -replace "({\w+})").Length)
+    } elseif ($AlignCenter) {
+        [int]$X = ($Width - ($Message -replace "({\w+})").Length) / 2
+    }
+    Set-ConsolePosition $X $Line
+    Write-Color $Message
+}
+
+function Set-WindowSize ([int]$Width, [int]$Height) {
+    #Buffer must be always greater than windows size
+
+    $BSize = $Host.UI.RawUI.BufferSize
+    if ($Width -ne 0 -and $Width -gt $BSize.Width) { $BSize.Width = $Width }
+    if ($Height -ne 0 -and $Height -gt $BSize.Height) { $BSize.Width = $Height }
+
+    $Host.UI.RawUI.BufferSize = $BSize
+
+    $WSize = $Host.UI.RawUI.WindowSize
+    if ($Width -ne 0) { $WSize.Width = $Width }
+    if ($Height -ne 0) { $WSize.Height = $Height }
+
+    $Host.UI.RawUI.WindowSize = $WSize
+}
+
