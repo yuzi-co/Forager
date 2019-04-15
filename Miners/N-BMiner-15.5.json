@@ -1,8 +1,9 @@
 {
-  "Path": "bminer-lite-v15.4.0-9e272fc/bminer.exe",
-  "Uri": "https://www.bminercontent.com/releases/bminer-lite-v15.4.0-9e272fc-amd64.zip",
-  "SHA256": "B650967C687B1E687D97D9BD355BFF0273B6617C087793163B842517DE1AA842",
+  "Path": "bminer-lite-v15.5.0-f720eee/bminer.exe",
+  "Uri": "https://www.bminercontent.com/releases/bminer-lite-v15.5.0-f720eee-amd64.zip",
+  "SHA256": "6B2CA2E8E2681A10BA96F9ADEB981D76D01C891FA2542F13AE0489E8BFC39F91",
   "Type": "NVIDIA",
+  "CUDA": 9.2,
   "Arguments": [
     "#AlgorithmParameters#$(if($enableSSL){'+ssl'})://$([System.Web.HttpUtility]::UrlEncode('#Login#')):$([System.Web.HttpUtility]::UrlEncode('#Password#'))@#Server#:#Port#",
     "-devices #Devices#",
@@ -14,7 +15,6 @@
   "API": "BMiner",
   "SSL": true,
   "Fee": 0.02,
-  "CUDA": 9.2,
   "Algorithms": {
     "Cuckoo29": {
       "Params": "-uri aeternity",
