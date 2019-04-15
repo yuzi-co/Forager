@@ -1216,10 +1216,9 @@ function Start-SubProcess {
     $JobParams = @{
         ArgumentList = $PID, $FilePath, $ArgumentList, $MinerWindowStyle, $WorkingDirectory, $UseAlternateMinerLauncher
     }
-    
-    $CreateProcessScript = Resolve-Path "$PSScriptRoot/Includes/CreateProcess.ps1"
+
     if ($UseAlternateMinerLauncher -and $IsWindows) {
-        $JobParams.InitializationScript = $([scriptblock]::Create("Set-Location('$(Get-Location)');. $CreateProcessScript"))
+        $JobParams.InitializationScript = $([scriptblock]::Create("Set-Location('$(Get-Location)');. ./Includes/CreateProcess.ps1"))
     }
 
     $Job = Start-Job @JobParams {
@@ -1241,8 +1240,6 @@ function Start-SubProcess {
         }
 
         if ($UseAlternateMinerLauncher -and $IsWindows) {
-            . $using:CreateProcessScript
-
             $ProcessParams.CreationFlags = [CreationFlags]::CREATE_NEW_CONSOLE
             $ProcessParams.StartF = [STARTF]::STARTF_USESHOWWINDOW
 
