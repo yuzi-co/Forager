@@ -1,8 +1,9 @@
 {
-  "Path": "GrinPro_2_RC1_Win64/GrinProMiner.exe",
-  "Uri": "https://github.com/mozkomor/GrinProMiner/releases/download/2.0rc/GrinPro_2_RC_Win64.zip",
-  "SHA256": "B565DCCD3508088AC6AEC50B74F4951E691743EF9F7226ABD2E8EBD8A3EEA2F5",
-  "Type": "AMD",
+  "Path": "GrinPro_2_1_Win64/GrinProMiner.exe",
+  "Uri": "https://github.com/mozkomor/GrinProMiner/releases/download/2.1/GrinPro_2_1_Win64.zip",
+  "SHA256": "0486C002D30D83B965C20AAFA9CB6C18E47F6096733EB91C2BBA5A9AEE59731D",
+  "Type": "NVIDIA",
+  "CUDA": 10.0,
   "Arguments": [
     "api-port=#ApiPort#",
     "ignore-config=true",
@@ -11,7 +12,7 @@
     "stratum-tls=$(if($EnableSSL){'true'}else{'false'})",
     "stratum-login=#Login#",
     "stratum-password=#Password#",
-    "amd=$(($DeviceGroup.DevicesArray | % {[string]$DeviceGroup.PlatformId + ':' + $_}) -join ',')"
+    "nvidia=#Devices#"
   ],
   "API": "GrinPro",
   "Fee": 0.02,
