@@ -3,6 +3,7 @@
   "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.03/z-enemy-1.28-cuda92.tar.gz",
   "SHA256": "60249EF65F3097F4AD229EB931B74D9AA92D095EFCB575F7E98F523D80C9D70A",
   "Type": "NVIDIA",
+  "CUDA": 9.2,
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
     "-u #Login#",
@@ -16,20 +17,12 @@
   ],
   "API": "Ccminer",
   "Fee": 0.01,
-  "CUDA": 9.2,
-  "Custom": "-i 22",
   "Algorithms": {
-    "Aergo": {
-      "Params": "-a aeriumx",
-      "Custom": "-i 23"
-    },
+    "Aergo": "-a aeriumx",
     "BCD": "-a bcd",
     "Bitcore": "-a bitcore",
     "C11": "-a c11",
-    "Hex": {
-      "Params": "-a hex",
-      "Custom": "-i 24"
-    },
+    "Hex": "-a hex",
     "Polytimos": "-a poly",
     "Renesis": "-a renesis",
     "SonoA": "-a sonoa",

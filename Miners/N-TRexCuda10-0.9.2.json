@@ -3,6 +3,7 @@
   "Uri": "https://github.com/trexminer/T-Rex/releases/download/0.9.2/t-rex-0.9.2-win-cuda10.0.zip",
   "SHA256": "F9DB2A06D2F095DA53C3E3AE3D294ACBFB4D31A23A19E6300785DB1ED2BD208E",
   "Type": "NVIDIA",
+  "CUDA": 10.0,
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
     "-u #Login#",
@@ -16,7 +17,6 @@
   ],
   "API": "Ccminer",
   "Fee": 0.01,
-  "CUDA": 10.0,
   "Algorithms": {
     "Astralhash": "-a astralhash",
     "Balloon": "-a balloon",

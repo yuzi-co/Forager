@@ -18,13 +18,11 @@
   "Algorithms": {
     "Cuckoo29": {
       "Params": "-uri aeternity",
-      "Custom": "--fast",
       "NoCpu": true,
       "Mem": 5.6
     },
     "Cuckaroo29": {
       "Params": "-uri cuckaroo29",
-      "Custom": "--fast",
       "NoCpu": true,
       "Mem": 5.6
     },

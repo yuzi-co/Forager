@@ -3,6 +3,7 @@
   "Uri": "https://github.com/yuzi-co/miners/releases/download/2018.12/z-enemy.1-28-cuda9.2.zip",
   "SHA256": "A60EA1962B2581F9E938C5C2F0C3151E67CE79B98AEC2A95392C2750D4F34EDA",
   "Type": "NVIDIA",
+  "CUDA": 9.2,
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
     "-u #Login#",
@@ -16,7 +17,6 @@
   ],
   "API": "Ccminer",
   "Fee": 0.01,
-  "CUDA": 9.2,
   "Algorithms": {
     "Aergo": "-a aeriumx",
     "_BCD": "-a bcd",

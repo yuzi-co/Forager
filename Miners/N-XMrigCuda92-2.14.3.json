@@ -3,6 +3,7 @@
   "Uri": "https://github.com/xmrig/xmrig-nvidia/releases/download/v2.14.3/xmrig-nvidia-2.14.3-cuda9_2-win64.zip",
   "SHA256": "554BF40A20F55268BF45F414BBB8655CE752753B253CE17A9AFCE39B9E3D3CB1",
   "Type": "NVIDIA",
+  "CUDA": 9.2,
   "Arguments": [
     "-o #Server#:#Port#",
     "-u #Login#",
@@ -18,7 +19,6 @@
   "API": "XMRig",
   "SSL": true,
   "Fee": 0.01,
-  "CUDA": 9.2,
   "Algorithms": {
     "CnAlloy": "-a cn/xao",
     "CnArto": "-a cn/rto",

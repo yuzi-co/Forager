@@ -3,6 +3,7 @@
   "Uri": "https://github.com/yuzi-co/miners/releases/download/2018.10/EWBF.Equihash.miner.v0.6.7z",
   "SHA256": "A4366042AC9E45F32DC3FCD65CF6188D8C30CE284BD1415BCDB4231FBB6B25FB",
   "Type": "NVIDIA",
+  "CUDA": 9.1,
   "Arguments": [
     "--server #Server#",
     "--port #Port#",
@@ -17,7 +18,6 @@
     "#CustomParameters#"
   ],
   "API": "EWBF",
-  "CUDA": 9.1,
   "Algorithms": {
     "Equihash144": "--algo 144_5 --pers auto",
     "Equihash192": {

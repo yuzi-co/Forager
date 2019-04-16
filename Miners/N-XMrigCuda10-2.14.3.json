@@ -3,6 +3,7 @@
   "Uri": "https://github.com/xmrig/xmrig-nvidia/releases/download/v2.14.3/xmrig-nvidia-2.14.3-cuda10-win64.zip",
   "SHA256": "787C6904351ED976D26F33ACAA4E4AD3CE1A49F5E5FC10FC4FA6DDD235F9E776",
   "Type": "NVIDIA",
+  "CUDA": 10.0,
   "Arguments": [
     "-o #Server#:#Port#",
     "-u #Login#",
@@ -18,7 +19,6 @@
   "API": "XMRig",
   "SSL": true,
   "Fee": 0.01,
-  "CUDA": 10.0,
   "Algorithms": {
     "CnAlloy": "-a cn/xao",
     "CnArto": "-a cn/rto",

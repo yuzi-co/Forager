@@ -25,14 +25,8 @@
   "SSL": true,
   "Mem": 2,
   "Algorithms": {
-    "Ethash|a1": {
-      "Params": "-mode 1",
-      "Custom": "-asm 1"
-    },
-    "Ethash|a2": {
-      "Params": "-mode 1",
-      "Custom": "-asm 2"
-    },
+    "Ethash": "-mode 1",
+    "Params": "-mode 1",
     "_Ethash_Blake2s": "-dcoin blake2s -mode 0 -dpool #ProtocolDual#://#ServerDual#:#PortDual# -dwal #LoginDual# -dpsw #PasswordDual#",
     "_Ethash_Keccak": "-dcoin keccak -mode 0 -dpool #ProtocolDual#://#ServerDual#:#PortDual# -dwal #LoginDual# -dpsw #PasswordDual#"
   }

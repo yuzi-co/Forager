@@ -3,6 +3,7 @@
   "Uri": "https://github.com/BitcoinInterestOfficial/BitcoinInterest/releases/download/2.1/progpow_linux_0.16_final.zip",
   "SHA256": "779447DA3802D6115588EBE1B065656CF9841D59CE9E0C14DB440F9D62EDF733",
   "Type": "NVIDIA",
+  "CUDA": 10.0,
   "Arguments": [
     "-P stratum+tcp://#Login#:#Password#@#Server#:#Port#",
     "--cuda",
@@ -13,7 +14,6 @@
     "#CustomParameters#"
   ],
   "API": "Claymore",
-  "CUDA": 10.0,
   "Algorithms": {
     "ProgPOW": ""
   }
