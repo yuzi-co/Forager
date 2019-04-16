@@ -19,7 +19,6 @@
   "Algorithms": {
     "MTP": {
       "Params": "-a mtp",
-      "Custom": "-i 21.15",
       "NH": false,
       "Mem": 4.5
     }

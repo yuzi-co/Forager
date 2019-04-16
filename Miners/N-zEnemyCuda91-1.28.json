@@ -17,19 +17,12 @@
   "API": "Ccminer",
   "Fee": 0.01,
   "CUDA": 9.1,
-  "Custom": "-i 22",
   "Algorithms": {
-    "Aergo": {
-      "Params": "-a aeriumx",
-      "Custom": "-i 23"
-    },
+    "Aergo": "-a aeriumx",
     "_BCD": "-a bcd",
     "_Bitcore": "-a bitcore",
     "_C11": "-a c11",
-    "Hex": {
-      "Params": "-a hex",
-      "Custom": "-i 24"
-    },
+    "Hex": "-a hex",
     "_Polytimos": "-a poly",
     "_Renesis": "-a renesis",
     "_SonoA": "-a sonoa",

@@ -28,14 +28,8 @@
   "Mem": 2,
   "Algorithms": {
     "Ethash": "-mode 1",
-    "Ethash_Blake2s": {
-      "Params": "-dcoin blake2s -mode 0",
-      "Custom": "-dcri 50"
-    },
-    "Ethash_Keccak": {
-      "Params": "-dcoin keccak -mode 0",
-      "Custom": "-dcri 6"
-    },
+    "Ethash_Blake2s": "-dcoin blake2s -mode 0",
+    "Ethash_Keccak": "-dcoin keccak -mode 0",
     "_Ethash_Decred": "-dcoin dcr -mode 0",
     "_Ethash_Lbry": "-dcoin lbc -mode 0",
     "_Ethash_Pascal": "-dcoin pasc -mode 0"

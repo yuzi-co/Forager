@@ -29,14 +29,8 @@
   "Mem": 2,
   "Algorithms": {
     "ProgPOW": "-coin bci -mode 1",
-    "Ethash": {
-      "Params": "-mode 1",
-      "Custom": "-clKernel 3"
-    },
-    "Ubqhash": {
-      "Params": "-coin ubq -mode 1",
-      "Custom": "-clKernel 3"
-    },
+    "Ethash": "-mode 1",
+    "Ubqhash": "-coin ubq -mode 1",
     "_Ethash_Blake2s": "-dcoin blake2s -mode 0"
   }
 }

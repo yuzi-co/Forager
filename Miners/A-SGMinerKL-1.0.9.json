@@ -18,19 +18,12 @@
   "BenchmarkArg": "$(if ($AlgoName -in @('x16r')){'--benchmark'})",
   "API": "Xgminer",
   "Fee": 0.01,
-  "Custom": "-g 2 -w 64 -X 256",
   "Algorithms": {
     "_Aergo": "-k aergo",
     "Geek": "-k geek",
-    "_Phi": {
-      "Params": "-k phi",
-      "Custom": "-g 2 -w 256 -X 256"
-    },
+    "_Phi": "-k phi",
     "_Polytimos": "-k polytimos",
-    "_Skunk": {
-      "Params": "-k skunk",
-      "Custom": "-g 2 -w 256 -X 256"
-    },
+    "_Skunk": "-k skunk",
     "_Tribus": "-k tribus",
     "_X16r": "-k x16r",
     "_X16s": "-k x16s",

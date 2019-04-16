@@ -15,7 +15,6 @@
     "#CustomParameters#"
   ],
   "API": "Ccminer",
-  "Custom": "-i 18.5",
   "Algorithms": {
     "Verushash": "-a verus"
   }

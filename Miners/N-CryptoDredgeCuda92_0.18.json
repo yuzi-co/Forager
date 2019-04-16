@@ -11,7 +11,7 @@
     "-d #Devices#",
     "--retries 4",
     "--retry-pause 10",
-    "--timeout 5",
+    "--timeout 60",
     "--no-watchdog",
     "-b 127.0.0.1:#APIPort#",
     "#AlgorithmParameters#",
@@ -19,7 +19,6 @@
   ],
   "API": "Ccminer",
   "Fee": 0.01,
-  "Custom": "--intensity 8",
   "Algorithms": {
     "Allium": "-a allium",
     "Argon2d500": "-a argon2d",
@@ -58,10 +57,7 @@
       "Mem": 4.5,
       "Fee": 0.02
     },
-    "NeoScrypt": {
-      "Params": "-a neoscrypt",
-      "Custom": "--intensity 6"
-    },
+    "NeoScrypt": "-a neoscrypt",
     "Phi": "-a phi",
     "Phi2": "-a phi2",
     "Pipe ": "-a pipe",

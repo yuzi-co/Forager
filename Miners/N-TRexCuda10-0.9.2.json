@@ -17,58 +17,30 @@
   "API": "Ccminer",
   "Fee": 0.01,
   "CUDA": 10.0,
-  "Custom": "-i 23",
   "Algorithms": {
     "Astralhash": "-a astralhash",
     "Balloon": "-a balloon",
-    "BCD": {
-      "Params": "-a bcd",
-      "Custom": "-i 24"
-    },
+    "BCD": "-a bcd",
     "Bitcore": "-a bitcore",
-    "C11": {
-      "Params": "-a c11",
-      "Custom": "-i 24"
-    },
+    "C11": "-a c11",
     "Dedal": "-a dedal",
     "_Hmq1725": "-a hmq1725",
     "HSR": "-a hsr",
     "Jeonghash": "-a jeonghash",
     "Padihash": "-a padihash",
     "Pawelhash": "-a pawelhash",
-    "Polytimos": {
-      "Params": "-a polytimos",
-      "Custom": "-i 25"
-    },
+    "Polytimos": "-a polytimos",
     "Renesis": "-a renesis",
-    "SHA256t": {
-      "Params": "-a sha256q",
-      "Custom": "-i 26"
-    },
+    "SHA256t": "-a sha256q",
     "SHA256q": "-a sha256q",
     "_Skunk": "-a skunk",
     "SonoA": "-a sonoa",
-    "Timetravel": {
-      "Params": "-a timetravel",
-      "Custom": "-i 25"
-    },
+    "Timetravel": "-a timetravel",
     "Tribus": "-a tribus",
-    "X16r": {
-      "Params": "-a x16r",
-      "Custom": "-i 24"
-    },
-    "X16rt": {
-      "Params": "-a x16rt",
-      "Custom": "-i 24"
-    },
-    "X16s": {
-      "Params": "-a x16s",
-      "Custom": "-i 24"
-    },
-    "X17": {
-      "Params": "-a x17",
-      "Custom": "-i 24"
-    },
+    "X16r": "-a x16r",
+    "X16rt": "-a x16rt",
+    "X16s": "-a x16s",
+    "X17": "-a x17",
     "X21s": "-a x21s",
     "X22i": "-a x22i"
   }

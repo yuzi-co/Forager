@@ -1,6 +1,52 @@
 {
-  "A-SampleMiner-1.0": {
-    "Argon2ad": "-i 30",
-    "Argon2d4096": "-i 28"
+  "A-ClayEth-12.0": {
+    "Ethash_Blake2s": "-dcri 50",
+    "Ethash_Keccak": "-dcri 6"
+  },
+  "A-Multiminer-1.1.0": {
+    "Argon2ad": "--gpu-batchsize=1024 -t 1",
+    "Argon2d250": "--gpu-batchsize=2048 -t 1",
+    "Argon2d500": "--gpu-batchsize=1024 -t 1",
+    "Argon2d4096": "--gpu-batchsize=128 -t 1"
+  },
+  "A-Phoenix-4.2c": {
+    "Ethash": "-clKernel 3",
+    "Ubqhash": "-clKernel 3"
+  },
+  "A-SGMinerDallar": {
+    "Throestl": "-g 2 -w 256 -X 256"
+  },
+  "A-SGMinerFancyIX-0.5ip3": {
+    "Allium": "-g 1 -w 256 -I 18",
+    "Argon2d500": "-g 2 -w 64",
+    "Ethash": "-w 64 -X 1024",
+    "Lyra2v3": "-g 1 -w 256 -I 24",
+    "Lyra2z": "-g 1 -w 256 -I 22",
+    "Lyra2zz": "-g 1 -w 256 -I 22",
+    "MTP": "-I 20",
+    "Phi2": "-g 1 -w 256 -I 22",
+    "X22i": "-g 2 -w 256 -I 22"
+  },
+  "A-SGMinerKL-1.0.9": {
+    "Aergo": "-g 2 -w 64 -X 256",
+    "Geek": "-g 2 -w 64 -X 256",
+    "Phi": "-g 2 -w 256 -X 256",
+    "Polytimos": "-g 2 -w 64 -X 256",
+    "Skunk": "-g 2 -w 256 -X 256",
+    "Tribus": "-g 2 -w 64 -X 256",
+    "X16r": "-g 2 -w 64 -X 256",
+    "X16s": "-g 2 -w 64 -X 256",
+    "X17": "-g 2 -w 64 -X 256",
+    "Xevan": "-g 2 -w 64 -X 256"
+  },
+  "N-BMiner-15.5": {
+    "Cuckoo29": "--fast",
+    "Cuckaroo29": "--fast"
+  },
+  "N-Multiminer-1.1.0": {
+    "Argon2ad": "--gpu-batchsize=512 -t 1",
+    "Argon2d250": "--gpu-batchsize=2048 -t 1",
+    "Argon2d500": "--gpu-batchsize=1024 -t 1",
+    "Argon2d4096": "--gpu-batchsize=256 -t 1"
   }
 }
