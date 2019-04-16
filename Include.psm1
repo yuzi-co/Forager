@@ -984,6 +984,10 @@ function Get-LiveHashRate {
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
                     $HashRate = $Data.result.speed_ips * 1e6
+                    $Shares = @(
+                        [int64]([int64]$Data.result.accepted_per_minute * ((Get-Date) - $Miner.Process.StartTime).TotalMinutes)
+                        [int64]([int64]$Data.result.rejected_per_minute * ((Get-Date) - $Miner.Process.StartTime).TotalMinutes)
+                    )
                 }
             }
 
