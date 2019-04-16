@@ -1351,7 +1351,7 @@ function Expand-WebRequest {
                     } else {
                         $Params = @{
                             FilePath     = "7z"
-                            ArgumentList = 'x "' + $FilePath + '" -o"' + $Path + '" -y -spe'
+                            ArgumentList = 'x "' + $FilePath + '" -o"' + $Path + '" -y'
                         }
                     }
                 } else {
