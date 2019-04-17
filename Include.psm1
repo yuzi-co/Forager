@@ -111,67 +111,69 @@ function Get-DevicesInfoNvidiaSMI {
         [switch]$Fake = $false
     )
 
-    if ($IsWindows) {
-        $CvsParams = @{
-            Header = @(
-                'gpu_name'
-                'utilization_gpu'
-                'utilization_memory'
-                'temperature_gpu'
-                'power_draw'
-                'power_limit'
-                'fan_speed'
-                'pstate'
-                'clocks_current_graphics'
-                'clocks_current_memory'
-                'power_max_limit'
-                'power_default_limit'
-            )
-        }
+    $CvsParams = @{
+        Header = @(
+            'gpu_name'
+            'utilization_gpu'
+            'utilization_memory'
+            'temperature_gpu'
+            'power_draw'
+            'power_limit'
+            'fan_speed'
+            'pstate'
+            'clocks_current_graphics'
+            'clocks_current_memory'
+            'power_max_limit'
+            'power_default_limit'
+        )
+    }
 
-        if ($Fake) {
-            $FakeData = @"
+    if ($Fake) {
+        $FakeData = @"
         GeForce GTX 1060 6GB, 0 %, 3 %, 46, 9.34 W, 180.00 W, 0 %, P8, 139 MHz, 405 MHz, 200.00 W, 180.00 W
         GeForce GTX 1060 6GB, 0 %, 3 %, 46, 9.34 W, 180.00 W, 0 %, P8, 139 MHz, 405 MHz, 200.00 W, 180.00 W
         GeForce GTX 1080, 0 %, 0 %, 29, 6.54 W, 90.00 W, 39 %, P8, 135 MHz, 405 MHz, 108.00 W, 90.00 W
 "@
-            $Result = $FakeData | ConvertFrom-Csv @CvsParams
-        } else {
+        $Result = $FakeData | ConvertFrom-Csv @CvsParams
+    } else {
+        if ($IsWindows) {
             $Command = "./includes/nvidia-smi.exe"
-            $Arguments = @(
-                '--query-gpu=gpu_name,utilization.gpu,utilization.memory,temperature.gpu,power.draw,power.limit,fan.speed,pstate,clocks.current.graphics,clocks.current.memory,power.max_limit,power.default_limit'
-                '--format=csv,noheader'
-            )
-            $Result = & $Command $Arguments | ConvertFrom-Csv @CvsParams
+        } else {
+            $Command = "nvidia-smi"
         }
-
-        $DeviceId = 0
-        $Devices = $Result | Where-Object pstate -ne $null | ForEach-Object {
-            $GroupName = ($Types | Where-Object DevicesArray -contains $DeviceId).GroupName
-
-            $Card = [PSCustomObject]@{
-                GroupName         = $GroupName
-                GroupType         = 'NVIDIA'
-                Id                = $DeviceId
-                Name              = $_.gpu_name
-                Utilization       = [int]$(if ($_.utilization_gpu) { $_.utilization_gpu -replace "[^0-9.,]" } else { 100 }) #If we dont have real Utilization, at least make the watchdog happy
-                UtilizationMem    = [int]$($_.utilization_memory -replace "[^0-9.,]")
-                Temperature       = [int]$($_.temperature_gpu -replace "[^0-9.,]")
-                PowerDraw         = [int]$($_.power_draw -replace "[^0-9.,]")
-                PowerLimit        = [int]$($_.power_limit -replace "[^0-9.,]")
-                FanSpeed          = [int]$($_.fan_speed -replace "[^0-9.,]")
-                Pstate            = $_.pstate
-                Clock             = [int]$($_.clocks_current_graphics -replace "[^0-9.,]")
-                ClockMem          = [int]$($_.clocks_current_memory -replace "[^0-9.,]")
-                PowerMaxLimit     = [int]$($_.power_max_limit -replace "[^0-9.,]")
-                PowerDefaultLimit = [int]$($_.power_default_limit -replace "[^0-9.,]")
-            }
-            if ($Card.PowerDefaultLimit -gt 0) { $Card | Add-Member PowerLimitPercent ([int](($Card.PowerLimit * 100) / $Card.PowerDefaultLimit)) }
-            $Card
-            $DeviceId++
-        }
-        $Devices
+        $Arguments = @(
+            '--query-gpu=gpu_name,utilization.gpu,utilization.memory,temperature.gpu,power.draw,power.limit,fan.speed,pstate,clocks.current.graphics,clocks.current.memory,power.max_limit,power.default_limit'
+            '--format=csv,noheader'
+        )
+        $Result = & $Command $Arguments | ConvertFrom-Csv @CvsParams
     }
+
+    $DeviceId = 0
+    $Devices = $Result | Where-Object pstate -ne $null | ForEach-Object {
+        $GroupName = ($Types | Where-Object DevicesArray -contains $DeviceId).GroupName
+
+        $Card = [PSCustomObject]@{
+            GroupName         = $GroupName
+            GroupType         = 'NVIDIA'
+            Id                = $DeviceId
+            Name              = $_.gpu_name
+            Utilization       = [int]$(if ($_.utilization_gpu) { $_.utilization_gpu -replace "[^0-9.,]" } else { 100 }) #If we dont have real Utilization, at least make the watchdog happy
+            UtilizationMem    = [int]$($_.utilization_memory -replace "[^0-9.,]")
+            Temperature       = [int]$($_.temperature_gpu -replace "[^0-9.,]")
+            PowerDraw         = [int]$($_.power_draw -replace "[^0-9.,]")
+            PowerLimit        = [int]$($_.power_limit -replace "[^0-9.,]")
+            FanSpeed          = [int]$($_.fan_speed -replace "[^0-9.,]")
+            Pstate            = $_.pstate
+            Clock             = [int]$($_.clocks_current_graphics -replace "[^0-9.,]")
+            ClockMem          = [int]$($_.clocks_current_memory -replace "[^0-9.,]")
+            PowerMaxLimit     = [int]$($_.power_max_limit -replace "[^0-9.,]")
+            PowerDefaultLimit = [int]$($_.power_default_limit -replace "[^0-9.,]")
+        }
+        if ($Card.PowerDefaultLimit -gt 0) { $Card | Add-Member PowerLimitPercent ([int](($Card.PowerLimit * 100) / $Card.PowerDefaultLimit)) }
+        $Card
+        $DeviceId++
+    }
+    $Devices
 }
 
 function Get-DevicesInfoCPU {
@@ -634,19 +636,17 @@ function Set-NvidiaPowerLimit ([int]$PowerLimitPercent, [string]$Devices) {
     if ($PowerLimitPercent -eq 0) { return }
     foreach ($Device in @($Devices -split ',')) {
 
-        # $Command = (Resolve-Path -Path '.\includes\nvidia-smi.exe').Path
-        # $Arguments = @(
-        #     "-i $Device"
-        #     "--query-gpu=power.default_limit"
-        #     "--format=csv,noheader"
-        # )
-        # $PowerDefaultLimit = [int](((& $Command $Arguments) -replace 'W').Trim())
+        if ($IsWindows) {
+            $Command = "./Includes/nvidia-smi.exe"
+        } else {
+            $Command = "nvidia-smi"
+        }
 
-        $xpr = "./includes/nvidia-smi.exe -i " + $Device + " --query-gpu=power.default_limit --format=csv,noheader"
+        $xpr = $Command + " -i " + $Device + " --query-gpu=power.default_limit --format=csv,noheader"
         $PowerDefaultLimit = [int]((Invoke-Expression $xpr) -replace 'W', '')
 
         #powerlimit change must run in admin mode
-        $NewProcess = New-Object System.Diagnostics.ProcessStartInfo "./includes/nvidia-smi.exe"
+        $NewProcess = New-Object System.Diagnostics.ProcessStartInfo $Command
         $NewProcess.Verb = "runas"
         #$NewProcess.UseShellExecute = $false
         $NewProcess.Arguments = "-i $Device -pl $([Math]::Floor([int]($PowerDefaultLimit -replace ' W', '') * ($PowerLimitPercent / 100)))"
