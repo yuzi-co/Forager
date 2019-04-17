@@ -1,5 +1,5 @@
 {
-  "Path": "miner",
+  "Path": "EWBF_Equihash_miner_v0.6/miner",
   "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.03/EWBF_Equihash_miner_v0.6.tar.gz",
   "SHA256": "37A31B0D910A70414F9AF816771D6D01BCD67BC925389CF1E1B3613F334163B3",
   "Type": "NVIDIA",
