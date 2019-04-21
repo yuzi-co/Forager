@@ -1842,7 +1842,7 @@ function Start-Autoexec {
         Copy-Item ./Data/Autoexec.default.txt ./Config/Autoexec.txt -Force -ErrorAction Ignore
     }
     [System.Collections.ArrayList]$Script:AutoexecCommands = @()
-    foreach ($cmd in @(Get-Content ./Autoexec.txt -ErrorAction Ignore | Select-Object)) {
+    foreach ($cmd in @(Get-Content ./Config/Autoexec.txt -ErrorAction Ignore | Select-Object)) {
         if ($cmd -match "^[\s\t]*`"(.+?)`"(.*)$") {
             try {
                 $Params = @{
