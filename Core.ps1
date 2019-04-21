@@ -48,7 +48,7 @@ $ErrorActionPreference = "Continue"
 
 $Global:Release = @{
     Application = "Forager"
-    Version     = "19.04"
+    Version     = "19.04.1"
 }
 Log "$($Release.Application) v$($Release.Version)"
 
@@ -422,7 +422,7 @@ while ($Quit -ne $true) {
 
                         # Replace placeholder patterns
                         $WorkerNameMain = $Config.WorkerName + '_' + $DeviceGroup.GroupName
-                        
+
                         if ($Pool.PoolName -eq 'Nicehash') {
                             $WorkerNameMain = $WorkerNameMain -replace '[^\w\.]', '_' # Nicehash requires alphanumeric WorkerNames
                         }
