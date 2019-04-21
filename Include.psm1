@@ -1225,6 +1225,11 @@ function Start-SubProcess {
         $JobParams.InitializationScript = $([scriptblock]::Create("Set-Location('$(Get-Location)');. ./Includes/CreateProcess.ps1"))
     }
 
+    if (-not (Get-Command $FilePath -ErrorAction SilentlyContinue)) {
+        Log "$FilePath not found!" -Severity Warn
+        return
+    }
+
     $Job = Start-Job @JobParams {
         param($ControllerProcessID, $FilePath, $ArgumentList, $MinerWindowStyle, $WorkingDirectory, $UseAlternateMinerLauncher)
 
@@ -1341,27 +1346,33 @@ function Expand-WebRequest {
                     if (($FileName -split '\.')[-2] -eq 'tar') {
                         $Params = @{
                             FilePath     = "tar"
-                            ArgumentList = "-xa -f " + $FilePath + " -C " + $Path
+                            ArgumentList = "-xa -f $FilePath -C $Path"
                         }
                     } elseif (($FileName -split '\.')[-1] -in @('tgz')) {
                         $Params = @{
                             FilePath     = "tar"
-                            ArgumentList = "-xz -f " + $FilePath + " -C " + $Path
+                            ArgumentList = "-xz -f $FilePath -C $Path"
                         }
                     } else {
                         $Params = @{
-                            FilePath     = "7z"
-                            ArgumentList = 'x "' + $FilePath + '" -o"' + $Path + '" -y'
+                            FilePath               = "7z"
+                            ArgumentList           = "x `"$FilePath`" -o`"$Path`" -y"
+                            RedirectStandardOutput = Join-Path "./Logs" "7z-console.log"
+                            RedirectStandardError  = Join-Path "./Logs" "7z-error.log"
                         }
                     }
                 } else {
                     $Params = @{
                         FilePath     = "./includes/7z.exe"
-                        ArgumentList = 'x "' + $FilePath + '" -o"' + $Path + '" -y -spe'
+                        ArgumentList = "x `"$FilePath`" -o`"$Path`" -y -spe"
                     }
                 }
                 $Params.Wait = $true
-                Start-Process @Params
+                if (Get-Command $Params.FilePath -ErrorAction SilentlyContinue) {
+                    Start-Process @Params
+                } else {
+                    Log "$($Params.FilePath) not found!" -Severity Warn
+                }
             }
         }
     } finally {
