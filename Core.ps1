@@ -996,7 +996,10 @@ while ($Quit -ne $true) {
                         Log "Stopping miner $BestLastLogMsg with PID $($ActiveMiners[$BestLast.IdF].Process.Id)"
                         do {
                             Stop-SubProcess $ActiveMiners[$BestLast.IdF].Process
-                        } while (Test-TCPPort -Server 127.0.0.1 -Port $ActiveMiners[$BestLast.IdF].ApiPort)
+                        } while (
+                            # Test-TCPPort -Server 127.0.0.1 -Port $ActiveMiners[$BestLast.IdF].ApiPort
+                            Get-NetTCPConnection | Where-Object { $_.State -eq "Listen" -and $_.LocalPort -eq $ActiveMiners[$BestLast.IdF].ApiPort }
+                        )
                     }
 
                     $ActiveMiners[$BestLast.IdF].Process = $null
@@ -1009,8 +1012,6 @@ while ($Quit -ne $true) {
                         Default { $BestLast.Status }
                     }
                 }
-
-                Start-Sleep -Seconds 3
 
                 # Start new miner
                 if ($BestNow) {
