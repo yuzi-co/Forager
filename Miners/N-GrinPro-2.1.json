@@ -19,7 +19,7 @@
   "SSL": true,
   "Algorithms": {
     "Cuckaroo29": {
-      "Mem": 5.6,
+      "Mem": 5.3,
       "NoCpu": true,
       "NH": false
     }
