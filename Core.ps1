@@ -1010,6 +1010,8 @@ while ($Quit -ne $true) {
                     }
                 }
 
+                Start-Sleep -Seconds 3
+
                 # Start new miner
                 if ($BestNow) {
 
