@@ -374,7 +374,10 @@ function Get-Devices {
                 $Devices = $_.Group | Select-Object -Property PlatformId, Name, Vendor, GlobalMemSize, MaxComputeUnits -First 1
                 $GroupName = $GroupType
                 if ($Config.GroupGpuByType -and $GroupType -ne 'CPU') {
-                    $GroupName = ($Devices.Name -replace "[^\w]") + '_' + $Devices.MaxComputeUnits + 'cu' + [int]($Devices.GlobalMemSize / 1GB) + 'gb'
+                    $GroupName = $Devices.Name -replace "[^\w]"
+                    if ($GroupType -eq 'AMD') {
+                        $GroupName += '_' + $Devices.MaxComputeUnits + 'cu' + [int]($Devices.GlobalMemSize / 1GB) + 'gb'
+                    }
                 }
                 $Devices | Add-Member Devices $($_.Group.DeviceIndex -join ',')
                 $Devices | Add-Member GroupType $GroupType
