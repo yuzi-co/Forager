@@ -458,8 +458,8 @@ while ($Quit -ne $true) {
                             }
                         }
 
-                        if ($MinerParameters.($Miner.BaseName).($Algo.Name) -is [string] ) {
-                            $CustomParams = $MinerParameters.($Miner.BaseName).($Algo.Name)
+                        if ($MinerParameters.($MinerFile.BaseName).($Algo.Name) -is [string] ) {
+                            $CustomParams = $MinerParameters.($MinerFile.BaseName).($Algo.Name)
                         }
 
                         $Params = @{
