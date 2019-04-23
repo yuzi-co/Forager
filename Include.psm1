@@ -136,11 +136,7 @@ function Get-DevicesInfoNvidiaSMI {
 "@
         $Result = $FakeData | ConvertFrom-Csv @CvsParams
     } else {
-        if ($IsWindows) {
-            $Command = "./includes/nvidia-smi.exe"
-        } else {
-            $Command = "nvidia-smi"
-        }
+        $Command = "nvidia-smi"
         $Arguments = @(
             '--query-gpu=gpu_name,utilization.gpu,utilization.memory,temperature.gpu,power.draw,power.limit,fan.speed,pstate,clocks.current.graphics,clocks.current.memory,power.max_limit,power.default_limit'
             '--format=csv,noheader'
@@ -636,11 +632,7 @@ function Set-NvidiaPowerLimit ([int]$PowerLimitPercent, [string]$Devices) {
     if ($PowerLimitPercent -eq 0) { return }
     foreach ($Device in @($Devices -split ',')) {
 
-        if ($IsWindows) {
-            $Command = "./Includes/nvidia-smi.exe"
-        } else {
-            $Command = "nvidia-smi"
-        }
+        $Command = "nvidia-smi"
 
         $xpr = $Command + " -i " + $Device + " --query-gpu=power.default_limit --format=csv,noheader"
         $PowerDefaultLimit = [int]((Invoke-Expression $xpr) -replace 'W', '')
