@@ -23,7 +23,7 @@
       "Params": "-a ETHASH",
       "Mem": 3
     },
-    "Lyra2v3": "-a LYRA2V3",
+    "_Lyra2v3": "-a LYRA2V3",
     "MTP": {
       "Params": "-a MTP",
       "Mem": 4.5

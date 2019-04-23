@@ -18,7 +18,7 @@
   "API": "Ccminer",
   "Algorithms": {
     "Lyra2v3": "-a lyra2v3",
-    "NeoScrypt": "-a neoscrypt",
+    "_NeoScrypt": "-a neoscrypt",
     "Yescrypt": "-a yescrypt",
     "YescryptR16": "-a yescryptr16",
     "YescryptR16v2": "-a yescryptr16v2",

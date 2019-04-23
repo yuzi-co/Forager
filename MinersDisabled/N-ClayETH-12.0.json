@@ -28,7 +28,7 @@
   "SSL": true,
   "Algorithms": {
     "Ethash": "-mode 1",
-    "_Ethash_Blake2s": "-dcoin blake2s -mode 0",
-    "_Ethash_Keccak": "-dcoin Keccak -mode 0"
+    "Ethash_Blake2s": "-dcoin blake2s -mode 0",
+    "Ethash_Keccak": "-dcoin Keccak -mode 0"
   }
 }

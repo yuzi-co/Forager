@@ -25,8 +25,6 @@
     "CnLiteV7": "--algo=4",
     "CnSaber": "--algo=5",
     "CnTurtle": "--algo=9",
-    "_CnV7": "--algo=1",
-    "_CnV8": "--algo=10",
     "CnWow": "--algo=11"
   }
 }

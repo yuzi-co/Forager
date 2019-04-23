@@ -33,8 +33,6 @@
     "CnLiteV7": "-a aeon",
     "CnSaber": "-a cnsaber",
     "CnTurtle": "-a cnturtle",
-    "_CnV7": "-a cnv7",
-    "_CnV8": "-a cnv8",
     "CnWow": "-a cnsuperfast",
     "CnXTL": "-a stellite",
     "Cuckoo29": {
@@ -50,7 +48,7 @@
     "Hmq1725": "-a hmq1725",
     "_Lyra2v3": "-a lyra2rev3",
     "Lyra2vc0ban": "-a lyra2vc0banhash",
-    "Lyra2z": "-a lyra2z",
+    "_Lyra2z": "-a lyra2z",
     "Lyra2zz": "-a lyra2zz",
     "MTP": {
       "Params": "-a mtp",
