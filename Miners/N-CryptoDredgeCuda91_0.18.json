@@ -35,14 +35,14 @@
     "CnTurtle": "-a cnturtle",
     "CnWow": "-a cnsuperfast",
     "CnXTL": "-a stellite",
-    "Cuckoo29": {
+    "_Cuckoo29": {
       "Params": "-a aeternity",
-      "Mem": 5.6
+      "Mem": 5.3
     },
-    "Cuckaroo29": {
+    "_Cuckaroo29": {
       "Params": "-a cuckaroo29",
       "NoCpu": true,
-      "Mem": 5.6
+      "Mem": 5.3
     },
     "_Dedal": "-a dedal",
     "Hmq1725": "-a hmq1725",
