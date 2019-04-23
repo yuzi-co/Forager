@@ -464,20 +464,18 @@ function Get-MiningTypes () {
         [switch]$All = $false
     )
 
-    $Devices = @(
-        if ($Config.ContainsKey('GpuGroups') -and -not $All) {
-            # GpuGroups not empty, parse it
-            if ($Config.GpuGroups.Length -gt 0) {
-                $Config.GpuGroups | ConvertFrom-Json
-            }
-        } else {
-            # Autodetection on
-            Get-Devices -Types AMD, NVIDIA
+    if ($Config.ContainsKey('GpuGroups') -and -not $All) {
+        # GpuGroups not empty, parse it
+        if ($Config.GpuGroups.Length -gt 0) {
+            [array]$Devices = $Config.GpuGroups | ConvertFrom-Json
         }
-        if ($Config.CpuMining -or $All) {
-            Get-Devices -Types CPU
-        }
-    )
+    } else {
+        # Autodetection on
+        [array]$Devices = Get-Devices -Types AMD, NVIDIA
+    }
+    if ($Config.CpuMining -or $All) {
+        [array]$Devices += Get-Devices -Types CPU
+    }
 
     $Devices | ForEach-Object {
         if ($null -eq $_.Enabled) { $_ | Add-Member Enabled $true }
