@@ -1,0 +1,38 @@
+{
+  "Path": "kbminer_1.2.2/kbminer",
+  "Uri": "https://github.com/mcarloai/minerbabe-kbminer/releases/download/1.2.2/kbminer_1.2.2_linux_release.tar.gz",
+  "SHA256": "45D9D9F005017B7CCB3C0C8A0DF593B76529A93520CD923C3ABB121DA382DE47",
+  "Type": "AMD",
+  "Arguments": [
+    "--pool #Server#:#Port#",
+    "--user #Login#",
+    "--pass #Password#",
+    "$(($DeviceGroup.DevicesArray | % {'--gpu ' + $_}) -join ' ')",
+    "--enableapi",
+    "--apiaddr 0.0.0.0:#ApiPort#",
+    "$(if ($EnableSSL){'--enabletls'})",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "API": "KBMiner",
+  "SSL": true,
+  "NoCpu": true,
+  "Fee": 0.02,
+  "Algorithms": {
+    "Cuckoo29": {
+      "Params": "--algorithm ae-cuckoo29",
+      "Mem": 4,
+      "Fee": 0.01
+    },
+    "Cuckaroo29": {
+      "Params": "--algorithm grin-cuckaroo29",
+      "Mem": 4,
+      "NH": false
+    },
+    "Cuckatoo31": {
+      "Params": "--algorithm grin-cuckatoo31",
+      "Mem": 8,
+      "NH": false
+    }
+  }
+}
