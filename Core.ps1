@@ -24,7 +24,7 @@ Import-Module ./Include.psm1
 Set-OsFlags
 
 if ($IsWindows) {
-try { Set-WindowSize 170 50 } catch { }
+    try { Set-WindowSize 170 50 } catch { }
 }
 
 # Start log file
@@ -1003,7 +1003,7 @@ while ($Quit -ne $true) {
                         } while (
                             # Test-TCPPort -Server 127.0.0.1 -Port $ActiveMiners[$BestLast.IdF].ApiPort
                             ($IsWindows -and (Get-NetTCPConnection | Where-Object { $_.State -eq "Listen" -and $_.LocalPort -eq $ActiveMiners[$BestLast.IdF].ApiPort })) -or
-                            ($IsLinux -and (lsof -i -P -n | Where-Object {$_ -match ".*:$($ActiveMiners[$BestLast.IdF].ApiPort) \(LISTEN\)"}))
+                            ($IsLinux -and (lsof -i -P -n | Where-Object { $_ -match ".*:$($ActiveMiners[$BestLast.IdF].ApiPort) \(LISTEN\)" }))
                         )
                     }
 
@@ -1027,9 +1027,11 @@ while ($Quit -ne $true) {
                     ) {
                         if ($abControl) {
                             Set-AfterburnerPowerLimit -PowerLimitPercent $BestNow.PowerLimit -DeviceGroup $ActiveMiners[$BestNow.IdF].DeviceGroup
-                        } elseif ($BestNow.PowerLimit -gt 0) {
+                        } else {
                             switch ($ActiveMiners[$BestNow.IdF].DeviceGroup.GroupType) {
-                                'NVIDIA' { Set-NvidiaPowerLimit $BestNow.PowerLimit $ActiveMiners[$BestNow.IdF].DeviceGroup.Devices }
+                                'NVIDIA' {
+                                    Set-NvidiaPowerLimit -PowerLimitPercent $BestNow.PowerLimit -Devices $ActiveMiners[$BestNow.IdF].DeviceGroup.Devices
+                                }
                                 Default { }
                             }
                         }
