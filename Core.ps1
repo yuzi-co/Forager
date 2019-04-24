@@ -396,8 +396,8 @@ while ($Quit -ne $true) {
                 $AlgoName, $AlgoNameDual = $AlgoTmp -split "_" | ForEach-Object { Get-AlgoUnifiedName $_ }
                 $Algorithms = @($AlgoName, $AlgoNameDual) -ne $null -join '_'
 
-                if ($null -ne $DeviceGroup.CUDAVersion -and $null -ne $Miner.CUDA) {
-                    if ([version]("$($Miner.CUDA).0") -gt [version]$DeviceGroup.CUDAVersion) {
+                if ($null -ne $SystemInfo.CUDAVersion -and $null -ne $Miner.CUDA) {
+                    if ([version]("$($Miner.CUDA).0") -gt [version]$SystemInfo.CUDAVersion) {
                         Log "$($MinerFile.BaseName) skipped due to CUDA version constraints" -Severity Debug
                         Continue
                     }

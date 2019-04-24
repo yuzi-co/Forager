@@ -361,7 +361,7 @@ function Get-Devices {
             } else {
                 # Fake CPU device if none detected in OpenCL
                 $DeviceList = @{
-                    PlatformId  = 0
+                    PlatformId  = $null
                     DeviceIndex = 0
                     Name        = 'CPU'
                     Vendor      = 'Generic'
@@ -369,32 +369,8 @@ function Get-Devices {
                 }
             }
         }
-        if ($GroupType -eq 'NVIDIA' -and -not $DeviceList -and (Get-Command 'nvidia-smi' -ErrorAction Ignore)) {
-            $Command = "nvidia-smi"
-            $CsvParams = @{
-                Header = @(
-                    "index"
-                    "gpu_name"
-                    "memory_total"
-                )
-            }
-            $Params = @(
-                "--query-gpu=index,gpu_name,memory.total"
-                "--format=csv,nounits,noheader"
-            )
-            $SmiDevices = & $Command $Params | ConvertFrom-Csv @CsvParams
-            if ($SmiDevices) {
-                $DeviceList = $SmiDevices | ForEach-Object {
-                    @{
-                        Type          = 'Gpu'
-                        Vendor        = 'NVIDIA'
-                        PlatformId    = $null
-                        DeviceIndex   = [int]$_.index
-                        GlobalMemSize = [int]$_.memory_total * 1mb
-                        Name          = $_.gpu_name
-                    }
-                }
-            }
+        if ($GroupType -eq 'NVIDIA' -and -not $DeviceList) {
+            $DeviceList = Get-NvidiaSmiDevices
         }
 
         $DeviceList | Group-Object @GroupBy | ForEach-Object {
@@ -418,6 +394,37 @@ function Get-Devices {
         }
     }
     @($Groups)
+}
+
+function Get-NvidiaSmiDevices {
+    $Command = "nvidia-smi"
+    $CsvParams = @{
+        Header = @(
+            "index"
+            "gpu_name"
+            "memory_total"
+        )
+    }
+    $Params = @(
+        "--query-gpu=index,gpu_name,memory.total"
+        "--format=csv,nounits,noheader"
+    )
+    if (Get-Command $Command -ErrorAction Ignore) {
+        $SmiDevices = & $Command $Params | ConvertFrom-Csv @CsvParams
+        if ($SmiDevices) {
+            $DeviceList = $SmiDevices | ForEach-Object {
+                @{
+                    Type          = 'Gpu'
+                    Vendor        = 'NVIDIA'
+                    PlatformId    = $null
+                    DeviceIndex   = [int]$_.index
+                    GlobalMemSize = [int]$_.memory_total * 1MB
+                    Name          = $_.gpu_name
+                }
+            }
+        }
+    }
+    @($DeviceList)
 }
 
 function Get-OpenCLDevices {
@@ -525,6 +532,7 @@ function Get-MiningTypes () {
     }
 
     $OCLDevices = Get-OpenCLDevices
+    $NvidiaDevices = Get-NvidiaSmiDevices
 
     $TypeID = 0
     $DeviceGroups = $Devices | ForEach-Object {
@@ -546,9 +554,10 @@ function Get-MiningTypes () {
             if ($OCLDevice) {
                 if ($null -eq $_.PlatformId) { $_ | Add-Member PlatformId ($OCLDevice.PlatformId | Select-Object -First 1) }
                 if ($null -eq $_.MemoryGB) { $_ | Add-Member MemoryGB ([math]::Round((($OCLDevice | Measure-Object -Property GlobalMemSize -Minimum).Minimum / 1GB ), 2)) }
-                if ($OCLDevice[0].Platform.Version -match "CUDA\s+([\d\.]+)") { $_ | Add-Member CUDAVersion $Matches[1] -Force }
                 $_ | Add-Member OCLDeviceId @($OCLDevice.OCLDeviceId)
                 $_ | Add-Member OCLGpuId @($OCLDevice.OCLGpuId)
+            } elseif ($_.GroupType -eq 'NVIDIA') {
+                if ($null -eq $_.MemoryGB) { $_ | Add-Member MemoryGB ([math]::Round(((@($NvidiaDevices)[$_.DevicesArray] | Measure-Object -Property GlobalMemSize -Minimum).Minimum / 1GB ), 2)) }
             }
 
             if ($_.PowerLimits -is [string] -and $_.PowerLimits.Length -gt 0) {
@@ -618,10 +627,18 @@ function Set-OsFlags {
 
 function Get-CudaVersion {
     if (Get-Command "nvidia-smi" -ErrorAction Ignore) {
+        # try nvidia-smi detection
         $Ver = & "nvidia-smi" | Where-Object { $_ -match "CUDA Version: (\d+\.\d+)" } | ForEach-Object { $Matches[1] } | Select-Object -First 1
-        if ($Ver) {
-            return [version]"$Ver.0"
+        if (-not $Ver) {
+            # try OpenCL detection
+            $OclDevices = Get-OpenCLDevices | Where-Object { $_.Type -eq 'Gpu' -and $_.Vendor -like 'NVIDIA*' }
+            if ($OclDevices[0].Platform.Version -match "CUDA\s+(\d\+.\d+)") {
+                $Ver = $Matches[1]
+            }
         }
+    }
+    if ($Ver) {
+        [version]"$Ver.0"
     }
 }
 
@@ -1185,7 +1202,7 @@ function Invoke-TcpRequest {
 function Invoke-HTTPRequest {
     param(
         [Parameter(Mandatory = $false)]
-        [String]$Server = "localhost",
+        [String]$Server = "127.0.0.1",
         [Parameter(Mandatory = $true)]
         [String]$Port,
         [Parameter(Mandatory = $false)]
