@@ -998,7 +998,8 @@ while ($Quit -ne $true) {
                             Stop-SubProcess $ActiveMiners[$BestLast.IdF].Process
                         } while (
                             # Test-TCPPort -Server 127.0.0.1 -Port $ActiveMiners[$BestLast.IdF].ApiPort
-                            Get-NetTCPConnection | Where-Object { $_.State -eq "Listen" -and $_.LocalPort -eq $ActiveMiners[$BestLast.IdF].ApiPort }
+                            ($IsWindows -and (Get-NetTCPConnection | Where-Object { $_.State -eq "Listen" -and $_.LocalPort -eq $ActiveMiners[$BestLast.IdF].ApiPort })) -or
+                            ($IsLinux -and (lsof -i -P -n | Where-Object {$_ -match ".*:$($ActiveMiners[$BestLast.IdF].ApiPort) \(LISTEN\)"}))
                         )
                     }
 
