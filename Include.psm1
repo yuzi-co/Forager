@@ -226,11 +226,8 @@ function Get-DevicesInfoCPU {
         if (-not $global:CpuTDP) {
             $global:CpuTDP = Get-Content ./Data/cpu-tdp.json | ConvertFrom-Json
         }
-        # cpu  10268107 24517932 234919 631202 6447 0 15475 0 0 0
-        [int]$CpuData.Utilization = Get-Content /proc/stat | Where-Object { $_ -match "cpu\s+(\d+)\s(\d+)\s(\d+)\s(\d+)" } | ForEach-Object {
-            ([int64]$Matches[1] + [int64]$Matches[3]) * 100 / ([int64]$Matches[1] + [int64]$Matches[3] + [int64]$Matches[4])
-        }
 
+        [int]$CpuData.Utilization = [math]::min((((& ps -A -o pcpu) -match "\d" | Measure-Object -Sum).Sum / $Features.Threads), 100)
         [int]$CpuData.PowerDraw = $CpuTDP.($Features.Name) * $CpuData.Utilization / 100
         [PSCustomObject]@{
             GroupName   = 'CPU'
