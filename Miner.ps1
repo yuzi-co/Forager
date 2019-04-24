@@ -4,7 +4,7 @@ Import-Module .\Include.psm1
 $global:Config = Get-Config
 $global:Wallets = Get-Wallets
 
-$SystemInfo = Get-SystemInfo
+Set-OsFlags
 
 ### Select Mining mode
 Out-HorizontalLine "Select Mining Mode"

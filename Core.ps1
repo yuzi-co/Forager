@@ -21,7 +21,11 @@ param(
 $Error.Clear()
 Import-Module ./Include.psm1
 
+Set-OsFlags
+
+if ($IsWindows) {
 try { Set-WindowSize 170 50 } catch { }
+}
 
 # Start log file
 $LogPath = "./Logs/"

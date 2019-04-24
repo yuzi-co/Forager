@@ -576,9 +576,8 @@ function Format-DeviceList {
     }
 }
 
-function Get-SystemInfo () {
-
-    if (@($IsWindows, $IsLinux, $IsMacOS) -eq $null) {
+function Set-OsFlags {
+    if ($null -eq $IsWindows) {
         # Define flags for non-Core Powershell
         if ([System.Environment]::OSVersion.Platform -eq "Win32NT") {
             # Just making sure, since only Windows has non-Core Poweshell
@@ -587,8 +586,11 @@ function Get-SystemInfo () {
             $Global:IsMacOS = $false
         }
     }
+}
 
+function Get-SystemInfo () {
     $Features = Get-CpuFeatures
+    $CudaVersion = Get-CudaVersion
 
     $SystemInfo = [PSCustomObject]@{
         OSName       = [System.Environment]::OSVersion.Platform
@@ -596,6 +598,7 @@ function Get-SystemInfo () {
         ComputerName = [System.Environment]::MachineName
         Processors   = [System.Environment]::ProcessorCount
         CpuFeatures  = $Features
+        CudaVersion  = $CudaVersion
     }
     if ($IsWindows) {
         $SystemInfo.ComputerName = (Get-Culture).TextInfo.ToTitleCase($SystemInfo.ComputerName.ToLower()) #Windows capitalizes this
