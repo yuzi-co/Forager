@@ -1,5 +1,5 @@
 {
-  "Path": "GrinPro2/Bin/GrinProMiner",
+  "Path": "GrinPro2/bin/GrinProMiner",
   "Uri": "https://github.com/mozkomor/GrinProMiner/releases/download/2.1/GrinPro_2_1_Linux64.tar.gz",
   "SHA256": "ECFDE66A20619366555E11E61750844489DCBC8DE5B2FEA2978C94249362ECD5",
   "Type": "NVIDIA",
