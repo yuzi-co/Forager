@@ -1117,25 +1117,36 @@ function Stop-SubProcess {
         $Process
     )
 
-    $sw = [Diagnostics.Stopwatch]::new()
-    try {
-        $Process.CloseMainWindow() | Out-Null
-        $sw.Start()
-        do {
-            if ($sw.Elapsed.TotalSeconds -gt 1) {
-                Stop-Process -InputObject $Process -Force
-            }
-            if (-not $Process.HasExited) {
-                Start-Sleep -Milliseconds 1
-            }
-        } while (-not $Process.HasExited)
-    } finally {
-        $sw.Stop()
-        if (-not $Process.HasExited) {
-            Stop-Process -InputObject $Process -Force
-        }
+    $SubProcs = Get-Process | Where-Object { $_.Parent.Id -eq $Process.Id }
+
+    @($Process, $SubProcs) | ForEach-Object {
+        $_.CloseMainWindow() | Out-Null
     }
-    Remove-Variable sw
+    Start-Sleep -Seconds 1
+
+    @($Process, $SubProcs) | Where-Object HasExited -eq $false | ForEach-Object {
+        Stop-Process -InputObject $_ -Force
+    }
+
+    # $sw = [Diagnostics.Stopwatch]::new()
+    # try {
+    #     $Process.CloseMainWindow() | Out-Null
+    #     $sw.Start()
+    #     do {
+    #         if ($sw.Elapsed.TotalSeconds -gt 1) {
+    #             Stop-Process -InputObject $Process -Force
+    #         }
+    #         if (-not $Process.HasExited) {
+    #             Start-Sleep -Milliseconds 1
+    #         }
+    #     } while (-not $Process.HasExited)
+    # } finally {
+    #     $sw.Stop()
+    #     if (-not $Process.HasExited) {
+    #         Stop-Process -InputObject $Process -Force
+    #     }
+    # }
+    # Remove-Variable sw
 }
 
 function Invoke-TcpRequest {
