@@ -192,11 +192,10 @@ function Get-DevicesInfoCPU {
         $CpuResult | ForEach-Object {
             if (-not $CpuData.Utilization) {
                 # Get-Counter is more accurate and is preferable, but currently not available in Poweshell 6
-                if (Get-Command "Get-Counter" -Type Cmdlet -errorAction SilentlyContinue) {
+                if (Get-Command "Get-Counter" -Type Cmdlet -ErrorAction Ignore) {
                     # Language independent version of Get-Counter '\Processor(_Total)\% Processor Time'
                     $CpuData.Utilization = (Get-Counter -Counter '\238(_Total)\6').CounterSamples.CookedValue
                 } else {
-                    $Error.Remove($Error[$Error.Count - 1])
                     $CpuData.Utilization = $_.LoadPercentage
                 }
             }
