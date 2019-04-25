@@ -921,6 +921,20 @@ function Get-LiveHashRate {
                         ) | Where-Object { $_ -gt 0 }
                     }
                 }
+                if ($HashRate -ne $null) {
+                    $Request = Invoke-HTTPRequest -Port $Miner.ApiPort -Path "/api/v1/status/stratum"
+                    if ($Request) {
+                        $Data = $Request | ConvertFrom-Json
+                        $Shares = $Data.stratums |
+                        Get-Member -MemberType NoteProperty |
+                        ForEach-Object {
+                            @(
+                                $Data.stratums.($_.name).accepted_shares
+                                $Data.stratums.($_.name).rejected_shares
+                            )
+                        }
+                    }
+                }
             }
 
             "SRB" {
