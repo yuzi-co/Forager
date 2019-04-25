@@ -1,0 +1,17 @@
+{
+  "Path": "nanominer-windows-1.2.2/nanominer.exe",
+  "Uri": "https://github.com/nanopool/nanominer/releases/download/v1.2.2/nanominer-windows-1.2.2.zip",
+  "SHA256": "2BB40B94F9DAF9A5F7BC872CBD33E508775E15954D68899F11EA414090B37850",
+  "Type": "AMD",
+  "GenerateConfigFile": "nanominer-windows-1.2.2/#GroupName#-#Algorithm#.conf",
+  "PatternConfigFile": "NanoMiner.txt",
+  "Arguments": "#GroupName#-#Algorithm#.conf",
+  "API": "Claymore",
+  "Fee": 0.02,
+  "Algorithms": {
+    "Cuckaroo29": {
+      "Params": "Cuckaroo29",
+      "Mem": 7.2
+    }
+  }
+}
