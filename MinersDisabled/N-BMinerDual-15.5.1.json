@@ -1,7 +1,7 @@
 {
-  "Path": "bminer-lite-v15.5.0-f720eee/bminer.exe",
-  "Uri": "https://www.bminercontent.com/releases/bminer-lite-v15.5.0-f720eee-amd64.zip",
-  "SHA256": "6B2CA2E8E2681A10BA96F9ADEB981D76D01C891FA2542F13AE0489E8BFC39F91",
+  "Path": "bminer-lite-v15.5.1-4583b73/bminer.exe",
+  "Uri": "https://www.bminercontent.com/releases/bminer-lite-v15.5.1-4583b73-amd64.zip",
+  "SHA256": "11DF3FC6AB56C23FF9F313F76AEB9E75504977360F2A620EBA4A69CE8725A47F",
   "Type": "NVIDIA",
   "CUDA": 9.2,
   "Arguments": [
