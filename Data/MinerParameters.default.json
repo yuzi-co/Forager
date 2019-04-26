@@ -7,13 +7,13 @@
     "Argon2ad": "--gpu-batchsize=1024 -t 1",
     "Argon2d250": "--gpu-batchsize=2048 -t 1",
     "Argon2d500": "--gpu-batchsize=1024 -t 1",
-    "Argon2d4096": "--gpu-batchsize=128 -t 1"
+    "Argon2d4096": "--gpu-batchsize=256 -t 1"
   },
   "A-Multiminer-1.2.0": {
     "Argon2ad": "--gpu-batchsize=1024 --gpu-threads 1",
     "Argon2d250": "--gpu-batchsize=2048 --gpu-threads 1",
     "Argon2d500": "--gpu-batchsize=1024 --gpu-threads 1",
-    "Argon2d4096": "--gpu-batchsize=128 --gpu-threads 1"
+    "Argon2d4096": "--gpu-batchsize=256 --gpu-threads 1"
   },
   "A-Phoenix-4.2c": {
     "Ethash": "-clKernel 3",
@@ -45,14 +45,20 @@
     "X17": "-g 2 -w 64 -X 256",
     "Xevan": "-g 2 -w 64 -X 256"
   },
-  "N-BMiner-15.5": {
+  "N-BMiner-15.5.1": {
     "Cuckoo29": "--fast",
     "Cuckaroo29": "--fast"
   },
   "N-Multiminer-1.1.0": {
-    "Argon2ad": "--gpu-batchsize=512 -t 1",
+    "Argon2ad": "--gpu-batchsize=1024 -t 1",
     "Argon2d250": "--gpu-batchsize=2048 -t 1",
     "Argon2d500": "--gpu-batchsize=1024 -t 1",
     "Argon2d4096": "--gpu-batchsize=256 -t 1"
+  },
+  "N-Multiminer-1.2.0": {
+    "Argon2ad": "--gpu-batchsize=1024 --gpu-threads 1",
+    "Argon2d250": "--gpu-batchsize=2048 --gpu-threads 1",
+    "Argon2d500": "--gpu-batchsize=1024 --gpu-threads 1",
+    "Argon2d4096": "--gpu-batchsize=256 --gpu-threads 1"
   }
 }
