@@ -24,6 +24,7 @@
   "NoCpu": true,
   "Custom": " --opencl-threads auto --opencl-launch auto",
   "Algorithms": {
-    "Honeycomb": "--algo honeycomb"
+    "Honeycomb": "--algo honeycomb",
+    "Rainforest": "--algo rainforest"
   }
 }
