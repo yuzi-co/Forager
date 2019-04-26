@@ -132,7 +132,7 @@ function Get-DevicesInfoNvidiaSmi {
     $Result = Invoke-NvidiaSmi @Params
 
     $DeviceId = 0
-    $Devices = $Result | ForEach-Object {
+    $Devices = $Result | Where-Object { $_.pstate } | ForEach-Object {
         $GroupName = ($Types | Where-Object DevicesArray -contains $DeviceId).GroupName
 
         $Card = [PSCustomObject]@{
