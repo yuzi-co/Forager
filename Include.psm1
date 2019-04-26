@@ -192,11 +192,12 @@ function Get-DevicesInfoCPU {
         $CpuResult | ForEach-Object {
             if (-not $CpuData.Utilization) {
                 # Get-Counter is more accurate and is preferable, but currently not available in Poweshell 6
-                if (Get-Command "Get-Counter" -Type Cmdlet -errorAction SilentlyContinue) {
+                if (Get-Command "Get-Counter" -Type Cmdlet -ErrorAction Ignore) {
                     # Language independent version of Get-Counter '\Processor(_Total)\% Processor Time'
-                    $CpuData.Utilization = (Get-Counter -Counter '\238(_Total)\6').CounterSamples.CookedValue
+                    try {
+                        $CpuData.Utilization = (Get-Counter -Counter '\238(_Total)\6').CounterSamples.CookedValue
+                    } catch { $CpuData.Utilization = $_.LoadPercentage }
                 } else {
-                    $Error.Remove($Error[$Error.Count - 1])
                     $CpuData.Utilization = $_.LoadPercentage
                 }
             }
@@ -919,6 +920,20 @@ function Get-LiveHashRate {
                             $_.group.speed_info.hash_rate | Measure-Object -Sum | Select-Object -ExpandProperty Sum
                             $_.group.speed_info.solution_rate | Measure-Object -Sum | Select-Object -ExpandProperty Sum
                         ) | Where-Object { $_ -gt 0 }
+                    }
+                }
+                if ($HashRate -ne $null) {
+                    $Request = Invoke-HTTPRequest -Port $Miner.ApiPort -Path "/api/v1/status/stratum"
+                    if ($Request) {
+                        $Data = $Request | ConvertFrom-Json
+                        $Shares = $Data.stratums |
+                        Get-Member -MemberType NoteProperty |
+                        ForEach-Object {
+                            @(
+                                $Data.stratums.($_.name).accepted_shares
+                                $Data.stratums.($_.name).rejected_shares
+                            )
+                        }
                     }
                 }
             }

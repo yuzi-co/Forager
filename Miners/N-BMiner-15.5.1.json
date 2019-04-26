@@ -19,12 +19,12 @@
     "Cuckoo29": {
       "Params": "-uri aeternity",
       "NoCpu": true,
-      "Mem": 5.6
+      "Mem": 5.3
     },
     "Cuckaroo29": {
       "Params": "-uri cuckaroo29",
       "NoCpu": true,
-      "Mem": 5.6
+      "Mem": 5.3
     },
     "Cuckatoo31": {
       "Params": "-uri cuckatoo31",
