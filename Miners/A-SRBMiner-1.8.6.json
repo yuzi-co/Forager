@@ -1,7 +1,7 @@
 {
   "Path": "SRBMiner-CN.exe",
-  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.04/SRBMiner-CN-V1-8-3.7z",
-  "SHA256": "A7C6EAEF384813A39801289AFD6BA9F53F76DC28171F18CE3C80D2E5FAB82D14",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.04/SRBMiner-CN-V1-8-6.7z",
+  "SHA256": "1C008CC15CB500B81939D6CC8497439761479FE1F4058707ABE50D26EE22C12E",
   "Type": "AMD",
   "GenerateConfigFile": "config-#GroupName#-#Algorithm#.txt",
   "PatternConfigFile": "SRBMiner.txt",
@@ -23,6 +23,7 @@
   "API": "SRB",
   "Fee": 0.0085,
   "SSL": true,
+  "Custom": "--disabletweaking",
   "Algorithms": {
     "CnAlloy": "alloy",
     "CnArto": "artocash",
@@ -48,7 +49,7 @@
     "CnStelliteV4": "stellitev4",
     "CnSwap": "swap",
     "CnTurtle": "turtle",
-    "CnUplexa": "upx",
+    "CnUplexa": "upx2",
     "CnZls": "zelerius"
   }
 }
