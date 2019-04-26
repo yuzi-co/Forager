@@ -5,7 +5,7 @@
   "Type": "NVIDIA",
   "CUDA": 10.0,
   "Arguments": [
-    "--server #Server#",
+    "--server $(if ($EnableSSL){'ssl://'})#Server#",
     "--port #Port#",
     "--user #Login#",
     "--pass #Password#",
@@ -17,6 +17,7 @@
     "#CustomParameters#"
   ],
   "API": "MiniZ",
+  "SSL": true,
   "Fee": 0.02,
   "Algorithms": {
     "Equihash96": "--par=96,5 --pers auto",
