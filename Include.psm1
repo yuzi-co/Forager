@@ -671,7 +671,7 @@ function Get-CudaVersion {
     if (-not $Ver) {
         # try OpenCL detection
         $OclDevices = Get-OpenCLDevices | Where-Object { $_.Type -eq 'Gpu' -and $_.Vendor -like 'NVIDIA*' }
-        if ($OclDevices[0].Platform.Version -match "CUDA\s+(\d\+.\d+)") {
+        if ($OclDevices -and $OclDevices[0].Platform.Version -match "CUDA\s+(\d\+.\d+)") {
             $Ver = $Matches[1]
         }
     }
