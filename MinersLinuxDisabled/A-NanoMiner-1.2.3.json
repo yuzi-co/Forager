@@ -1,0 +1,17 @@
+{
+  "Path": "nanominer-linux-1.2.3/nanominer",
+  "Uri": "https://github.com/nanopool/nanominer/releases/download/v1.2.3/nanominer-linux-1.2.3.tar.gz",
+  "SHA256": "8F707D6F86356E54FE3B8FAF1E3246F0107EFDBA6811A25F72021A962969FB2B",
+  "Type": "AMD",
+  "GenerateConfigFile": "nanominer-linux-1.2.3/#GroupName#-#Algorithm#.conf",
+  "PatternConfigFile": "NanoMiner.txt",
+  "Arguments": "#GroupName#-#Algorithm#.conf",
+  "API": "Claymore",
+  "Fee": 0.02,
+  "Algorithms": {
+    "Cuckaroo29": {
+      "Params": "Cuckaroo29",
+      "Mem": 7.2
+    }
+  }
+}
