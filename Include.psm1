@@ -398,7 +398,7 @@ function Get-NvidiaSmiDevices {
     }
     $SmiDevices = Invoke-NvidiaSmi @Params
 
-    $DeviceList = $SmiDevices | ForEach-Object {
+    $DeviceList = $SmiDevices | Where-Object {$_.gpu_name} | ForEach-Object {
         @{
             Type          = 'Gpu'
             Vendor        = 'NVIDIA'
