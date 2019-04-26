@@ -2,7 +2,8 @@
 
 function Get-DevicesInfoAfterburner {
     param (
-        $Types
+        [Parameter(Mandatory = $true)]
+        [array]$Types
     )
     $Devices = foreach ($GroupType in @('AMD')) {
         $DeviceId = 0
@@ -39,7 +40,8 @@ function Get-DevicesInfoAfterburner {
 
 function Get-DevicesInfoADL {
     param (
-        $Types
+        [Parameter(Mandatory = $true)]
+        [array]$Types
     )
     if ($IsWindows) {
 
@@ -105,51 +107,32 @@ function Get-DevicesInfoADL {
     }
 }
 
-function Get-DevicesInfoNvidiaSMI {
+function Get-DevicesInfoNvidiaSmi {
     param (
-        $Types,
-        [switch]$Fake = $false
+        [Parameter(Mandatory = $true)]
+        [array]$Types
     )
 
-    $CvsParams = @{
-        Header = @(
-            'gpu_name'
-            'utilization_gpu'
-            'utilization_memory'
-            'temperature_gpu'
-            'power_draw'
-            'power_limit'
-            'fan_speed'
-            'pstate'
-            'clocks_current_graphics'
-            'clocks_current_memory'
-            'power_max_limit'
-            'power_default_limit'
+    $Params = @{
+        Query = @(
+            "gpu_name"
+            "utilization.gpu"
+            "utilization.memory"
+            "temperature.gpu"
+            "power.draw"
+            "power.limit"
+            "fan.speed"
+            "pstate"
+            "clocks.current.graphics"
+            "clocks.current.memory"
+            "power.max_limit"
+            "power.default_limit"
         )
     }
-
-    if ($Fake) {
-        $FakeData = @"
-        GeForce GTX 1060 6GB, 0, 3, 46, 9.34, 180.00, 0, P8, 139, 405, 200.00, 180.00
-        GeForce GTX 1060 6GB, 0, 3, 46, 9.34, 180.00, 0, P8, 139, 405, 200.00, 180.00
-        GeForce GTX 1080, 0, 0, 29, 6.54, 90.00, 39, P8, 135, 405, 108.00, 90.00
-"@
-        $Result = $FakeData | ConvertFrom-Csv @CvsParams
-    } else {
-        if ($IsLinux -or (Get-Command "nvidia-smi" -ErrorAction Ignore)) {
-            $Command = "nvidia-smi"
-        } else {
-            $Command = "./Includes/nvidia-smi.exe"
-        }
-        $Arguments = @(
-            '--query-gpu=gpu_name,utilization.gpu,utilization.memory,temperature.gpu,power.draw,power.limit,fan.speed,pstate,clocks.current.graphics,clocks.current.memory,power.max_limit,power.default_limit'
-            '--format=csv,noheader,nounits'
-        )
-        $Result = & $Command $Arguments | ConvertFrom-Csv @CvsParams
-    }
+    $Result = Invoke-NvidiaSmi @Params
 
     $DeviceId = 0
-    $Devices = $Result | Where-Object pstate -ne $null | ForEach-Object {
+    $Devices = $Result | ForEach-Object {
         $GroupName = ($Types | Where-Object DevicesArray -contains $DeviceId).GroupName
 
         $Card = [PSCustomObject]@{
@@ -157,29 +140,27 @@ function Get-DevicesInfoNvidiaSMI {
             GroupType         = 'NVIDIA'
             Id                = $DeviceId
             Name              = $_.gpu_name
-            Utilization       = [int]$(if ($_.utilization_gpu -replace "[^\d.,]") { $_.utilization_gpu -replace "[^\d,.]" } else { 100 }) #If we dont have real Utilization, at least make the watchdog happy
-            UtilizationMem    = [int]$($_.utilization_memory -replace "[^\d.,]")
-            Temperature       = [int]$($_.temperature_gpu -replace "[^\d.,]")
-            PowerDraw         = [int]$($_.power_draw -replace "[^\d.,]")
-            PowerLimit        = [int]$($_.power_limit -replace "[^\d.,]")
-            FanSpeed          = [int]$($_.fan_speed -replace "[^\d.,]")
+            Utilization       = [int]$(if ($_.utilization_gpu) { $_.utilization_gpu } else { 100 }) #If we dont have real Utilization, at least make the watchdog happy
+            UtilizationMem    = [int]$($_.utilization_memory)
+            Temperature       = [int]$($_.temperature_gpu)
+            PowerDraw         = [int]$($_.power_draw)
+            PowerLimit        = [int]$($_.power_limit)
+            FanSpeed          = [int]$($_.fan_speed)
             Pstate            = $_.pstate
-            Clock             = [int]$($_.clocks_current_graphics -replace "[^\d.,]")
-            ClockMem          = [int]$($_.clocks_current_memory -replace "[^\d.,]")
-            PowerMaxLimit     = [int]$($_.power_max_limit -replace "[^\d.,]")
-            PowerDefaultLimit = [int]$($_.power_default_limit -replace "[^\d.,]")
+            Clock             = [int]$($_.clocks_current_graphics)
+            ClockMem          = [int]$($_.clocks_current_memory)
+            PowerMaxLimit     = [int]$($_.power_max_limit)
+            PowerDefaultLimit = [int]$($_.power_default_limit)
         }
         if ($Card.PowerDefaultLimit -gt 0) { $Card | Add-Member PowerLimitPercent ([int](($Card.PowerLimit * 100) / $Card.PowerDefaultLimit)) }
         $Card
         $DeviceId++
     }
-    $Devices
+    @($Devices)
 }
 
 function Get-DevicesInfoCPU {
 
-
-    ### Not sure how Afterburner results look with more than 1 CPU
     if ($abMonitor) {
         $CpuData = @{
             Clock       = $($abMonitor.Entries | Where-Object SrcName -match '^(CPU\d* )clock' | Measure-Object -Property Data -Maximum).Maximum
@@ -250,7 +231,11 @@ function Get-DevicesInfoCPU {
     @($Devices)
 }
 
-function Get-DevicesInformation ($Types) {
+function Get-DevicesInformation {
+    param (
+        [Parameter(Mandatory = $true)]
+        [array]$Types
+    )
     if ($abMonitor) { $abMonitor.ReloadAll() }
     if ($abControl) { $abControl.ReloadAll() }
 
@@ -265,7 +250,7 @@ function Get-DevicesInformation ($Types) {
 
     #NVIDIA
     if ($Types | Where-Object GroupType -eq 'NVIDIA') {
-        Get-DevicesInfoNvidiaSMI -Types ($Types | Where-Object GroupType -eq 'NVIDIA')
+        Get-DevicesInfoNvidiaSmi -Types ($Types | Where-Object GroupType -eq 'NVIDIA')
     }
 
     # CPU
@@ -274,7 +259,11 @@ function Get-DevicesInformation ($Types) {
     }
 }
 
-function Out-DevicesInformation ($Devices) {
+function Out-DevicesInformation {
+    param (
+        [Parameter(Mandatory = $true)]
+        [array]$Devices
+    )
 
     $Devices | Where-Object GroupType -ne 'CPU' | Sort-Object GroupType | Format-Table -Wrap (
         @{Label = "Id"; Expression = { $_.Id }; Align = 'right' },
@@ -399,89 +388,63 @@ function Get-Devices {
 }
 
 function Get-NvidiaSmiDevices {
-    if ($IsLinux -or (Get-Command "nvidia-smi" -ErrorAction Ignore)) {
-        $Command = "nvidia-smi"
-    } else {
-        $Command = "./Includes/nvidia-smi.exe"
-    }
-    $CsvParams = @{
-        Header = @(
+
+    $Params = @{
+        Query = @(
             "index"
             "gpu_name"
-            "memory_total"
+            "memory.total"
         )
     }
-    $Params = @(
-        "--query-gpu=index,gpu_name,memory.total"
-        "--format=csv,nounits,noheader"
-    )
-    if (Get-Command $Command -ErrorAction Ignore) {
-        $SmiDevices = & $Command $Params | ConvertFrom-Csv @CsvParams
-        if ($SmiDevices) {
-            $DeviceList = $SmiDevices | ForEach-Object {
-                @{
-                    Type          = 'Gpu'
-                    Vendor        = 'NVIDIA'
-                    PlatformId    = $null
-                    DeviceIndex   = [int]$_.index
-                    GlobalMemSize = [int]$_.memory_total * 1MB
-                    Name          = $_.gpu_name
-                }
-            }
+    $SmiDevices = Invoke-NvidiaSmi @Params
+
+    $DeviceList = $SmiDevices | ForEach-Object {
+        @{
+            Type          = 'Gpu'
+            Vendor        = 'NVIDIA'
+            PlatformId    = $null
+            DeviceIndex   = [int]$_.index
+            GlobalMemSize = [int]$_.memory_total * 1MB
+            Name          = $_.gpu_name
         }
     }
+
     @($DeviceList)
 }
 
 function Get-OpenCLDevices {
-    param(
-        [switch]$Fake = $false
-    )
 
-    if ($Fake) {
-        # start fake
-        $OCLDevices = @(
-            [PSCustomObject]@{Name = 'Ellesmere'; Vendor = 'Advanced Micro Devices, Inc.'; GlobalMemSize = 8GB; PlatformId = 0; Type = 'Gpu'; DeviceIndex = 0; MaxComputeUnits = 30 }
-            [PSCustomObject]@{Name = 'Ellesmere'; Vendor = 'Advanced Micro Devices, Inc.'; GlobalMemSize = 8GB; PlatformId = 0; Type = 'Gpu'; DeviceIndex = 1; MaxComputeUnits = 30 }
-            [PSCustomObject]@{Name = 'Ellesmere'; Vendor = 'Advanced Micro Devices, Inc.'; GlobalMemSize = 4GB; PlatformId = 0; Type = 'Gpu'; DeviceIndex = 2; MaxComputeUnits = 30 }
-            [PSCustomObject]@{Name = 'GeForce 1060'; Vendor = 'NVIDIA Corporation'; GlobalMemSize = 3GB; PlatformId = 1; Type = 'Gpu'; DeviceIndex = 0; MaxComputeUnits = 30 }
-            [PSCustomObject]@{Name = 'GeForce 1060'; Vendor = 'NVIDIA Corporation'; GlobalMemSize = 3GB; PlatformId = 1; Type = 'Gpu'; DeviceIndex = 1; MaxComputeUnits = 30 }
-            [PSCustomObject]@{Name = 'GeForce 1080'; Vendor = 'NVIDIA Corporation'; GlobalMemSize = 8GB; PlatformId = 1; Type = 'Gpu'; DeviceIndex = 2; MaxComputeUnits = 60 }
-            [PSCustomObject]@{Name = 'Intel CPU'; Vendor = 'Intel'; GlobalMemSize = 8GB; PlatformId = 1; Type = 'Cpu'; DeviceIndex = 1; MaxComputeUnits = 4 }
-        )
-        # end fake
-    } else {
-        if (-not ('OpenCl.Platform' -as [Type])) {
-            Add-Type -Path ./Includes/OpenCL/*.cs
-        }
-        try {
-            $OCLPlatforms = [OpenCl.Platform]::GetPlatformIds()
-        } catch {
-            Log "Error during OpenCL platform detection!" -Severity Debug
-        }
-        if ($null -ne $OCLPlatforms) {
-            $PlatformId = 0
-            $OCLDeviceId = 0
-            $OCLGpuId = 0
-            $OCLDevices = @($OCLPlatforms | ForEach-Object {
-                    $Devs = [OpenCl.Device]::GetDeviceIDs($_, [OpenCl.DeviceType]::All)
-                    $Devs | Add-Member PlatformId $PlatformId
-                    $Devs | ForEach-Object {
-                        $_ | Add-Member DeviceIndex $([array]::indexof($Devs, $_))
-                        $_ | Add-Member OCLDeviceId $OCLDeviceId
-                        $OCLDeviceId++
-                        if ($_.Type -eq 'Gpu') {
-                            $_ | Add-Member OCLGpuId $OCLGpuId
-                            $OCLGpuId++
-                        }
-                    }
-                    $PlatformId++
-                    $Devs
-                })
-        } else {
-            Log "No OpenCL devices detected!" -Severity Debug
-        }
+    if (-not ('OpenCl.Platform' -as [Type])) {
+        Add-Type -Path ./Includes/OpenCL/*.cs
     }
+    try {
+        $OCLPlatforms = [OpenCl.Platform]::GetPlatformIds()
+    } catch {
+        Log "Error during OpenCL platform detection!" -Severity Debug
+    }
+    if ($null -ne $OCLPlatforms) {
+        $PlatformId = 0
+        $OCLDeviceId = 0
+        $OCLGpuId = 0
+        $OCLDevices = @($OCLPlatforms | ForEach-Object {
+                $Devs = [OpenCl.Device]::GetDeviceIDs($_, [OpenCl.DeviceType]::All)
+                $Devs | Add-Member PlatformId $PlatformId
+                $Devs | ForEach-Object {
+                    $_ | Add-Member DeviceIndex $([array]::indexof($Devs, $_))
+                    $_ | Add-Member OCLDeviceId $OCLDeviceId
+                    $OCLDeviceId++
+                    if ($_.Type -eq 'Gpu') {
+                        $_ | Add-Member OCLGpuId $OCLGpuId
+                        $OCLGpuId++
+                    }
+                }
+                $PlatformId++
+                $Devs
+            })
+    } else {
+        Log "No OpenCL devices detected!" -Severity Debug
+    }
+
     $OCLDevices
 }
 
@@ -639,21 +602,77 @@ function Test-Admin {
     $Result
 }
 
-function Get-CudaVersion {
+function Get-NvidiaSmi {
+
     if ($IsLinux -or (Get-Command "nvidia-smi" -ErrorAction Ignore)) {
         $Command = "nvidia-smi"
-    } else {
+    } elseif ($IsWindows) {
         $Command = "./Includes/nvidia-smi.exe"
     }
-    if (Get-Command $Command -ErrorAction Ignore) {
-        # try nvidia-smi detection
-        $Ver = & $Command | Where-Object { $_ -match "CUDA Version: (\d+\.\d+)" } | ForEach-Object { $Matches[1] } | Select-Object -First 1
-        if (-not $Ver) {
-            # try OpenCL detection
-            $OclDevices = Get-OpenCLDevices | Where-Object { $_.Type -eq 'Gpu' -and $_.Vendor -like 'NVIDIA*' }
-            if ($OclDevices[0].Platform.Version -match "CUDA\s+(\d\+.\d+)") {
-                $Ver = $Matches[1]
+    if ($Command) {
+        (Get-Command $Command).Source
+    }
+}
+
+function Invoke-NvidiaSmi {
+    [cmdletbinding()]
+    param(
+        [Parameter(Mandatory = $False)]
+        [String[]]$Query = @(),
+        [Parameter(Mandatory = $False)]
+        [String[]]$Arguments = @(),
+        [Parameter(Mandatory = $False)]
+        [Switch]$Runas
+    )
+
+    if (-not ($NVSMI = Get-NvidiaSmi)) { return }
+
+    if ($Query) {
+        $Arguments += @(
+            "--query-gpu=$($Query -join ',')"
+            "--format=csv,noheader,nounits"
+        )
+        $CsvParams = @{
+            Header = @(
+                $Query | Foreach-Object { $_ -replace "[^a-z_-]", "_" -replace "_+", "_" } | Select-Object
+            )
+        }
+        & $NVSMI $Arguments | ConvertFrom-Csv @CsvParams | Foreach-Object {
+            $obj = $_
+            $obj.PSObject.Properties.Name | Foreach-Object {
+                $v = $obj.$_
+                if ($v -match '(error|supported)') { $v = $null }
+                elseif ($_ -match "^(clocks|fan|index|memory|temperature|utilization)") {
+                    $v = $v -replace "[^\d\.]"
+                    if ($v -notmatch "^(\d+|\.\d+|\d+\.\d+)$") { $v = $null }
+                    else { $v = [int]$v }
+                } elseif ($_ -match "^(power)") {
+                    $v = $v -replace "[^\d\.]"
+                    if ($v -notmatch "^(\d+|\.\d+|\d+\.\d+)$") { $v = $null }
+                    else { $v = [double]$v }
+                }
+                $obj.$_ = $v
             }
+            $obj
+        }
+    } elseif ($RunAs) {
+        $SMIProcess = New-Object System.Diagnostics.ProcessStartInfo $NVSMI
+        $SMIProcess.Verb = "runas"
+        $SMIProcess.Arguments = $Arguments -join " "
+        [System.Diagnostics.Process]::Start($SMIProcess) | Out-Null
+        if ($SMIProcess) { Remove-Variable SMIProcess }
+    } else {
+        & $NVSMI $Arguments
+    }
+}
+
+function Get-CudaVersion {
+    $Ver = Invoke-NvidiaSmi | Where-Object { $_ -match "CUDA Version: (\d+\.\d+)" } | ForEach-Object { $Matches[1] } | Select-Object -First 1
+    if (-not $Ver) {
+        # try OpenCL detection
+        $OclDevices = Get-OpenCLDevices | Where-Object { $_.Type -eq 'Gpu' -and $_.Vendor -like 'NVIDIA*' }
+        if ($OclDevices[0].Platform.Version -match "CUDA\s+(\d\+.\d+)") {
+            $Ver = $Matches[1]
         }
     }
     if ($Ver) {
@@ -721,45 +740,40 @@ function Set-NvidiaPowerLimit {
     }
 
     foreach ($Device in @($Devices -split ',')) {
-        $CsvParams = @{
-            Header = @(
-                "default"
-                "min"
-                "max"
-                "limit"
+        $Params = @{
+            Arguments = @(
+                "--id=$Device"
+            )
+            Query     = @(
+                "power.default_limit"
+                "power.min_limit"
+                "power.max_limit"
+                "power.limit"
             )
         }
-        if ($IsLinux -or (Get-Command "nvidia-smi" -ErrorAction Ignore)) {
-            $Command = "nvidia-smi"
-        } else {
-            $Command = "./Includes/nvidia-smi.exe"
-        }
-        $Params = @(
-            "--id=$Device"
-            "--query-gpu=power.default_limit,power.min_limit,power.max_limit,power.limit"
-            "--format=csv,noheader,nounits"
-        )
-
-        $Limits = & $Command $Params | ConvertFrom-Csv @CsvParams
+        $Limits = Invoke-NvidiaSmi @Params
 
         if ($PowerLimitPercent -gt 0) {
-            $PLim = [int]($PowerLimitPercent / 100 * [int]$Limits.default)
+            $PLim = [int]($PowerLimitPercent / 100 * [int]$Limits.power_default_limit)
         } elseif ($PowerLimitWatt -gt 0) {
             $PLim = [int]$PowerLimitWatt
         }
-        $PLim = [math]::max($PLim, [int]$Limits.min)
-        $PLim = [math]::min($PLim, [int]$Limits.max)
+        $PLim = [math]::max($PLim, [int]$Limits.power_min_limit)
+        $PLim = [math]::min($PLim, [int]$Limits.power_max_limit)
 
-        if ($PLim -ne [int]$Limits.limit) {
+        if ($PLim -ne [int]$Limits.power_limit) {
             #powerlimit change must run in admin mode
-            $SMIProcess = New-Object System.Diagnostics.ProcessStartInfo $Command
-            $SMIProcess.Verb = "runas"
-            $SMIProcess.Arguments = "--id=$Device --power-limit=$PLim"
-            [System.Diagnostics.Process]::Start($SMIProcess) | Out-Null
-            Start-Sleep -Seconds 10
+            $Params = @{
+                Arguments = @(
+                    "--id=$Device"
+                    "--power-limit=$PLim"
+                )
+                Runas     = $true
+            }
+
+            Invoke-NvidiaSmi @Params
         }
     }
-    if ($SMIProcess) { Remove-Variable SMIProcess }
 }
 
 
