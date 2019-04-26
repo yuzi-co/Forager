@@ -22,6 +22,7 @@ $Error.Clear()
 Import-Module ./Include.psm1
 
 Set-OsFlags
+$Global:IsAdmin = Test-Admin
 
 if ($IsWindows) {
     try { Set-WindowSize 170 50 } catch { }

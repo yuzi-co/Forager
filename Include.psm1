@@ -631,6 +631,14 @@ function Set-OsFlags {
     }
 }
 
+function Test-Admin {
+    $Result = switch ($PSVersionTable.Platform) {
+        'Win32NT' { (New-Object Security.Principal.WindowsPrincipal ([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator) }
+        'Unix' { [bool]((id -u) -eq 0) }
+    }
+    $Result
+}
+
 function Get-CudaVersion {
     if ($IsLinux -or (Get-Command "nvidia-smi" -ErrorAction Ignore)) {
         $Command = "nvidia-smi"
@@ -706,6 +714,11 @@ function Set-NvidiaPowerLimit {
         [parameter(mandatory = $true)]
         [string]$Devices
     )
+
+    if (-not $IsAdmin) {
+        Log "To change PowerLimits you must to run Forager as Admin/Sudo" -Severity Warn
+        return
+    }
 
     foreach ($Device in @($Devices -split ',')) {
         $CsvParams = @{
