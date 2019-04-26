@@ -136,7 +136,11 @@ function Get-DevicesInfoNvidiaSMI {
 "@
         $Result = $FakeData | ConvertFrom-Csv @CvsParams
     } else {
-        $Command = "nvidia-smi"
+        if ($IsLinux -or (Get-Command "nvidia-smi" -ErrorAction Ignore)) {
+            $Command = "nvidia-smi"
+        } else {
+            $Command = "./Includes/nvidia-smi.exe"
+        }
         $Arguments = @(
             '--query-gpu=gpu_name,utilization.gpu,utilization.memory,temperature.gpu,power.draw,power.limit,fan.speed,pstate,clocks.current.graphics,clocks.current.memory,power.max_limit,power.default_limit'
             '--format=csv,noheader,nounits'
@@ -395,7 +399,11 @@ function Get-Devices {
 }
 
 function Get-NvidiaSmiDevices {
-    $Command = "nvidia-smi"
+    if ($IsLinux -or (Get-Command "nvidia-smi" -ErrorAction Ignore)) {
+        $Command = "nvidia-smi"
+    } else {
+        $Command = "./Includes/nvidia-smi.exe"
+    }
     $CsvParams = @{
         Header = @(
             "index"
@@ -624,9 +632,14 @@ function Set-OsFlags {
 }
 
 function Get-CudaVersion {
-    if (Get-Command "nvidia-smi" -ErrorAction Ignore) {
+    if ($IsLinux -or (Get-Command "nvidia-smi" -ErrorAction Ignore)) {
+        $Command = "nvidia-smi"
+    } else {
+        $Command = "./Includes/nvidia-smi.exe"
+    }
+    if (Get-Command $Command -ErrorAction Ignore) {
         # try nvidia-smi detection
-        $Ver = & "nvidia-smi" | Where-Object { $_ -match "CUDA Version: (\d+\.\d+)" } | ForEach-Object { $Matches[1] } | Select-Object -First 1
+        $Ver = & $Command | Where-Object { $_ -match "CUDA Version: (\d+\.\d+)" } | ForEach-Object { $Matches[1] } | Select-Object -First 1
         if (-not $Ver) {
             # try OpenCL detection
             $OclDevices = Get-OpenCLDevices | Where-Object { $_.Type -eq 'Gpu' -and $_.Vendor -like 'NVIDIA*' }
@@ -703,14 +716,18 @@ function Set-NvidiaPowerLimit {
                 "limit"
             )
         }
-        $Command = "nvidia-smi"
+        if ($IsLinux -or (Get-Command "nvidia-smi" -ErrorAction Ignore)) {
+            $Command = "nvidia-smi"
+        } else {
+            $Command = "./Includes/nvidia-smi.exe"
+        }
         $Params = @(
             "--id=$Device"
             "--query-gpu=power.default_limit,power.min_limit,power.max_limit,power.limit"
             "--format=csv,noheader,nounits"
         )
 
-        $Limits = & "nvidia-smi" $Params | ConvertFrom-Csv @CsvParams
+        $Limits = & $Command $Params | ConvertFrom-Csv @CsvParams
 
         if ($PowerLimitPercent -gt 0) {
             $PLim = [int]($PowerLimitPercent / 100 * [int]$Limits.default)
