@@ -1,4 +1,5 @@
 Import-Module .\Include.psm1
+Set-OsFlags
 
 Get-OpenCLDevices | Format-Table -Property @{Label = "Pid"; Expression = { $_.PlatformId } },
 @{Label = "Dev"; Expression = { $_.DeviceIndex } },

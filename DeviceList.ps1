@@ -1,4 +1,5 @@
 Import-Module ./Include.psm1
+Set-OsFlags
 
 $global:Config = Get-Config
 if ($Config.Afterburner -and $IsWindows) {
