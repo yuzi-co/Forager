@@ -177,12 +177,12 @@ function Get-DevicesInfoCPU {
         $CpuResult | ForEach-Object {
             if (-not $CpuData.Utilization) {
                 # Get-Counter is more accurate and is preferable, but currently not available in Poweshell 6
-                if (Get-Command "Get-Counter" -Type Cmdlet -ErrorAction Ignore) {
+                if (-not $IsCoreCLR -and (Get-Command "Get-Counter" -Type Cmdlet -ErrorAction Ignore)) {
                     # Language independent version of Get-Counter '\Processor(_Total)\% Processor Time'
-                    try {
-                        $CpuData.Utilization = (Get-Counter -Counter '\238(_Total)\6').CounterSamples.CookedValue
-                    } catch { $CpuData.Utilization = $_.LoadPercentage }
-                } else {
+                    $Counter = Get-Counter -Counter '\238(_Total)\6' -ErrorAction Ignore
+                    $CpuData.Utilization = $Counter.CounterSamples.CookedValue
+                }
+                if (-not $CpuData.Utilization) {
                     $CpuData.Utilization = $_.LoadPercentage
                 }
             }
@@ -209,21 +209,22 @@ function Get-DevicesInfoCPU {
         }
     } else {
         $Features = Get-CpuFeatures
+
         if (-not $global:CpuTDP) {
             $global:CpuTDP = Get-Content ./Data/cpu-tdp.json | ConvertFrom-Json
         }
 
-        [int]$CpuData.Utilization = [math]::min((((& ps -A -o pcpu) -match "\d" | Measure-Object -Sum).Sum / $Features.Threads), 100)
-        [int]$CpuData.PowerDraw = $CpuTDP.($Features.Name) * $CpuData.Utilization / 100
+        [int]$CpuData.Utilization = [math]::min((((& ps -A -o pcpu) -match "\d" | Measure-Object -Sum).Sum / $Features.threads), 100)
+        [int]$CpuData.PowerDraw = $CpuTDP.($Features.cpu_name) * $CpuData.Utilization / 100
         [PSCustomObject]@{
             GroupName   = 'CPU'
             GroupType   = 'CPU'
             Id          = 0
-            Name        = $Features.Name
-            Cores       = $Features.Cores
-            Threads     = $Features.Threads
-            CacheL3     = $Features.CacheL3 / 1024
-            Clock       = $Features.Clock
+            Name        = $Features.cpu_name
+            Cores       = $Features.cores
+            Threads     = $Features.threads
+            CacheL3     = $Features.l3 / 1024
+            Clock       = $Features.cpu_speed
             Utilization = $CpuData.Utilization
             PowerDraw   = $CpuData.PowerDraw
         }
@@ -398,7 +399,7 @@ function Get-NvidiaSmiDevices {
     }
     $SmiDevices = Invoke-NvidiaSmi @Params
 
-    $DeviceList = $SmiDevices | Where-Object {$_.gpu_name} | ForEach-Object {
+    $DeviceList = $SmiDevices | Where-Object { $_.gpu_name } | ForEach-Object {
         @{
             Type          = 'Gpu'
             Vendor        = 'NVIDIA'
@@ -449,16 +450,19 @@ function Get-OpenCLDevices {
 }
 
 function Get-CpuFeatures {
+    $Features = @{ }
     if ($IsWindows) {
-        $Features = $($feat = @{ }; switch -regex ((& "$PSScriptRoot/Includes/CHKCPU32.exe" /x) -split "</\w+>") { "^\s*<_?(\w+)>(\d+).*" { $feat.($matches[1]) = [int]$matches[2] } }; $feat)
+        [xml]$Data = & "./Includes/CHKCPU32.exe" /x
+        $Data.chkcpu32 | Get-Member -MemberType Property | ForEach-Object { $Features.($_.Name) = $Data.chkcpu32.($_.Name) }
+        $Features.l3 = $Features.l3 -replace "[^\d]"
     } elseif ($IsLinux) {
         $Data = Get-Content /proc/cpuinfo
-        $Features = $($feat = @{ }; (($Data | Where-Object { $_ -like "flags*" })[0] -split ":")[1].Trim() -split " " | ForEach-Object { $feat.$_ = 1 }; $feat)
+        (($Data | Where-Object { $_ -like "flags*" })[0] -split ":")[1].Trim() -split " " | ForEach-Object { $Features.$_ = 1 }
         $Features.threads = [int]($Data | Where-Object { $_ -like 'processor*' }).count
         $Features.cores = [int](($Data | Where-Object { $_ -like 'cpu cores*' })[0] -split ":")[1].Trim()
-        $Features.name = (($Data | Where-Object { $_ -like 'model name*' })[0] -split ":")[1].Trim()
-        $Features.cachel3 = ((($Data | Where-Object { $_ -like 'cache size*' })[0] -split ":")[1].Trim() -split " ")[0].Trim()
-        $Features.clock = [int](($Data | Where-Object { $_ -like 'cpu MHz*' })[0] -split ":")[1].Trim()
+        $Features.cpu_name = (($Data | Where-Object { $_ -like 'model name*' })[0] -split ":")[1].Trim()
+        $Features.l3 = ((($Data | Where-Object { $_ -like 'cache size*' })[0] -split ":")[1].Trim() -split " ")[0].Trim()
+        $Features.cpu_speed = [int](($Data | Where-Object { $_ -like 'cpu MHz*' })[0] -split ":")[1].Trim()
     }
     return $Features
 }
@@ -494,8 +498,8 @@ function Get-MiningTypes () {
         $Devices | Where-Object { $_.GroupType -eq 'CPU' } | ForEach-Object {
             $_ | Add-Member Devices "0" -Force
             $_ | Add-Member Features $Features
-            if ($Features.Name -and (-not $_.Name -or $_.Name -eq 'CPU')) {
-                $_ | Add-Member Name $Features.Name -Force
+            if ($Features.cpu_name -and (-not $_.Name -or $_.Name -eq 'CPU')) {
+                $_ | Add-Member Name $Features.cpu_name -Force
             }
         }
     }
