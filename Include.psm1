@@ -1725,9 +1725,24 @@ function Get-MinerParameters {
         Copy-Item ./Data/MinerParameters.default.json ./Config/MinerParameters.json -Force -ErrorAction Ignore
     }
 
-    $Result = Get-Content ./Config/MinerParameters.json | ConvertFrom-Json
+    $DefaultParams = Get-Content ./Data/MinerParameters.default.json | ConvertFrom-Json
+    $CustomParams = Get-Content ./Config/MinerParameters.json | ConvertFrom-Json
 
-    $Result # Return Value
+    # Populate Config/MinerParameters.json with new miners/algos
+    $DefaultParams | Get-Member -MemberType NoteProperty -PipelineVariable Miner | ForEach-Object {
+        if ($CustomParams.($Miner.Name)) {
+            $DefaultParams.($Miner.Name) | Get-Member -MemberType NoteProperty -PipelineVariable Algo | ForEach-Object {
+                if ($CustomParams.($Miner.Name).($Algo.Name) -isnot [string]) {
+                    $CustomParams.($Miner.Name) | Add-Member $Algo.Name $DefaultParams.($Miner.Name).($Algo.Name)
+                }
+            }
+        } else {
+            $CustomParams | Add-Member $Miner.Name $DefaultParams.($Miner.Name)
+        }
+    }
+    $CustomParams | ConvertTo-Json | Set-Content ./Config/MinerParameters.json
+
+    $CustomParams # Return Value
 }
 
 function Get-BestHashRateAlgo {
