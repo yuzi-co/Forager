@@ -15,17 +15,17 @@
   "SSL": true,
   "Fee": 0.02,
   "Algorithms": {
-    "Aethernity": {
+    "_Cuckoo29": {
       "Params": "-a cuckoo_ae",
       "NoCpu": true,
       "Mem": 5
     },
-    "Cuckaroo29": {
+    "_Cuckaroo29": {
       "Params": "-a cuckaroo",
       "NoCpu": true,
       "Mem": 5
     },
-    "Cuckaroo29s": {
+    "_Cuckaroo29s": {
       "Params": "-a cuckaroo_swap",
       "NoCpu": true,
       "Mem": 5
@@ -35,7 +35,7 @@
       "NoCpu": true,
       "Mem": 7.4
     },
-    "Ethash": {
+    "_Ethash": {
       "Params": "-a ethash -o $(if ($Pool.PoolName -eq 'NiceHash') {'ethnh'} else {'ethproxy'})+tcp://#Server#:#Port#",
       "Mem": 3,
       "Fee": 0.0065
