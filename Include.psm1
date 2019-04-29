@@ -28,7 +28,7 @@ function Get-DevicesInfoAfterburner {
                 FanSpeed          = [int]$($CardData | Where-Object SrcName -match "^(GPU\d* )?fan speed$").Data
                 Temperature       = [int]$($CardData | Where-Object SrcName -match "^(GPU\d* )?temperature$").Data
                 PowerDraw         = [int]$($CardData | Where-Object { $_.SrcName -match "^(GPU\d* )?power$" -and $_.SrcUnits -eq 'W' }).Data
-                PowerLimitPercent = [int]$($abControl.GpuEntries[$_.Index].PowerLimitCur)
+                PowerLimitPercent = [int]$(if ($abControl.GpuEntries) { $abControl.GpuEntries[$_.Index].PowerLimitCur })
                 PCIBus            = [int]$($null = $_.GpuId -match "&BUS_(\d+)&"; $matches[1])
             }
             $DeviceId++
@@ -452,7 +452,7 @@ function Get-OpenCLDevices {
 function Get-CpuFeatures {
     $Features = @{ }
     if ($IsWindows) {
-        [xml]$Data = & "./Includes/CHKCPU32.exe" /x
+        [xml]$Data = & CHKCPU32.exe /x
         $Data.chkcpu32 | Get-Member -MemberType Property | ForEach-Object { $Features.($_.Name) = $Data.chkcpu32.($_.Name) }
         $Features.l3 = $Features.l3 -replace "[^\d]"
     } elseif ($IsLinux) {
@@ -638,12 +638,12 @@ function Invoke-NvidiaSmi {
         )
         $CsvParams = @{
             Header = @(
-                $Query | Foreach-Object { $_ -replace "[^a-z_-]", "_" -replace "_+", "_" } | Select-Object
+                $Query | ForEach-Object { $_ -replace "[^a-z_-]", "_" -replace "_+", "_" } | Select-Object
             )
         }
-        & $NVSMI $Arguments | ConvertFrom-Csv @CsvParams | Foreach-Object {
+        & $NVSMI $Arguments | ConvertFrom-Csv @CsvParams | ForEach-Object {
             $obj = $_
-            $obj.PSObject.Properties.Name | Foreach-Object {
+            $obj.PSObject.Properties.Name | ForEach-Object {
                 $v = $obj.$_
                 if ($v -match '(error|supported)') { $v = $null }
                 elseif ($_ -match "^(clocks|fan|index|memory|temperature|utilization)") {
