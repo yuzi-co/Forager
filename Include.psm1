@@ -956,6 +956,27 @@ function Get-LiveHashRate {
             }
 
             "BMiner" {
+                $Request = Invoke-HTTPRequest -Port $Miner.ApiPort -Path "/api/status"
+                if ($Request) {
+                    $Data = $Request | ConvertFrom-Json
+                    $HashRate = $Data.miners |
+                    Get-Member -MemberType NoteProperty |
+                    ForEach-Object {
+                        @(
+                            $Data.miners.($_.name).solver.solution_rate
+                            $Data.miners.($_.name).solver.hash_rate
+                        ) -gt 0
+                    } | Measure-Object -Sum | Select-Object -ExpandProperty Sum
+                }
+                if ($HashRate) {
+                    $Shares = @(
+                        [int64]$Data.stratum.accepted_shares
+                        [int64]$Data.stratum.rejected_shares
+                    )
+                }
+            }
+
+            "BMinerDual" {
                 $Request = Invoke-HTTPRequest -Port $Miner.ApiPort -Path "/api/v1/status/solver"
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
@@ -963,6 +984,7 @@ function Get-LiveHashRate {
                     Get-Member -MemberType NoteProperty |
                     ForEach-Object { $Data.devices.($_.name).solvers } |
                     Group-Object algorithm |
+                    Sort-Object { $_.name -like 'ethash' } -Descending |
                     ForEach-Object {
                         @(
                             $_.group.speed_info.hash_rate | Measure-Object -Sum | Select-Object -ExpandProperty Sum
@@ -976,6 +998,7 @@ function Get-LiveHashRate {
                         $Data = $Request | ConvertFrom-Json
                         $Shares = $Data.stratums |
                         Get-Member -MemberType NoteProperty |
+                        Sort-Object { $_.name -like 'ethash' } -Descending |
                         ForEach-Object {
                             @(
                                 $Data.stratums.($_.name).accepted_shares
