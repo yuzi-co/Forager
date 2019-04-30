@@ -1,7 +1,7 @@
 {
   "Path": "miniZ",
   "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.4/miniZ_v1.3n3_cuda10_linux-x64.tar.gz",
-  "SHA256": "076F294E3E9680B3BB7D5F376A5C20ABDAC7FC38A57E943DBC00A279973108EF",
+  "SHA256": "1FB265597BB14DAE42397F47998DAE34562A4331E4563FA8B4867F907653856A",
   "Type": "NVIDIA",
   "CUDA": 10.0,
   "Arguments": [
