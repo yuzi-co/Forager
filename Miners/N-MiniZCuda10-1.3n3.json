@@ -1,7 +1,7 @@
 {
   "Path": "miniZ.exe",
-  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.04/miniZ_v1.3n_cuda10_win-x64.zip",
-  "SHA256": "1AE2EF20C8E269AAF462802F722D6BF81D0292A4877F77F676D36327A7FA6CA0",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.04/miniZ_v1.3n3_cuda10_win-x64.zip",
+  "SHA256": "0F03D00EA72C5A2FD7364AE97EEFC8519F7F4935C3830F2B602F0D670B5B64E5",
   "Type": "NVIDIA",
   "CUDA": 10.0,
   "Arguments": [

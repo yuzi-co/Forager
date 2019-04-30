@@ -1,7 +1,7 @@
 {
-  "Path": "miniZ.exe",
-  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.04/miniZ_v1.3n_win-x64.zip",
-  "SHA256": "65F504A67FD7D0869548865B99A73F22BB48F0472A84896F4F435B4BAA358D02",
+  "Path": "miniZ",
+  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.4/miniZ_v1.3n3_linux-x64.tar.gz",
+  "SHA256": "1DC3284F1335D58A2E5F19083E6A49663DC922BED8C28C23AF1A42FD3023DB99",
   "Type": "NVIDIA",
   "CUDA": 8.0,
   "Arguments": [
@@ -11,6 +11,7 @@
     "--pass #Password#",
     "--gpu-line",
     "--extra",
+    "--nocolor",
     "--cuda-devices #DevicesETHMode#",
     "--telemetry 0.0.0.0:#APIPort#",
     "#AlgorithmParameters#",

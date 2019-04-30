@@ -1,9 +1,9 @@
 {
   "Path": "miniZ",
-  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.4/miniZ_v1.3n_linux-x64.tar.gz",
-  "SHA256": "DB24AC9C7E4AD2883E4DF0D15635F3086C5C3EF00589AB736F2A790C5C3E4551",
+  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.4/miniZ_v1.3n3_cuda10_linux-x64.tar.gz",
+  "SHA256": "076F294E3E9680B3BB7D5F376A5C20ABDAC7FC38A57E943DBC00A279973108EF",
   "Type": "NVIDIA",
-  "CUDA": 8.0,
+  "CUDA": 10.0,
   "Arguments": [
     "--server $(if ($EnableSSL){'ssl://'})#Server#",
     "--port #Port#",
