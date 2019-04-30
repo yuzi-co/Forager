@@ -1,7 +1,7 @@
 {
   "Path": "cpuminer-$($f=$SystemInfo.CpuFeatures;$(if($f.avx2 -and $f.sha){'ryzen'}elseif($f.avx2){'avx2'}elseif($f.avx){'avx'}elseif($f.aes){'aes'}else{'sse2'})).exe",
-  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.04/cpuminer-opt-rplant-4.0.4.zip",
-  "SHA256": "449F826046EF511211342E462BF8190E799E52C91F53351F2468BB335B02403A",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.04/cpuminer-rplant-4.0.5-win.zip",
+  "SHA256": "2D0FC84845F2A9764539FCC40484A9F15A60DC12C1ED590F9BCCC416CF212001",
   "Type": "CPU",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
@@ -22,6 +22,7 @@
     "Argon2d4096": "-a argon2d4096",
     "Argon2m": "-a argon2m",
     "Binarium": "-a Binarium_hash_v1",
+    "Honeycomb": "-a honeycomb",
     "Lyra2h": "-a lyra2h",
     "Lyra2z330": "-a lyra2z330",
     "ScryptJane16": "-a scryptjane:16",
