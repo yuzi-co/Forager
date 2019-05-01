@@ -1,7 +1,7 @@
 {
   "Path": "miner.exe",
-  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.39/gminer_1_39_windows64.zip",
-  "SHA256": "BAC7532A2A1DF82191A246098CD80CE4CC03EBFD3787BCC20A6F44B3F93CEF7E",
+  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.40/gminer_1_40_windows64.zip",
+  "SHA256": "FB8357F0456937C1821A0BB5B9D24939128F638B5BA45BD6A9A0B7D1B8D20616",
   "Type": "NVIDIA",
   "CUDA": 9.0,
   "Arguments": [
