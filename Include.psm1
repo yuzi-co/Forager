@@ -453,7 +453,13 @@ function Get-CpuFeatures {
     $Features = @{ }
     if ($IsWindows) {
         [xml]$Data = & ./Includes/CHKCPU32.exe /x
-        $Data.chkcpu32 | Get-Member -MemberType Property | ForEach-Object { $Features.($_.Name) = $Data.chkcpu32.($_.Name) }
+        $Data.chkcpu32 | Get-Member -MemberType Property | ForEach-Object {
+            if ($Data.chkcpu32.($_.Name) -match "^[\d]+$") {
+                $Features.($_.Name) = [int]$Data.chkcpu32.($_.Name)
+            } else {
+                $Features.($_.Name) = $Data.chkcpu32.($_.Name)
+            }
+        }
         $Features.l3 = $Features.l3 -replace "[^\d]"
     } elseif ($IsLinux) {
         $Data = Get-Content /proc/cpuinfo
