@@ -1,7 +1,7 @@
 {
   "Path": "multiminer",
-  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.03/multiminer-1.2.0.tar.gz",
-  "SHA256": "B77485A29B9A77F26A1BF468AA4F992D045C47F1FA71BD3E1F53613F260B865B",
+  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.4/multiminer-cuda91-1.2.0.tar.gz",
+  "SHA256": "9016B27A9AECEEF4F8E4D73BD1E74294E70DDA1C0039B8ACEF88E97696BD2B39",
   "Type": "CPU",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",

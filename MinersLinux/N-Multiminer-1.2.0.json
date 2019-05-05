@@ -1,9 +1,9 @@
 {
   "Path": "multiminer",
-  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.4/multiminer-cuda101-1.2.0.tar.gz",
-  "SHA256": "EC8AB2C6A92BEF56C2F6DF802A05F7B9F552CF0E31C63DCE666481904B6800F1",
+  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.4/multiminer-cuda91-1.2.0.tar.gz",
+  "SHA256": "9016B27A9AECEEF4F8E4D73BD1E74294E70DDA1C0039B8ACEF88E97696BD2B39",
   "Type": "NVIDIA",
-  "CUDA": 10.1,
+  "CUDA": 9.1,
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
     "-u #Login#",
