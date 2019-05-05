@@ -1,7 +1,7 @@
 {
-  "Path": "wildrig.exe",
-  "Uri": "https://github.com/andru-kun/wildrig/releases/download/0.10.5/wildrig-windows-0.10.5-beta.7z",
-  "SHA256": "E76F3428D57F133395FA636D83B379453BA684978B7D486F937F03FEF90B19B9",
+  "Path": "wildrig",
+  "Uri": "https://github.com/andru-kun/wildrig/releases/download/0.10.5/wildrig-linux-0.10.5-beta.tar.gz",
+  "SHA256": "72CC6135DBA4E856798602A1F00A6ECB988D4CABE5C4AF17018DC923F33976C2",
   "Type": "NVIDIA",
   "CUDA": 9.2,
   "Arguments": [
