@@ -1,7 +1,7 @@
 {
-  "Path": "CryptoDredge_0.18.0/CryptoDredge",
-  "Uri": "https://github.com/technobyl/CryptoDredge/releases/download/v0.18.0/CryptoDredge_0.18.0_cuda_10.0_linux.tar.gz",
-  "SHA256": "BDD8BC673CFF9BD48EC10DFD7EDB88D9CBB7DA6576EFF8A28FA0EBDABADF89CC",
+  "Path": "CryptoDredge_0.19.0/CryptoDredge",
+  "Uri": "https://github.com/technobyl/CryptoDredge/releases/download/v0.19.0/CryptoDredge_0.19.0_cuda_10.0_linux.tar.gz",
+  "SHA256": "F3890822E7C3484E06A142570C453B6FEB8DED073144374F5031C878BA06753F",
   "Type": "NVIDIA",
   "CUDA": 10.0,
   "Arguments": [
@@ -21,20 +21,18 @@
   "Fee": 0.01,
   "Algorithms": {
     "Allium": "-a allium",
-    "Argon2d500": "-a argon2d",
+    "Argon2d250": "-a argon2d250",
+    "Argon2d500": "-a argon2d-dyn",
+    "Argon2d4096": "-a argon2d4096",
     "_BCD": "-a bcd",
     "_Bitcore": "-a bitcore",
-    "_C11": "-a c11",
-    "CnFast": "-a cnfast",
-    "CnGpu": "-a cngpu ",
+    "CnGpu": "-a cngpu",
     "CnHalf": "-a cnfast2",
     "CnHaven": "-a cnhaven",
     "CnHeavy": "-a cnheavy",
     "CnLiteV7": "-a aeon",
     "CnSaber": "-a cnsaber",
     "CnTurtle": "-a cnturtle",
-    "CnWow": "-a cnsuperfast",
-    "CnXTL": "-a stellite",
     "_Cuckoo29": {
       "Params": "-a aeternity",
       "Mem": 5.3
@@ -44,7 +42,6 @@
       "NoCpu": true,
       "Mem": 5.3
     },
-    "_Dedal": "-a dedal",
     "Hmq1725": "-a hmq1725",
     "_Lyra2v3": "-a lyra2rev3",
     "Lyra2vc0ban": "-a lyra2vc0banhash",
@@ -56,7 +53,6 @@
       "Fee": 0.02
     },
     "NeoScrypt": "-a neoscrypt",
-    "Phi": "-a phi",
     "Phi2": "-a phi2",
     "Pipe ": "-a pipe",
     "Skunk": "-a skunk",
