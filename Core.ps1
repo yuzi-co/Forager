@@ -636,7 +636,7 @@ while ($Quit -ne $true) {
                                     HashRateDual           = $HashRateValueDual
                                     NeedBenchmark          = [bool]($HashRateValue -eq 0 -or ($AlgorithmDual -and $HashRateValueDual -eq 0))
                                     PowerAvg               = $PowerValue
-                                    PowerLimit             = [int]$PowerLimit
+                                    PowerLimit             = $PowerLimit
                                     PowerLive              = 0
                                     Profits                = (($SubMinerRevenue + $SubMinerRevenueDual) * $localBTCvalue) - ($PowerCost * ($PowerValue * 24) / 1000) # Profit is revenue minus electricity cost
                                     ProfitsLive            = 0
@@ -857,7 +857,9 @@ while ($Quit -ne $true) {
                 $_.Profits -gt $ActiveMiners[$_.IdF].DeviceGroup.MinProfit -or
                 -not $LocalBTCvalue -gt 0
             )
-        } | Sort-Object -Descending NeedBenchmark, { $(if ($MiningMode -eq "Manual") { $_.HashRate } elseif ($LocalBTCvalue -gt 0) { $_.Profits } else { $_.Revenue + $_.RevenueDual }) }, PowerLimit
+        } | Sort-Object NeedBenchmark,
+            { $(if ($MiningMode -eq "Manual") { $_.HashRate } elseif ($LocalBTCvalue -gt 0) { $_.Profits } else { $_.Revenue + $_.RevenueDual }) },
+            { [int]($_ -replace '[^\d]') } -Descending
     }
 
     if ($Interval.Current -eq "Donate") {
@@ -1028,11 +1030,11 @@ while ($Quit -ne $true) {
                         $BestNow.PowerLimit -ne $BestLast.PowerLimit
                     ) {
                         if ($abControl) {
-                            Set-AfterburnerPowerLimit -PowerLimitPercent $BestNow.PowerLimit -DeviceGroup $ActiveMiners[$BestNow.IdF].DeviceGroup
+                            Set-AfterburnerPowerLimit -PowerLimit $BestNow.PowerLimit -DeviceGroup $ActiveMiners[$BestNow.IdF].DeviceGroup
                         } else {
                             switch ($ActiveMiners[$BestNow.IdF].DeviceGroup.GroupType) {
                                 'NVIDIA' {
-                                    Set-NvidiaPowerLimit -PowerLimitPercent $BestNow.PowerLimit -Devices $ActiveMiners[$BestNow.IdF].DeviceGroup.Devices
+                                    Set-NvidiaPowerLimit -PowerLimit $BestNow.PowerLimit -DeviceGroup $ActiveMiners[$BestNow.IdF].DeviceGroup
                                 }
                                 Default { }
                             }

@@ -28,7 +28,14 @@ try {
     Start-Sleep -Seconds 5
 }
 
-function Set-AfterburnerPowerLimit ([int]$PowerLimitPercent, $DeviceGroup) {
+function Set-AfterburnerPowerLimit {
+    param(
+        [validaterange(50, 150)]
+        $PowerLimit,
+
+        [parameter(mandatory = $true)]
+        $DeviceGroup
+    )
 
     try {
         $abMonitor.ReloadAll()
@@ -40,10 +47,8 @@ function Set-AfterburnerPowerLimit ([int]$PowerLimitPercent, $DeviceGroup) {
 
     if ($DeviceGroup.DevicesArray.Length -gt 0) {
 
-        if ($DeviceGroup.GroupType -eq 'AMD' -and $PowerLimitPercent -in (50..150)) {
-            $PowerLimit = $PowerLimitPercent - 100
-        } else {
-            $PowerLimit = $PowerLimitPercent
+        if ($DeviceGroup.GroupType -eq 'AMD' -and $PowerLimit -in (50..150)) {
+            $PowerLimit -= 100
         }
 
         $Pattern = @{

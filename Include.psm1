@@ -452,7 +452,7 @@ function Get-OpenCLDevices {
 function Get-CpuFeatures {
     $Features = @{ }
     if ($IsWindows) {
-        [xml]$Data = & ./Includes/CHKCPU32.exe /x
+        [xml]$Data = & $PSScriptRoot/Includes/CHKCPU32.exe /x
         $Data.chkcpu32 | Get-Member -MemberType Property | ForEach-Object {
             if ($Data.chkcpu32.($_.Name) -match "^[\d]+$") {
                 $Features.($_.Name) = [int]$Data.chkcpu32.($_.Name)
@@ -540,7 +540,7 @@ function Get-MiningTypes () {
             }
 
             if ($_.PowerLimits -is [string] -and $_.PowerLimits.Length -gt 0) {
-                $_ | Add-Member PowerLimits @([int[]]($_.PowerLimits -split ',' | ForEach-Object { $_.Trim() } ) | Sort-Object -Descending -Unique) -Force
+                $_ | Add-Member PowerLimits @(($_.PowerLimits -split ',' | ForEach-Object { $_.Trim() } ) | Sort-Object { [int]($_ -replace '[^\d]') } -Descending -Unique) -Force
             } else {
                 $_ | Add-Member PowerLimits @(0) -Force
             }
@@ -735,13 +735,10 @@ function Test-DeviceGroupsConfig ($Types) {
 
 function Set-NvidiaPowerLimit {
     param(
-        [int]$PowerLimitPercent,
-
-        [validaterange(50, 150)]
-        [int]$PowerLimitWatt,
+        $PowerLimit,
 
         [parameter(mandatory = $true)]
-        [string]$Devices
+        $DeviceGroup
     )
 
     if (-not $IsAdmin) {
@@ -749,7 +746,7 @@ function Set-NvidiaPowerLimit {
         return
     }
 
-    foreach ($Device in @($Devices -split ',')) {
+    foreach ($Device in @($DeviceGroup.Devices -split ',')) {
         $Params = @{
             Arguments = @(
                 "--id=$Device"
@@ -763,11 +760,12 @@ function Set-NvidiaPowerLimit {
         }
         $Limits = Invoke-NvidiaSmi @Params
 
-        if ($PowerLimitPercent -gt 0) {
-            $PLim = [int]($PowerLimitPercent / 100 * [int]$Limits.power_default_limit)
-        } elseif ($PowerLimitWatt -gt 0) {
-            $PLim = [int]$PowerLimitWatt
+        if ($PowerLimit -match '\d+W') {
+            $PLim = [int]($PowerLimit -replace 'W')
+        } else {
+            $PLim = [int]([int]$PowerLimit / 100 * [int]$Limits.power_default_limit)
         }
+
         $PLim = [math]::max($PLim, [int]$Limits.power_min_limit)
         $PLim = [math]::min($PLim, [int]$Limits.power_max_limit)
 
