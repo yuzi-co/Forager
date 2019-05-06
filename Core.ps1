@@ -859,7 +859,7 @@ while ($Quit -ne $true) {
             )
         } | Sort-Object NeedBenchmark,
             { $(if ($MiningMode -eq "Manual") { $_.HashRate } elseif ($LocalBTCvalue -gt 0) { $_.Profits } else { $_.Revenue + $_.RevenueDual }) },
-            { [int]($_ -replace '[^\d]') } -Descending
+            { [int]($_.PowerLimit -replace '[^\d]') } -Descending
     }
 
     if ($Interval.Current -eq "Donate") {
