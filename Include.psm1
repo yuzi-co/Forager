@@ -2005,7 +2005,7 @@ function Clear-Files {
         $LastWrite = $Now.AddDays(-1)
         Get-ChildItem $TargetFolder -File -Include "*.json" -Recurse | Where-Object LastWriteTime -le $LastWrite
     )
-    $Files | Remove-Item
+    $Files | Remove-Item -Force
 }
 
 function Get-CoinSymbol ([string]$Coin) {
