@@ -1,7 +1,7 @@
 {
   "Path": "wildrig.exe",
-  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.02/wildrig-multi-windows-0.15.3.8-beta.7z",
-  "SHA256": "7F028AD51B2B9DD2FE11A4DB39A148FDEAAAFB4BA4483FAF96E30D754CF97FCE",
+  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.16.0/wildrig-multi-windows-0.16.0-beta.7z",
+  "SHA256": "33019F83086C2F7D0E7C4F54B92EFDEF7DAD04CD0E01E4D2A04C8F5EEC58E49E",
   "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",
@@ -17,15 +17,15 @@
     "#AlgorithmParameters#",
     "#CustomParameters#"
   ],
-  "BenchmarkArg": "$(if ($AlgoName -in @('bitcore', 'x16r', 'x16rt', 'x16s', 'x21s', 'hex', 'timetravel')){'--benchmark'})",
   "API": "XMRig",
   "Fee": 0.01,
   "Mem": 1.1,
-  "PrelaunchCommand": "if ($env:GPU_MAX_WORKGROUP_SIZE -ne 256) { $env:GPU_MAX_WORKGROUP_SIZE = 256 }",
+  "BenchmarkArg": "$(if ($AlgoName -in @('bitcore', 'x16r', 'x16rt', 'x16s', 'x21s', 'hex', 'timetravel')){'--benchmark'})",
   "Custom": "--opencl-threads auto --opencl-launch auto",
   "Algorithms": {
     "Aergo": "--algo aergo",
     "Astralhash": "--algo glt-astralhash",
+    "Bbr": "--algo wildkeccak --scratchpad-url http://boolberry.miner.rocks:8008/scratchpad.bin --scratchpad-file scratchpad-#Algorithm#.bin",
     "BCD": "--algo bcd",
     "Bitcore": "--algo bitcore",
     "BMW512": "--algo bmw512",
@@ -35,13 +35,19 @@
     "Geek": "--algo geek",
     "Hex": "--algo hex",
     "HMQ1725": "--algo hmq1725",
+    "Honeycomb": "--algo honeycomb",
     "Jeonghash": "--algo glt-jeonghash",
-    "_Lyra2v3": "--algo lyra2v3",
+    "Lyra2v3": "--algo lyra2v3",
     "Lyra2vc0ban": "--algo lyra2vc0ban",
     "Padihash": "--algo glt-padihash",
     "Pawelhash": "--algo glt-pawelhash",
     "Phi": "--algo phi",
     "Polytimos": "--algo polytimos",
+    "Purk": "--algo wildkeccak --scratchpad-url http://purk.miner.rocks:8008/scratchpad.bin --scratchpad-file scratchpad-#Algorithm#.bin",
+    "Rainforest": {
+      "Params": "--algo rainforest",
+      "NoCpu": true
+    },
     "Renesis": "--algo renesis",
     "SHA256q": "--algo sha256q",
     "SHA256t": "--algo sha256t",
