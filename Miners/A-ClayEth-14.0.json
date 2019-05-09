@@ -1,7 +1,7 @@
 {
   "Path": "EthDcrMiner64.exe",
-  "Uri": "https://github.com/yuzi-co/miners/releases/download/2018.12/ClaymoreDual12.0.7z",
-  "SHA256": "6CBF0C6F587ABB8A865EB45C3AEE0274B2B6F354F895DFA941978E585CA5F216",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.05/ClaymoreDual-14.0.7z",
+  "SHA256": "D291FC8EB721DCFB1D9D10266F5435E870692AF6D307A756A70F5CFB8FFE3DF9",
   "Type": "AMD",
   "Arguments": [
     "-epool #Protocol#://#Server#:#Port#",
@@ -29,9 +29,6 @@
   "Algorithms": {
     "Ethash": "-mode 1",
     "Ethash_Blake2s": "-dcoin blake2s -mode 0",
-    "Ethash_Keccak": "-dcoin keccak -mode 0",
-    "_Ethash_Decred": "-dcoin dcr -mode 0",
-    "_Ethash_Lbry": "-dcoin lbc -mode 0",
-    "_Ethash_Pascal": "-dcoin pasc -mode 0"
+    "Ethash_Keccak": "-dcoin keccak -mode 0"
   }
 }
