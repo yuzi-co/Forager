@@ -1,0 +1,23 @@
+{
+  "Path": "ccminer-x64.exe",
+  "Uri": "https://github.com/tpruvot/ccminer/releases/download/2.3.1-tpruvot/ccminer-2.3.1-cuda10.7z",
+  "SHA256": "759500084E7C82A50150FC1E6C6B1222772A437463BA034F030E09249A402540",
+  "Type": "NVIDIA",
+  "CUDA": 10.0,
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-R 3",
+    "-r 10",
+    "-d #Devices#",
+    "-b #APIPort#",
+    "--submit-stale",
+    "#AlgorithmParameters#"
+  ],
+  "API": "Ccminer",
+  "APIPort": 4068,
+  "Algorithms": {
+    "Exosis": "-a exosis"
+  }
+}
