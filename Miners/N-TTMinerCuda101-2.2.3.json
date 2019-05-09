@@ -1,9 +1,9 @@
 {
   "Path": "TT-Miner.exe",
-  "Uri": "https://tradeproject.de/download/Miner/TT-Miner-2.2.2.zip",
-  "SHA256": "CA1E9C213D70361F7544F5FF6DE0BD79D858E821D467098C9548B64AD7A1A12B",
+  "Uri": "https://tradeproject.de/download/Miner/TT-Miner-2.2.3.zip",
+  "SHA256": "DF4404390A0F0F6EA6D6BEEC0AEC9981E61A139B7DE5479C553A42142DA611E4",
   "Type": "NVIDIA",
-  "CUDA": 10.0,
+  "CUDA": 10.1,
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
     "-u #Login#",
@@ -13,7 +13,7 @@
     "-nui",
     "-d #Devices#",
     "-b 127.0.0.1:#APIPort#",
-    "#AlgorithmParameters#-100",
+    "#AlgorithmParameters#-101",
     "#CustomParameters#"
   ],
   "API": "Claymore",
@@ -29,6 +29,7 @@
       "Mem": 4.5
     },
     "ProgPOW": "-a PROGPOW",
+    "ProgPOWZ": "-a PROGPOWZ",
     "Ubqhash": {
       "Params": "-a UBQHASH",
       "Mem": 3
