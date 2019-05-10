@@ -1,7 +1,7 @@
 {
-  "Path": "wildrig-multi",
-  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.16.0/wildrig-multi-linux-0.16.0-beta.tar.gz",
-  "SHA256": "F6DCA1C764A2F7E7CCBD55CE3B526DDA80796F422667DB682B56337474CAB1E7",
+  "Path": "wildrig.exe",
+  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.16.1/wildrig-multi-windows-0.16.1-beta.7z",
+  "SHA256": "AC43A1A01B1C9D084A3EAF6E978B3897326F3C24467CA1DA7C8E82814EC715D5",
   "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",
@@ -13,7 +13,6 @@
     "--opencl-devices #Devices#",
     "--send-stale",
     "--donate-level 1",
-    "--no-color",
     "--api-port #ApiPort#",
     "#AlgorithmParameters#",
     "#CustomParameters#"
@@ -22,11 +21,14 @@
   "Fee": 0.01,
   "Mem": 1.1,
   "BenchmarkArg": "$(if ($AlgoName -in @('bitcore', 'x16r', 'x16rt', 'x16s', 'x21s', 'hex', 'timetravel')){'--benchmark'})",
-  "Custom": " --opencl-threads auto --opencl-launch auto",
+  "Custom": "--opencl-threads auto --opencl-launch auto",
   "Algorithms": {
     "Aergo": "--algo aergo",
     "Astralhash": "--algo glt-astralhash",
-    "Bbr": "--algo wildkeccak --scratchpad-url http://boolberry.miner.rocks:8008/scratchpad.bin --scratchpad-file scratchpad-#Algorithm#.bin",
+    "Bbr": {
+      "Params": "--algo wildkeccak --scratchpad-url http://boolberry.miner.rocks:8008/scratchpad.bin --scratchpad-file scratchpad-#Algorithm#.bin",
+      "Fee": 0.02
+    },
     "BCD": "--algo bcd",
     "Bitcore": "--algo bitcore",
     "BMW512": "--algo bmw512",
@@ -36,7 +38,10 @@
     "Geek": "--algo geek",
     "Hex": "--algo hex",
     "HMQ1725": "--algo hmq1725",
-    "Honeycomb": "--algo honeycomb",
+    "Honeycomb": {
+      "Params": "--algo honeycomb",
+      "Fee": 0.02
+    },
     "Jeonghash": "--algo glt-jeonghash",
     "Lyra2v3": "--algo lyra2v3",
     "Lyra2vc0ban": "--algo lyra2vc0ban",
@@ -44,7 +49,10 @@
     "Pawelhash": "--algo glt-pawelhash",
     "Phi": "--algo phi",
     "Polytimos": "--algo polytimos",
-    "Purk": "--algo wildkeccak --scratchpad-url http://purk.miner.rocks:8008/scratchpad.bin --scratchpad-file scratchpad-#Algorithm#.bin",
+    "Purk": {
+      "Params": "--algo wildkeccak --scratchpad-url http://purk.miner.rocks:8008/scratchpad.bin --scratchpad-file scratchpad-#Algorithm#.bin",
+      "Fee": 0.02
+    },
     "Rainforest": {
       "Params": "--algo rainforest",
       "NoCpu": true
@@ -63,6 +71,7 @@
     "X18": "--algo x18",
     "X20r": "--algo x20r",
     "X21s": "--algo x21s",
-    "X22i": "--algo x22i"
+    "X22i": "--algo x22i",
+    "Xevan": "--algo xevan"
   }
 }
