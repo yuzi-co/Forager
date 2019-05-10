@@ -1,7 +1,7 @@
 {
-  "Path": "NBMiner_Win/nbminer.exe",
-  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v22.3/NBMiner_22.3_Win.zip",
-  "SHA256": "BC1A25F28BE40819296778F08D1B73DB808A30C334760B0EE00D02C8BD9D4687",
+  "Path": "NBMiner_Linux/nbminer",
+  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v23.2.1/NBMiner_23.2_hotfix_Linux.tgz",
+  "SHA256": "6BCC15A6BDB64516A24F7C3832A10574B7859FF343C3AFE8A3FA6FC8B1EB18FC",
   "Type": "NVIDIA",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
@@ -15,7 +15,7 @@
   "SSL": true,
   "Fee": 0.02,
   "Algorithms": {
-    "Aethernity": {
+    "Cuckoo29": {
       "Params": "-a cuckoo_ae",
       "NoCpu": true,
       "Mem": 5
@@ -35,7 +35,7 @@
       "NoCpu": true,
       "Mem": 7.4
     },
-    "Ethash": {
+    "_Ethash": {
       "Params": "-a ethash -o $(if ($Pool.PoolName -eq 'NiceHash') {'ethnh'} else {'ethproxy'})+tcp://#Server#:#Port#",
       "Mem": 3,
       "Fee": 0.0065
