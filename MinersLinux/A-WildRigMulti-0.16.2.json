@@ -1,7 +1,7 @@
 {
   "Path": "wildrig-multi",
-  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.16.1/wildrig-multi-linux-0.16.1-beta.tar.gz",
-  "SHA256": "C558895A1E0628BF442752EE56FCED926E4405A6A3D170DDB6D0158E0B0B2D0C",
+  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.16.2/wildrig-multi-linux-0.16.2-beta.tar.gz",
+  "SHA256": "6D27D565D65C5A4923A0B2E47796F0BDB0F2CAB47997820DF0C9459BA3844337",
   "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",
