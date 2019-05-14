@@ -1,0 +1,67 @@
+{
+  "Path": "CryptoDredge_0.19.1/CryptoDredge",
+  "Uri": "https://github.com/technobyl/CryptoDredge/releases/download/v0.19.1/CryptoDredge_0.19.1_cuda_10.1_linux.tar.gz",
+  "SHA256": "B539CB219EE1E2969A3E16DC8EC2BED4E97008EC494D6BDC67E43506D6F7C241",
+  "Type": "NVIDIA",
+  "CUDA": 10.1,
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-d #Devices#",
+    "--retries 4",
+    "--retry-pause 10",
+    "--timeout 120",
+    "--no-watchdog",
+    "-b 127.0.0.1:#APIPort#",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "API": "Ccminer",
+  "Fee": 0.01,
+  "Algorithms": {
+    "Allium": "-a allium",
+    "Argon2d250": "-a argon2d250",
+    "Argon2d500": "-a argon2d-dyn",
+    "Argon2d4096": "-a argon2d4096",
+    "_BCD": "-a bcd",
+    "_Bitcore": "-a bitcore",
+    "CnGpu": "-a cngpu",
+    "CnHalf": "-a cnfast2",
+    "CnHaven": "-a cnhaven",
+    "CnHeavy": "-a cnheavy",
+    "CnLiteV7": "-a aeon",
+    "CnSaber": "-a cnsaber",
+    "CnTurtle": "-a cnturtle",
+    "_Cuckoo29": {
+      "Params": "-a aeternity",
+      "Mem": 5.3
+    },
+    "_Cuckaroo29": {
+      "Params": "-a cuckaroo29",
+      "NoCpu": true,
+      "Mem": 5.3
+    },
+    "Hmq1725": "-a hmq1725",
+    "_Lyra2v3": "-a lyra2rev3",
+    "Lyra2vc0ban": "-a lyra2vc0banhash",
+    "_Lyra2z": "-a lyra2z",
+    "Lyra2zz": "-a lyra2zz",
+    "MTP": {
+      "Params": "-a mtp",
+      "Mem": 4.5,
+      "Fee": 0.02
+    },
+    "NeoScrypt": "-a neoscrypt",
+    "Phi2": "-a phi2",
+    "Pipe ": "-a pipe",
+    "Skunk": "-a skunk",
+    "Tribus": "-a tribus",
+    "_X16r": "-a x16r",
+    "_X16rt": "-a x16rt",
+    "_X16s": "-a x16s",
+    "_X17": "-a x17",
+    "X21s": "-a x21s",
+    "_X22i": "-a x22i"
+  }
+}
