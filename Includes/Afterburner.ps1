@@ -30,7 +30,7 @@ try {
 
 function Set-AfterburnerPowerLimit {
     param(
-        [validaterange(50, 150)]
+        [parameter(mandatory = $true)]
         $PowerLimit,
 
         [parameter(mandatory = $true)]
@@ -47,8 +47,10 @@ function Set-AfterburnerPowerLimit {
 
     if ($DeviceGroup.DevicesArray.Length -gt 0) {
 
-        if ($DeviceGroup.GroupType -eq 'AMD' -and $PowerLimit -in (50..150)) {
-            $PowerLimit -= 100
+        if ($DeviceGroup.GroupType -eq 'AMD' -and @(50..150) -contains $PowerLimit) {
+            $PLim = $PowerLimit - 100
+        } else {
+            $PLim = $PowerLimit
         }
 
         $Pattern = @{
@@ -60,13 +62,13 @@ function Set-AfterburnerPowerLimit {
         $Devices = @($abMonitor.GpuEntries | Where-Object Device -like $Pattern.$($DeviceGroup.GroupType) | Select-Object -ExpandProperty Index)[$DeviceGroup.DevicesArray]
 
         foreach ($device in $Devices) {
-            if ($abControl.GpuEntries[$device].PowerLimitCur -ne $PowerLimit) {
+            if ($abControl.GpuEntries[$device].PowerLimitCur -ne $PLim) {
 
                 # Stay within HW limitations
-                $PowerLimit = [math]::Min($abControl.GpuEntries[$device].PowerLimitMax, $PowerLimit)
-                $PowerLimit = [math]::Max($abControl.GpuEntries[$device].PowerLimitMin, $PowerLimit)
+                $PLim = [math]::Min($abControl.GpuEntries[$device].PowerLimitMax, $PLim)
+                $PLim = [math]::Max($abControl.GpuEntries[$device].PowerLimitMin, $PLim)
 
-                $abControl.GpuEntries[$device].PowerLimitCur = $PowerLimit
+                $abControl.GpuEntries[$device].PowerLimitCur = $PLim
             }
         }
         $abControl.CommitChanges()

@@ -1036,6 +1036,9 @@ while ($Quit -ne $true) {
                                 'NVIDIA' {
                                     Set-NvidiaPowerLimit -PowerLimit $BestNow.PowerLimit -DeviceGroup $ActiveMiners[$BestNow.IdF].DeviceGroup
                                 }
+                                'AMD' {
+                                    Log "AMD Powerlimits require AfterBurner" -Severity Warn
+                                }
                                 Default { }
                             }
                         }
