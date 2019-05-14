@@ -1,34 +1,35 @@
 {
   "Path": "EthDcrMiner64.exe",
-  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.05/ClaymoreDual-14.0.7z",
-  "SHA256": "D291FC8EB721DCFB1D9D10266F5435E870692AF6D307A756A70F5CFB8FFE3DF9",
-  "Type": "AMD",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.05/ClaymoreDual-14.1.7z",
+  "SHA256": "DADB2F23BF8094E1D635ACE0CE4636F27B796A87FB18AD9140A699B397FC3BE2",
+  "Type": "NVIDIA",
+  "CUDA": 10.0,
   "Arguments": [
     "-epool #Protocol#://#Server#:#Port#",
     "-ewal #Login#",
     "-epsw #Password#",
-    "-esm #EthStMode#",
     "-dpool #ProtocolDual#://#ServerDual#:#PortDual#",
     "-dwal #LoginDual#",
     "-dpsw #PasswordDual#",
+    "-esm #EthStMode#",
     "-wd 1",
     "-r -1",
     "-logfile #GroupName#_log.txt",
     "-logsmaxsize 10",
-    "-platform 1",
+    "-platform 2",
     "-di #DevicesClayMode#",
-    "-mport -#APIPort#",
     "-allpools 1",
+    "-mport -#APIPort#",
     "#AlgorithmParameters#",
     "#CustomParameters#"
   ],
   "API": "Claymore",
   "Fee": "$(if ($DeviceGroup.MemoryGB -gt 3){0.01}else{0})",
-  "SSL": true,
   "Mem": 2,
+  "SSL": true,
   "Algorithms": {
     "Ethash": "-mode 1",
     "Ethash_Blake2s": "-dcoin blake2s -mode 0",
-    "Ethash_Keccak": "-dcoin keccak -mode 0"
+    "Ethash_Keccak": "-dcoin Keccak -mode 0"
   }
 }
