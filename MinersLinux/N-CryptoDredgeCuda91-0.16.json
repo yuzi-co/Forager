@@ -1,0 +1,29 @@
+{
+  "Path": "CryptoDredge_0.16.0/CryptoDredge",
+  "Uri": "https://github.com/technobyl/CryptoDredge/releases/download/v0.16.0/CryptoDredge_0.16.0_cuda_9.1_linux.tar.gz",
+  "SHA256": "71DA574D3A847242DFD355D5544F96FCF576C592EC1B6702D27E35E62EB58FDD",
+  "Type": "NVIDIA",
+  "CUDA": 9.1,
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-d #Devices#",
+    "--retries 4",
+    "--retry-pause 10",
+    "--timeout 60",
+    "--no-watchdog",
+    "-b 127.0.0.1:#APIPort#",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "API": "Ccminer",
+  "Fee": 0.01,
+  "Algorithms": {
+    "C11": "-a c11",
+    "Dedal": "-a dedal",
+    "Exosis": "-a exosis",
+    "Lbk3": "-a lbk3",
+    "Phi": "-a phi"
+  }
+}
