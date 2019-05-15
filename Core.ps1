@@ -366,7 +366,7 @@ while ($Quit -ne $true) {
 
     $Params = @{
         Path    = $MinersPath + "*"
-        Include = "*.json"
+        Include = "*.json","*.ps1"
     }
     $MinersFolderContent = Get-ChildItem @Params
 
@@ -375,9 +375,16 @@ while ($Quit -ne $true) {
 
     foreach ($MinerFile in $MinersFolderContent) {
         try {
-            $Miner = $MinerFile | Get-Content | ConvertFrom-Json
+            switch ($MinerFile.Extension) {
+                '.json' {
+                    $Miner = $MinerFile | Get-Content | ConvertFrom-Json
+                }
+                '.ps1' {
+                    $Miner = . $MinerFile
+                }
+            }
         } catch {
-            Log "Badly formed JSON: $MinerFile" -Severity Warn
+            Log "Badly formed miner definition: $MinerFile" -Severity Warn
             Start-Sleep -Seconds 10
             Continue
         }
