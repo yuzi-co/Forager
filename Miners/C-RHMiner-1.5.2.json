@@ -1,7 +1,7 @@
 {
   "Path": "rhminer.exe",
-  "Uri": "https://github.com/polyminer1/rhminer/releases/download/1.5/rhminer.1.5.Windows.CPU.zip",
-  "SHA256": "6C044041B30EC8E70C49A4E5F64E025D063A837A84916C6AC2F3AF6B7A79FF6A",
+  "Uri": "https://github.com/polyminer1/rhminer/releases/download/1.5.2/rhminer.1.5.2.Windows.CPU.zip",
+  "SHA256": "31A20BAB9A16E1407514A7F19124569C9601111747F1C9DB0D34E3ECD199F774",
   "Type": "CPU",
   "Arguments": [
     "-s #Protocol#://#Server#:#Port#",

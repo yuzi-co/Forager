@@ -1,7 +1,7 @@
 {
   "Path": "rhminer",
-  "Uri": "https://github.com/polyminer1/rhminer/releases/download/1.5/rhminer.1.5.Linux.CPU.zip",
-  "SHA256": "5BC107FAFF495F74B661C38666758055905E9D1BDF99650C226D84DF63C25A68",
+  "Uri": "https://github.com/polyminer1/rhminer/releases/download/1.5.2/rhminer.1.5.2.Linux.CPU.zip",
+  "SHA256": "7DB23889EDA371932F715F32DB8D31D678C2D133272B3E785869781B24046F99",
   "Type": "CPU",
   "Arguments": [
     "-s #Protocol#://#Server#:#Port#",
