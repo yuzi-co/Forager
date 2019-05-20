@@ -2,9 +2,11 @@
 #### Advanced open source multi-pool / multi-algo profit switching miner
 
 It will use profit information from supporting pools to make sure you mine the most profitable algorithm at all times
-You can also use WhatToMine and CoinCalculators virtual pools for profit data and mine to pools which dont provide profit information, or even your custom pools
+You can also use WhatToMine and CoinCalculators virtual pools for profit data and mine to pools which dont provide profit information,
+or even your custom pools ( Pools/MyPools.ps1 )
 
-Using integration with MSI Afterburner, it will get real time power usage and use this information to calculate how much you pay and adjust the profitability data.
+Using integration with MSI Afterburner, it will get real time power usage and use this information to calculate
+how much you pay and adjust the profitability data.
 
 ### Main features:
 - Supports AMD/NVIDIA/CPU Mining
@@ -27,7 +29,9 @@ Using integration with MSI Afterburner, it will get real time power usage and us
 
 Recommended drivers for AMD - 18.3.4 or 18.6.1.
 
-You can use https://forums.guru3d.com/threads/atic-install-tool-radeon-drivers-download-utility.422576/ to easily find and download specific driver version
+You can use 
+https://forums.guru3d.com/threads/atic-install-tool-radeon-drivers-download-utility.422576/ 
+to easily find and download specific driver version
 
 Recommended drivers for NVIDIA on Win 10 - 411.31+ for CUDA 10
 
@@ -78,18 +82,24 @@ Download latest Forager release (7zip or self-extracting SFX) from https://githu
 
 #### Option 2:
 
-Install GIT (https://git-scm.com/download/win), open command line and run "git clone https://github.com/yuzi-co/Forager/" to get latest master version
+Install GIT (https://git-scm.com/download/win), open command line and run "git clone https://github.com/yuzi-co/Forager/" 
+to get latest master version
 
 ### Configure:
 
-Copy /Config/Config-SAMPLE.ini to /Config/Config.ini and edit it with your preferred currencies, wallets and pool users
+Copy /Config/Config-SAMPLE.ini Rename to /Config/Config.ini and edit it with your preferred currencies, wallets and pool users
 
 Run START.bat to generate sample AutoStart.bat based on your selections or see Autostart*.bat files for examples
 
-When using mixed card models (i.e. RX580 + RX Vega), it is recommended to define separate GpuGroups in Config.ini to be able to benchmark benchmark them separately and mine the algos most profitable for the specific card models.
+When using mixed card models (i.e. RX580 + RX Vega), it is recommended to define separate "GpuGroups" in Config.ini to be able 
+to benchmark them separately and mine the algos most profitable for the specific card models.
 
 When run, Forager will benchmark all available Miner/Algo combinations and afterwards will start mining the most profitable combination.
 Be aware that benchmarking can be a long process
+
+Once run, a file will be created in /Config called "MinerParameters.json" 
+This file will be where you can set custom options/ parameters For each algo and miner, 
+The options are the same as the miner's command line options. review ReadMeToSetMinerParametersJSON for more info
 
 ### Upgrade:
 #### Option 1:
