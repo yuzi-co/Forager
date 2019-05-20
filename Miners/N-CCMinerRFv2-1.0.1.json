@@ -13,7 +13,8 @@
     "-d #Devices#",
     "-b #APIPort#",
     "--submit-stale",
-    "#AlgorithmParameters#"
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
   ],
   "API": "Ccminer",
   "APIPort": 4068,
