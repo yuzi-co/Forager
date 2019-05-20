@@ -18,10 +18,22 @@ $M = @{
     SSL        = $true
     Fee        = 0.02
     Algorithms = [PSCustomObject]@{
-        Equihash96  = "--par=96,5 --pers auto"
-        Equihash144 = "--par=144,5 --pers auto"
-        Equihash150 = "--par=150,5"
-        Equihash192 = "--par=192,7 --pers auto"
+        Equihash96  = @{
+            Params = "--par=96,5 --pers auto"
+            Mem    = 1.75
+        }
+        Equihash144 = @{
+            Params = "--par=144,5 --pers auto"
+            Mem    = 1.75
+        }
+        Equihash150 = @{
+            Params = "--par=150,5"
+            Mem    = 2.9
+        }
+        Equihash192 = @{
+            Params = "--par=192,7 --pers auto"
+            Mem    = 2.75
+        }
     }
 }
 
