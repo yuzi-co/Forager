@@ -1,0 +1,21 @@
+{
+  "Path": "cpuminer.exe",
+  "Uri": "https://github.com/MicroBitcoinOrg/Cpuminer/releases/download/1.3.7.1/cpuminer_Windows.zip",
+  "SHA256": "437834C51C2543D6E222B4FB7470C0FA636B01318859FEC081AF5B8E395601C9",
+  "Type": "CPU",
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-R 3",
+    "-r 10",
+    "-b #APIPort#",
+    "$(if ($CpuThreads -ne $null){'-t ' + $CpuThreads})",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "API": "Ccminer",
+  "Algorithms": {
+    "Rainforest2": "-a rfv2"
+  }
+}
