@@ -17,13 +17,20 @@
     "#CustomParameters#"
   ],
   "API": "EWBF",
+  "Fee": 0.02,
   "Algorithms": {
-    "Equihash96": "--algo 96_5",
-    "Equihash144": "--algo 144_5 --pers auto",
+    "_Equihash96": "--algo 96_5",
+    "Equihash144": {
+      "Params": "--algo 144_5 --pers auto",
+      "Mem": 1.63
+    },
     "Equihash192": {
       "Params": "--algo 192_7 --pers auto",
       "Mem": 2.5
     },
-    "Equihash210": "--algo aion"
+    "Equihash210": {
+      "Params": "--algo aion",
+      "Mem": 1.2
+    }
   }
 }
