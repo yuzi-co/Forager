@@ -1,0 +1,55 @@
+# *******************************************
+# ***  Miner Custom Parameters/ options   ***
+# *******************************************
+
+# [OPTIONAL] 
+# When First starting Forager a file is created in the /Config folder called "MinerParameters.Json".
+# This is where you can set custom options ( intensity, blocks, threads etc for each miner/ algo ).
+# First run Forager to create the file, then come back and edit to fine tune.
+# Each entry after the first needs a , after the } ( }, ) to close the section and move to the next.
+# Last entry does NOT get , juse the close bracket ( } ).
+
+# YOU DO NOT HAVE TO CHANGE ANYTHING IN THE "MinerParameters.Json" UNLESS YOU ARE HAVING BAD SHARES OR GPU FAILURES, OR WANT TO TUNE.
+# The "options" are the same as the Command line options you use with each miner, Use that structure to enable options.
+# Find Miner names from the /Miner folder, then add to/edit "MinerParameters.Json" directly. ( once created by running Forager ).
+
+# Example ( A-"Miner Name" = AMD/ Radeon miner, N-"Miner Name" = Nvidia miner, C-"Miner Name" = Cpu miner ).
+
+{
+ "A-WildRigMulti-0.16.5": {
+    "Hex": "your custom params",
+    "SomeOtherAlgo": "custom params"
+},
+
+# Example AMD/Radeon
+
+
+ "A-Multiminer-1.1.0": {
+   "Argon2ad": "--gpu-batchsize=1024 -t 1",
+   "Argon2d250": "--gpu-batchsize=2048 -t 1",
+   "Argon2d500": "--gpu-batchsize=1024 -t 1",
+   "Argon2d4096": "--gpu-batchsize=256 -t 1"
+},
+
+ "A-SGMinerFancyIX-0.5ip3": {
+  "Allium": "-g 1 -w 256 -I 18",
+  "Argon2d500": "-g 2 -w 64",
+  "Ethash": "-w 64 -X 1024",
+  "Lyra2v3": "-g 1 -w 256 -I 24",
+  "Lyra2z": "-g 1 -w 256 -I 22",
+  "Lyra2zz": "-g 1 -w 256 -I 22",
+  "MTP": "-I 20",
+  "Phi2": "-g 1 -w 256 -I 22",
+  "X22i": "-g 2 -w 256 -I 22"
+},
+
+# Example Nvidia  
+
+
+ "N-Multiminer-1.1.0": {
+  "Argon2ad": "--gpu-batchsize=1024 -t 1",
+  "Argon2d250": "--gpu-batchsize=2048 -t 1",
+  "Argon2d500": "--gpu-batchsize=1024 -t 1",
+  "Argon2d4096": "--gpu-batchsize=256 -t 1"
+ }
+}
