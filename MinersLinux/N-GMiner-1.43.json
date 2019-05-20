@@ -26,17 +26,17 @@
     "Cuckoo29": {
       "Params": "--algo aeternity",
       "NoCpu": true,
-      "Mem": 4
+      "Mem": 3.8
     },
     "Cuckaroo29": {
       "Params": "--algo grin29",
       "NoCpu": true,
-      "Mem": 4
+      "Mem": 3.8
     },
     "Cuckaroo29s": {
       "Params": "--algo swap",
       "NoCpu": true,
-      "Mem": 4
+      "Mem": 3.8
     },
     "Cuckatoo31": {
       "Params": "--algo grin31",
@@ -44,7 +44,10 @@
       "Mem": 7.4
     },
     "Equihash96": "--algo 96_5 --pers auto",
-    "Equihash144": "--algo 144_5 --pers auto",
+    "Equihash144": {
+      "Params": "--algo 144_5 --pers auto",
+      "Mem": 1.75
+    },
     "Equihash150": {
       "Params": "--algo 150_5",
       "Mem": 2.9
