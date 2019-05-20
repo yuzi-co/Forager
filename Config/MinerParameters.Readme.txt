@@ -2,7 +2,7 @@
 # ***  Miner Custom Parameters/ options   ***
 # *******************************************
 
-# [OPTIONAL] 
+# [OPTIONAL]
 # When First starting Forager a file is created in the /Config folder called "MinerParameters.Json".
 # This is where you can set custom options ( intensity, blocks, threads etc for each miner/ algo ).
 # First run Forager to create the file, then come back and edit to fine tune.
@@ -43,7 +43,7 @@
   "X22i": "-g 2 -w 256 -I 22"
 },
 
-# Example Nvidia  
+# Example Nvidia
 
 
  "N-Multiminer-1.1.0": {
