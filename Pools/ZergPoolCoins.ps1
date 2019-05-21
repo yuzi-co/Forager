@@ -101,7 +101,7 @@ if ($Querymode -eq "Core") {
             Host                  = $MineUrl
             Port                  = [int]$Coin.port
             User                  = $Wallets.$Pool_Symbol
-            Pass                  = "c=$Pool_Symbol,ID=#WorkerName#"
+            Pass                  = "c=$Pool_Symbol,mc=$Pool_Symbol"
             Location              = $Location
             SSL                   = $false
             Symbol                = $Pool_Symbol
