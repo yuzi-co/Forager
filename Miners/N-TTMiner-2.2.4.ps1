@@ -1,8 +1,8 @@
 
 $M = @{
     Path       = "TT-Miner.exe"
-    Uri        = "https://tradeproject.de/download/Miner/TT-Miner-2.2.3.zip"
-    SHA256     = "D63A75BBB1C0992742333165083739F7F270C4425B8CF9364A200861E26CD73E"
+    Uri        = "https://tradeproject.de/download/Miner/TT-Miner-2.2.4.zip"
+    SHA256     = "0AE33562BCE63901A56C759E87AC356C3B10CDC7208269C58D7ED63D3D2D10E3"
     Type       = "NVIDIA"
     Arguments  = @(
         "-o #Protocol#://#Server#:#Port#"
@@ -18,18 +18,21 @@ $M = @{
     API        = "Claymore"
     Fee        = 0.01
     Algorithms = [PSCustomObject]@{
-        Ethash   = @{
+        Ethash     = @{
             Params = "-a ETHASH"
             Mem    = 3
         }
         # Lyra2v3  = "-a LYRA2V3"
-        MTP      = @{
+        MTP        = @{
             Params = "-a MTP"
             Mem    = 4.5
         }
-        ProgPOW  = "-a PROGPOW"
-        ProgPOWZ = "-a PROGPOWZ"
-        Ubqhash  = @{
+        ProgPOW    = "-a PROGPOW"
+        ProgPOWZ   = "-a PROGPOWZ"
+        ProgPOWH   = "-a PROGPOWH"
+        ProgPOW092 = "-a PROGPOW092"
+        Tethash    = "-a TETHASHV1"
+        Ubqhash    = @{
             Params = "-a UBQHASH"
             Mem    = 3
         }
