@@ -1,7 +1,7 @@
 {
   "Path": "cpuminer-$($f=$SystemInfo.CpuFeatures;$(if($f.avx2 -and $f.sha){'avx2-sha'}elseif($f.avx2){'avx2'}elseif($f.avx){'avx'}elseif($f.aes -and $f.sse42){'aes-sse42'}else{'sse2'})).exe",
-  "Uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.9.0/cpuminer-opt-3.9.0-windows.zip",
-  "SHA256": "EAF6AD902DBD3AE53023F1487A3FBE4776DF319C6AD9F89F28E67B99151BEF9A",
+  "Uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.9.0.1/cpuminer-opt-3.9.0.1-windows.zip",
+  "SHA256": "BC30226F267176F64F12DA7145FD4CB7DCBE5F7413335906A147A24719F08677",
   "Type": "CPU",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
