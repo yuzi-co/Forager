@@ -18,7 +18,7 @@
   "Algorithms": {
     "HSR": "-a hsr",
     "KeccakC": "-a keccakc",
-    "SHA256t": "-a sha256t",
+    "Skein2": "-a skein2",
     "X11evo": "-a x11evo"
   }
 }
