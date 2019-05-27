@@ -1,6 +1,6 @@
 
 $M = @{
-    Path       = "CryptoDredge_0.19.1/CryptoDredge"
+    Path       = "CryptoDredge_0.20.0/CryptoDredge"
     Type       = "NVIDIA"
     Arguments  = @(
         "-o #Protocol#://#Server#:#Port#"
@@ -22,6 +22,7 @@ $M = @{
         Argon2d250  = "-a argon2d250"
         Argon2d500  = "-a argon2d-dyn"
         Argon2d4096 = "-a argon2d4096"
+        Argon2dNim  = "-a argon2d-nim"
         # BCD        = "-a bcd"
         # Bitcore    = "-a bitcore"
         CnGpu       = "-a cngpu"
@@ -65,20 +66,20 @@ $M = @{
 }
 
 if ($SystemInfo.CudaVersion -ge [version]"10.1") {
-    $M.Uri = "https://github.com/technobyl/CryptoDredge/releases/download/v0.19.1/CryptoDredge_0.19.1_cuda_10.1_linux.tar.gz"
-    $M.SHA256 = "B539CB219EE1E2969A3E16DC8EC2BED4E97008EC494D6BDC67E43506D6F7C241"
+    $M.Uri = "https://github.com/technobyl/CryptoDredge/releases/download/v0.20.0/CryptoDredge_0.20.0_cuda_10.1_linux.tar.gz"
+    $M.SHA256 = "541FB88ADE16F6C0059BBC31A91F2DB39F19A64F7AC796C00A5D0B963C03B153"
     $M.CUDA = 10.1
 } elseif ($SystemInfo.CudaVersion -ge [version]"10.0") {
-    $M.Uri = "https://github.com/technobyl/CryptoDredge/releases/download/v0.19.1/CryptoDredge_0.19.1_cuda_10.0_linux.tar.gz"
-    $M.SHA256 = "382DC45E03BFF012799898851EF6904A23C24EAD3FF517F662EECE0DDDD15636"
+    $M.Uri = "https://github.com/technobyl/CryptoDredge/releases/download/v0.20.0/CryptoDredge_0.20.0_cuda_10.0_linux.tar.gz"
+    $M.SHA256 = "2D8C516C292746973C977A9779586BC6C778D0056F2CBEEBE60A4C9751709F4D"
     $M.CUDA = 10
 } elseif ($SystemInfo.CudaVersion -ge [version]"9.2") {
-    $M.Uri = "https://github.com/technobyl/CryptoDredge/releases/download/v0.19.1/CryptoDredge_0.19.1_cuda_9.2_linux.tar.gz"
-    $M.SHA256 = "A6285918D8D39765829890743A257763C405D0783B6261C3448C356507105B1C"
+    $M.Uri = "https://github.com/technobyl/CryptoDredge/releases/download/v0.20.0/CryptoDredge_0.20.0_cuda_9.2_linux.tar.gz"
+    $M.SHA256 = "0F467A0DE010C260D50996AA869F256669488168B8379F72990ED1A639116926"
     $M.CUDA = 9.2
 } elseif ($SystemInfo.CudaVersion -ge [version]"9.1") {
-    $M.Uri = "https://github.com/technobyl/CryptoDredge/releases/download/v0.19.1/CryptoDredge_0.19.1_cuda_9.1_linux.tar.gz"
-    $M.SHA256 = "D8C294A313D8BB524DA8DEF6CACD245539BDE8255370519BF405441F65C404CE"
+    $M.Uri = "https://github.com/technobyl/CryptoDredge/releases/download/v0.20.0/CryptoDredge_0.20.0_cuda_9.1_linux.tar.gz"
+    $M.SHA256 = "BE73FB11A0262BE1972E89306B9F9E18D6F46B07FA30107CF005CB31ABF95892"
     $M.CUDA = 9.1
 } else {
     return
