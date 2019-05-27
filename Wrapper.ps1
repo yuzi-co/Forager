@@ -19,7 +19,7 @@ $culture.NumberFormat.NumberGroupSeparator = ","
 
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 
-0 | Set-Content ".\Wrapper_$Id.txt"
+0 | Set-Content ".\Wrapper_$Id.json"
 
 $PowerShell = [PowerShell]::Create()
 if ($WorkingDirectory) {
@@ -37,32 +37,32 @@ $CardsArray = @(0) * 20
 
 do {
     $PowerShell.Streams.Verbose.ReadAll() | ForEach-Object {
-        $Param = @{ }
+        Write-Host $_
+
+        [decimal]$HashRate = 0
+
         if (
-            $PSVersionTable.PSVersion.Major -lt 6 -and
-            $Command -like '*energiminer.exe*'
+            #[2019-05-27 21:33:34] Accepted 1/1 (100%), 30.41 MH, 10.48 MH/s
+            $_ -match "Accepted (\d+)/(\d+) \([\d+]%\), [\d.,]+ ([kmgtp]?h), ([0-9.,]+) ([kmgtp]?h/s)" -or # lyclMiner
+            #[2019-05-27 21:33:34] accepted: 202/203 (diff 0.003), 1408.09 kH/s yes!
+            $_ -match "accepted: (\d+)/(\d+) \(diff [\d,.]+\), ([\d,.]+) ([kmgtp]?h/s)" -or #CCMiner
+            $false
         ) {
-            $Param.NoNewLine = $true
-        }
-        Write-Host $_ @Param
-
-        $HashRate = 0
-
-        if (
-            $_ -match "Speed\s([0-9.,]+)\s?([kmgtp]?h/s)" -or # EnergiMiner
-            $_ -match "Accepted.*\s([0-9.,]+)\s([kmgtp]?h/s)" -or # lyclMiner
-            $_ -match "Total\s([0-9.,]+)\s([kmgtp]?h/s)" -or # SilentArmy
+            $HashRate = $Matches[3] -replace ',', '.'
+            $Units = $Matches[4]
+            if ($HashRate -gt 0) {
+                $Shares = @(
+                    [int64]($Matches[1])
+                    [int64]($Matches[2] - $Matches[1])
+                )
+            }
+        } elseif (
+            $_ -match "Total ([\d.,]+) ([kmgtp]?h/s)" -or # SilentArmy
             $_ -match "Results: ([\d,.]+) ([kmgtp]?gps), sub:(\d+) acc:(\d+) rej:(\d+)" -or # SwapMiner
             $false
         ) {
-            [decimal]$HashRate = $Matches[1] -replace ',', '.'
+            $HashRate = $Matches[1] -replace ',', '.'
             $Units = $Matches[2] -replace "gps", "h/s"
-        } elseif (
-            #[2019-05-27 21:33:34] accepted: 202/203 (diff 0.003), 1408.09 kH/s yes!
-            $_ -match "accepted: (\d+)/(\d+) \(diff ([\d,.]+)\), ([\d,.]+) ([kmgtp]?h/s) yes!" #CCMiner
-        ) {
-            [decimal]$HashRate = $Matches[4] -replace ',', '.'
-            $Units = $Matches[5]
             # } elseif ($_ -match "Statistics: GPU (\d+): mining at ([0-9,.]+) (gps), solutions: (\d+)") {
             #     # SwapMiner per card
             #     [int]$DevIndex = $Matches[1]
@@ -81,7 +81,7 @@ do {
         }
 
         if ($HashRate -gt 0) {
-            "`nWrapper Detected HashRate: $HashRate $Units" | Write-Host -BackgroundColor Yellow -ForegroundColor Black
+            "`nWrapper Detected HashRate: $HashRate $Units" + $(if ($Shares) { ", Acc/Rej: $($Shares -join "/")" }) | Write-Host -BackgroundColor Yellow -ForegroundColor Black
 
             $HashRate *= switch ($Units) {
                 "kh/s" { 1e3 }
@@ -91,9 +91,15 @@ do {
                 "ph/s" { 1e15 }
                 Default { 1 }
             }
-            $HashRate -replace ',', '.' | Set-Content ".\Wrapper_$Id.txt"
+            ConvertTo-Json @{
+                Hashrate = $HashRate
+                Shares   = $Shares
+            } | Set-Content ".\Wrapper_$Id.json"
+
         }
     }
     if (-not (Get-Process | Where-Object Id -EQ $ControllerProcessID)) { $PowerShell.Stop() | Out-Null }
     Start-Sleep -Seconds 1
 } until($Result.IsCompleted)
+
+if (Test-Path ".\Wrapper_$Id.json") { Remove-Item ".\Wrapper_$Id.json" }

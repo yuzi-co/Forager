@@ -926,8 +926,12 @@ function Get-LiveHashRate {
             }
 
             "wrapper" {
-                $wrpath = "./Wrapper_$($Miner.ApiPort).txt"
-                $HashRate = [double]$(if (Test-Path -path $wrpath) { Get-Content $wrpath } else { 0 })
+                $Path = "./Wrapper_$($Miner.ApiPort)"
+                if (Test-Path "$Path.json") {
+                    $Data = Get-Content "$Path.json" | ConvertFrom-Json
+                    $HashRate = [double]$Data.HashRate
+                    $Shares = $Data.Shares
+                }
             }
 
             "castXMR" {
@@ -1994,7 +1998,7 @@ function Clear-Files {
         Get-ChildItem $TargetFolder -Include "*.log" -File -Recurse | Where-Object LastWriteTime -le $LastWrite
 
         $TargetFolder = "."
-        Get-ChildItem $TargetFolder -File | Where-Object Name -ilike "wrapper_*.txt"
+        Get-ChildItem $TargetFolder -File | Where-Object Name -ilike "Wrapper_*.json"
 
         $TargetFolder = "."
         Get-ChildItem $TargetFolder -File -Include "*.tmp" -Recurse

@@ -10,7 +10,7 @@ Dump/*
 .vscode/
 !empty.txt
 
-[W|w]rapper_*.txt
+[W|w]rapper_*.json
 [C|c]onfig.ini
 [A|a]utoexec.txt
 [D|d]onations.json
