@@ -1,8 +1,8 @@
 {
   "Path": "ethdcrminer64",
-  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.03/ClaymoreDual-12.0.tar.gz",
-  "SHA256": "E8F47EE2AC57F20FC16F3F17020582D8D68DD66AC5C9ECC01C8979CC419F740F",
-  "Type": "NVIDIA",
+  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.05/ClaymoreDual-14.6.tar.gz",
+  "SHA256": "B92E3971B5A17E018938AD45FCEC04E0DC0D14850CE90819932023E8A1405995",
+  "Type": "AMD",
   "Arguments": [
     "-epool #Protocol#://#Server#:#Port#",
     "-ewal #Login#",
@@ -16,15 +16,17 @@
     "-di #DevicesClayMode#",
     "-colors 0",
     "-mport -#APIPort#",
-    "-allpools 2",
+    "-allpools 1",
     "#AlgorithmParameters#",
     "#CustomParameters#"
   ],
   "API": "Claymore",
   "Fee": "$(if ($DeviceGroup.MemoryGB -gt 3){0.01}else{0})",
   "SSL": true,
+  "Mem": 2,
   "Algorithms": {
     "Ethash": "-mode 1",
+    "Params": "-mode 1",
     "_Ethash_Blake2s": "-dcoin blake2s -mode 0 -dpool #ProtocolDual#://#ServerDual#:#PortDual# -dwal #LoginDual# -dpsw #PasswordDual#",
     "_Ethash_Keccak": "-dcoin keccak -mode 0 -dpool #ProtocolDual#://#ServerDual#:#PortDual# -dwal #LoginDual# -dpsw #PasswordDual#"
   }
