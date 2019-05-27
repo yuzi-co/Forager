@@ -1,6 +1,6 @@
 
 $M = @{
-    Path       = "z-enemy"
+    Path       = "z-enemy.exe"
     Type       = "NVIDIA"
     Arguments  = @(
         "-o #Protocol#://#Server#:#Port#"
@@ -35,16 +35,16 @@ $M = @{
 }
 
 if ($SystemInfo.CudaVersion -ge [version]"10.0") {
-    $M.Uri = "https://github.com/yuzi-co/miners-linux/releases/download/2019.03/z-enemy-1.28-cuda100.tar.gz"
-    $M.SHA256 = "4E80D572D4D426B888DAEAEF4736601257E8257A01ED4F13C77439FD23AF156F"
+    $M.Uri = "https://github.com/yuzi-co/miners/releases/download/2019.05/z-enemy.2-00-cuda10.0.zip"
+    $M.SHA256 = "E334B5BC16A5247864F7AAB2BCBB27F941015C725F170611B55C26BCDE83375D"
     $M.CUDA = 10
 } elseif ($SystemInfo.CudaVersion -ge [version]"9.2") {
-    $M.Uri = "https://github.com/yuzi-co/miners-linux/releases/download/2019.03/z-enemy-1.28-cuda92.tar.gz"
-    $M.SHA256 = "60249EF65F3097F4AD229EB931B74D9AA92D095EFCB575F7E98F523D80C9D70A"
+    $M.Uri = "https://github.com/yuzi-co/miners/releases/download/2019.05/z-enemy.2-00-cuda9.2.zip"
+    $M.SHA256 = "C61B59C6C6FBABD6621B87CF27628CBCE1436106EE2CA5900E41323F8134D8A6"
     $M.CUDA = 9.2
 } elseif ($SystemInfo.CudaVersion -ge [version]"9.1") {
-    $M.Uri = "https://github.com/yuzi-co/miners-linux/releases/download/2019.03/z-enemy-1.28-cuda91.tar.gz"
-    $M.SHA256 = "BC8EF9157D3753E98C7A6639161AC109A86C3F449EA8E2D652FFB5F54A010449"
+    $M.Uri = "https://github.com/yuzi-co/miners/releases/download/2019.05/z-enemy.2-00-cuda9.1.zip"
+    $M.SHA256 = "51D4060B9A3EE80C4134348A46AE14434E45438FBDCEF75945537BD67BC0828C"
     $M.CUDA = 9.1
 } else {
     return
