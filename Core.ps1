@@ -1074,15 +1074,17 @@ while ($Quit -ne $true) {
                     if ($ActiveMiners[$BestNow.IdF].Api -eq "Wrapper") {
                         $ProcessParams = @{
                             FilePath     = (Get-Process -Id $Global:PID).Path
-                            ArgumentList = @{
-                                ExecutionPolicy     = Bypass
-                                Command             = . $(Convert-Path ./Wrapper.ps1)
-                                ControllerProcessID = $PID
-                                Id                  = $ActiveMiners[$BestNow.IdF].ApiPort
-                                FilePath            = $ActiveMiners[$BestNow.IdF].Path
-                                ArgumentList        = $Arguments
-                                WorkingDirectory    = Split-Path $ActiveMiners[$BestNow.IdF].Path
-                            }
+                            ArgumentList = (
+                                @(
+                                    "-ExecutionPolicy       Bypass"
+                                    "-Command               . '$(Convert-Path ./Wrapper.ps1)'"
+                                    "-ControllerProcessID   '$PID'"
+                                    "-Id                    '$($ActiveMiners[$BestNow.IdF].ApiPort)'"
+                                    "-FilePath              '$($ActiveMiners[$BestNow.IdF].Path)'"
+                                    "-ArgumentList          '$($Arguments)'"
+                                    "-WorkingDirectory      '$(Split-Path $ActiveMiners[$BestNow.IdF].Path)'"
+                                ) -join " "
+                            )
                         }
                     } else {
                         $ProcessParams = @{
