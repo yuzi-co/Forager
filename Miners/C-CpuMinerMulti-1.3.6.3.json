@@ -1,7 +1,7 @@
 {
   "Path": "cpuminer-$($f=$SystemInfo.CpuFeatures;$(if($f.avx2 -and $f.sha){'avx2-sha'}elseif($f.avx2){'avx2'}elseif($f.avx){'avx'}elseif($f.aes -and $f.sse42){'aes-sse42'}elseif($f.sse42){'sse42'}else{'sse2'})).exe",
-  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.05/cpuminer-multi-1.3.6.2.7z",
-  "SHA256": "AE25B712B36A3594C4EC274AEBA32649B9038E308C61E35332718A1B94A2F1F9",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.05/cpuminer-multi-1.3.6.3.7z",
+  "SHA256": "F0C0D15AE7F7D011AC17553D97F4CA64AC8652334B1841E67B5D6DA4BFA15670",
   "Type": "CPU",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
