@@ -2,10 +2,9 @@
 
 function Get-DevicesInfoAfterburner {
     param (
-        [Parameter(Mandatory = $true)]
         [array]$Types
     )
-    $Devices = foreach ($GroupType in @('AMD')) {
+    $Devices = foreach ($GroupType in @('AMD', 'NVIDIA', 'Intel')) {
         $DeviceId = 0
         $Pattern = @{
             AMD    = '*Radeon*'
@@ -40,7 +39,6 @@ function Get-DevicesInfoAfterburner {
 
 function Get-DevicesInfoADL {
     param (
-        [Parameter(Mandatory = $true)]
         [array]$Types
     )
     if ($IsWindows) {
@@ -109,7 +107,6 @@ function Get-DevicesInfoADL {
 
 function Get-DevicesInfoNvidiaSmi {
     param (
-        [Parameter(Mandatory = $true)]
         [array]$Types
     )
 
@@ -481,7 +478,7 @@ function Get-MiningTypes () {
         [switch]$All = $false
     )
 
-    if ($Config.ContainsKey('GpuGroups') -and -not $All) {
+    if (-not $All -and $Config.ContainsKey('GpuGroups')) {
         # GpuGroups not empty, parse it
         if ($Config.GpuGroups.Length -gt 0) {
             [array]$Devices = $Config.GpuGroups | ConvertFrom-Json
@@ -735,6 +732,7 @@ function Test-DeviceGroupsConfig ($Types) {
 
 function Set-NvidiaPowerLimit {
     param(
+        [parameter(mandatory = $true)]
         $PowerLimit,
 
         [parameter(mandatory = $true)]
