@@ -57,6 +57,12 @@ do {
         ) {
             [decimal]$HashRate = $Matches[1] -replace ',', '.'
             $Units = $Matches[2] -replace "gps", "h/s"
+        } elseif (
+            #[2019-05-27 21:33:34] accepted: 202/203 (diff 0.003), 1408.09 kH/s yes!
+            $_ -match "accepted: (\d+)/(\d+) \(diff ([\d,.]+)\), ([\d,.]+) ([kmgtp]?h/s) yes!" #CCMiner
+        ) {
+            [decimal]$HashRate = $Matches[4] -replace ',', '.'
+            $Units = $Matches[5]
             # } elseif ($_ -match "Statistics: GPU (\d+): mining at ([0-9,.]+) (gps), solutions: (\d+)") {
             #     # SwapMiner per card
             #     [int]$DevIndex = $Matches[1]
