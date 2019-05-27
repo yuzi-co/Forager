@@ -38,12 +38,23 @@ enum STARTF {
 
 function Invoke-CreateProcess {
     param (
-        [parameter(mandatory = $true)][string]$FilePath,
-        [parameter(mandatory = $false)][string]$ArgumentList = $null,
-        [CreationFlags][parameter(mandatory = $true)]$CreationFlags,
-        [WindowStyle][parameter(mandatory = $true)]$WindowStyle,
-        [StartF][parameter(mandatory = $true)]$StartF,
-        [parameter(Mandatory = $false)][string]$WorkingDirectory = ""
+        [parameter(mandatory = $true)]
+        [string]$FilePath,
+
+        [parameter(mandatory = $false)]
+        [string]$ArgumentList = $null,
+
+        [CreationFlags][parameter(mandatory = $true)]
+        $CreationFlags,
+
+        [WindowStyle][parameter(mandatory = $true)]
+        $WindowStyle,
+
+        [StartF][parameter(mandatory = $true)]
+        $StartF,
+
+        [parameter(Mandatory = $false)]
+        [string]$WorkingDirectory = ""
     )
 
     Add-Type -TypeDefinition @"
