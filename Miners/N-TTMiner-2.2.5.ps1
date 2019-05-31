@@ -1,8 +1,8 @@
 
 $M = @{
     Path       = "TT-Miner.exe"
-    Uri        = "https://tradeproject.de/download/Miner/TT-Miner-2.2.4.zip"
-    SHA256     = "0AE33562BCE63901A56C759E87AC356C3B10CDC7208269C58D7ED63D3D2D10E3"
+    Uri        = "https://tradeproject.de/download/Miner/TT-Miner-2.2.5.zip"
+    SHA256     = "D95C7BA4836C654AADBC4D314D5AE61E47152A7B48D71A5FC66D34D463CA2F25"
     Type       = "NVIDIA"
     Arguments  = @(
         "-o #Protocol#://#Server#:#Port#"
