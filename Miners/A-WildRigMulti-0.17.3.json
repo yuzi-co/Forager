@@ -1,7 +1,7 @@
 {
-  "Path": "wildrig-multi",
-  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.17.2/wildrig-multi-linux-0.17.2-beta.tar.gz",
-  "SHA256": "9F8A40A95FD27403BD2E731042B9D1122A1C64BECE9AC1C34B17D480869481BB",
+  "Path": "wildrig.exe",
+  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.17.3/wildrig-multi-windows-0.17.3-beta.7z",
+  "SHA256": "B1CB83F1FAEB4A3D4519C5102DBACE3F001455C256695479FF871F8F34849E8E",
   "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",
@@ -13,7 +13,6 @@
     "--opencl-devices #Devices#",
     "--send-stale",
     "--donate-level 1",
-    "--no-color",
     "--api-port #ApiPort#",
     "#AlgorithmParameters#",
     "#CustomParameters#"
@@ -22,7 +21,7 @@
   "Fee": 0.01,
   "Mem": 1.1,
   "BenchmarkArg": "$(if ($AlgoName -in @('bitcore', 'x16r', 'x16rt', 'x16s', 'x21s', 'hex', 'timetravel')){'--benchmark'})",
-  "Custom": " --opencl-threads auto --opencl-launch auto",
+  "Custom": "--opencl-threads auto --opencl-launch auto",
   "Algorithms": {
     "Aergo": "--algo aergo",
     "Astralhash": "--algo glt-astralhash",
