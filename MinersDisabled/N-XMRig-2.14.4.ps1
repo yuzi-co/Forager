@@ -1,6 +1,6 @@
 
 $M = @{
-    Path       = "xmrig-nvidia-2.14.3/xmrig-nvidia.exe"
+    Path       = "xmrig-nvidia-2.14.4/xmrig-nvidia.exe"
     Type       = "NVIDIA"
     Arguments  = @(
         "-o #Server#:#Port#"
@@ -37,18 +37,22 @@ $M = @{
     }
 }
 
-if ($SystemInfo.CudaVersion -ge [version]"10.0") {
-    $M.Uri = "https://github.com/xmrig/xmrig-nvidia/releases/download/v2.14.3/xmrig-nvidia-2.14.3-cuda10-win64.zip"
-    $M.SHA256 = "787C6904351ED976D26F33ACAA4E4AD3CE1A49F5E5FC10FC4FA6DDD235F9E776"
+if ($SystemInfo.CudaVersion -ge [version]"10.1") {
+    $M.Uri = "https://github.com/xmrig/xmrig-nvidia/releases/download/v2.14.4/xmrig-nvidia-2.14.4-cuda10_1-win64.zip"
+    $M.SHA256 = "5D1F7B6E45A18DB0C9445F38026C4AF228ECAFA5407D6E33801B995669FE0940"
+    $M.CUDA = 10.1
+} elseif ($SystemInfo.CudaVersion -ge [version]"10.0") {
+    $M.Uri = "https://github.com/xmrig/xmrig-nvidia/releases/download/v2.14.4/xmrig-nvidia-2.14.4-cuda10-win64.zip"
+    $M.SHA256 = "EE26AAD006299D29E0517C035694C65AE5A8ADCAF65F4B730AECADA2B85DEE08"
     $M.CUDA = 10
 } elseif ($SystemInfo.CudaVersion -ge [version]"9.2") {
-    $M.Uri = "https://github.com/xmrig/xmrig-nvidia/releases/download/v2.14.3/xmrig-nvidia-2.14.3-cuda9_2-win64.zip"
-    $M.SHA256 = "554BF40A20F55268BF45F414BBB8655CE752753B253CE17A9AFCE39B9E3D3CB1"
+    $M.Uri = "https://github.com/xmrig/xmrig-nvidia/releases/download/v2.14.4/xmrig-nvidia-2.14.4-cuda9_2-win64.zip"
+    $M.SHA256 = "19A13C269E0332C5BA528D81A0D7A770657093754C383338FD6E3CFF108C63DE"
     $M.CUDA = 9.2
-} elseif ($SystemInfo.CudaVersion -ge [version]"9.1") {
-    $M.Uri = "https://github.com/xmrig/xmrig-nvidia/releases/download/v2.14.3/xmrig-nvidia-2.14.3-cuda9_1-win64.zip"
-    $M.SHA256 = "6F5E431336FD5A11C0659973593C8443367DE42C3C6B48F5C56C28339C61D463"
-    $M.CUDA = 9.1
+} elseif ($SystemInfo.CudaVersion -ge [version]"9.0") {
+    $M.Uri = "https://github.com/xmrig/xmrig-nvidia/releases/download/v2.14.4/xmrig-nvidia-2.14.4-cuda9_0-win64.zip"
+    $M.SHA256 = "EAB50EC1EBBC21C93FFD0A6AA8503FA6A199B82DCEB1D96864767BB4CD843F3B"
+    $M.CUDA = 9.0
 } else {
     return
 }

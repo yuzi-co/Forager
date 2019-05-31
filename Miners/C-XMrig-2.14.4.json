@@ -1,17 +1,17 @@
 {
-  "Path": "xmrig-amd-2.14.1/xmrig-amd.exe",
-  "Uri": "https://github.com/xmrig/xmrig-amd/releases/download/v2.14.1/xmrig-amd-2.14.1-msvc-win64.zip",
-  "SHA256": "95FEA35A3D49349543E9022D3BB8ECF980D0B9CD7B8DC66CFC6A3777FBCFFE08",
-  "Type": "AMD",
+  "Path": "xmrig-2.14.4/xmrig.exe",
+  "Uri": "https://github.com/xmrig/xmrig/releases/download/v2.14.4/xmrig-2.14.4-gcc-win64.zip",
+  "SHA256": "EA804A924D053035F61880E923FCC43328ACE1298B0807FD668537E64D69BE0A",
+  "Type": "CPU",
   "Arguments": [
     "-o #Server#:#Port#",
     "-u #Login#",
     "-p #Password#",
-    "--opencl-platform=#GPUPlatform#",
     "$(if ($Pool.PoolName -eq 'NiceHash'){'--nicehash'})",
     "$(if ($EnableSSL){'--tls'})",
     "--donate-level 1",
     "--api-port #APIPort#",
+    "--max-cpu-usage=$(if ($CpuThreads -ne $null){ [int](100 * $CpuThreads / $SystemInfo.CpuFeatures.threads) } else { 100 })",
     "#AlgorithmParameters#",
     "#CustomParameters#"
   ],
