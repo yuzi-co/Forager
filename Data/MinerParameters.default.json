@@ -22,7 +22,7 @@
   "A-SGMinerDallar": {
     "Throestl": "-g 2 -w 256 -X 256"
   },
-  "A-SGMinerFancyIX-0.5ip3": {
+  "A-SGMinerFancyIX-0.6": {
     "Allium": "-g 1 -w 256 -I 18",
     "Argon2d500": "-g 2 -w 64",
     "Ethash": "-w 64 -X 1024",
@@ -31,7 +31,8 @@
     "Lyra2zz": "-g 1 -w 256 -I 22",
     "MTP": "-I 20",
     "Phi2": "-g 1 -w 256 -I 22",
-    "X22i": "-g 2 -w 256 -I 22"
+    "X22i": "-g 2 -w 256 -I 22",
+    "X25x": "-g 4 -w 256 -I 22"
   },
   "A-SGMinerKL-1.0.9": {
     "Aergo": "-g 2 -w 64 -X 256",

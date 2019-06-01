@@ -1,7 +1,7 @@
 {
   "Path": "sgminer-phi2-fancyIX-win64/sgminer.exe",
-  "Uri": "https://github.com/fancyIX/sgminer-phi2-branch/releases/download/5.6.1.3.b5ip3/sgminer-phi2-fancyIX-win64-beta5ip3.zip",
-  "SHA256": "C7462F0F0E70C11808AC3332B30F72B996EB070D069C49E88568B755D1957278",
+  "Uri": "https://github.com/fancyIX/sgminer-phi2-branch/releases/download/5.6.1.3.b6/sgminer-phi2-fancyIX-win64-0.6.0.0.zip",
+  "SHA256": "D2287B0CE8229B5C967E6806B6468A55E5BE23DB020208971E81B0D68F4CB671",
   "Type": "AMD",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
@@ -28,6 +28,7 @@
       "Mem": 4.5
     },
     "_Phi2": "-k phi2",
-    "_X22i": "-k x22i"
+    "_X22i": "-k x22i",
+    "X25x": "-k x25x"
   }
 }
