@@ -1,7 +1,7 @@
 {
   "Path": "ccminer.exe",
-  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.03/CCMinerVerusCPU-3.3.7z",
-  "SHA256": "3829FC92342A3F3E091137594E1D371799026CA865C2C6F961764E590BACDD51",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.06/CCMinerVerusCPU-3.5.7z",
+  "SHA256": "39314D9178735CEF0662737792A8A22475D8C3C4CADFEE9708B49BF586E67949",
   "Type": "CPU",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
