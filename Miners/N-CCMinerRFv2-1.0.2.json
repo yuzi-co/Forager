@@ -1,0 +1,24 @@
+{
+  "Path": "ccminer.exe",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.05/CCMinerRFv2-1.0.2.7z",
+  "SHA256": "AE80A131083A1332545B084E13292A437DC8CD3BD53077D092D5F90EFC2A5D6E",
+  "Type": "NVIDIA",
+  "CUDA": 10.0,
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-R 3",
+    "-r 10",
+    "-d #Devices#",
+    "-b #APIPort#",
+    "--submit-stale",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "API": "Wrapper",
+  "Custom": "-i 28",
+  "Algorithms": {
+    "Rainforest2": "-a rfv2"
+  }
+}
