@@ -72,6 +72,11 @@ Of first run it will create "GroupName-Algorithm.txt" files for each group that 
 Mixed rigs (AMD+NVIDIA) are not recommended. Use at your own risk.
 You may have problems with some miners selecting specific devices. Disable problematic miners if you have issues.
 
+#### Nvidia-SMI
+
+nvidia-smi.exe is included as an optional tool to modify gpu/memory clocks and other details of your Nvidia GPU(s), it can be initiated in the "miningparameters.json" 
+for documentation on commands nvidia-smi.exe uses please refer to http://developer.download.nvidia.com/compute/DCGM/docs/nvidia-smi-367.38.pdf
+
 
 ### Getting started:
 #### Option 1:
