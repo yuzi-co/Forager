@@ -74,7 +74,7 @@ You may have problems with some miners selecting specific devices. Disable probl
 
 #### Nvidia-SMI
 
-nvidia-smi.exe is included as an optional tool to modify gpu/memory clocks and other details of your Nvidia GPU(s), it can be initiated in the "miningparameters.json" 
+nvidia-smi.exe is included as an optional tool to modify gpu/memory clocks and other details of your Nvidia GPU(s)
 for documentation on commands nvidia-smi.exe uses please refer to http://developer.download.nvidia.com/compute/DCGM/docs/nvidia-smi-367.38.pdf
 
 
