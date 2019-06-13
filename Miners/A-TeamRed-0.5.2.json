@@ -1,7 +1,7 @@
 {
-  "Path": "teamredminer-v0.4.5-win/teamredminer.exe",
-  "Uri": "https://github.com/todxx/teamredminer/releases/download/v0.4.5/teamredminer-v0.4.5-win.zip",
-  "SHA256": "3880AD87EDDA5A6F49A28959884F062316DC614663EB2723687D395EA5601C3D",
+  "Path": "teamredminer-v0.5.2-win/teamredminer.exe",
+  "Uri": "https://github.com/todxx/teamredminer/releases/download/0.5.2/teamredminer-v0.5.2-win.zip",
+  "SHA256": "EEE73028A25BF9E269689472C994C07D56839E4BA91A7766801D0C6B8DEE2929",
   "Type": "AMD",
   "Arguments": [
     "-o stratum+$(if($EnableSSL){'ssl'}else{'tcp'})://#Server#:#Port#",
@@ -21,14 +21,20 @@
   "Algorithms": {
     "CnDouble": "-a cnv8_dbl",
     "CnHalf": "-a cnv8_half",
+    "CnHaven": "-a cn_haven",
+    "CnHeavy": "-a cn_heavy",
     "CnR": "-a cnr",
     "CnRwz": "-a cnv8_rwz",
+    "CnSaber": "-a cn_saber",
     "CnTurtle": "-a cnv8_trtl",
     "CnUpx2": "-a cnv8_upx2",
     "Lyra2v3": "-a lyra2rev3",
-    "_Phi2": {
+    "Phi2": {
       "Params": "-a phi2",
       "Fee": 0.03
-    }
+    },
+    "X16r": "-a x16r",
+    "X16rt": "-a x16rt",
+    "X16s": "-a x16s"
   }
 }
