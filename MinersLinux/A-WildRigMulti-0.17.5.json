@@ -1,7 +1,7 @@
 {
   "Path": "wildrig-multi",
-  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.17.3/wildrig-multi-linux-0.17.3-beta.tar.gz",
-  "SHA256": "17F66C5273F06BC75B0AA4C666CC1E3D4A96C9EBD7EE5A2D4716D273AFC153DE",
+  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.17.5/wildrig-multi-linux-0.17.5-beta.tar.gz",
+  "SHA256": "1F9E4B58C03CE815ED20C5938366BFEB67C985D734B7B442A868A992D9777C86",
   "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",
@@ -25,6 +25,7 @@
   "Custom": " --opencl-threads auto --opencl-launch auto",
   "Algorithms": {
     "Aergo": "--algo aergo",
+    "Anime": "--algo anime",
     "Astralhash": "--algo glt-astralhash",
     "Bbr": {
       "Params": "--algo wildkeccak --scratchpad-url http://boolberry.miner.rocks:8008/scratchpad.bin --scratchpad-file scratchpad-#Algorithm#.bin",
@@ -32,6 +33,8 @@
     },
     "BCD": "--algo bcd",
     "Bitcore": "--algo bitcore",
+    "Blake2bBTCC": "--algo blake2b-btcc",
+    "Blake2bGLT": "--algo blake2b-glt",
     "BMW512": "--algo bmw512",
     "C11": "--algo c11",
     "Dedal": "--algo dedal",
