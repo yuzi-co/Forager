@@ -1,0 +1,25 @@
+{
+  "Path": "kbminer_1.3.3/kbminer",
+  "Uri": "https://github.com/mcarloai/minerbabe-kbminer/releases/download/1.3.3/kbminer_vds_1.3.3.tar.gz",
+  "SHA256": "9D9ADA965CFB6343893A5530BABDB44E82E157926009313922B323D609EFB610",
+  "Type": "AMD",
+  "Arguments": [
+    "--pool #Server#:#Port#",
+    "--user #Login#",
+    "--pass #Password#",
+    "$(($DeviceGroup.DevicesArray | % {'--gpu ' + $_}) -join ' ')",
+    "--enableapi",
+    "--apiaddr 0.0.0.0:#ApiPort#",
+    "$(if ($EnableSSL){'--enabletls'})",
+    "--checkdifficulty",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "API": "KBMiner",
+  "SSL": true,
+  "NoCpu": true,
+  "Fee": 0.02,
+  "Algorithms": {
+    "VDS": "--algorithm vds"
+  }
+}
