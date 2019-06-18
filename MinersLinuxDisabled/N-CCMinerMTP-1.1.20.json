@@ -1,0 +1,27 @@
+{
+  "Path": "ccminer",
+  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.06/CCMinerMTP-1.1.20.tar.gz",
+  "SHA256": "56CAD79892BD5ECFA81B55846C15BAB0A6C837168BF295AFE5775B4CEF7E4184",
+  "Type": "NVIDIA",
+  "CUDA": 10.0,
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-R 3",
+    "-r 10",
+    "-d #Devices#",
+    "-b #APIPort#",
+    "--no-donation",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "API": "Ccminer",
+  "Algorithms": {
+    "MTP": {
+      "Params": "-a mtp",
+      "NH": false,
+      "Mem": 4.5
+    }
+  }
+}
