@@ -252,13 +252,12 @@ while ($Quit -ne $true) {
             BTC = "3NoVvkGSNjPX8xBMWbP2HioWYK395wSzGL"
             LTC = "MXCsACfauv4zAub3jcM64weqEpG979uArm"
         }
-        $Global:Config.Currency_Zpool = "LTC"
         $Global:Config.Currency_Zergpool = "LTC"
 
         $DonateInterval = [math]::min(($Config.DonateMinutes - $DonatedTime), 5) * 60
 
         $Algorithm = $null
-        $PoolsName = @("NiceHash", "Zpool", "Zergpool")
+        $PoolsName = @("NiceHash", "Zergpool")
         $CoinsName = $null
         $MiningMode = "Automatic"
         $PowerCost = 0
@@ -366,7 +365,7 @@ while ($Quit -ne $true) {
 
     $Params = @{
         Path    = $MinersPath + "*"
-        Include = "*.json","*.ps1"
+        Include = "*.json", "*.ps1"
     }
     $MinersFolderContent = Get-ChildItem @Params
 
