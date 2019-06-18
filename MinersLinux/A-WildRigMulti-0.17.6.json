@@ -1,7 +1,7 @@
 {
-  "Path": "wildrig.exe",
-  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.17.5/wildrig-multi-windows-0.17.5-beta.7z",
-  "SHA256": "B858852B79B881147467CD03FFAD01CAC8CAEB233D7FCE361B2CA5D9DF2DC740",
+  "Path": "wildrig-multi",
+  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.17.6/wildrig-multi-linux-0.17.6-beta.tar.gz",
+  "SHA256": "26191F58BDD08FAD053BB75B0B88E049EBF9FAE0395B622EDED6D1E6D8D70AAE",
   "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",
@@ -13,6 +13,7 @@
     "--opencl-devices #Devices#",
     "--send-stale",
     "--donate-level 1",
+    "--no-color",
     "--api-port #ApiPort#",
     "#AlgorithmParameters#",
     "#CustomParameters#"
@@ -21,7 +22,7 @@
   "Fee": 0.01,
   "Mem": 1.1,
   "BenchmarkArg": "$(if ($AlgoName -in @('bitcore', 'x16r', 'x16rt', 'x16s', 'x21s', 'hex', 'timetravel')){'--benchmark'})",
-  "Custom": "--opencl-threads auto --opencl-launch auto",
+  "Custom": " --opencl-threads auto --opencl-launch auto",
   "Algorithms": {
     "Aergo": "--algo aergo",
     "Anime": "--algo anime",
@@ -63,6 +64,7 @@
     "Renesis": "--algo renesis",
     "SHA256q": "--algo sha256q",
     "SHA256t": "--algo sha256t",
+    "Skein2": "--algo skein2",
     "Skunk": "--algo skunkhash",
     "SonoA": "--algo sonoa",
     "Timetravel": "--algo timetravel",
