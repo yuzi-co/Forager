@@ -1,7 +1,7 @@
 {
   "Path": "ethdcrminer64",
-  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.05/ClaymoreDual-14.6.tar.gz",
-  "SHA256": "B92E3971B5A17E018938AD45FCEC04E0DC0D14850CE90819932023E8A1405995",
+  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.06/ClaymoreDual-v14.7-linux.tar.gz",
+  "SHA256": "0FD1B51D5B7F36F63016378230D582734231E2448C909D45CA696FECCB127AC1",
   "Type": "NVIDIA",
   "Arguments": [
     "-epool #Protocol#://#Server#:#Port#",
