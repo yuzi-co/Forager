@@ -1,7 +1,7 @@
 {
-  "Path": "NBMiner_Linux/nbminer",
-  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v23.2.1/NBMiner_23.2_hotfix_Linux.tgz",
-  "SHA256": "6BCC15A6BDB64516A24F7C3832A10574B7859FF343C3AFE8A3FA6FC8B1EB18FC",
+  "Path": "NBMiner_Win/nbminer.exe",
+  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v23.3/NBMiner_23.3_Win.zip",
+  "SHA256": "6767D6FAB46E2CBA612C63888576E4C40A21380AEFF9D5B0532E5B1B9A87CACA",
   "Type": "NVIDIA",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
