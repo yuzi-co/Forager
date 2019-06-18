@@ -1,7 +1,7 @@
 {
-  "Path": "kbminer.exe",
-  "Uri": "https://github.com/mcarloai/minerbabe-kbminer/releases/download/1.3.4/kbminer-vds-win-1.3.4.zip",
-  "SHA256": "CACAAD0D4B7496CE000138C196F7D04B753D167D994578DBCC1004F44313299B",
+  "Path": "kbminer_1.3.8/kbminer",
+  "Uri": "https://github.com/mcarloai/minerbabe-kbminer/releases/download/1.3.8/kbminer_vds_linux_1.3.8.tar.gz",
+  "SHA256": "294FA166FB8D5B5AA33A7A66B81A429A0AB00A317B146CE21D993D92135C1E48",
   "Type": "AMD",
   "Arguments": [
     "--pool #Server#:#Port#",
