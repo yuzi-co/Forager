@@ -1,7 +1,7 @@
 {
   "Path": "wildrig-multi",
-  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.17.6/wildrig-multi-linux-0.17.6-beta.tar.gz",
-  "SHA256": "26191F58BDD08FAD053BB75B0B88E049EBF9FAE0395B622EDED6D1E6D8D70AAE",
+  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.17.8/wildrig-multi-linux-0.17.8-beta.tar.gz",
+  "SHA256": "EECC4BA753A5973F4677EF357DBC922AC1443CA5973AFC97E9C3A00C38A87411",
   "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",
@@ -42,10 +42,7 @@
     "Geek": "--algo geek",
     "Hex": "--algo hex",
     "HMQ1725": "--algo hmq1725",
-    "Honeycomb": {
-      "Params": "--algo honeycomb",
-      "Fee": 0.02
-    },
+    "Honeycomb": "--algo honeycomb",
     "Jeonghash": "--algo glt-jeonghash",
     "Lyra2v3": "--algo lyra2v3",
     "Lyra2vc0ban": "--algo lyra2vc0ban",
