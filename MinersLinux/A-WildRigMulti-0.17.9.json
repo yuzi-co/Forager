@@ -1,7 +1,7 @@
 {
   "Path": "wildrig-multi",
-  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.17.8/wildrig-multi-linux-0.17.8-beta.tar.gz",
-  "SHA256": "EECC4BA753A5973F4677EF357DBC922AC1443CA5973AFC97E9C3A00C38A87411",
+  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.17.9/wildrig-multi-linux-0.17.9-beta.tar.gz",
+  "SHA256": "F19DB7935617FBA0CB5C3191C5799C1191213CA5ECCD81455EC39FE7B1B023A6",
   "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",
@@ -33,8 +33,8 @@
     },
     "BCD": "--algo bcd",
     "Bitcore": "--algo bitcore",
-    "Blake2bBTCC": "--algo blake2b-btcc",
-    "Blake2bGLT": "--algo blake2b-glt",
+    "_Blake2bBTCC": "--algo blake2b-btcc",
+    "_Blake2bGLT": "--algo blake2b-glt",
     "BMW512": "--algo bmw512",
     "C11": "--algo c11",
     "Dedal": "--algo dedal",
