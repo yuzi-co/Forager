@@ -1,7 +1,7 @@
 {
-  "Path": "kbminer_1.3.10/kbminer",
-  "Uri": "https://github.com/mcarloai/minerbabe-kbminer/releases/download/1.3.10/kbminer_1.3.10.tar.gz",
-  "SHA256": "2D40439B61A73859D99C80E1F25AD10030476F6F0B7778698BD52DF17CD062FD",
+  "Path": "kbminer_1.3.11/kbminer",
+  "Uri": "https://github.com/mcarloai/minerbabe-kbminer/releases/download/1.3.11/kbminer_1.3.11.tar.gz",
+  "SHA256": "1FED924CE72DC3F8527EA5B8D2A3F104F428201A9D36678949370A506F1CA066",
   "Type": "NVIDIA",
   "Arguments": [
     "--pool #Server#:#Port#",
