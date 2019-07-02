@@ -1,0 +1,14 @@
+{
+  "Path": "nanominer-linux-1.4.1/nanominer",
+  "Uri": "https://github.com/nanopool/nanominer/releases/download/v1.4.1/nanominer-linux-1.4.1.tar.gz",
+  "SHA256": "3725B0243FC78C8A850576F709508BA4936038371E45D5411BEEB59DC8049E53",
+  "Type": "CPU",
+  "GenerateConfigFile": "nanominer-linux-1.4.1/#GroupName#-#Algorithm#.conf",
+  "PatternConfigFile": "NanoMiner.txt",
+  "Arguments": "#GroupName#-#Algorithm#.conf",
+  "API": "Claymore",
+  "Fee": 0.03,
+  "Algorithms": {
+    "RandomHash": "RandomHash"
+  }
+}
