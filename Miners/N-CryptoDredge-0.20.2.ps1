@@ -1,6 +1,6 @@
 
 $M = @{
-    Path       = "CryptoDredge_0.20.1/CryptoDredge.exe"
+    Path       = "CryptoDredge_0.20.2/CryptoDredge.exe"
     Type       = "NVIDIA"
     Arguments  = @(
         "-o #Protocol#://#Server#:#Port#"
