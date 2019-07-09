@@ -1,7 +1,7 @@
 {
-  "Path": "teamredminer-v0.5.3-win/teamredminer.exe",
-  "Uri": "https://github.com/todxx/teamredminer/releases/download/0.5.3/teamredminer-v0.5.3-win.zip",
-  "SHA256": "CCF417DF1C4B0D0BFDA6FBA7991C4382CD65A77CFD668E7556610EE2703C36BB",
+  "Path": "teamredminer-v0.5.5-win/teamredminer.exe",
+  "Uri": "https://github.com/todxx/teamredminer/releases/download/0.5.5/teamredminer-v0.5.5-win.zip",
+  "SHA256": "F99889EC871CCA27C0DF00EDBFE716913A072CA5761DF07E4332ADBE3955744F",
   "Type": "AMD",
   "Arguments": [
     "-o stratum+$(if($EnableSSL){'ssl'}else{'tcp'})://#Server#:#Port#",
@@ -28,6 +28,10 @@
     "CnSaber": "-a cn_saber",
     "CnTurtle": "-a cnv8_trtl",
     "CnUpx2": "-a cnv8_upx2",
+    "Cuckatoo31": {
+      "Params": "-a cuckatoo31_grin",
+      "Mem": 7.6
+    },
     "Lyra2v3": "-a lyra2rev3",
     "MTP": {
       "Params": "-a mtp",
