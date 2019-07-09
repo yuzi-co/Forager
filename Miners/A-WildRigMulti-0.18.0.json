@@ -1,7 +1,7 @@
 {
   "Path": "wildrig.exe",
-  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.17.9/wildrig-multi-windows-0.17.9-beta.7z",
-  "SHA256": "EF43CA8D245C948531E001307C738FC1D871C5A973B461B6117E35EDCE8F30D8",
+  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.18.0/wildrig-multi-windows-0.18.0-beta.7z",
+  "SHA256": "99023AA19094F4681E68384DAD35B812D65ECF51B76CC018EE50BE8531067A61",
   "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",
@@ -39,6 +39,7 @@
     "Dedal": "--algo dedal",
     "Exosis": "--algo exosis",
     "Geek": "--algo geek",
+    "Globalhash": "--algo glt-globalhash",
     "Hex": "--algo hex",
     "HMQ1725": "--algo hmq1725",
     "Honeycomb": "--algo honeycomb",
