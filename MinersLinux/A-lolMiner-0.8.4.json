@@ -1,8 +1,8 @@
 {
-  "Path": "0.8.3/lolMiner",
-  "Uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.8.3/lolMiner_v083_Lin64.tar.gz",
-  "SHA256": "5885F0B1A485546A9780313FDD22149F5CDF6F73B5385185FA4F6AD50284D73B",
-  "Type": "NVIDIA",
+  "Path": "0.8.4/lolMiner",
+  "Uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.8.4/lolMiner_v084_Lin64.tar.gz",
+  "SHA256": "A8BE55EBBBCFFE296322C6403E08046080892483056E048C5DFE12BA67D77149",
+  "Type": "AMD",
   "Arguments": [
     "--pool #Server#",
     "--port #Port#",
@@ -18,6 +18,7 @@
   ],
   "API": "LOL",
   "SSL": true,
+  "Custom": "--asm 1",
   "Algorithms": {
     "Cuckatoo31": {
       "Params": "--coin GRIN-AT31",
@@ -27,16 +28,19 @@
       "Params": "--coin MNX",
       "Mem": 1
     },
-    "Equihash125": "--coin ZEL",
-    "_Equihash144": {
+    "Equihash125": {
+      "Params": "--coin ZEL",
+      "Mem": 2.9
+    },
+    "Equihash144": {
       "Params": "--coin AUTO144_5",
       "Mem": 1.8
     },
-    "_Equihash150": {
+    "Equihash150": {
       "Params": "--coin BEAM",
       "Mem": 3.5
     },
-    "_Equihash192": {
+    "Equihash192": {
       "Params": "--coin AUTO192_7",
       "Mem": 2.8
     },
