@@ -1,0 +1,32 @@
+{
+  "Path": "nanominer-linux-1.5.0/nanominer",
+  "Uri": "https://github.com/nanopool/nanominer/releases/download/v1.5.0/nanominer-linux-1.5.0.tar.gz",
+  "SHA256": "7A7071722273271B12ED1378A5EC69CBC52773ACFEA8FD4AF2B313EA9077F63A",
+  "Type": "NVIDIA",
+  "CUDA": 10.0,
+  "GenerateConfigFile": "nanominer-linux-1.5.0/#GroupName#-#Algorithm#.conf",
+  "PatternConfigFile": "NanoMiner.txt",
+  "Arguments": "#GroupName#-#Algorithm#.conf",
+  "API": "Claymore",
+  "Fee": 0.01,
+  "Algorithms": {
+    "CnR": "CryptoNightR",
+    "CnRwz": "CryptoNightReverseWaltz",
+    "Cuckaroo29": {
+      "Params": "Cuckaroo29",
+      "Mem": 5.4
+    },
+    "Cuckarood29": {
+      "Params": "Cuckaroo29",
+      "Mem": 5.4
+    },
+    "Ethash": {
+      "Params": "Ethash",
+      "Mem": 2
+    },
+    "Ubqhash": {
+      "Params": "Ubqhash",
+      "Mem": 2
+    }
+  }
+}
