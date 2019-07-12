@@ -20,6 +20,7 @@
     "Lyra2h": "-a lyra2h",
     "Lyra2z330": "-a lyra2z330",
     "M7M": "-a m7m",
+    "Scrypt8k": "-a scrypt:8192",
     "ScryptN": "-a scrypt:2048",
     "ScryptJane16": "-a scryptjane:16",
     "Verium": "-a scrypt:1048576",
