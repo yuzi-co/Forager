@@ -250,6 +250,8 @@ while ($Quit -ne $true) {
         $Global:Config.WorkerName = "Donate"
         $Global:Wallets = @{
             BTC = "3NoVvkGSNjPX8xBMWbP2HioWYK395wSzGL"
+            BTC_NICE = "3NoVvkGSNjPX8xBMWbP2HioWYK395wSzGL"
+            BTC_NH = "37YdKzKSibrEmE3XmsgmV14Mey3gmy4wGg"
             LTC = "MXCsACfauv4zAub3jcM64weqEpG979uArm"
         }
         $Global:Config.Currency_Zergpool = "LTC"
@@ -257,7 +259,7 @@ while ($Quit -ne $true) {
         $DonateInterval = [math]::min(($Config.DonateMinutes - $DonatedTime), 5) * 60
 
         $Algorithm = $null
-        $PoolsName = @("NiceHash", "Zergpool")
+        $PoolsName = @("NiceHashNew", "Zergpool")
         $CoinsName = $null
         $MiningMode = "Automatic"
         $PowerCost = 0
