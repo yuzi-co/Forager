@@ -1,7 +1,7 @@
 {
-  "Path": "NBMiner_Win/nbminer.exe",
-  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v23.3/NBMiner_23.3_Win.zip",
-  "SHA256": "6767D6FAB46E2CBA612C63888576E4C40A21380AEFF9D5B0532E5B1B9A87CACA",
+  "Path": "NBMiner_Linux/nbminer",
+  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v24.1/NBMiner_24.1_Linux.tgz",
+  "SHA256": "57290D6ECBF07DD75D32DAC6DCB2C7D154361EF8016B9F82B1910D616CF52617",
   "Type": "NVIDIA",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
@@ -21,6 +21,11 @@
       "Mem": 5
     },
     "Cuckaroo29": {
+      "Params": "-a cuckaroo",
+      "NoCpu": true,
+      "Mem": 5
+    },
+    "Cuckarood29": {
       "Params": "-a cuckaroo",
       "NoCpu": true,
       "Mem": 5
@@ -45,8 +50,7 @@
       "Mem": 3,
       "Fee": 0.03
     },
-    "Tensority": {
-      "Params": "-a tensority"
-    }
+    "ProgPOWSero": "-a progpow_sero",
+    "Tensority": "-a tensority"
   }
 }
