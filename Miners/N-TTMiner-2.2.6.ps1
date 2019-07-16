@@ -1,8 +1,8 @@
 
 $M = @{
     Path       = "TT-Miner.exe"
-    Uri        = "https://tradeproject.de/download/Miner/TT-Miner-2.2.5.zip"
-    SHA256     = "D95C7BA4836C654AADBC4D314D5AE61E47152A7B48D71A5FC66D34D463CA2F25"
+    Uri        = "https://tradeproject.de/download/Miner/TT-Miner-2.2.6.zip"
+    SHA256     = "F4708C9FB56770BDB61D353E499FCF645AEAAC1C87DC84223B58FEC7B47CB27F"
     Type       = "NVIDIA"
     Arguments  = @(
         "-o #Protocol#://#Server#:#Port#"
@@ -11,28 +11,31 @@ $M = @{
         "-worker #WorkerName#"
         "--nvidia"
         "-nui"
+        "-luck"
         "-d #Devices#"
-        "-b 127.0.0.1:#APIPort#"
+        "-b 0.0.0.0:#APIPort#"
         "#CustomParameters#"
     )
     API        = "Claymore"
     Fee        = 0.01
     Algorithms = [PSCustomObject]@{
-        Ethash     = @{
+        Ethash      = @{
             Params = "-a ETHASH"
             Mem    = 3
         }
+        Honeycomb   = "-a HONEYCOMB"
         # Lyra2v3  = "-a LYRA2V3"
-        MTP        = @{
+        MTP         = @{
             Params = "-a MTP"
             Mem    = 4.5
         }
-        ProgPOW    = "-a PROGPOW"
-        ProgPOWZ   = "-a PROGPOWZ"
-        ProgPOWH   = "-a PROGPOWH"
-        ProgPOW092 = "-a PROGPOW092"
-        Tethash    = "-a TETHASHV1"
-        Ubqhash    = @{
+        ProgPOW     = "-a PROGPOW"
+        ProgPOWZ    = "-a PROGPOWZ"
+        ProgPOW092  = "-a PROGPOW092"
+        ProgPOWHora = "-a PROGPOW092 -coin hora"
+        ProgPOWSero = "-a PROGPOW092 -coin sero"
+        Tethash     = "-a TETHASHV1"
+        Ubqhash     = @{
             Params = "-a UBQHASH"
             Mem    = 3
         }
