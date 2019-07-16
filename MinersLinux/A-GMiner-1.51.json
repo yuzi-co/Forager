@@ -1,9 +1,8 @@
 {
   "Path": "miner",
-  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.50/gminer_1_50_linux64.tar.xz",
-  "SHA256": "03AFA9F42336A45762B21706E25F0C9B4A19DBA2E6894DC4C2F842408A4067B6",
-  "Type": "NVIDIA",
-  "CUDA": 9.0,
+  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.51/gminer_1_51_linux64.tar.xz",
+  "SHA256": "F7636AAC9579FF2520A824072037F367142665C42E67C881CE5AC4887C5E6152",
+  "Type": "AMD",
   "Arguments": [
     "--server #Server#",
     "--port #Port#",
@@ -13,8 +12,8 @@
     "--watchdog 0",
     "--ssl $(if($EnableSSL){1}else{0})",
     "--devices #DevicesETHMode#",
-    "--cuda 1",
-    "--opencl 0",
+    "--cuda 0",
+    "--opencl 1",
     "--color 0",
     "#AlgorithmParameters#",
     "#CustomParameters#"
@@ -26,38 +25,29 @@
     "Cuckoo29": {
       "Params": "--algo aeternity",
       "NoCpu": true,
-      "Mem": 3.8
+      "Mem": 5
     },
     "Cuckaroo29": {
       "Params": "--algo grin29",
       "NoCpu": true,
-      "Mem": 3.8
+      "Mem": 5
     },
     "Cuckaroo29s": {
       "Params": "--algo swap",
       "NoCpu": true,
-      "Mem": 3.8
+      "Mem": 5
     },
-    "Cuckatoo31": {
-      "Params": "--algo grin31",
-      "NoCpu": true,
-      "Mem": 7.4
-    },
-    "Equihash96": "--algo 96_5 --pers auto",
-    "Equihash125": "--algo 125_4",
     "Equihash144": {
       "Params": "--algo 144_5 --pers auto",
-      "Mem": 1.75
+      "Mem": 2
     },
     "Equihash150": {
       "Params": "--algo 150_5",
-      "Mem": 2.9
+      "Mem": 4
     },
     "Equihash192": {
       "Params": "--algo 192_7 --pers auto",
       "Mem": 2.75
-    },
-    "Equihash210": "--algo 210_9 --pers AION0PoW",
-    "Vds": "--algo vds"
+    }
   }
 }
