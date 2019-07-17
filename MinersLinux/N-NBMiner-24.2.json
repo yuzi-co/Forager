@@ -1,7 +1,7 @@
 {
-  "Path": "NBMiner_Win/nbminer.exe",
-  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v24.1/NBMiner_24.1_Win.zip",
-  "SHA256": "70403C85090B8046CF415CB6C21F38306265EC9E84D16A20B5C9DECB59B03641",
+  "Path": "NBMiner_Linux/nbminer",
+  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v24.2/NBMiner_24.2_Linux.tgz",
+  "SHA256": "3DDBC571927235EFB4BF7C84462384765BBCF1C41DB1E8EB38AF63049C313E30",
   "Type": "NVIDIA",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
@@ -26,7 +26,7 @@
       "Mem": 5
     },
     "Cuckarood29": {
-      "Params": "-a cuckaroo",
+      "Params": "-a cuckarood",
       "NoCpu": true,
       "Mem": 5
     },
