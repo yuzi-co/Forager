@@ -547,7 +547,7 @@ function Get-MiningTypes () {
             }
 
             $_ | Add-Member MinProfit ([decimal]$Config.("MinProfit_" + $_.GroupName))
-            $_ | Add-Member Algorithms @($Config.("Algorithms_" + $_.GroupName) -split ',' | ForEach-Object { $_.Trim() })
+            $_ | Add-Member Algorithms @($Config.("Algorithms_" + $_.GroupName) -split ',' | ForEach-Object { Get-AlgoUnifiedName $_ })
 
             $ApiPorts = @{
                 'AMD'    = 4028
