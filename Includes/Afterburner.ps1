@@ -61,6 +61,7 @@ function Set-AfterburnerPowerLimit {
 
         $Devices = @($abMonitor.GpuEntries | Where-Object Device -like $Pattern.$($DeviceGroup.GroupType) | Select-Object -ExpandProperty Index)[$DeviceGroup.DevicesArray]
 
+        $Commit = $false
         foreach ($device in $Devices) {
             if ($abControl.GpuEntries[$device].PowerLimitCur -ne $PLim) {
 
@@ -69,9 +70,12 @@ function Set-AfterburnerPowerLimit {
                 $PLim = [math]::Max($abControl.GpuEntries[$device].PowerLimitMin, $PLim)
 
                 $abControl.GpuEntries[$device].PowerLimitCur = $PLim
+                $Commit = $true
             }
         }
-        $abControl.CommitChanges()
+        if ($Commit) {
+            $abControl.CommitChanges()
+        }
     }
 }
 
