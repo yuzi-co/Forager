@@ -106,6 +106,7 @@ if ($Querymode -eq "Core") {
                 Protocol              = "stratum+tcp"
                 ProtocolSSL           = "ssl"
                 Host                  = $Pool.algorithm + "." + $Locations.$Location + "-new.nicehash.com"
+                HostSSL               = $Pool.algorithm + "." + $Locations.$Location + "-new.nicehash.com"
                 Port                  = $Pool.port
                 PortSSL               = $Pool.port + 30000
                 User                  = $(if ($Wallets.BTC_NH) { $Wallets.BTC_NH } else { $Wallets.BTC }) + '.' + "#WorkerName#"
