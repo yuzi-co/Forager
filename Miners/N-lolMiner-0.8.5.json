@@ -35,7 +35,7 @@
       "Params": "--coin AUTO144_5",
       "Mem": 1.8
     },
-    "Equihash150": {
+    "_Equihash150": {
       "Params": "--coin BEAM",
       "Mem": 3.5
     },
