@@ -97,22 +97,22 @@ if ($Querymode -eq "Core") {
 
         foreach ($Location in $Locations.Keys) {
 
-            $EnableSSL = (@('CnV7', 'CnV8', 'Equihash150') -contains $Algo)
+            # $EnableSSL = (@('CnV7', 'CnV8', 'Equihash150') -contains $Algo)
 
             [PSCustomObject]@{
                 Algorithm             = $Algo
                 Info                  = $Algo
                 Price                 = [decimal]$_.paying / $Divisor
                 Protocol              = "stratum+tcp"
-                ProtocolSSL           = "ssl"
+                # ProtocolSSL           = "ssl"
                 Host                  = $Pool.algorithm + "." + $Locations.$Location + "-new.nicehash.com"
-                HostSSL               = $Pool.algorithm + "." + $Locations.$Location + "-new.nicehash.com"
+                # HostSSL               = $Pool.algorithm + "." + $Locations.$Location + "-new.nicehash.com"
                 Port                  = $Pool.port
-                PortSSL               = $Pool.port + 30000
+                # PortSSL               = $Pool.port + 30000
                 User                  = $(if ($Wallets.BTC_NH) { $Wallets.BTC_NH } else { $Wallets.BTC }) + '.' + "#WorkerName#"
                 Pass                  = "x"
                 Location              = $Location
-                SSL                   = $EnableSSL
+                # SSL                   = $EnableSSL
                 Symbol                = Get-CoinSymbol -Coin $Algo
                 ActiveOnManualMode    = $ActiveOnManualMode
                 ActiveOnAutomaticMode = $ActiveOnAutomaticMode
