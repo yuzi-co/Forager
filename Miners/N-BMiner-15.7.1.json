@@ -29,7 +29,7 @@
     "Cuckarood29": {
       "Params": "-uri cuckaroo29d",
       "NoCpu": true,
-      "Mem": 5.3
+      "Mem": 5.6
     },
     "Cuckatoo31": {
       "Params": "-uri cuckatoo31",
