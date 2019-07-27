@@ -1,7 +1,7 @@
 {
   "Path": "cpuminer-$($f=$SystemInfo.CpuFeatures;$(if($f.avx2 -and $f.sha){'zen'}elseif($f.avx2){'avx2'}elseif($f.avx){'avx'}elseif($f.aes -and $f.sse42){'aes-sse42'}else{'sse2'})).exe",
-  "Uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.9.5.4/cpuminer-opt-3.9.5.4-windows.zip",
-  "SHA256": "4013A014E9592E337A30B9E8216F6A71FAEF8ECC47332B1A19F386FF2965BF8B",
+  "Uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.9.6.1/cpuminer-opt-3.9.6.1-windows.zip",
+  "SHA256": "A28D4D1215482C7A91D3CB3839BF80C50DF665C992AD1C777568B59855692714",
   "Type": "CPU",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
@@ -20,7 +20,6 @@
     "Lyra2h": "-a lyra2h",
     "Lyra2z330": "-a lyra2z330",
     "M7M": "-a m7m",
-    "Scrypt8k": "-a scrypt:8192",
     "ScryptN": "-a scrypt:2048",
     "ScryptJane16": "-a scryptjane:16",
     "Verium": "-a scrypt:1048576",
