@@ -1,7 +1,7 @@
 {
-  "Path": "miner.exe",
-  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.51/gminer_1_51_windows64.zip",
-  "SHA256": "1F18D9EC71E1D3AB5C9326F62BA321AAE923857B5BF162D0520DF15989EF05A1",
+  "Path": "miner",
+  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.53/gminer_1_53_linux64.tar.xz",
+  "SHA256": "CB795E98DDD83F78486FCC4F75F682D39F3D500BF34B83B0B56034486EFD5B0B",
   "Type": "AMD",
   "Arguments": [
     "--server #Server#",
@@ -14,6 +14,7 @@
     "--devices #DevicesETHMode#",
     "--cuda 0",
     "--opencl 1",
+    "--color 0",
     "#AlgorithmParameters#",
     "#CustomParameters#"
   ],
