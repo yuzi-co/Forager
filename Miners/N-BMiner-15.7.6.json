@@ -1,7 +1,7 @@
 {
-  "Path": "bminer-lite-v15.7.1-1c421a5/bminer.exe",
-  "Uri": "https://www.bminercontent.com/releases/bminer-lite-v15.7.1-1c421a5-amd64.zip",
-  "SHA256": "9E967886A3E7BDB682179F80B57033054C068A414B0197C197738EF86824E9F9",
+  "Path": "bminer-lite-v15.7.6-f585663/bminer.exe",
+  "Uri": "https://www.bminercontent.com/releases/bminer-lite-v15.7.6-f585663-amd64.zip",
+  "SHA256": "079FA8B2C9CB1805BE4B2D9BC41F3C8FD3C51D54D88C535B18976B9FAFBDA36F",
   "Type": "NVIDIA",
   "CUDA": 9.2,
   "Arguments": [
@@ -29,7 +29,7 @@
     "Cuckarood29": {
       "Params": "-uri cuckaroo29d",
       "NoCpu": true,
-      "Mem": 5.6
+      "Mem": 3.5
     },
     "Cuckatoo31": {
       "Params": "-uri cuckatoo31",
