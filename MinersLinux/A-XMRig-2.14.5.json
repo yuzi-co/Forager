@@ -1,7 +1,7 @@
 {
-  "Path": "xmrig-amd-2.14.4/xmrig-amd.exe",
-  "Uri": "https://github.com/xmrig/xmrig-amd/releases/download/v2.14.4/xmrig-amd-2.14.4-msvc-win64.zip",
-  "SHA256": "B4AA2F96985D8D3AA6654A4E2764F6F6608D2ED81D2116A6670CB9DD2C132FFB",
+  "Path": "xmrig-amd-2.14.5/xmrig-amd",
+  "Uri": "https://github.com/xmrig/xmrig-amd/releases/download/v2.14.5/xmrig-amd-2.14.5-xenial-x64.tar.gz",
+  "SHA256": "6A90321B3859E235EF676F7A8BEC93EA3D908623D723123E996061B2C6617986",
   "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",
@@ -11,6 +11,7 @@
     "$(if ($Pool.PoolName -eq 'NiceHash'){'--nicehash'})",
     "$(if ($EnableSSL){'--tls'})",
     "--donate-level 1",
+    "--no-color",
     "--api-port #APIPort#",
     "#AlgorithmParameters#",
     "#CustomParameters#"
