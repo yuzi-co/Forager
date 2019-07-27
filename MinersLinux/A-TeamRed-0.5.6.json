@@ -1,7 +1,7 @@
 {
-  "Path": "teamredminer-v0.5.5-linux/teamredminer",
-  "Uri": "https://github.com/todxx/teamredminer/releases/download/0.5.5/teamredminer-v0.5.5-linux.tgz",
-  "SHA256": "FEDED3F9D877737154D7B5C8B863B953EDCD762E91198D9C5A797A5959B4ACC4",
+  "Path": "teamredminer-v0.5.6-linux/teamredminer",
+  "Uri": "https://github.com/todxx/teamredminer/releases/download/0.5.6/teamredminer-v0.5.6-linux.tgz",
+  "SHA256": "C4D2417A254F227626D27672520A740E4A2CEA0EBB5252452968FD33838B0043",
   "Type": "AMD",
   "Arguments": [
     "-o stratum+$(if($EnableSSL){'ssl'}else{'tcp'})://#Server#:#Port#",
