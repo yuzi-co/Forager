@@ -1,6 +1,6 @@
 
 $M = @{
-    Path       = "t-rex.exe"
+    Path       = "t-rex"
     Type       = "NVIDIA"
     Arguments  = @(
         "-o #Protocol#://#Server#:#Port#"
@@ -22,7 +22,7 @@ $M = @{
         BCD        = "-a bcd"
         Bitcore    = "-a bitcore"
         C11        = "-a c11"
-        # Dedal      = "-a dedal"
+        Dedal      = "-a dedal"
         # Hmq1725   = "-a hmq1725"
         Honeycomb  = "-a honeycomb"
         HSR        = "-a hsr"
@@ -39,6 +39,10 @@ $M = @{
         SHA256q    = "-a sha256q"
         # Skunk     = "-a skunk"
         SonoA      = "-a sonoa"
+        Tensority  = @{
+            Params = "-a tensority"
+            Fee    = 0.03
+        }
         Timetravel = "-a timetravel"
         Tribus     = "-a tribus"
         X16r       = "-a x16r"
@@ -52,17 +56,13 @@ $M = @{
 }
 
 if ($SystemInfo.CudaVersion -ge [version]"10.0") {
-    $M.Uri = "https://github.com/trexminer/T-Rex/releases/download/0.12.1/t-rex-0.12.1-win-cuda10.0.zip"
-    $M.SHA256 = "FA07B8A2EEEAE0DE46C13495DBD6A5FBC694BB9918C97407CDA3644065A02803"
+    $M.Uri = "https://github.com/trexminer/T-Rex/releases/download/0.13.2/t-rex-0.13.2-linux-cuda10.0.tar.gz"
+    $M.SHA256 = "1FA02C1694AE98462EF721DA56DA7D40C6CDDD14592068E8DD6E420D162D6CB1"
     $M.CUDA = 10
 } elseif ($SystemInfo.CudaVersion -ge [version]"9.2") {
-    $M.Uri = "https://github.com/trexminer/T-Rex/releases/download/0.12.1/t-rex-0.12.1-win-cuda9.2.zip"
-    $M.SHA256 = "54A0ED8B3C6ACFACF700361CD22F3DC637DE2D245AB3AAB8F62E71229EE35B52"
+    $M.Uri = "https://github.com/trexminer/T-Rex/releases/download/0.13.2/t-rex-0.13.2-linux-cuda9.2.tar.gz"
+    $M.SHA256 = "20249509712B0675557908AB03AE906DA1CD24205B09EBB35DF5827CDF5A98BA"
     $M.CUDA = 9.2
-} elseif ($SystemInfo.CudaVersion -ge [version]"9.1") {
-    $M.Uri = "https://github.com/trexminer/T-Rex/releases/download/0.12.1/t-rex-0.12.1-win-cuda9.1.zip"
-    $M.SHA256 = "7E3DF0B104CA17BEBC7EA2619AD3AF15E4D79699728D6DF68090BBF3CAE81E4D"
-    $M.CUDA = 9.1
 } else {
     return
 }
