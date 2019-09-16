@@ -1,7 +1,7 @@
 {
-  "Path": "miner",
-  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.53/gminer_1_53_linux64.tar.xz",
-  "SHA256": "CB795E98DDD83F78486FCC4F75F682D39F3D500BF34B83B0B56034486EFD5B0B",
+  "Path": "miner.exe",
+  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.65/gminer_1_65_windows64.zip",
+  "SHA256": "A10E0BA3325DB87432D4CF161D8A78AF607986593BDBC1E101EC19B8F52F1031",
   "Type": "NVIDIA",
   "CUDA": 9.0,
   "Arguments": [
@@ -15,7 +15,6 @@
     "--devices #DevicesETHMode#",
     "--cuda 1",
     "--opencl 0",
-    "--color 0",
     "#AlgorithmParameters#",
     "#CustomParameters#"
   ],
@@ -49,6 +48,7 @@
       "NoCpu": true,
       "Mem": 7.4
     },
+    "Eaglesong": "--algo eaglesong",
     "Equihash96": "--algo 96_5 --pers auto",
     "Equihash125": "--algo 125_4",
     "Equihash144": {

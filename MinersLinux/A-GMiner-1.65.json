@@ -1,7 +1,7 @@
 {
   "Path": "miner",
-  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.53/gminer_1_53_linux64.tar.xz",
-  "SHA256": "CB795E98DDD83F78486FCC4F75F682D39F3D500BF34B83B0B56034486EFD5B0B",
+  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.65/gminer_1_65_linux64.tar.xz",
+  "SHA256": "6F2B34C76015A4EB26FFA4AFE9C50ABE5A140812FD627E84312528D38B541BBD",
   "Type": "AMD",
   "Arguments": [
     "--server #Server#",
@@ -37,6 +37,8 @@
       "NoCpu": true,
       "Mem": 5
     },
+    "Eaglesong": "--algo eaglesong",
+    "Equihash125": "--algo 125_4",
     "Equihash144": {
       "Params": "--algo 144_5 --pers auto",
       "Mem": 2
