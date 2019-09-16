@@ -1,6 +1,6 @@
 
 $M = @{
-    Path       = "miniZ"
+    Path       = "miniZ.exe"
     Type       = "NVIDIA"
     Arguments  = @(
         "--server `$(if (`$EnableSSL){'ssl://'})#Server#"
@@ -9,7 +9,6 @@ $M = @{
         "--pass #Password#"
         "--gpu-line"
         "--extra"
-        "--nocolor"
         "--cuda-devices #DevicesETHMode#"
         "--telemetry 0.0.0.0:#APIPort#"
         "#AlgorithmParameters#"
@@ -45,12 +44,12 @@ $M = @{
 }
 
 if ($SystemInfo.CudaVersion -ge [version]"10.0") {
-    $M.Uri = "https://github.com/yuzi-co/miners-linux/releases/download/2019.07/miniZ_v1.4o_cuda10_linux-x64.tar.gz"
-    $M.SHA256 = "C3B3467FDA52EEC056FD85A1A7598F1F95BE3BB9FE1850141E977353CA1598BB"
+    $M.Uri = "https://github.com/yuzi-co/miners/releases/download/2019.09/miniZ_v1.5q5_cuda10_win-x64.zip"
+    $M.SHA256 = "3799110F216D77FEADE441C1FB87CA408E37D0152B6B0D97EDC1C388DB238F69"
     $M.CUDA = 10
 } elseif ($SystemInfo.CudaVersion -ge [version]"8.0") {
-    $M.Uri = "https://github.com/yuzi-co/miners-linux/releases/download/2019.07/miniZ_v1.4o_linux-x64.tar.gz"
-    $M.SHA256 = "07A7855795E3615D9D7D6F79237751C4F1DFB405C8924F885956EE5BFBCC2CCC"
+    $M.Uri = "https://github.com/yuzi-co/miners/releases/download/2019.09/miniZ_v1.5q5_win-x64.zip"
+    $M.SHA256 = "3ED99F829C5DF49CFBB59D359C754DC8A896A7A388A81E3F691F291DBC27FC5C"
     $M.CUDA = 8.0
 } else {
     return
