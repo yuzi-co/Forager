@@ -1,7 +1,7 @@
 {
-  "Path": "xmrig-amd-2.14.5/xmrig-amd",
-  "Uri": "https://github.com/xmrig/xmrig-amd/releases/download/v2.14.5/xmrig-amd-2.14.5-xenial-x64.tar.gz",
-  "SHA256": "6A90321B3859E235EF676F7A8BEC93EA3D908623D723123E996061B2C6617986",
+  "Path": "xmrig-amd-2.14.6/xmrig-amd",
+  "Uri": "https://github.com/xmrig/xmrig-amd/releases/download/v2.14.6/xmrig-amd-2.14.6-xenial-x64.tar.gz",
+  "SHA256": "1277CE4D63A3D85E94A46C1DC22208A126557388DE1A7D51AB3746249961607B",
   "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",
