@@ -1,7 +1,7 @@
 {
   "Path": "NBMiner_Linux/nbminer",
-  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v24.2/NBMiner_24.2_Linux.tgz",
-  "SHA256": "3DDBC571927235EFB4BF7C84462384765BBCF1C41DB1E8EB38AF63049C313E30",
+  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v25.2/NBMiner_25.2_Linux.tgz",
+  "SHA256": "D04C976963E6E061BAA35E2041EC72EDEFF01E1E9C2FAFB07941ECE1A87EACD0",
   "Type": "NVIDIA",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
@@ -39,6 +39,11 @@
       "Params": "-a cuckatoo",
       "NoCpu": true,
       "Mem": 7.4
+    },
+    "Eaglesong": "-a eaglesong",
+    "Eaglesong_Ethash": {
+      "Params": "-a eaglesong_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'ethnh'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#",
+      "Mem": 3
     },
     "_Ethash": {
       "Params": "-a ethash -o $(if ($Pool.PoolName -eq 'NiceHash') {'ethnh'} else {'ethproxy'})+tcp://#Server#:#Port#",
