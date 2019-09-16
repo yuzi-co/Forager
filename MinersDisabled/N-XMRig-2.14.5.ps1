@@ -1,6 +1,6 @@
 
 $M = @{
-    Path       = "xmrig-nvidia-2.14.4/xmrig-nvidia.exe"
+    Path       = "xmrig-nvidia-2.14.5/xmrig-nvidia.exe"
     Type       = "NVIDIA"
     Arguments  = @(
         "-o #Server#:#Port#"
@@ -38,21 +38,17 @@ $M = @{
 }
 
 if ($SystemInfo.CudaVersion -ge [version]"10.1") {
-    $M.Uri = "https://github.com/xmrig/xmrig-nvidia/releases/download/v2.14.4/xmrig-nvidia-2.14.4-cuda10_1-win64.zip"
-    $M.SHA256 = "5D1F7B6E45A18DB0C9445F38026C4AF228ECAFA5407D6E33801B995669FE0940"
+    $M.Uri = "https://github.com/xmrig/xmrig-nvidia/releases/download/v2.14.5/xmrig-nvidia-2.14.5-cuda10_1-win64.zip"
+    $M.SHA256 = "6EF35FF6F3A61D36F09EFC294B1310BE4697922265951B2D8BECA54EA2E7F795"
     $M.CUDA = 10.1
 } elseif ($SystemInfo.CudaVersion -ge [version]"10.0") {
-    $M.Uri = "https://github.com/xmrig/xmrig-nvidia/releases/download/v2.14.4/xmrig-nvidia-2.14.4-cuda10-win64.zip"
-    $M.SHA256 = "EE26AAD006299D29E0517C035694C65AE5A8ADCAF65F4B730AECADA2B85DEE08"
+    $M.Uri = "https://github.com/xmrig/xmrig-nvidia/releases/download/v2.14.5/xmrig-nvidia-2.14.5-cuda10-win64.zip"
+    $M.SHA256 = "41C6E317A803F4692A26B8672C0A71059F1D36F1C16A92130E69DBF109333DAD"
     $M.CUDA = 10
 } elseif ($SystemInfo.CudaVersion -ge [version]"9.2") {
-    $M.Uri = "https://github.com/xmrig/xmrig-nvidia/releases/download/v2.14.4/xmrig-nvidia-2.14.4-cuda9_2-win64.zip"
-    $M.SHA256 = "19A13C269E0332C5BA528D81A0D7A770657093754C383338FD6E3CFF108C63DE"
+    $M.Uri = "https://github.com/xmrig/xmrig-nvidia/releases/download/v2.14.5/xmrig-nvidia-2.14.5-cuda9_2-win64.zip"
+    $M.SHA256 = "86262DA53E0170CCDA9D4B65F22B731EC20076E45D015210984E62114AED9610"
     $M.CUDA = 9.2
-} elseif ($SystemInfo.CudaVersion -ge [version]"9.0") {
-    $M.Uri = "https://github.com/xmrig/xmrig-nvidia/releases/download/v2.14.4/xmrig-nvidia-2.14.4-cuda9_0-win64.zip"
-    $M.SHA256 = "EAB50EC1EBBC21C93FFD0A6AA8503FA6A199B82DCEB1D96864767BB4CD843F3B"
-    $M.CUDA = 9.0
 } else {
     return
 }
