@@ -1,7 +1,7 @@
 {
-  "Path": "teamredminer-v0.5.6-linux/teamredminer",
-  "Uri": "https://github.com/todxx/teamredminer/releases/download/0.5.6/teamredminer-v0.5.6-linux.tgz",
-  "SHA256": "C4D2417A254F227626D27672520A740E4A2CEA0EBB5252452968FD33838B0043",
+  "Path": "teamredminer-v0.5.7-linux/teamredminer",
+  "Uri": "https://github.com/todxx/teamredminer/releases/download/0.5.7/teamredminer-v0.5.7-linux.tgz",
+  "SHA256": "4B38A163CD65878395BCFF53A243FDFF983104B0894D22A2FC9133BEB80870F3",
   "Type": "AMD",
   "Arguments": [
     "-o stratum+$(if($EnableSSL){'ssl'}else{'tcp'})://#Server#:#Port#",
@@ -20,6 +20,7 @@
   "Fee": 0.025,
   "Mem": 1.1,
   "Algorithms": {
+    "CnConceal": "-a cn_conceal",
     "CnDouble": "-a cnv8_dbl",
     "CnHalf": "-a cnv8_half",
     "CnHaven": "-a cn_haven",
@@ -29,6 +30,10 @@
     "CnSaber": "-a cn_saber",
     "CnTurtle": "-a cnv8_trtl",
     "CnUpx2": "-a cnv8_upx2",
+    "Cuckaroo29d": {
+      "Params": "-a cuckarood29_grin",
+      "Mem": 3.8
+    },
     "Cuckatoo31": {
       "Params": "-a cuckatoo31_grin",
       "Mem": 7.6
