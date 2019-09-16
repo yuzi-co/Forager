@@ -19,7 +19,7 @@
   "API": "LOL",
   "SSL": true,
   "Algorithms": {
-    "BeamHashII": {
+    "BeamV2": {
       "Params": "--coin BEAM-II",
       "Mem": 3.5
     },

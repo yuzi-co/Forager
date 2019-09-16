@@ -23,7 +23,7 @@
   "SSL": true,
   "Fee": 0.02,
   "Algorithms": {
-    "BeamHashII": "--algo BeamHashII",
+    "BeamV2": "--algo BeamHashII",
     "Cuckoo29": {
       "Params": "--algo aeternity",
       "NoCpu": true,

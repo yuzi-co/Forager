@@ -20,11 +20,11 @@
   "SSL": true,
   "Custom": "--asm 1",
   "Algorithms": {
-    "BeamHashII": {
+    "BeamV2": {
       "Params": "--coin BEAM-II",
       "Mem": 3.5
     },
-    "Cuckarood29": {
+    "Cuckaroo29d": {
       "Params": "--coin GRIN-AD29",
       "Mem": 3.6
     },
