@@ -1,7 +1,7 @@
 {
-  "Path": "0.8.5/lolMiner.exe",
-  "Uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.8.5/lolMiner_v085_Win64.zip",
-  "SHA256": "F56660F344CB2F2C70AC923729C83C8372EBAAB790F6A8E8675BF2F09190142F",
+  "Path": "0.8.8/lolMiner.exe",
+  "Uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.8.8/lolMiner_v088_Win64.zip",
+  "SHA256": "986C89258C903F9272A240FB85BCAB8EB94B4DC40DDDDE2B32C2FEBEB84A5F8C",
   "Type": "AMD",
   "Arguments": [
     "--pool #Server#",
@@ -19,6 +19,10 @@
   "API": "LOL",
   "SSL": true,
   "Algorithms": {
+    "BeamHashII": {
+      "Params": "--coin BEAM-II",
+      "Mem": 3.5
+    },
     "Cuckarood29": {
       "Params": "--coin GRIN-AD29",
       "Mem": 3.6
@@ -38,10 +42,6 @@
     "Equihash144": {
       "Params": "--coin AUTO144_5",
       "Mem": 1.8
-    },
-    "Equihash150": {
-      "Params": "--coin BEAM",
-      "Mem": 3.5
     },
     "Equihash192": {
       "Params": "--coin AUTO192_7",
