@@ -1,9 +1,9 @@
 {
-  "Path": "nanominer-windows-1.5.2/nanominer.exe",
-  "Uri": "https://github.com/nanopool/nanominer/releases/download/v1.5.2/nanominer-windows-1.5.2.zip",
-  "SHA256": "3FE8D4357B1480850E05E2984D17EEED5C507305922A0C69807ACCDF3163ADAA",
+  "Path": "nanominer-windows-1.5.3/nanominer.exe",
+  "Uri": "https://github.com/nanopool/nanominer/releases/download/v1.5.3/nanominer-windows-1.5.3.zip",
+  "SHA256": "929FA81C86CD4B87C2C7633704D34282FB1A49ECCA55E2B1669E92DFCB8E41CB",
   "Type": "AMD",
-  "GenerateConfigFile": "nanominer-windows-1.5.2/#GroupName#-#Algorithm#.conf",
+  "GenerateConfigFile": "nanominer-windows-1.5.3/#GroupName#-#Algorithm#.conf",
   "PatternConfigFile": "NanoMiner.txt",
   "Arguments": "#GroupName#-#Algorithm#.conf",
   "API": "Claymore",

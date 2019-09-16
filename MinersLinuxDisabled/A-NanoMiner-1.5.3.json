@@ -1,9 +1,9 @@
 {
-  "Path": "nanominer-linux-1.5.2/nanominer",
-  "Uri": "https://github.com/nanopool/nanominer/releases/download/v1.5.2/nanominer-linux-1.5.2.tar.gz",
-  "SHA256": "FD33B05690ED0D8110DD7E11D475577A85783D5CBE509C9BCEDB665B19B178DF",
+  "Path": "nanominer-linux-1.5.3/nanominer",
+  "Uri": "https://github.com/nanopool/nanominer/releases/download/v1.5.3/nanominer-linux-1.5.3.tar.gz",
+  "SHA256": "8C787458F4C3D49F2D0647838460FB4A5531E03F5980D7FF6496C575089D865D",
   "Type": "AMD",
-  "GenerateConfigFile": "nanominer-linux-1.5.2/#GroupName#-#Algorithm#.conf",
+  "GenerateConfigFile": "nanominer-linux-1.5.3/#GroupName#-#Algorithm#.conf",
   "PatternConfigFile": "NanoMiner.txt",
   "Arguments": "#GroupName#-#Algorithm#.conf",
   "API": "Claymore",
