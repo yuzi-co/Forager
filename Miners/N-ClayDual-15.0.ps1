@@ -1,7 +1,7 @@
 
 $M = @{
-    Uri        = "https://github.com/yuzi-co/miners/releases/download/2019.06/ClaymoreDual-v14.7.7z"
-    SHA256     = "82AE73DC13514823BD55F779D24628A110CF9DB81D3B80D8D8448B2E48FFB50A"
+    Uri        = "https://github.com/yuzi-co/miners/releases/download/2019.09/ClaymoreDual-v15.0.7z"
+    SHA256     = "FB10695BA0F19E99382B5DCF7EC01B99C6B55512F49A6FBD5746A38CBC120864"
     Type       = "NVIDIA"
     Arguments  = @(
         "-epool #Protocol#://#Server#:#Port#"

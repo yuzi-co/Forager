@@ -1,20 +1,22 @@
 {
-  "Path": "ethdcrminer64",
-  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.06/ClaymoreDual-v14.7-linux.tar.gz",
-  "SHA256": "0FD1B51D5B7F36F63016378230D582734231E2448C909D45CA696FECCB127AC1",
+  "Path": "EthDcrMiner64.exe",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.09/ClaymoreDual-v15.0.7z",
+  "SHA256": "FB10695BA0F19E99382B5DCF7EC01B99C6B55512F49A6FBD5746A38CBC120864",
   "Type": "AMD",
   "Arguments": [
     "-epool #Protocol#://#Server#:#Port#",
     "-ewal #Login#",
     "-epsw #Password#",
     "-esm #EthStMode#",
+    "-dpool #ProtocolDual#://#ServerDual#:#PortDual#",
+    "-dwal #LoginDual#",
+    "-dpsw #PasswordDual#",
     "-wd 1",
     "-r -1",
     "-logfile #GroupName#_log.txt",
     "-logsmaxsize 10",
     "-platform 1",
     "-di #DevicesClayMode#",
-    "-colors 0",
     "-mport -#APIPort#",
     "-allpools 1",
     "#AlgorithmParameters#",
@@ -26,8 +28,7 @@
   "Mem": 2,
   "Algorithms": {
     "Ethash": "-mode 1",
-    "Params": "-mode 1",
-    "_Ethash_Blake2s": "-dcoin blake2s -mode 0 -dpool #ProtocolDual#://#ServerDual#:#PortDual# -dwal #LoginDual# -dpsw #PasswordDual#",
-    "_Ethash_Keccak": "-dcoin keccak -mode 0 -dpool #ProtocolDual#://#ServerDual#:#PortDual# -dwal #LoginDual# -dpsw #PasswordDual#"
+    "Ethash_Blake2s": "-dcoin blake2s -mode 0",
+    "Ethash_Keccak": "-dcoin keccak -mode 0"
   }
 }
