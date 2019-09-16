@@ -1,7 +1,7 @@
 {
-  "Path": "bminer-v15.7.6-f585663/bminer",
-  "Uri": "https://www.bminercontent.com/releases/bminer-v15.7.6-f585663-amd64.tar.xz",
-  "SHA256": "B73EB426C473A3BCE2279D1BBB29D61AD614C8B31E046510BC08D992204EFA5D",
+  "Path": "bminer-lite-v15.8.6-5f20661/bminer.exe",
+  "Uri": "https://www.bminercontent.com/releases/bminer-lite-v15.8.6-5f20661-amd64.zip",
+  "SHA256": "DDFEF2A390FC76DAE6452ECB3C46BE5227B5EFF140EDE97A81E6F38006C53BB7",
   "Type": "NVIDIA",
   "CUDA": 9.2,
   "Arguments": [
@@ -16,17 +16,21 @@
   "SSL": true,
   "Fee": 0.02,
   "Algorithms": {
-    "_Cuckoo29": {
+    "BeamV2": {
+      "Params": "-uri beamhash2",
+      "Mem": 4
+    },
+    "Cuckoo29": {
       "Params": "-uri aeternity",
       "NoCpu": true,
-      "Mem": 5.6
+      "Mem": 5.3
     },
-    "_Cuckaroo29": {
+    "Cuckaroo29": {
       "Params": "-uri cuckaroo29",
       "NoCpu": true,
-      "Mem": 5.6
+      "Mem": 5.3
     },
-    "Cuckarood29": {
+    "Cuckaroo29d": {
       "Params": "-uri cuckaroo29d",
       "NoCpu": true,
       "Mem": 3.5
@@ -37,11 +41,7 @@
       "Mem": 7.4
     },
     "_Equihash144": "-pers auto -uri equihash1445",
-    "_Equihash150": {
-      "Params": "-uri beam",
-      "Mem": 4
-    },
-    "_Ethash": {
+    "Ethash": {
       "Params": "-uri ethstratum",
       "Mem": 3
     },

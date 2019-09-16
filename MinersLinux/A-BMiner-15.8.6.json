@@ -1,7 +1,7 @@
 {
-  "Path": "bminer-lite-v15.7.6-f585663/bminer.exe",
-  "Uri": "https://www.bminercontent.com/releases/bminer-lite-v15.7.6-f585663-amd64.zip",
-  "SHA256": "079FA8B2C9CB1805BE4B2D9BC41F3C8FD3C51D54D88C535B18976B9FAFBDA36F",
+  "Path": "bminer-v15.8.6-5f20661/bminer",
+  "Uri": "https://www.bminercontent.com/releases/bminer-v15.8.6-5f20661-amd64.tar.xz",
+  "SHA256": "343D2962298495588B6AD59F57AE9E92A67E48787689FFB79A7B7284FA532D79",
   "Type": "AMD",
   "Arguments": [
     "#AlgorithmParameters#$(if($enableSSL){'+ssl'})://$([System.Web.HttpUtility]::UrlEncode('#Login#')):$([System.Web.HttpUtility]::UrlEncode('#Password#'))@#Server#:#Port#",
