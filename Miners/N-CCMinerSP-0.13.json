@@ -1,0 +1,27 @@
+{
+  "Path": "spmodgit14/ccminer.exe",
+  "Uri": "https://github.com/sp-hash/suprminer/releases/download/spmod-git13/spmodgit13.zip",
+  "SHA256": "75E96474A542BBD1AEA02CB45CE589C9B66093E2DDA5969512855E840DAD42CA",
+  "Type": "NVIDIA",
+  "CUDA": 10.0,
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-R 3",
+    "-r 10",
+    "-d #Devices#",
+    "-b #APIPort#",
+    "--submit-stale",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "API": "Wrapper",
+  "Algorithms": {
+    "X16r": "-a x16r",
+    "X16r2": "-a x16r2",
+    "X16rv2": "-a x16rv2",
+    "X16s": "-a x16s",
+    "X17": "-a x17"
+  }
+}
