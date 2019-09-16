@@ -1,22 +1,20 @@
 {
-  "Path": "PhoenixMiner_4.2c_Windows/PhoenixMiner.exe",
-  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.03/PhoenixMiner_4.2c_Windows.zip",
-  "SHA256": "B2AD6398594D4F92A55F8B03895BDC9BE13D875AE9D373611B9AC4BD59554AFC",
-  "Type": "AMD",
+  "Path": "PhoenixMiner_4.6c_Linux/PhoenixMiner",
+  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.09/PhoenixMiner_4.6c_Linux.tar.gz",
+  "SHA256": "1517B7AD8F5B0D859858D95BD481ACA48AE95062ECEECD31DEF694E6AE2FC15E",
+  "Type": "NVIDIA",
   "Arguments": [
     "-pool #Protocol#://#Server#:#Port#",
     "-wal #Login#",
     "-pass #Password#",
-    "-dpool #ProtocolDual#://#ServerDual#:#PortDual#",
-    "-dwal #LoginDual#",
-    "-dpsw #PasswordDual#",
     "$(if ('#EthStMode#' -ne ''){'-esm #EthStMode#'})",
     "-mi 12",
     "-wd 1",
     "-r -1",
     "-logfile #GroupName#_log.txt",
     "-logsmaxsize 10",
-    "-amd",
+    "-nvidia",
+    "-nvdo 1",
     "-di #DevicesClayMode#",
     "-cdmport #APIPort#",
     "-cdm 1",
@@ -26,11 +24,9 @@
   "API": "Claymore",
   "Fee": 0.0065,
   "SSL": true,
-  "Mem": 2,
   "Algorithms": {
-    "ProgPOW": "-coin bci -mode 1",
     "Ethash": "-mode 1",
     "Ubqhash": "-coin ubq -mode 1",
-    "_Ethash_Blake2s": "-dcoin blake2s -mode 0"
+    "_Ethash_Blake2s": "-dcoin blake2s -mode 0 -dpool #ProtocolDual#://#ServerDual#:#PortDual# -dwal #LoginDual# -dpsw #PasswordDual#"
   }
 }

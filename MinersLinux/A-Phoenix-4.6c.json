@@ -1,7 +1,7 @@
 {
-  "Path": "PhoenixMiner_4.2c_Linux/PhoenixMiner",
-  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.03/PhoenixMiner_4.2c_Linux.tar.gz",
-  "SHA256": "B46C13DB685C17884EBC73E23AEDEF3513D1D2BD0B52F20C0A2824E7BC90E9A0",
+  "Path": "PhoenixMiner_4.6c_Linux/PhoenixMiner",
+  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.09/PhoenixMiner_4.6c_Linux.tar.gz",
+  "SHA256": "1517B7AD8F5B0D859858D95BD481ACA48AE95062ECEECD31DEF694E6AE2FC15E",
   "Type": "AMD",
   "Arguments": [
     "-pool #Protocol#://#Server#:#Port#",

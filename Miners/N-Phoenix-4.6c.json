@@ -1,12 +1,15 @@
 {
-  "Path": "PhoenixMiner_4.2c_Linux/PhoenixMiner",
-  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.03/PhoenixMiner_4.2c_Linux.tar.gz",
-  "SHA256": "B46C13DB685C17884EBC73E23AEDEF3513D1D2BD0B52F20C0A2824E7BC90E9A0",
+  "Path": "PhoenixMiner_4.6c_Windows/PhoenixMiner.exe",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.09/PhoenixMiner_4.6c_Windows.zip",
+  "SHA256": "ACA4046D0F24DA08FC65DB59EF7597276EE1B7F9DF448A9E6ACD22A9C1D35776",
   "Type": "NVIDIA",
   "Arguments": [
     "-pool #Protocol#://#Server#:#Port#",
     "-wal #Login#",
     "-pass #Password#",
+    "-dpool #ProtocolDual#://#ServerDual#:#PortDual#",
+    "-dwal #LoginDual#",
+    "-dpsw #PasswordDual#",
     "$(if ('#EthStMode#' -ne ''){'-esm #EthStMode#'})",
     "-mi 12",
     "-wd 1",
@@ -24,9 +27,10 @@
   "API": "Claymore",
   "Fee": 0.0065,
   "SSL": true,
+  "Mem": 2,
   "Algorithms": {
     "Ethash": "-mode 1",
     "Ubqhash": "-coin ubq -mode 1",
-    "_Ethash_Blake2s": "-dcoin blake2s -mode 0 -dpool #ProtocolDual#://#ServerDual#:#PortDual# -dwal #LoginDual# -dpsw #PasswordDual#"
+    "Ethash_Blake2s": "-dcoin blake2s -mode 0"
   }
 }
