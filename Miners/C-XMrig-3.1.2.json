@@ -10,7 +10,8 @@
     "$(if ($Pool.PoolName -eq 'NiceHash'){'--nicehash'})",
     "$(if ($EnableSSL){'--tls'})",
     "--donate-level 1",
-    "--api-port #APIPort#",
+    "--http-enabled",
+    "--http-port #APIPort#",
     "#AlgorithmParameters#",
     "#CustomParameters#"
   ],
