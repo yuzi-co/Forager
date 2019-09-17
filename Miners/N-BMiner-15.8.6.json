@@ -16,7 +16,7 @@
   "SSL": true,
   "Fee": 0.02,
   "Algorithms": {
-    "BeamV2": {
+    "_BeamV2": {
       "Params": "-uri beamhash2",
       "Mem": 4
     },
