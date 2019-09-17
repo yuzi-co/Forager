@@ -16,7 +16,7 @@
     "#AlgorithmParameters#",
     "#CustomParameters#"
   ],
-  "API": "Wrapper",
+  "API": "Ccminer",
   "Algorithms": {
     "X16r": "-a x16r",
     "X16r2": "-a x16r2",
