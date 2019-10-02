@@ -1,7 +1,7 @@
 {
-  "Path": "teamredminer-v0.5.7-linux/teamredminer",
-  "Uri": "https://github.com/todxx/teamredminer/releases/download/0.5.7/teamredminer-v0.5.7-linux.tgz",
-  "SHA256": "4B38A163CD65878395BCFF53A243FDFF983104B0894D22A2FC9133BEB80870F3",
+  "Path": "teamredminer-v0.5.9-win/teamredminer.exe",
+  "Uri": "https://github.com/todxx/teamredminer/releases/download/0.5.9/teamredminer-v0.5.9-win.zip",
+  "SHA256": "82CEAEB3658745709C935A472B8AE57F4600A41CC477B271D36F5561024BE7A5",
   "Type": "AMD",
   "Arguments": [
     "-o stratum+$(if($EnableSSL){'ssl'}else{'tcp'})://#Server#:#Port#",
@@ -10,7 +10,6 @@
     "-d #Devices#",
     "--platform=#GPUPlatform#",
     "--watchdog_script",
-    "--disable_colors",
     "--api_listen=#ApiPort#",
     "#AlgorithmParameters#",
     "#CustomParameters#"
@@ -20,6 +19,7 @@
   "Fee": 0.025,
   "Mem": 1.1,
   "Algorithms": {
+    "Argon2d512": "-a trtl_chukwa",
     "CnConceal": "-a cn_conceal",
     "CnDouble": "-a cnv8_dbl",
     "CnHalf": "-a cnv8_half",
@@ -49,6 +49,7 @@
     },
     "X16r": "-a x16r",
     "X16rt": "-a x16rt",
+    "X16rv2": "-a x16rv2",
     "X16s": "-a x16s"
   }
 }
