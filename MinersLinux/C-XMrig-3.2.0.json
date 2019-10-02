@@ -1,7 +1,7 @@
 {
-  "Path": "xmrig-3.1.2/xmrig",
-  "Uri": "https://github.com/xmrig/xmrig/releases/download/v3.1.2/xmrig-3.1.2-xenial-x64.tar.gz",
-  "SHA256": "9804AF03AE5CD53E7244F792E3F327AAA3CA7B85F6F93A14CA3C62590BE53C60",
+  "Path": "xmrig-3.2.0/xmrig",
+  "Uri": "https://github.com/xmrig/xmrig/releases/download/v3.2.0/xmrig-3.2.0-xenial-x64.tar.gz",
+  "SHA256": "0158A020233A111E2E6632A36A5F2D55B3B35290F4FD3FD374DE600EDED09587",
   "Type": "CPU",
   "Arguments": [
     "-o #Server#:#Port#",
