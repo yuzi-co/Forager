@@ -1,7 +1,7 @@
 {
   "Path": "miner.exe",
-  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.65/gminer_1_65_windows64.zip",
-  "SHA256": "A10E0BA3325DB87432D4CF161D8A78AF607986593BDBC1E101EC19B8F52F1031",
+  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.67/gminer_1_67_windows64.zip",
+  "SHA256": "5F651DAC1B0D7095CC45DA0A7983702C7C2BBDCD237E7C35A4BA203E551BCB9C",
   "Type": "AMD",
   "Arguments": [
     "--server #Server#",
