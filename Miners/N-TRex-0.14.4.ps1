@@ -47,6 +47,7 @@ $M = @{
         Tribus     = "-a tribus"
         X16r       = "-a x16r"
         X16rt      = "-a x16rt"
+        X16rv2     = "-a x16rv2"
         X16s       = "-a x16s"
         X17        = "-a x17"
         X21s       = "-a x21s"
@@ -56,12 +57,12 @@ $M = @{
 }
 
 if ($SystemInfo.CudaVersion -ge [version]"10.0") {
-    $M.Uri = "https://github.com/trexminer/T-Rex/releases/download/0.13.2/t-rex-0.13.2-win-cuda10.0.zip"
-    $M.SHA256 = "2F6D684381263682BDB396F6BE998EEF93D52D5B22C58C55E489D47DABF4BE80"
+    $M.Uri = "https://github.com/trexminer/T-Rex/releases/download/0.14.4/t-rex-0.14.4-win-cuda10.0.zip"
+    $M.SHA256 = "2F16FF51814826D37C26F0BFFA82295127912E84AF9C032D933F85AF49BEAD40"
     $M.CUDA = 10
 } elseif ($SystemInfo.CudaVersion -ge [version]"9.2") {
-    $M.Uri = "https://github.com/trexminer/T-Rex/releases/download/0.13.2/t-rex-0.13.2-win-cuda9.2.zip"
-    $M.SHA256 = "0D8248F1751079789C2B9B4255C65ECD63D1CEB7FAAB103B318C2E68F94D9197"
+    $M.Uri = "https://github.com/trexminer/T-Rex/releases/download/0.14.4/t-rex-0.14.4-win-cuda9.2.zip"
+    $M.SHA256 = "2198033E3A54E46DC0556076A006C34F8C622573043064DAED88F07A83D89963"
     $M.CUDA = 9.2
 } else {
     return
