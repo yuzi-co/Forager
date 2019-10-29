@@ -1,7 +1,7 @@
 {
   "Path": "wildrig.exe",
-  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.19.1/wildrig-multi-windows-0.19.1-preview.7z",
-  "SHA256": "5EE694A2BEF4B68099378CB8ABDEDC22AE08F9AD8BE05F47FC3D09E93A3903F5",
+  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.20.0/wildrig-multi-windows-0.20.0.3.7z",
+  "SHA256": "ADD54CB06432065E7057D22E524891BDE2FCF72886ABEF40360F6DFF867CDFD8",
   "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",
@@ -46,6 +46,8 @@
     "Jeonghash": "--algo glt-jeonghash",
     "Lyra2v3": "--algo lyra2v3",
     "Lyra2vc0ban": "--algo lyra2vc0ban",
+    "MTP": "--algo mtp",
+    "MTPtcr": "--algo mtp-tcr",
     "Padihash": "--algo glt-padihash",
     "Pawelhash": "--algo glt-pawelhash",
     "Phi": "--algo phi",
