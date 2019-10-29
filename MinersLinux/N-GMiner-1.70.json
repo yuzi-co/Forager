@@ -1,8 +1,9 @@
 {
   "Path": "miner",
-  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.67/gminer_1_67_linux64.tar.xz",
-  "SHA256": "BFE79EAD2E9861A32094C5491A4A769B39A5C3514EF02F810CC9FD77C9557CF5",
-  "Type": "AMD",
+  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.70/gminer_1_70_linux64.tar.gz",
+  "SHA256": "93D80C7ED6A766E11479AB820C4A3180982A127EF39CDD2341B6C832CBF72DA3",
+  "Type": "NVIDIA",
+  "CUDA": 9.0,
   "Arguments": [
     "--server #Server#",
     "--port #Port#",
@@ -12,8 +13,8 @@
     "--watchdog 0",
     "--ssl $(if($EnableSSL){1}else{0})",
     "--devices #DevicesETHMode#",
-    "--cuda 0",
-    "--opencl 1",
+    "--cuda 1",
+    "--opencl 0",
     "--color 0",
     "#AlgorithmParameters#",
     "#CustomParameters#"
@@ -22,34 +23,51 @@
   "SSL": true,
   "Fee": 0.02,
   "Algorithms": {
+    "BeamV2": "--algo BeamHashII",
+    "BFC": {
+      "Params": "--algo bfc",
+      "Fee": 0.03
+    },
     "Cuckoo29": {
       "Params": "--algo aeternity",
       "NoCpu": true,
-      "Mem": 5
+      "Mem": 3.8
     },
     "Cuckaroo29": {
       "Params": "--algo grin29",
       "NoCpu": true,
-      "Mem": 5
+      "Mem": 3.8
+    },
+    "Cuckaroo29d": {
+      "Params": "--algo grin29",
+      "NoCpu": true,
+      "Mem": 3.8
     },
     "Cuckaroo29s": {
       "Params": "--algo swap",
       "NoCpu": true,
-      "Mem": 5
+      "Mem": 3.8
     },
-    "Eaglesong": "--algo eaglesong",
+    "Cuckatoo31": {
+      "Params": "--algo grin31",
+      "NoCpu": true,
+      "Mem": 7.4
+    },
+    "Equihash96": "--algo 96_5 --pers auto",
     "Equihash125": "--algo 125_4",
     "Equihash144": {
       "Params": "--algo 144_5 --pers auto",
-      "Mem": 2
+      "Mem": 1.75
     },
     "Equihash150": {
       "Params": "--algo 150_5",
-      "Mem": 4
+      "Mem": 2.9
     },
     "Equihash192": {
       "Params": "--algo 192_7 --pers auto",
       "Mem": 2.75
-    }
+    },
+    "Equihash210": "--algo 210_9 --pers AION0PoW",
+    "Vds": "--algo vds"
   }
 }

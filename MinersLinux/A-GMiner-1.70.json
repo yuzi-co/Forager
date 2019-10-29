@@ -1,9 +1,8 @@
 {
-  "Path": "miner.exe",
-  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.67/gminer_1_67_windows64.zip",
-  "SHA256": "5F651DAC1B0D7095CC45DA0A7983702C7C2BBDCD237E7C35A4BA203E551BCB9C",
-  "Type": "NVIDIA",
-  "CUDA": 9.0,
+  "Path": "miner",
+  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.70/gminer_1_70_linux64.tar.gz",
+  "SHA256": "93D80C7ED6A766E11479AB820C4A3180982A127EF39CDD2341B6C832CBF72DA3",
+  "Type": "AMD",
   "Arguments": [
     "--server #Server#",
     "--port #Port#",
@@ -13,8 +12,9 @@
     "--watchdog 0",
     "--ssl $(if($EnableSSL){1}else{0})",
     "--devices #DevicesETHMode#",
-    "--cuda 1",
-    "--opencl 0",
+    "--cuda 0",
+    "--opencl 1",
+    "--color 0",
     "#AlgorithmParameters#",
     "#CustomParameters#"
   ],
@@ -22,48 +22,37 @@
   "SSL": true,
   "Fee": 0.02,
   "Algorithms": {
-    "BeamV2": "--algo BeamHashII",
+    "BFC": {
+      "Params": "--algo bfc",
+      "Fee": 0.03
+    },
     "Cuckoo29": {
       "Params": "--algo aeternity",
       "NoCpu": true,
-      "Mem": 3.8
+      "Mem": 5
     },
     "Cuckaroo29": {
       "Params": "--algo grin29",
       "NoCpu": true,
-      "Mem": 3.8
-    },
-    "Cuckaroo29d": {
-      "Params": "--algo grin29",
-      "NoCpu": true,
-      "Mem": 3.8
+      "Mem": 5
     },
     "Cuckaroo29s": {
       "Params": "--algo swap",
       "NoCpu": true,
-      "Mem": 3.8
+      "Mem": 5
     },
-    "Cuckatoo31": {
-      "Params": "--algo grin31",
-      "NoCpu": true,
-      "Mem": 7.4
-    },
-    "Eaglesong": "--algo eaglesong",
-    "Equihash96": "--algo 96_5 --pers auto",
     "Equihash125": "--algo 125_4",
     "Equihash144": {
       "Params": "--algo 144_5 --pers auto",
-      "Mem": 1.75
+      "Mem": 2
     },
     "Equihash150": {
       "Params": "--algo 150_5",
-      "Mem": 2.9
+      "Mem": 4
     },
     "Equihash192": {
       "Params": "--algo 192_7 --pers auto",
       "Mem": 2.75
-    },
-    "Equihash210": "--algo 210_9 --pers AION0PoW",
-    "Vds": "--algo vds"
+    }
   }
 }
