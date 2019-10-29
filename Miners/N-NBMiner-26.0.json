@@ -1,7 +1,6 @@
 {
   "Path": "NBMiner_Win/nbminer.exe",
-  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v25.2/NBMiner_25.2_Win.zip",
-  "SHA256": "6150725EA9E6F5A30BF170C15F2FD985E56CC860063097A78B64F76974B43F70",
+  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v26.0/NBMiner_26.0_Win.zip",
   "Type": "NVIDIA",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
@@ -15,6 +14,7 @@
   "SSL": true,
   "Fee": 0.02,
   "Algorithms": {
+    "BFC": "-a bfc",
     "Cuckoo29": {
       "Params": "-a cuckoo_ae",
       "NoCpu": true,
