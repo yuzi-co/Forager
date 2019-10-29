@@ -1,0 +1,34 @@
+{
+  "Path": "cpuminer-$($f=$SystemInfo.CpuFeatures;$(if($f.avx2 -and $f.sha){'zen'}elseif($f.avx2){'avx2'}elseif($f.avx){'avx'}elseif($f.aes -and $f.sse42){'aes-sse42'}else{'sse2'})).exe",
+  "Uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.9.9.1/cpuminer-opt-3.9.9.1-windows.zip",
+  "SHA256": "312D84A1115071E5E9323E393E008196533D3ABA7A5A3B33BC2A955C3F1A1EB3",
+  "Type": "CPU",
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "--retry-pause 5",
+    "-r 10",
+    "-b #APIPort#",
+    "$(if ($CpuThreads -ne $null){'-t ' + $CpuThreads})",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "API": "Ccminer",
+  "Algorithms": {
+    "CpuPower": "-a yespower -N 2048 -R 32 -K \"CPUpower: The number of CPU working or available for proof-of-work mining\"",
+    "HOdl": "-a hodl",
+    "Lyra2h": "-a lyra2h",
+    "Lyra2z330": "-a lyra2z330",
+    "M7M": "-a m7m",
+    "Power2b": "-a yespower-b2b -N 2048 -R 32 -K \"Now I am become Death, the destroyer of worlds\"",
+    "ScryptN": "-a scrypt -N 2048",
+    "Verium": "-a scrypt -N 1048576",
+    "Yescrypt": "-a yescrypt",
+    "YescryptR8": "-a yescrypt -N 2048 -R 8 -K \"Client Key\"",
+    "YescryptR16": "-a yescrypt -N 4096 -R 16 -K \"Client Key\"",
+    "YescryptR32": "-a yescrypt -N 4096 -R 32 -K \"WaviBanana\"",
+    "Yespower": "-a yespower -N 2048 -R 32",
+    "YespowerR16": "-a yespower -N 4096 -R 16"
+  }
+}
