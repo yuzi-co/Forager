@@ -1486,79 +1486,6 @@ function Start-SubProcess {
     }
 }
 
-function Expand-WebRequest {
-    param(
-        [Parameter(Mandatory = $true)]
-        [String]$Uri,
-        [Parameter(Mandatory = $true)]
-        [String]$Path,
-        [Parameter(Mandatory = $false)]
-        [String]$SHA256
-    )
-
-    $FileName = ([IO.FileInfo](Split-Path $Uri -Leaf)).name
-    $CachePath = "./Downloads/"
-    $FilePath = $CachePath + $Filename
-
-    if (-not (Test-Path -LiteralPath $CachePath)) { $null = New-Item -Path $CachePath -ItemType directory }
-
-    try {
-        if (Test-Path -LiteralPath $FilePath) {
-            if ($SHA256 -and (Get-FileHash -Path $FilePath -Algorithm SHA256).Hash -ne $SHA256) {
-                Log "Existing file hash doesn't match. Will re-download." -Severity Warn
-                Remove-Item $FilePath
-            }
-        }
-        if (-not (Test-Path -LiteralPath $FilePath)) {
-            (New-Object System.Net.WebClient).DownloadFile($Uri, $FilePath)
-        }
-        if (Test-Path -LiteralPath $FilePath) {
-            if ($SHA256 -and (Get-FileHash -Path $FilePath -Algorithm SHA256).Hash -ne $SHA256) {
-                Log "File hash doesn't match. Removing file." -Severity Warn
-            } elseif (@('.msi', '.exe') -contains (Get-Item $FilePath).Extension) {
-                Start-Process $FilePath "-qb" -Wait
-            } else {
-                Log "Unpacking to $Path"
-                if (-not (Test-Path $Path)) { $null = New-Item -Path $Path -ItemType directory }
-
-                if ($IsLinux) {
-                    if (($FileName -split '\.')[-2] -eq 'tar') {
-                        $Params = @{
-                            FilePath     = "tar"
-                            ArgumentList = "-xa -f $FilePath -C $Path"
-                        }
-                    } elseif (($FileName -split '\.')[-1] -in @('tgz')) {
-                        $Params = @{
-                            FilePath     = "tar"
-                            ArgumentList = "-xz -f $FilePath -C $Path"
-                        }
-                    } else {
-                        $Params = @{
-                            FilePath               = "7z"
-                            ArgumentList           = "x `"$FilePath`" -o`"$Path`" -y"
-                            RedirectStandardOutput = Join-Path "./Logs" "7z-console.log"
-                            RedirectStandardError  = Join-Path "./Logs" "7z-error.log"
-                        }
-                    }
-                } else {
-                    $Params = @{
-                        FilePath     = "./includes/7z.exe"
-                        ArgumentList = "x `"$FilePath`" -o`"$Path`" -y -spe"
-                    }
-                }
-                $Params.Wait = $true
-                if (Get-Command $Params.FilePath -ErrorAction SilentlyContinue) {
-                    Start-Process @Params
-                } else {
-                    Log "$($Params.FilePath) not found!" -Severity Warn
-                }
-            }
-        }
-    } finally {
-        # if (Test-Path $FilePath) {Remove-Item $FilePath}
-    }
-}
-
 function Get-Pools {
     param(
         [Parameter(Mandatory = $true)]
@@ -1955,6 +1882,39 @@ function Set-Stats {
     $Value | ConvertTo-Json | Set-Content -Path $Path
 }
 
+function Get-UriHash {
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$Uri
+    )
+    $HashFile = "./Data/sha256.csv"
+    $Hashes = Get-Content $HashFile | ConvertFrom-Csv
+    $Hashes | Where-Object uri -eq $Uri | Select-Object sha256
+}
+
+function Update-UriHash {
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$Uri,
+        [Parameter(Mandatory = $true)]
+        [String]$Hash
+    )
+
+    $HashFile = "./Data/sha256.csv"
+    $Hashes = Get-Content $HashFile | ConvertFrom-Csv
+
+    if ($Hashes | Where-Object uri -eq $Uri) {
+        $Hashes | Where-Object uri -eq $Uri | ForEach-Object {$_.sha256 = $Hash}
+    } else {
+        $Hashes += New-Object psobject -Property @{
+            uri = $Uri
+            sha256 = $Hash
+        }
+    }
+    $Hashes | ConvertTo-Csv | Set-Content $HashFile
+}
+
+
 function Start-Downloader {
     param(
         [Parameter(Mandatory = $true)]
@@ -1962,9 +1922,7 @@ function Start-Downloader {
         [Parameter(Mandatory = $true)]
         [String]$ExtractionPath,
         [Parameter(Mandatory = $true)]
-        [String]$Path,
-        [Parameter(Mandatory = $false)]
-        [String]$SHA256
+        [String]$Path
     )
 
     if (-not (Test-Path $Path)) {
@@ -1973,19 +1931,119 @@ function Start-Downloader {
                 # downloading a single file
                 $null = New-Item (Split-Path $Path) -ItemType "Directory"
                 (New-Object System.Net.WebClient).DownloadFile($Uri, $Path)
-                if ($SHA256 -and (Get-FileHash -Path $Path -Algorithm SHA256).Hash -ne $SHA256) {
-                    Log "File hash doesn't match. Removing file." -Severity Warn
-                    Remove-Item $Path
+                $UriHash = Get-UriHash -Uri $Uri
+                $FileHash = (Get-FileHash -Path $Path -Algorithm SHA256).Hash
+                if ($UriHash) {
+                    if ($FileHash -ne $UriHash) {
+                        Log "File hash doesn't match. [R]emove file or [U]pdate hash?" -Severity Warn
+                        do {
+                            $action = Read-Host -Prompt 'Select one option:'
+                        } until (@('r', 'u') -contains $action.ToLower())
+                        switch ($action) {
+                            'r' { Remove-Item $Path }
+                            'u' { Update-UriHash -Uri $Uri -Hash $FileHash }
+                        }
+                    }
+                } else {
+                    Update-UriHash -Uri $Uri -Hash $FileHash
                 }
             } else {
                 # downloading an archive or installer
-                Log "Downloading $URI" -Severity Info
-                Expand-WebRequest -Uri $Uri -Path $ExtractionPath -SHA256 $SHA256 -ErrorAction Stop
+                Log "Downloading $Uri" -Severity Info
+                Expand-WebRequest -Uri $Uri -Path $ExtractionPath -ErrorAction Stop
             }
         } catch {
-            $Message = "Cannot download $Uri"
-            Log $Message -Severity Warn
+            Log "Cannot download $Uri" -Severity Warn
         }
+    }
+}
+
+
+function Expand-WebRequest {
+    param(
+        [Parameter(Mandatory = $true)]
+        [String]$Uri,
+        [Parameter(Mandatory = $true)]
+        [String]$Path
+    )
+
+    $FileName = ([IO.FileInfo](Split-Path $Uri -Leaf)).name
+    $CachePath = "./Downloads/"
+    $FilePath = $CachePath + $Filename
+
+    if (-not (Test-Path -LiteralPath $CachePath)) { $null = New-Item -Path $CachePath -ItemType directory }
+
+    try {
+        $UriHash = Get-UriHash -Uri $Uri
+        if (Test-Path -LiteralPath $FilePath) {
+            $FileHash = (Get-FileHash -Path $FilePath -Algorithm SHA256).Hash
+            if ($UriHash -and $FileHash -ne $UriHash) {
+                Log "Existing file hash doesn't match. Will re-download." -Severity Warn
+                Remove-Item $FilePath
+            }
+        }
+        if (-not (Test-Path -LiteralPath $FilePath)) {
+            (New-Object System.Net.WebClient).DownloadFile($Uri, $FilePath)
+            $FileHash = (Get-FileHash -Path $FilePath -Algorithm SHA256).Hash
+        }
+        if (Test-Path -LiteralPath $FilePath) {
+
+            if ($UriHash) {
+                if ($FileHash -ne $UriHash) {
+                    Log "File hash doesn't match. [R]emove file or [U]pdate hash?" -Severity Warn
+                    do {
+                        $action = Read-Host -Prompt 'Select one option:'
+                    } until (@('r', 'u') -contains $action.ToLower())
+                    switch ($action) {
+                        'r' { Remove-Item $Path }
+                        'u' { Update-UriHash -Uri $Uri -Hash $FileHash }
+                    }
+                }
+            } else {
+                Update-UriHash -Uri $Uri -Hash $FileHash
+            }
+
+            if (@('.msi', '.exe') -contains (Get-Item $FilePath).Extension) {
+                Start-Process $FilePath "-qb" -Wait
+            } else {
+                Log "Unpacking to $Path"
+                if (-not (Test-Path $Path)) { $null = New-Item -Path $Path -ItemType directory }
+
+                if ($IsLinux) {
+                    if (($FileName -split '\.')[-2] -eq 'tar') {
+                        $Params = @{
+                            FilePath     = "tar"
+                            ArgumentList = "-xa -f $FilePath -C $Path"
+                        }
+                    } elseif (($FileName -split '\.')[-1] -in @('tgz')) {
+                        $Params = @{
+                            FilePath     = "tar"
+                            ArgumentList = "-xz -f $FilePath -C $Path"
+                        }
+                    } else {
+                        $Params = @{
+                            FilePath               = "7z"
+                            ArgumentList           = "x `"$FilePath`" -o`"$Path`" -y"
+                            RedirectStandardOutput = Join-Path "./Logs" "7z-console.log"
+                            RedirectStandardError  = Join-Path "./Logs" "7z-error.log"
+                        }
+                    }
+                } else {
+                    $Params = @{
+                        FilePath     = "./includes/7z.exe"
+                        ArgumentList = "x `"$FilePath`" -o`"$Path`" -y -spe"
+                    }
+                }
+                $Params.Wait = $true
+                if (Get-Command $Params.FilePath -ErrorAction SilentlyContinue) {
+                    Start-Process @Params
+                } else {
+                    Log "$($Params.FilePath) not found!" -Severity Warn
+                }
+            }
+        }
+    } finally {
+        # if (Test-Path $FilePath) {Remove-Item $FilePath}
     }
 }
 

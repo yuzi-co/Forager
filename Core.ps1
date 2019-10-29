@@ -683,7 +683,6 @@ while ($Quit -ne $true) {
                             Pool                = $Pool
                             PoolDual            = $PoolDual
                             PrelaunchCommand    = $Miner.PrelaunchCommand
-                            SHA256              = $Miner.SHA256
                             SubMiners           = $SubMiners
                             URI                 = $Miner.URI
                             UserName            = $PoolUser
@@ -705,10 +704,10 @@ while ($Quit -ne $true) {
         -not [string]::IsNullOrEmpty($_.Uri) -and
         -not [string]::IsNullOrEmpty($_.ExtractionPath) -and
         -not [string]::IsNullOrEmpty($_.Path) } |
-    Select-Object Uri, ExtractionPath, Path, SHA256 -Unique |
+    Select-Object Uri, ExtractionPath, Path -Unique |
     ForEach-Object {
         if (-not (Test-Path $_.Path)) {
-            Start-Downloader -Uri $_.Uri -ExtractionPath $_.ExtractionPath -Path $_.Path -SHA256 $_.SHA256
+            Start-Downloader -Uri $_.Uri -ExtractionPath $_.ExtractionPath -Path $_.Path
         }
     }
 
