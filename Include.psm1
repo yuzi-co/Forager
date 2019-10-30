@@ -1889,7 +1889,7 @@ function Get-UriHash {
     )
     $HashFile = "./Data/sha256.csv"
     $Hashes = Get-Content $HashFile | ConvertFrom-Csv
-    $Hashes | Where-Object uri -eq $Uri | Select-Object sha256
+    $Hashes | Where-Object uri -eq $Uri | Select-Object -ExpandProperty sha256
 }
 
 function Update-UriHash {
@@ -1936,6 +1936,7 @@ function Start-Downloader {
                 if ($UriHash) {
                     if ($FileHash -ne $UriHash) {
                         Log "File hash doesn't match. [R]emove file or [U]pdate hash?" -Severity Warn
+                        Log "DB: $UriHash, Current: $FileHash" -Severity Warn
                         do {
                             $action = Read-Host -Prompt 'Select one option:'
                         } until (@('r', 'u') -contains $action.ToLower())
@@ -1991,6 +1992,7 @@ function Expand-WebRequest {
             if ($UriHash) {
                 if ($FileHash -ne $UriHash) {
                     Log "File hash doesn't match. [R]emove file or [U]pdate hash?" -Severity Warn
+                    Log "DB: $UriHash, Current: $FileHash" -Severity Warn
                     do {
                         $action = Read-Host -Prompt 'Select one option:'
                     } until (@('r', 'u') -contains $action.ToLower())
