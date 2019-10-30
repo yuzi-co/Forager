@@ -16,22 +16,24 @@ $M = @{
     API        = "Ccminer"
     Fee        = 0.01
     Algorithms = [PSCustomObject]@{
-        Aergo  = "-a aeriumx"
+        Aergo      = "-a aeriumx"
         # BCD        = "-a bcd"
         # Bitcore    = "-a bitcore"
         # C11        = "-a c11"
-        Hex    = "-a hex"
+        Hex        = "-a hex"
         # Polytimos  = "-a poly"
-        # Renesis    = "-a renesis"
+        # Phi2       = "-a phi2"
+        Renesis    = "-a renesis"
+        # Skunk      = "-a skunk"
         # SonoA      = "-a sonoa"
-        # TimeTravel = "-a timetravel"
+        TimeTravel = "-a timetravel"
         # Tribus     = "-a tribus"
-        # Vitalium   = "-a vit"
+        Vitalium   = "-a vit"
         # X16r       = "-a x16r"
-        X16rv2 = "-a x16rv2"
+        # X16rv2     = "-a x16rv2"
         # X16s       = "-a x16s"
         # X17        = "-a x17"
-        Xevan  = "-a xevan"
+        Xevan      = "-a xevan"
     }
 }
 

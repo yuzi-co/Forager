@@ -22,6 +22,6 @@
     "Argon2ad": "-a argon2ad",
     "Argon2d250": "-a argon2d250",
     "_Argon2d500": "-a argon2d500",
-    "Argon2d4096": "-a argon2d4096"
+    "_Argon2d4096": "-a argon2d4096"
   }
 }
