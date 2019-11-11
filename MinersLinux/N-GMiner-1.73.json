@@ -1,12 +1,10 @@
 {
-  "Path": "miner.exe",
-  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.70/gminer_1_70_windows64.zip",
-  "SHA256": "3605861721CC70C305217BC30DA3FC27CEE82236EE4ED74A7A78FE38E161C619",
+  "Path": "miner",
+  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.73/gminer_1_73_linux64.tar.xz",
   "Type": "NVIDIA",
   "CUDA": 9.0,
   "Arguments": [
-    "--server #Server#",
-    "--port #Port#",
+    "--server #Server#:#Port#",
     "--user #Login#",
     "--pass #Password#",
     "--api #APIPort#",
@@ -15,6 +13,7 @@
     "--devices #DevicesETHMode#",
     "--cuda 1",
     "--opencl 0",
+    "--color 0",
     "#AlgorithmParameters#",
     "#CustomParameters#"
   ],
@@ -52,6 +51,7 @@
       "NoCpu": true,
       "Mem": 7.4
     },
+    "Eaglesong": "--algo eaglesong",
     "Equihash96": "--algo 96_5 --pers auto",
     "Equihash125": "--algo 125_4",
     "Equihash144": {
@@ -67,6 +67,10 @@
       "Mem": 2.75
     },
     "Equihash210": "--algo 210_9 --pers AION0PoW",
+    "Ethash": {
+      "Params": "--algo ethash --proto stratum",
+      "Fee": 0.065
+    },
     "Vds": "--algo vds"
   }
 }

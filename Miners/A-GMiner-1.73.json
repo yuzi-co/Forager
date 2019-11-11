@@ -1,11 +1,9 @@
 {
-  "Path": "miner",
-  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.70/gminer_1_70_linux64.tar.gz",
-  "SHA256": "93D80C7ED6A766E11479AB820C4A3180982A127EF39CDD2341B6C832CBF72DA3",
+  "Path": "miner.exe",
+  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.73/gminer_1_73_windows64.zip",
   "Type": "AMD",
   "Arguments": [
-    "--server #Server#",
-    "--port #Port#",
+    "--server #Server#:#Port#",
     "--user #Login#",
     "--pass #Password#",
     "--api #APIPort#",
@@ -14,7 +12,6 @@
     "--devices #DevicesETHMode#",
     "--cuda 0",
     "--opencl 1",
-    "--color 0",
     "#AlgorithmParameters#",
     "#CustomParameters#"
   ],
@@ -41,6 +38,7 @@
       "NoCpu": true,
       "Mem": 5
     },
+    "Eaglesong": "--algo eaglesong",
     "Equihash125": "--algo 125_4",
     "Equihash144": {
       "Params": "--algo 144_5 --pers auto",
