@@ -1,7 +1,6 @@
 {
-  "Path": "sgminer-phi2-fancyIX-linux-amd64/sgminer",
-  "Uri": "https://github.com/fancyIX/sgminer-phi2-branch/releases/download/5.6.1.3.b6/sgminer-phi2-fancyIX-linux-amd64-0.6.0.0.zip",
-  "SHA256": "0940D46763D8B0E6A781C2980026C73684C3ABCF75A4A65241A94E6795939CB6",
+  "Path": "sgminer-phi2-fancyIX-win64/sgminer.exe",
+  "Uri": "https://github.com/fancyIX/sgminer-phi2-branch/releases/download/5.6.1.3.b6a/sgminer-phi2-fancyIX-win64-0.6.0.1.zip",
   "Type": "AMD",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
@@ -11,7 +10,6 @@
     "--device #Devices#",
     "--api-listen",
     "--api-port #APIPort#",
-    "--text-only",
     "#AlgorithmParameters#",
     "#CustomParameters#"
   ],
@@ -20,15 +18,15 @@
     "Allium": "-k allium",
     "Argon2d500": "-k argon2d",
     "_Ethash": "-k ethash",
-    "Lyra2v3": "-k lyra2v3",
+    "_Lyra2v3": "-k lyra2v3",
     "Lyra2zz": "-k lyra2zz",
     "MTP": {
       "Params": "-k mtp",
       "NH": false,
       "Mem": 4.5
     },
-    "Phi2": "-k phi2",
-    "X22i": "-k x22i",
+    "_Phi2": "-k phi2",
+    "_X22i": "-k x22i",
     "X25x": "-k x25x"
   }
 }
