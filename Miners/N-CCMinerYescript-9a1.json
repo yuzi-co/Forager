@@ -1,0 +1,27 @@
+{
+  "Path": "ccminer.exe",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.09/CCMinerYescrypt9A1.7z",
+  "Type": "NVIDIA",
+  "CUDA": 10.0,
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-R 3",
+    "-r 10",
+    "-d #Devices#",
+    "-b #APIPort#",
+    "--submit-stale",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "API": "Ccminer",
+  "Algorithms": {
+    "Yescrypt": "-a yescrypt",
+    "YescryptR8": "-a yescryptr8",
+    "YescryptR16": "-a yescryptr16",
+    "YescryptR16v2": "-a yescryptr16v2",
+    "YescryptR24": "-a yescryptr24",
+    "YescryptR32": "-a yescryptr32"
+  }
+}
