@@ -23,7 +23,7 @@ $M = @{
             Mem    = 3
         }
         # Honeycomb   = "-a HONEYCOMB"
-        # Lyra2v3  = "-a LYRA2V3"
+        Lyra2v3     = "-a LYRA2V3"
         MTP         = @{
             Params = "-a MTP"
             Mem    = 4.5
