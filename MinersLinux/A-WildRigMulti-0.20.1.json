@@ -1,7 +1,6 @@
 {
   "Path": "wildrig-multi",
-  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.20.0/wildrig-multi-windows-0.20.0.3.7z",
-  "SHA256": "ADD54CB06432065E7057D22E524891BDE2FCF72886ABEF40360F6DFF867CDFD8",
+  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.20.1/wildrig-multi-linux-0.20.1.tar.gz",
   "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",
