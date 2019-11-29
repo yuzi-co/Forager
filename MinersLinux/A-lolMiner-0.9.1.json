@@ -1,11 +1,9 @@
 {
-  "Path": "0.8.8/lolMiner.exe",
-  "Uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.8.8/lolMiner_v088_Win64.zip",
-  "SHA256": "986C89258C903F9272A240FB85BCAB8EB94B4DC40DDDDE2B32C2FEBEB84A5F8C",
+  "Path": "0.9.1/lolMiner",
+  "Uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.91/lolMiner_v091_Lin64.tar.gz",
   "Type": "AMD",
   "Arguments": [
-    "--pool #Server#",
-    "--port #Port#",
+    "--pool #Server#:#Port#",
     "--user #Login#",
     "--pass #Password#",
     "--devices #Devices#",
@@ -18,6 +16,7 @@
   ],
   "API": "LOL",
   "SSL": true,
+  "Custom": "--asm 1",
   "Algorithms": {
     "BeamV2": {
       "Params": "--coin BEAM-II",
