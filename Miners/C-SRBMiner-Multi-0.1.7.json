@@ -1,6 +1,6 @@
 {
-  "Path": "SRBMiner-Multi-0-1-6/SRBMiner-MULTI.exe",
-  "Uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/0.1.6/SRBMiner-Multi-0-1-6.zip",
+  "Path": "SRBMiner-Multi-0-1-7/SRBMiner-MULTI.exe",
+  "Uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/0.1.7/SRBMiner-Multi-0-1-7.zip",
   "Type": "CPU",
   "Arguments": [
     "--pool #Server#:#Port#",
@@ -26,12 +26,13 @@
     "Eaglesong": "--algorithm eaglesong",
     "K12": "--algorithm k12",
     "Keccak": "--algorithm keccak",
+    "M7Mv2": "--algorithm m7mv2",
     "MTP": "--algorithm mtp",
-    "RFv2": "--algorithm rainforestv2",
     "RandomArq": "--algorithm randomarq",
     "RandomWow": "--algorithm randomwow",
     "RandomX": "--algorithm randomx",
     "RandomXl": "--algorithm randomxl",
+    "RFv2": "--algorithm rainforestv2",
     "Yescrypt": "--algorithm yescrypt",
     "YescryptR8": "--algorithm yescryptr8",
     "YescryptR16": "--algorithm yescryptr16",
