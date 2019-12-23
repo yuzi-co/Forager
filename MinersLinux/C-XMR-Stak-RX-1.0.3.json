@@ -1,7 +1,7 @@
 {
-  "Path": "xmr-stak-rx-win64-1.0.1/xmr-stak-rx.exe",
-  "Uri": "https://github.com/fireice-uk/xmr-stak/releases/download/1.0.1-rx/xmr-stak-rx-win64-1.0.1.7z",
-  "Type": "CPU",
+  "Path": "xmr-stak-rx-win64-1.0.3/xmr-stak-rx.exe",
+  "Uri": "https://github.com/fireice-uk/xmr-stak/releases/download/1.0.3-rx/xmr-stak-rx-win64-1.0.3.7z",
+  "Type": "AMD",
   "Arguments": [
     "$(if ($enableSSL){'-O'}else{'-o'}) #Server#:#Port#",
     "-u #Login#",
@@ -20,6 +20,7 @@
   "Fee": 0.02,
   "SSL": true,
   "Algorithms": {
-    "RandomX": "--currency randomx"
+    "RandomX": "--currency randomx",
+    "RandomXArqma": "--currency randomx_arqma"
   }
 }
