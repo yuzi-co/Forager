@@ -1,6 +1,6 @@
 {
-  "Path": "teamredminer-v0.6.0-linux/teamredminer",
-  "Uri": "https://github.com/todxx/teamredminer/releases/download/0.6.0/teamredminer-v0.6.0-linux.tgz",
+  "Path": "teamredminer-v0.6.1-linux/teamredminer",
+  "Uri": "https://github.com/todxx/teamredminer/releases/download/0.6.1/teamredminer-v0.6.1-linux.tgz",
   "Type": "AMD",
   "Arguments": [
     "-o stratum+$(if($EnableSSL){'ssl'}else{'tcp'})://#Server#:#Port#",
