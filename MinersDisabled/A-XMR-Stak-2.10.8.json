@@ -1,6 +1,6 @@
 {
-  "Path": "xmr-stak-win64-2.10.7/xmr-stak.exe",
-  "Uri": "https://github.com/fireice-uk/xmr-stak/releases/download/2.10.7/xmr-stak-win64-2.10.7.7z",
+  "Path": "xmr-stak-win64-2.10.8/xmr-stak.exe",
+  "Uri": "https://github.com/fireice-uk/xmr-stak/releases/download/2.10.8/xmr-stak-win64-2.10.8.7z",
   "Type": "AMD",
   "Arguments": [
     "$(if ($enableSSL){'-O'}else{'-o'}) #Server#:#Port#",
