@@ -1,7 +1,6 @@
 {
   "Path": "ccminer.exe",
-  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.04/CCMinerVerus-3.4.7z",
-  "SHA256": "CA4D0D538AE7455C7E045461FDC122A1DB0A57D574EEEB08A660ED00DB7BFDA1",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.12/ccminer2.3.5_19.12.21_REV_D.7z",
   "Type": "NVIDIA",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
