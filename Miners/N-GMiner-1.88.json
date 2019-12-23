@@ -1,7 +1,8 @@
 {
   "Path": "miner.exe",
-  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.73/gminer_1_73_windows64.zip",
-  "Type": "AMD",
+  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.88/gminer_1_88_windows64.zip",
+  "Type": "NVIDIA",
+  "CUDA": 9.0,
   "Arguments": [
     "--server #Server#:#Port#",
     "--user #Login#",
@@ -10,8 +11,8 @@
     "--watchdog 0",
     "--ssl $(if($EnableSSL){1}else{0})",
     "--devices #DevicesETHMode#",
-    "--cuda 0",
-    "--opencl 1",
+    "--cuda 1",
+    "--opencl 0",
     "#AlgorithmParameters#",
     "#CustomParameters#"
   ],
@@ -19,38 +20,64 @@
   "SSL": true,
   "Fee": 0.02,
   "Algorithms": {
+    "BeamV2": "--algo BeamHashII",
     "BFC": {
       "Params": "--algo bfc",
       "Fee": 0.03
     },
+    "Cortex": {
+      "Params": "--algo cortex",
+      "Fee": 0.05
+    },
     "Cuckoo29": {
       "Params": "--algo aeternity",
       "NoCpu": true,
-      "Mem": 5
+      "Mem": 3.8
     },
     "Cuckaroo29": {
       "Params": "--algo grin29",
       "NoCpu": true,
-      "Mem": 5
+      "Mem": 3.8
+    },
+    "Cuckaroo29d": {
+      "Params": "--algo grin29",
+      "NoCpu": true,
+      "Mem": 3.8
     },
     "Cuckaroo29s": {
       "Params": "--algo swap",
       "NoCpu": true,
-      "Mem": 5
+      "Mem": 3.8
+    },
+    "Cuckatoo31": {
+      "Params": "--algo grin31",
+      "NoCpu": true,
+      "Mem": 7.4
     },
     "Eaglesong": "--algo eaglesong",
+    "Equihash96": "--algo 96_5 --pers auto",
     "Equihash125": "--algo 125_4",
     "Equihash144": {
       "Params": "--algo 144_5 --pers auto",
-      "Mem": 2
+      "Mem": 1.75
     },
     "Equihash150": {
       "Params": "--algo 150_5",
-      "Mem": 4
+      "Mem": 2.9
     },
     "Equihash192": {
       "Params": "--algo 192_7 --pers auto",
       "Mem": 2.75
-    }
+    },
+    "Equihash210": "--algo 210_9 --pers AION0PoW",
+    "Ethash": {
+      "Params": "--algo ethash --proto stratum",
+      "Fee": 0.0065
+    },
+    "Ethash_Eaglesong": {
+      "Params": "--algo eth+ckb --proto stratum --dserver #ServerDual#:#PortDual# --duser #LoginDual# --dpass #PasswordDual#",
+      "Fee": 0.03
+    },
+    "Vds": "--algo vds"
   }
 }
