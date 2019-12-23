@@ -1,6 +1,6 @@
 {
-  "Path": "0.9.1/lolMiner.exe",
-  "Uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.91/lolMiner_v091_Win64.zip",
+  "Path": "0.9.3/lolMiner.exe",
+  "Uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.93/lolMiner_v093_Win64.zip",
   "Type": "NVIDIA",
   "Arguments": [
     "--pool #Server#:#Port#",
