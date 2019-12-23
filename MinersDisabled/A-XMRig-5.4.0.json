@@ -1,13 +1,17 @@
 {
-  "Path": "xmrig-5.1.0/xmrig.exe",
-  "Uri": "https://github.com/xmrig/xmrig/releases/download/v5.1.0/xmrig-5.1.0-gcc-win64.zip",
-  "Type": "CPU",
+  "Path": "xmrig-5.4.0/xmrig.exe",
+  "Uri": "https://github.com/xmrig/xmrig/releases/download/v5.4.0/xmrig-5.4.0-gcc-win64.zip",
+  "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",
     "-u #Login#",
     "-p #Password#",
     "$(if ($Pool.PoolName -eq 'NiceHash'){'--nicehash'})",
     "$(if ($EnableSSL){'--tls'})",
+    "--no-cpu",
+    "--opencl",
+    "--opencl-devices=#Devices#",
+    "--opencl-platform=#GPUPlatform#",
     "--donate-level 1",
     "--http-port #APIPort#",
     "#AlgorithmParameters#",
@@ -33,9 +37,11 @@
     "CnSaber": "-a cn-heavy/tube",
     "CnTurtle": "-a cn-pico/trtl",
     "CnZls": "-a cn/zls",
-    "RandomXArq": "-a Rx/arq",
-    "RandomXWow": "-a Rx/wow",
-    "RandomX": "-a Rx",
-    "RandomXL": "-a Rx/loki"
+    "_RandomSfx": "-a Rx/sfx",
+    "_RandomV": "-a Rx/v",
+    "_RandomX": "-a Rx",
+    "_RandomXArq": "-a Rx/arq",
+    "_RandomXL": "-a Rx/loki",
+    "_RandomXWow": "-a Rx/wow"
   }
 }

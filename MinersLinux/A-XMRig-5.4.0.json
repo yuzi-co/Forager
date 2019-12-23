@@ -1,18 +1,20 @@
 {
-  "Path": "xmrig-amd-2.14.6/xmrig-amd",
-  "Uri": "https://github.com/xmrig/xmrig-amd/releases/download/v2.14.6/xmrig-amd-2.14.6-xenial-x64.tar.gz",
-  "SHA256": "1277CE4D63A3D85E94A46C1DC22208A126557388DE1A7D51AB3746249961607B",
+  "Path": "xmrig-5.4.0/xmrig",
+  "Uri": "https://github.com/xmrig/xmrig/releases/download/v5.4.0/xmrig-5.4.0-xenial-x64.tar.gz",
   "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",
     "-u #Login#",
     "-p #Password#",
-    "--opencl-platform=#GPUPlatform#",
     "$(if ($Pool.PoolName -eq 'NiceHash'){'--nicehash'})",
     "$(if ($EnableSSL){'--tls'})",
+    "--no-cpu",
+    "--opencl",
+    "--opencl-devices=#Devices#",
+    "--opencl-platform=#GPUPlatform#",
     "--donate-level 1",
+    "--http-port #APIPort#",
     "--no-color",
-    "--api-port #APIPort#",
     "#AlgorithmParameters#",
     "#CustomParameters#"
   ],
@@ -20,10 +22,12 @@
   "SSL": true,
   "Fee": 0.01,
   "Algorithms": {
+    "Argon2d512": "-a argon2/chukwa",
+    "Argon2d256": "-a argon2/wrkz",
     "CnAlloy": "-a cn/xao",
     "CnArto": "-a cn/rto",
     "CnDouble": "-a cn/double",
-    "CnFast": "-a cn/msr",
+    "CnFast": "-a cn/fast",
     "CnGpu": "-a cn/gpu",
     "CnHalf": "-a cn/half",
     "CnHaven": "-a cn-heavy/xhv",
@@ -33,8 +37,12 @@
     "CnRwz": "-a cn/rwz",
     "CnSaber": "-a cn-heavy/tube",
     "CnTurtle": "-a cn-pico/trtl",
-    "CnWow": "-a cn/wow",
-    "CnXTL": "-a cn/xtl",
-    "CnZls": "-a cn/zls"
+    "CnZls": "-a cn/zls",
+    "_RandomSfx": "-a Rx/sfx",
+    "_RandomV": "-a Rx/v",
+    "_RandomX": "-a Rx",
+    "_RandomXArq": "-a Rx/arq",
+    "_RandomXL": "-a Rx/loki",
+    "_RandomXWow": "-a Rx/wow"
   }
 }

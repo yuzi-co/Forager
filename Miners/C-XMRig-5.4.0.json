@@ -1,17 +1,13 @@
 {
-  "Path": "xmrig-5.0.1/xmrig.exe",
-  "Uri": "https://github.com/xmrig/xmrig/releases/download/v5.0.1/xmrig-5.0.1-msvc-cuda10_1-win64.zip",
-  "Type": "NVIDIA",
-  "CUDA": 10.1,
+  "Path": "xmrig-5.4.0/xmrig.exe",
+  "Uri": "https://github.com/xmrig/xmrig/releases/download/v5.4.0/xmrig-5.4.0-gcc-win64.zip",
+  "Type": "CPU",
   "Arguments": [
     "-o #Server#:#Port#",
     "-u #Login#",
     "-p #Password#",
     "$(if ($Pool.PoolName -eq 'NiceHash'){'--nicehash'})",
     "$(if ($EnableSSL){'--tls'})",
-    "--no-cpu",
-    "--cuda",
-    "--cuda-devices=#Devices#",
     "--donate-level 1",
     "--http-port #APIPort#",
     "#AlgorithmParameters#",
@@ -37,9 +33,11 @@
     "CnSaber": "-a cn-heavy/tube",
     "CnTurtle": "-a cn-pico/trtl",
     "CnZls": "-a cn/zls",
-    "_RandomXArq": "-a Rx/arq",
-    "_RandomXWow": "-a Rx/wow",
-    "_RandomX": "-a Rx",
-    "_RandomXL": "-a Rx/loki"
+    "RandomSfx": "-a Rx/sfx",
+    "RandomV": "-a Rx/v",
+    "RandomX": "-a Rx",
+    "RandomXArq": "-a Rx/arq",
+    "RandomXL": "-a Rx/loki",
+    "RandomXWow": "-a Rx/wow"
   }
 }
