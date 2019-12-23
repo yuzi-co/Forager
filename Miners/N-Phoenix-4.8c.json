@@ -1,8 +1,7 @@
 {
-  "Path": "PhoenixMiner_4.6c_Windows/PhoenixMiner.exe",
-  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.09/PhoenixMiner_4.6c_Windows.zip",
-  "SHA256": "ACA4046D0F24DA08FC65DB59EF7597276EE1B7F9DF448A9E6ACD22A9C1D35776",
-  "Type": "AMD",
+  "Path": "PhoenixMiner.exe",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.12/PhoenixMiner_4.8c_Windows.7z",
+  "Type": "NVIDIA",
   "Arguments": [
     "-pool #Protocol#://#Server#:#Port#",
     "-wal #Login#",
@@ -16,7 +15,8 @@
     "-r -1",
     "-logfile #GroupName#_log.txt",
     "-logsmaxsize 10",
-    "-amd",
+    "-nvidia",
+    "-nvdo 1",
     "-di #DevicesClayMode#",
     "-cdmport #APIPort#",
     "-cdm 1",
@@ -28,9 +28,8 @@
   "SSL": true,
   "Mem": 2,
   "Algorithms": {
-    "ProgPOW": "-coin bci -mode 1",
     "Ethash": "-mode 1",
     "Ubqhash": "-coin ubq -mode 1",
-    "_Ethash_Blake2s": "-dcoin blake2s -mode 0"
+    "Ethash_Blake2s": "-dcoin blake2s -mode 0"
   }
 }

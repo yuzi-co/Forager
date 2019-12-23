@@ -1,7 +1,6 @@
 {
-  "Path": "PhoenixMiner_4.6c_Linux/PhoenixMiner",
-  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.09/PhoenixMiner_4.6c_Linux.tar.gz",
-  "SHA256": "1517B7AD8F5B0D859858D95BD481ACA48AE95062ECEECD31DEF694E6AE2FC15E",
+  "Path": "PhoenixMiner",
+  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.12/PhoenixMiner_4.8c_Linux.tar.gz",
   "Type": "NVIDIA",
   "Arguments": [
     "-pool #Protocol#://#Server#:#Port#",
