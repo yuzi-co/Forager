@@ -51,6 +51,7 @@
     "Equihash192": {
       "Params": "--algo 192_7 --pers auto",
       "Mem": 2.75
-    }
+    },
+    "Kadena": "--algo Blake2s"
   }
 }

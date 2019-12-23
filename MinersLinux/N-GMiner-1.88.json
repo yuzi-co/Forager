@@ -79,6 +79,11 @@
       "Params": "--algo eth+ckb --proto stratum --dserver #ServerDual#:#PortDual# --duser #LoginDual# --dpass #PasswordDual#",
       "Fee": 0.03
     },
+    "Ethash_Kadena": {
+      "Params": "--algo eth+kda --proto stratum --dserver #ServerDual#:#PortDual# --duser #LoginDual# --dpass #PasswordDual#",
+      "Fee": 0.03
+    },
+    "Kadena": "--algo Blake2s",
     "Vds": "--algo vds"
   }
 }

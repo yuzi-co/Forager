@@ -22,6 +22,7 @@
             "Params": "-a ETHASH",
             "Mem": 3
         },
+        "Kadena": "-a Blake2s -coin kda",
         "Lyra2v3": "-a LYRA2V3",
         "MTP": {
             "Params": "-a MTP",
