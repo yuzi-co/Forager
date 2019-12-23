@@ -1,0 +1,33 @@
+{
+  "Path": "SRBMiner-Multi-0-2-0/SRBMiner-MULTI.exe",
+  "Uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/0.2.0/SRBMiner-Multi-0-2-0.zip",
+  "Type": "AMD",
+  "Arguments": [
+    "--pool #Server#:#Port#",
+    "--wallet #Login#",
+    "--password #Password#",
+    "--disable-cpu",
+    "--send-stales",
+    "--api-enable",
+    "--api-port #ApiPort#",
+    "$(if ($enableSSL){'--tls true'})",
+    "$(if ($Pool.PoolName -eq 'NiceHash'){'--nicehash true'})",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "API": "SRB",
+  "Fee": 0.0085,
+  "SSL": true,
+  "Algorithms": {
+    "Blake2b": "--algorithm blake2b",
+    "Blake2s": "--algorithm blake2s",
+    "Eaglesong": "--algorithm eaglesong",
+    "K12": "--algorithm k12",
+    "Kadena": "--algorithm kadena",
+    "Keccak": "--algorithm keccak",
+    "M7Mv2": "--algorithm m7mv2",
+    "MTP": "--algorithm mtp",
+    "RFv2": "--algorithm rainforestv2",
+    "Yescrypt": "--algorithm yescrypt"
+  }
+}
