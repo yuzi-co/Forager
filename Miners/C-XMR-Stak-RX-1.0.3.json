@@ -20,7 +20,7 @@
   "Fee": 0.02,
   "SSL": true,
   "Algorithms": {
-    "RandomX": "--currency randomx",
-    "RandomXArqma": "--currency randomx_arqma"
+    "RandomArq": "--currency randomx_arqma",
+    "RandomX": "--currency randomx"
   }
 }
