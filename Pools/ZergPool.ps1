@@ -89,7 +89,12 @@ if ($Querymode -eq "Core") {
         $Request.$_.HashRate -gt 0
     } | ForEach-Object {
         $Algo = $Request.$_
-        $Pool_Algo = Get-AlgoUnifiedName $Algo.name
+        $Pool_Algo = Get-AlgoUnifiedName ($Algo.name -replace '_')
+        if ($Algo.name -like 'cryptonight_*') {
+            $MineHost = $MineUrl
+        } else {
+            $MineHost = $Algo.name + "." + $MineUrl
+        }
 
         $Divisor = 1000000 * $Algo.mbtc_mh_factor
 
@@ -100,7 +105,7 @@ if ($Querymode -eq "Core") {
             Price24h              = [decimal]$Algo.estimate_last24h / $Divisor
             Actual24h             = [decimal]$Algo.actual_last24h / 1000 / $Divisor
             Protocol              = "stratum+tcp"
-            Host                  = $Algo.name + "." + $MineUrl
+            Host                  = $MineHost
             Port                  = [int]$Algo.port
             User                  = $Wallets.$Currency
             Pass                  = "c=$Currency,ID=#WorkerName#"
