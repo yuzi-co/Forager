@@ -105,7 +105,7 @@ if ($Querymode -eq "Core") {
                 Price                 = [decimal]$_.paying / $Divisor
                 Protocol              = "stratum+tcp"
                 # ProtocolSSL           = "ssl"
-                Host                  = $Pool.algorithm + "." + $Locations.$Location + ".nicehash.com"
+                Host                  = $Pool.algorithm.ToLower() + "." + $Locations.$Location + ".nicehash.com"
                 # HostSSL               = $Pool.algorithm + "." + $Locations.$Location + ".nicehash.com"
                 Port                  = $Pool.port
                 # PortSSL               = $Pool.port + 30000
