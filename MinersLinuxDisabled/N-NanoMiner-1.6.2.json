@@ -1,10 +1,9 @@
 {
-  "Path": "nanominer-windows-1.5.3/nanominer.exe",
-  "Uri": "https://github.com/nanopool/nanominer/releases/download/v1.5.3/nanominer-windows-1.5.3.zip",
-  "SHA256": "929FA81C86CD4B87C2C7633704D34282FB1A49ECCA55E2B1669E92DFCB8E41CB",
+  "Path": "nanominer-linux-1.6.2/nanominer",
+  "Uri": "https://github.com/nanopool/nanominer/releases/download/v1.6.2/nanominer-linux-1.6.2.tar.gz",
   "Type": "NVIDIA",
   "CUDA": 10.0,
-  "GenerateConfigFile": "nanominer-windows-1.5.3/#GroupName#-#Algorithm#.conf",
+  "GenerateConfigFile": "nanominer-linux-1.6.2/#GroupName#-#Algorithm#.conf",
   "PatternConfigFile": "NanoMiner.txt",
   "Arguments": "#GroupName#-#Algorithm#.conf",
   "API": "Claymore",
@@ -22,7 +21,7 @@
     },
     "Ethash": {
       "Params": "Ethash",
-      "Mem": 2
+      "Mem": 3
     },
     "Ubqhash": {
       "Params": "Ubqhash",
