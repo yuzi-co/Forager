@@ -72,14 +72,17 @@
     "Equihash210": "--algo 210_9 --pers AION0PoW",
     "Ethash": {
       "Params": "--algo ethash --proto stratum",
+      "Mem": 3,
       "Fee": 0.0065
     },
     "Ethash_Eaglesong": {
       "Params": "--algo eth+ckb --proto stratum --dserver #ServerDual#:#PortDual# --duser #LoginDual# --dpass #PasswordDual#",
+      "Mem": 3,
       "Fee": 0.03
     },
     "Ethash_Kadena": {
       "Params": "--algo eth+kda --proto stratum --dserver #ServerDual#:#PortDual# --duser #LoginDual# --dpass #PasswordDual#",
+      "Mem": 3,
       "Fee": 0.03
     },
     "Kadena": "--algo Blake2s",

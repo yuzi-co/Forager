@@ -22,7 +22,7 @@
   "API": "Claymore",
   "Fee": 0.0065,
   "SSL": true,
-  "Mem": 2,
+  "Mem": 3,
   "Algorithms": {
     "ProgPOW": "-coin bci -mode 1",
     "Ethash": "-mode 1",

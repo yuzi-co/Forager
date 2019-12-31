@@ -21,9 +21,9 @@
     "#CustomParameters#"
   ],
   "API": "Claymore",
-  "Fee": "$(if ($DeviceGroup.MemoryGB -gt 3){0.01}else{0})",
+  "Fee": 0.01,
   "SSL": true,
-  "Mem": 2,
+  "Mem": 3,
   "Algorithms": {
     "Ethash": "-mode 1",
     "Params": "-mode 1",

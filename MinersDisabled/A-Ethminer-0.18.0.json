@@ -13,6 +13,7 @@
     "#CustomParameters#"
   ],
   "API": "Claymore",
+  "Mem": 3,
   "Algorithms": {
     "Ethash": ""
   }

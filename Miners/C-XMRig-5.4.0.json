@@ -26,18 +26,18 @@
     "CnGpu": "-a cn/gpu",
     "CnHalf": "-a cn/half",
     "CnHaven": "-a cn-heavy/xhv",
-    "CnHeavy": "-a cn-heavy",
+    "CnHeavy": "-a cn-heavy/0",
     "CnLiteV7": "-a cn-lite/1",
     "CnR": "-a cn/r",
     "CnRwz": "-a cn/rwz",
     "CnSaber": "-a cn-heavy/tube",
     "CnTurtle": "-a cn-pico/trtl",
     "CnZls": "-a cn/zls",
-    "RandomSfx": "-a Rx/sfx",
-    "RandomV": "-a Rx/v",
-    "RandomX": "-a Rx",
-    "RandomXArq": "-a Rx/arq",
-    "RandomXL": "-a Rx/loki",
-    "RandomXWow": "-a Rx/wow"
+    "RandomSfx": "-a rx/sfx",
+    "RandomV": "-a rx/v",
+    "RandomX": "-a rx/0",
+    "RandomXArq": "-a rx/arq",
+    "RandomXL": "-a rx/loki",
+    "RandomXWow": "-a rx/wow"
   }
 }

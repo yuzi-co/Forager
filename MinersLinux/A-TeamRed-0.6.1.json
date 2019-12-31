@@ -40,6 +40,7 @@
     },
     "Ethash": {
       "Params": "-a ethash",
+      "Mem": 3,
       "Fee": 0.01
     },
     "Lyra2v3": "-a lyra2rev3",

@@ -16,7 +16,7 @@
   "API": "BMinerDual",
   "SSL": true,
   "Fee": 0.02,
-  "Mem": 2,
+  "Mem": 3,
   "Algorithms": {
     "Ethash_Blake2s": "blake2s",
     "_Ethash_Blake14r": "blake14r",
