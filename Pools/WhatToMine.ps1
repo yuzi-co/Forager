@@ -76,9 +76,9 @@ if ($Querymode -eq "Core") {
                 $res | Add-Member Name (Get-CoinUnifiedName $_)
                 $res.Algorithm = Get-AlgoUnifiedName ($res.Algorithm)
                 # Algo fixes
-                # switch ($res.Name) {
-                #     'Ryo' {$res.Algorithm = 'CnGpu'}
-                # }
+                switch ($res.Name) {
+                    'Pascal' { $res.Algorithm = 'RandomHash2' }
+                }
                 $res
             }
         }
