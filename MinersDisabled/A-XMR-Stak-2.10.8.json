@@ -21,8 +21,9 @@
   "Fee": 0.02,
   "SSL": true,
   "Algorithms": {
-    "CnFast": "--currency cryptonight_masari",
+    "CnConceal": "--currency cryptonight_conceal",
     "CnDouble": "--currency cryptonight_v8_double",
+    "CnFast": "--currency cryptonight_masari",
     "CnGpu": "--currency cryptonight_gpu",
     "CnHalf": "--currency cryptonight_v8_half",
     "CnHaven": "--currency cryptonight_haven",
@@ -32,6 +33,7 @@
     "CnRwz": "--currency cryptonight_v8_reversewaltz",
     "CnSaber": "--currency cryptonight_bittube2",
     "CnTurtle": "--currency cryptonight_turtle",
-    "CnXTL": "--currency cryptonight_v7_stellite"
+    "CnXTL": "--currency cryptonight_v7_stellite",
+    "CnZls": "--currency cryptonight_v8_zelerius"
   }
 }
