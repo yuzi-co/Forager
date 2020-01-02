@@ -92,6 +92,9 @@ if ($Querymode -eq "Core") {
         $Pool_Algo = Get-AlgoUnifiedName ($Algo.name -replace '_')
         if ($Algo.name -like 'cryptonight_*') {
             $MineHost = $MineUrl
+            if ($Algo.name -eq 'cryptonight_fast') {
+                $Pool_Algo = 'CnHalf'
+            }
         } else {
             $MineHost = $Algo.name + "." + $MineUrl
         }

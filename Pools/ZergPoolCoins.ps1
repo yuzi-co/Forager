@@ -85,9 +85,18 @@ if ($Querymode -eq "Core") {
     } | ForEach-Object {
 
         $Coin = $RequestCurrencies.$_
-        $Pool_Algo = Get-AlgoUnifiedName $Coin.algo
+        $Pool_Algo = Get-AlgoUnifiedName ($Coin.algo -replace '_')
         $Pool_Coin = Get-CoinUnifiedName $Coin.name
         $Pool_Symbol = ($_ -split '-')[0]
+
+        if ($Coin.algo -like 'cryptonight_*') {
+            $MineHost = $MineUrl
+            if ($Coin.algo -eq 'cryptonight_fast') {
+                $Pool_Algo = 'CnHalf'
+            }
+        } else {
+            $MineHost = $Algo.name + "." + $MineUrl
+        }
 
         $Algo = $Request.($Coin.algo)
         $Divisor = 1e9 * [decimal]$Coin.mbtc_mh_factor
@@ -98,7 +107,7 @@ if ($Querymode -eq "Core") {
             Price                 = $(if ($Divisor) { [decimal]$Coin.estimate / $Divisor })
             Price24h              = $(if ($Divisor) { $(if ($Coin.'24h_btc_shared' -ne $null) { [decimal]$Coin.'24h_btc_shared' } else { [decimal]$Coin.'24h_btc' }) / $Divisor })
             Protocol              = "stratum+tcp"
-            Host                  = $MineUrl
+            Host                  = $MineHost
             Port                  = [int]$Coin.port
             User                  = $Wallets.$Pool_Symbol
             Pass                  = "c=$Pool_Symbol,mc=$Pool_Symbol"
