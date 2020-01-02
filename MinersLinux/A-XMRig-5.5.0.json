@@ -1,6 +1,6 @@
 {
-  "Path": "xmrig-5.4.0/xmrig",
-  "Uri": "https://github.com/xmrig/xmrig/releases/download/v5.4.0/xmrig-5.4.0-xenial-x64.tar.gz",
+  "Path": "xmrig-5.5.0/xmrig",
+  "Uri": "https://github.com/xmrig/xmrig/releases/download/v5.5.0/xmrig-5.5.0-xenial-x64.tar.gz",
   "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",
@@ -31,18 +31,18 @@
     "CnGpu": "-a cn/gpu",
     "CnHalf": "-a cn/half",
     "CnHaven": "-a cn-heavy/xhv",
-    "CnHeavy": "-a cn-heavy",
+    "CnHeavy": "-a cn-heavy/0",
     "CnLiteV7": "-a cn-lite/1",
     "CnR": "-a cn/r",
     "CnRwz": "-a cn/rwz",
     "CnSaber": "-a cn-heavy/tube",
     "CnTurtle": "-a cn-pico/trtl",
+    "CnTlo": "-a cn-pico/tlo",
     "CnZls": "-a cn/zls",
-    "_RandomSfx": "-a Rx/sfx",
-    "_RandomV": "-a Rx/v",
-    "_RandomX": "-a Rx",
-    "_RandomXArq": "-a Rx/arq",
-    "_RandomXL": "-a Rx/loki",
-    "_RandomXWow": "-a Rx/wow"
+    "_RandomSfx": "-a rx/sfx",
+    "_RandomX": "-a rx",
+    "_RandomXArq": "-a rx/arq",
+    "_RandomXL": "-a rx/loki",
+    "_RandomXWow": "-a rx/wow"
   }
 }
