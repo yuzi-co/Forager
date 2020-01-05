@@ -40,7 +40,7 @@ Recommended drivers for NVIDIA on Win 7 - 390.65-391.01 for CUDA 9.1
 
 #### Powershell:
 
-Using PowerShell Core recommended - https://github.com/PowerShell/PowerShell/releases
+Using PowerShell Core 6.x recommended - https://github.com/PowerShell/PowerShell/releases/tag/v6.2.3
 
 Windows 7 will require PowerShell Core or PowerShell v5 installed: https://www.microsoft.com/en-us/download/details.aspx?id=54616
 
