@@ -114,12 +114,18 @@ if ($Querymode -eq "Core") {
                     $WtmCoin = Invoke-APIRequest -Url "https://whattomine.com/coins/$($WtmSecCoin.Id).json?hr=$f&p=0&fee=0.0&cost=0.0&hcost=0.0" -Retry 3
                     if ($WtmCoin) {
                         if (-not [decimal]$WtmCoin.btc_revenue) {
-                            if (-not $CMCResponse) {
-                                'Calling CoinMarketCap API' | Write-Host
-                                $CMCResponse = Invoke-APIRequest -Url "https://api.coinmarketcap.com/v1/ticker/?limit=0" -MaxAge 60 -Retry 1
+                            # if (-not $CMCResponse) {
+                            #     'Calling CoinMarketCap API' | Write-Host
+                            #     $CMCResponse = Invoke-APIRequest -Url "https://api.coinmarketcap.com/v1/ticker/?limit=0" -MaxAge 60 -Retry 1
+                            # }
+                            # $APIPrice = [decimal]($CMCResponse | Where-Object Symbol -eq $WtmCoin.tag | Select-Object -First 1 -ExpandProperty price_btc)
+
+                            if (-not $CPResponse) {
+                                'Calling CoinPaprika API' | Write-Host
+                                $CPResponse = Invoke-APIRequest -Url "https://api.coinpaprika.com/v1/tickers?quotes=BTC" -MaxAge 60 -Retry 1
                             }
-                            $CMCPrice = [decimal]($CMCResponse | Where-Object Symbol -eq $WtmCoin.tag | Select-Object -First 1 -ExpandProperty price_btc)
-                            $WtmCoin.btc_revenue = $CMCPrice * [decimal]$WtmCoin.estimated_rewards
+                            $APIPrice = [decimal]($CPResponse | Where-Object Symbol -eq $WtmCoin.tag | Select-Object -First 1 -ExpandProperty quotes).BTC.price
+                            $WtmCoin.btc_revenue = $APIPrice * [decimal]$WtmCoin.estimated_rewards
                         }
                         $WtmCoin | Add-Member btc_revenue24 $WtmCoin.btc_revenue
                     }
@@ -144,3 +150,5 @@ if ($Querymode -eq "Core") {
 
 $Result
 Remove-Variable Result
+# Remove-Variable CMCResponse
+Remove-Variable CPResponse
