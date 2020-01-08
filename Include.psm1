@@ -1071,10 +1071,15 @@ function Get-LiveHashRate {
                 $Request = Invoke-HTTPRequest -Port $Miner.ApiPort -Path "/stat"
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
-                    $HashRate = [double](($Data.devices.speed) | Measure-Object -Sum).Sum
+                    $HashRate = @(
+                        [double](($Data.devices.speed) | Measure-Object -Sum).Sum
+                        [double](($Data.devices.speed2) | Measure-Object -Sum).Sum
+                    )
                     $Shares = @(
-                        [int64]$($Data.devices.accepted_shares | Measure-Object -Sum).Sum
-                        [int64]$($Data.devices.rejected_shares | Measure-Object -Sum).Sum
+                        [int64]$Data.total_accepted_shares
+                        [int64]$Data.total_rejected_shares
+                        [int64]$Data.total_accepted_shares2
+                        [int64]$Data.total_rejected_shares2
                     )
                 }
             }
