@@ -146,9 +146,9 @@ if ($Querymode -eq "Core") {
         }
     } #end foreach pool
     Remove-Variable HPools
+    # Remove-Variable CMCResponse
+    Remove-Variable CPResponse
 }
 
 $Result
 Remove-Variable Result
-# Remove-Variable CMCResponse
-Remove-Variable CPResponse
