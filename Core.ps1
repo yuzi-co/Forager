@@ -445,14 +445,14 @@ while ($Quit -ne $true) {
 
                         $MinerFee = $ExecutionContext.InvokeCommand.ExpandString($Miner.Fee)
                         $NoCpu = $ExecutionContext.InvokeCommand.ExpandString($Miner.NoCpu)
-                        $CustomParams = $ExecutionContext.InvokeCommand.ExpandString($Miner.Custom)
+                        $CustomParams = $Miner.Custom
 
                         if ($Algo.Value -is [string]) {
-                            $AlgoParams = $ExecutionContext.InvokeCommand.ExpandString($Algo.Value)
+                            $AlgoParams = $Algo.Value
                         } else {
-                            $AlgoParams = $ExecutionContext.InvokeCommand.ExpandString($Algo.Value.Params)
+                            $AlgoParams = $Algo.Value.Params
                             if ($Algo.Value.PSObject.Properties['Custom']) {
-                                $CustomParams = $ExecutionContext.InvokeCommand.ExpandString($Algo.Value.Custom)
+                                $CustomParams = $Algo.Value.Custom
                             }
                             if ($Algo.Value.PSObject.Properties['Fee']) {
                                 $MinerFee = $ExecutionContext.InvokeCommand.ExpandString($Algo.Value.Fee)
@@ -547,6 +547,8 @@ while ($Quit -ne $true) {
                             $PoolDual = $null
                             $PoolUserDual = $null
                         }
+
+                        $Arguments = $ExecutionContext.InvokeCommand.ExpandString($Arguments)
 
                         # SubMiner are variations of miner that not need to relaunch
                         # Creates a "SubMiner" object for each PL
