@@ -521,12 +521,12 @@ while ($Quit -ne $true) {
                             # Replace placehoder patterns
                             $WorkerNameDual = $Config.WorkerName + '_' + $DeviceGroup.GroupName + 'D'
 
-                            if ($Pool.PoolName -eq 'Nicehash') {
+                            if ($PoolDual.PoolName -eq 'Nicehash') {
                                 $WorkerNameDual = $WorkerNameDual -replace '[^\w\.]', '_' # Nicehash requires alphanumeric WorkerNames
                             }
 
-                            $PoolUserDual = $PoolDual.User -replace '#WorkerNameDual#', $WorkerNameDual
-                            $PoolPassDual = $PoolDual.Pass -replace '#WorkerNameDual#', $WorkerNameDual
+                            $PoolUserDual = $PoolDual.User -replace '#WorkerName#', $WorkerNameDual
+                            $PoolPassDual = $PoolDual.Pass -replace '#WorkerName#', $WorkerNameDual
 
                             $Params = @{
                                 '#PortDual#'       = $(if ($EnableDualSSL) { $PoolDual.PortSSL } else { $PoolDual.Port })
