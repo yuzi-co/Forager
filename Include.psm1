@@ -1126,6 +1126,8 @@ function Get-LiveHashRate {
                     $Shares = @(
                         [int64]$Data.stratum.accepted_shares
                         [int64]$Data.stratum.rejected_shares
+                        [int64]$Data.stratum.accepted_shares2
+                        [int64]$Data.stratum.rejected_shares2
                     )
                 }
             }
