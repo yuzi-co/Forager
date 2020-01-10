@@ -20,6 +20,6 @@
     "_YescryptR8": "-a yescryptr8",
     "YescryptR8g": "-a yescrypt",
     "_YescryptR16": "-a yescryptr16",
-    "YescryptR32": "-a yescryptr32"
+    "_YescryptR32": "-a yescryptr32"
   }
 }

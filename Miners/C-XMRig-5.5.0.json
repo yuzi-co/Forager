@@ -35,7 +35,7 @@
     "CnTlo": "-a cn-pico/tlo",
     "CnZls": "-a cn/zls",
     "RandomSfx": "-a rx/sfx",
-    "_RandomX": "-a rx/0",
+    "RandomX": "-a rx/0",
     "RandomXArq": "-a rx/arq",
     "RandomXL": "-a rx/loki",
     "RandomXWow": "-a rx/wow"
