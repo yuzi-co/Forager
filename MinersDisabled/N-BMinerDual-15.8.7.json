@@ -1,7 +1,6 @@
 {
-  "Path": "bminer-v15.5.3-747d98e/bminer",
-  "Uri": "https://www.bminercontent.com/releases/bminer-v15.5.3-747d98e-amd64.tar.xz",
-  "SHA256": "AC3C0FB9CB64B401584DF17339A2F9CA747E1EF355597A349A99C273CE22C568",
+  "Path": "bminer-lite-v15.8.7-6831c33/bminer.exe",
+  "Uri": "https://www.bminercontent.com/releases/bminer-lite-v15.8.7-6831c33-amd64.zip",
   "Type": "NVIDIA",
   "CUDA": 9.2,
   "Arguments": [
@@ -20,6 +19,7 @@
   "Algorithms": {
     "Ethash_Blake2s": "blake2s",
     "_Ethash_Blake14r": "blake14r",
+    "Ethash_Eaglesong": "ckb",
     "Ethash_Tensority": "tensority",
     "Ethash_Vbk": "vbk"
   }

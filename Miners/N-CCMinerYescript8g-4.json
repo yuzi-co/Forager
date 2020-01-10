@@ -17,9 +17,9 @@
   "API": "Ccminer",
   "Algorithms": {
     "Lyra2z330": "-a lyra2z330",
-    "YescryptR8": "-a yescryptr8",
+    "_YescryptR8": "-a yescryptr8",
     "YescryptR8g": "-a yescrypt",
-    "YescryptR16": "-a yescryptr16",
+    "_YescryptR16": "-a yescryptr16",
     "YescryptR32": "-a yescryptr32"
   }
 }

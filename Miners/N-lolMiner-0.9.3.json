@@ -17,7 +17,7 @@
   "API": "LOL",
   "SSL": true,
   "Algorithms": {
-    "BeamV2": {
+    "_BeamV2": {
       "Params": "--coin BEAM-II",
       "Mem": 3.5
     },
@@ -29,7 +29,7 @@
       "Params": "--coin MNX",
       "Mem": 1
     },
-    "Equihash125": {
+    "_Equihash125": {
       "Params": "--coin ZEL",
       "Mem": 2.9
     },

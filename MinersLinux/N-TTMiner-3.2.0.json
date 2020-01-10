@@ -19,12 +19,13 @@
     "API": "Claymore",
     "Fee": 0.01,
     "Algorithms": {
+        "_Eaglesong": "-a Eaglesong",
         "Ethash": {
             "Params": "-a ETHASH",
             "Mem": 3
         },
         "Kadena": "-a Blake2s -coin kda",
-        "Lyra2v3": "-a LYRA2V3",
+        "_Lyra2v3": "-a LYRA2V3",
         "MTP": {
             "Params": "-a MTP",
             "Mem": 4.5

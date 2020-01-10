@@ -74,7 +74,7 @@
       "Mem": 2.75
     },
     "Equihash210": "--algo 210_9 --pers AION0PoW",
-    "Ethash": {
+    "_Ethash": {
       "Params": "--algo ethash --proto stratum",
       "Mem": 3,
       "Fee": 0.0065

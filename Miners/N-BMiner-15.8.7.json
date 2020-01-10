@@ -40,7 +40,7 @@
       "Mem": 7.4
     },
     "_Equihash144": "-pers auto -uri equihash1445",
-    "Ethash": {
+    "_Ethash": {
       "Params": "-uri ethstratum",
       "Mem": 3
     },

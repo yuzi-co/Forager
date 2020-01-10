@@ -8,7 +8,7 @@
   "API": "Claymore",
   "Fee": 0.05,
   "Algorithms": {
-    "RandomX": "RandomX",
+    "_RandomX": "RandomX",
     "RandomHash": "RandomHash",
     "RandomHash2": "RandomHash2"
   }

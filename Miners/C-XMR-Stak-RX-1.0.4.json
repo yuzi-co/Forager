@@ -21,6 +21,6 @@
   "SSL": true,
   "Algorithms": {
     "RandomArq": "--currency randomx_arqma",
-    "RandomX": "--currency randomx"
+    "_RandomX": "--currency randomx"
   }
 }

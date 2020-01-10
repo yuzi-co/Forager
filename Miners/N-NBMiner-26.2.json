@@ -15,17 +15,17 @@
   "Fee": 0.02,
   "Algorithms": {
     "BFC": "-a bfc",
-    "Cuckoo29": {
+    "_Cuckoo29": {
       "Params": "-a cuckoo_ae",
       "NoCpu": true,
       "Mem": 5
     },
-    "Cuckaroo29": {
+    "_Cuckaroo29": {
       "Params": "-a cuckaroo",
       "NoCpu": true,
       "Mem": 5
     },
-    "Cuckaroo29d": {
+    "_Cuckaroo29d": {
       "Params": "-a cuckarood",
       "NoCpu": true,
       "Mem": 5
