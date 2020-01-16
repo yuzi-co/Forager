@@ -30,6 +30,6 @@
   "Algorithms": {
     "Ethash": "-mode 1",
     "Ubqhash": "-coin ubq -mode 1",
-    "Ethash_Blake2s": "-dcoin blake2s -mode 0"
+    "_Ethash_Blake2s": "-dcoin blake2s -mode 0"
   }
 }
