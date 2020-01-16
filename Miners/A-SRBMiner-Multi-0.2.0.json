@@ -27,7 +27,6 @@
     "Keccak": "--algorithm keccak",
     "M7Mv2": "--algorithm m7mv2",
     "MTP": "--algorithm mtp",
-    "RFv2": "--algorithm rainforestv2",
     "Yescrypt": "--algorithm yescrypt"
   }
 }

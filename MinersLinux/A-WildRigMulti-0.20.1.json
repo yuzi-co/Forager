@@ -56,10 +56,6 @@
       "Params": "--algo wildkeccak --scratchpad-url http://purk.miner.rocks:8008/scratchpad.bin --scratchpad-file scratchpad-#Algorithm#.bin",
       "Fee": 0.02
     },
-    "Rainforest": {
-      "Params": "--algo rainforest",
-      "NoCpu": true
-    },
     "Renesis": "--algo renesis",
     "SHA256q": "--algo sha256q",
     "SHA256t": "--algo sha256t",

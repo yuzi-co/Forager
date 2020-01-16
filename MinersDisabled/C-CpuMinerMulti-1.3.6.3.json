@@ -17,8 +17,6 @@
   "API": "Ccminer",
   "Algorithms": {
     "Balloon": "-a balloon",
-    "Rainforest2": "-a rfv2",
-    "ScryptJane16": "-a scryptjane:16",
     "ScryptN": "-a scrypt:2048",
     "Verium": "-a scrypt:1048576",
     "Yescrypt": "-a yescrypt"
