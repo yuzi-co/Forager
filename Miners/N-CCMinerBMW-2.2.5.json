@@ -1,0 +1,23 @@
+{
+  "Path": "ccminerbmw/ccminer.exe",
+  "Uri": "https://github.com/Minerx117/ccminer-bmw512/releases/download/v2.2.5/ccminerbmw.7z",
+  "Type": "NVIDIA",
+  "CUDA": 10.0,
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-R 3",
+    "-r 10",
+    "-d #Devices#",
+    "-b #APIPort#",
+    "--submit-stale",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "API": "Ccminer",
+  "NoCpu": true,
+  "Algorithms": {
+    "BMW512": "-a bmw512"
+  }
+}
