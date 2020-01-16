@@ -1,7 +1,6 @@
 {
   "Path": "SG-Miner-CREA-Win/sgminer.exe",
-  "Uri": "https://www.creativechain.org/wp-content/uploads/2017/10/SG-Miner-CREA-Win.zip",
-  "SHA256": "EC75ED8EBE85B708A9FFC6741B059E284535A574CFE9C29DEEEFF15EBAE58AAB",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2020.01/SG-Miner-CREA-Win.zip",
   "Type": "AMD",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
