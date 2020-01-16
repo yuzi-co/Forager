@@ -1,6 +1,6 @@
 {
-  "Path": "miner.exe",
-  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.92/gminer_1_92_windows64.zip",
+  "Path": "miner",
+  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.93/gminer_1_93_linux64.tar.xz",
   "Type": "NVIDIA",
   "CUDA": 9.0,
   "Arguments": [
@@ -13,6 +13,7 @@
     "--devices #DevicesETHMode#",
     "--cuda 1",
     "--opencl 0",
+    "--color 0",
     "#AlgorithmParameters#",
     "#CustomParameters#"
   ],
@@ -34,22 +35,32 @@
       "Fee": 0.05
     },
     "Cuckoo29": {
-      "Params": "--algo aeternity",
+      "Params": "--algo cuckoo29",
       "NoCpu": true,
       "Mem": 3.8
     },
     "Cuckaroo29": {
-      "Params": "--algo grin29",
+      "Params": "--algo cuckaroo29",
       "NoCpu": true,
       "Mem": 3.8
     },
     "Cuckaroo29d": {
-      "Params": "--algo grin29",
+      "Params": "--algo cuckarood29",
+      "NoCpu": true,
+      "Mem": 3.8
+    },
+    "Cuckaroo29m": {
+      "Params": "--algo cuckaroom29",
       "NoCpu": true,
       "Mem": 3.8
     },
     "Cuckaroo29s": {
       "Params": "--algo swap",
+      "NoCpu": true,
+      "Mem": 3.8
+    },
+    "Cuckaroo29v": {
+      "Params": "--algo cuckarood29v",
       "NoCpu": true,
       "Mem": 3.8
     },
