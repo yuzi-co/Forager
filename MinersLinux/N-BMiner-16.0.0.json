@@ -1,6 +1,6 @@
 {
-  "Path": "bminer-v15.8.7-6831c33/bminer",
-  "Uri": "https://www.bminercontent.com/releases/bminer-v15.8.7-6831c33-amd64.tar.xz",
+  "Path": "bminer-v16.0.0-362b272/bminer",
+  "Uri": "https://www.bminercontent.com/releases/bminer-v16.0.0-362b272-amd64.tar.xz",
   "Type": "NVIDIA",
   "CUDA": 9.2,
   "Arguments": [
@@ -31,6 +31,11 @@
     },
     "Cuckaroo29d": {
       "Params": "-uri cuckaroo29d",
+      "NoCpu": true,
+      "Mem": 3.5
+    },
+    "Cuckaroo29m": {
+      "Params": "-uri cuckaroo29m",
       "NoCpu": true,
       "Mem": 3.5
     },

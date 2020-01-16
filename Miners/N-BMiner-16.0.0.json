@@ -1,6 +1,6 @@
 {
-  "Path": "bminer-lite-v15.8.7-6831c33/bminer.exe",
-  "Uri": "https://www.bminercontent.com/releases/bminer-lite-v15.8.7-6831c33-amd64.zip",
+  "Path": "bminer-lite-v16.0.0-362b272/bminer.exe",
+  "Uri": "https://www.bminercontent.com/releases/bminer-lite-v16.0.0-362b272-amd64.zip",
   "Type": "NVIDIA",
   "CUDA": 9.2,
   "Arguments": [
@@ -31,6 +31,11 @@
     },
     "_Cuckaroo29d": {
       "Params": "-uri cuckaroo29d",
+      "NoCpu": true,
+      "Mem": 3.5
+    },
+    "_Cuckaroo29m": {
+      "Params": "-uri cuckaroo29m",
       "NoCpu": true,
       "Mem": 3.5
     },
