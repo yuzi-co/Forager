@@ -17,6 +17,6 @@
   "API": "Claymore",
   "Fee": 0.01,
   "Algorithms": {
-    "RandomHash": ""
+    "_RandomHash": ""
   }
 }

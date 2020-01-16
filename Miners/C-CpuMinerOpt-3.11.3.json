@@ -19,7 +19,7 @@
     "HOdl": "-a hodl",
     "Lyra2h": "-a lyra2h",
     "Lyra2z330": "-a lyra2z330",
-    "M7M": "-a m7m",
+    "_M7M": "-a m7m",
     "Power2b": "-a yespower-b2b -N 2048 -R 32 -K \"Now I am become Death, the destroyer of worlds\"",
     "ScryptN": "-a scrypt -N 2048",
     "Verium": "-a scrypt -N 1048576",

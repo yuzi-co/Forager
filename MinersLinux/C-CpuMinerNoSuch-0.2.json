@@ -18,7 +18,7 @@
   "API": "Ccminer",
   "Algorithms": {
     "HODl": "-a hodl",
-    "M7M": "-a m7m",
+    "_M7M": "-a m7m",
     "Yescrypt": "-a yescrypt"
   }
 }
