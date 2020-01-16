@@ -1,7 +1,7 @@
 {
   "Path": "PhoenixMiner",
-  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.12/PhoenixMiner_4.8c_Linux.tar.gz",
-  "Type": "NVIDIA",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2020.01/PhoenixMiner_4.9c_Linux.tar.gz",
+  "Type": "AMD",
   "Arguments": [
     "-pool #Protocol#://#Server#:#Port#",
     "-wal #Login#",
@@ -12,8 +12,7 @@
     "-r -1",
     "-logfile #GroupName#_log.txt",
     "-logsmaxsize 10",
-    "-nvidia",
-    "-nvdo 1",
+    "-amd",
     "-di #DevicesClayMode#",
     "-cdmport #APIPort#",
     "-cdm 1",
@@ -25,6 +24,7 @@
   "SSL": true,
   "Mem": 3,
   "Algorithms": {
+    "ProgPOW": "-coin bci -mode 1",
     "Ethash": "-mode 1",
     "Ubqhash": "-coin ubq -mode 1",
     "_Ethash_Blake2s": "-dcoin blake2s -mode 0 -dpool #ProtocolDual#://#ServerDual#:#PortDual# -dwal #LoginDual# -dpsw #PasswordDual#"

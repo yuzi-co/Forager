@@ -1,11 +1,14 @@
 {
-  "Path": "PhoenixMiner",
-  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.12/PhoenixMiner_4.8c_Linux.tar.gz",
+  "Path": "PhoenixMiner.exe",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2020.01/PhoenixMiner_4.9c_Windows.7z",
   "Type": "AMD",
   "Arguments": [
     "-pool #Protocol#://#Server#:#Port#",
     "-wal #Login#",
     "-pass #Password#",
+    "-dpool #ProtocolDual#://#ServerDual#:#PortDual#",
+    "-dwal #LoginDual#",
+    "-dpsw #PasswordDual#",
     "$(if ('#EthStMode#' -ne ''){'-esm #EthStMode#'})",
     "-mi 12",
     "-wd 1",
@@ -27,6 +30,6 @@
     "ProgPOW": "-coin bci -mode 1",
     "Ethash": "-mode 1",
     "Ubqhash": "-coin ubq -mode 1",
-    "_Ethash_Blake2s": "-dcoin blake2s -mode 0 -dpool #ProtocolDual#://#ServerDual#:#PortDual# -dwal #LoginDual# -dpsw #PasswordDual#"
+    "_Ethash_Blake2s": "-dcoin blake2s -mode 0"
   }
 }

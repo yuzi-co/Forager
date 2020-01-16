@@ -1,6 +1,6 @@
 {
   "Path": "PhoenixMiner.exe",
-  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.12/PhoenixMiner_4.8c_Windows.7z",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2020.01/PhoenixMiner_4.9c_Windows.7z",
   "Type": "NVIDIA",
   "Arguments": [
     "-pool #Protocol#://#Server#:#Port#",
