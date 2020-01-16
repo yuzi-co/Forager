@@ -24,7 +24,7 @@
     "CnArto": "-a cn/rto",
     "CnDouble": "-a cn/double",
     "CnFast": "-a cn/fast",
-    "CnGpu": "-a cn/gpu",
+    "_CnGpu": "-a cn/gpu",
     "CnHalf": "-a cn/half",
     "CnHaven": "-a cn-heavy/xhv",
     "CnHeavy": "-a cn-heavy/0",
