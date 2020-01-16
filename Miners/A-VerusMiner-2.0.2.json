@@ -1,7 +1,6 @@
 {
-  "Path": "silentarmy.exe",
-  "Uri": "https://github.com/monkins1010/AMDVerusCoin2.0/releases/download/v5/AMDVERU2.0monkins.zip",
-  "SHA256": "2DE8FB03E15FB41A1E12B0A9D50DF682A73498671BAA96B8AD45E438E459A583",
+  "Path": "testVerus2 AMD/silentarmy.exe",
+  "Uri": "https://github.com/monkins1010/AMDVerusCoin2.0/releases/download/v5/Verus2.0.2.AMD.zip",
   "Type": "AMD",
   "Arguments": [
     "-c #Protocol#://#Server#:#Port#",
