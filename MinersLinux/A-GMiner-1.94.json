@@ -1,6 +1,6 @@
 {
   "Path": "miner",
-  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.92/gminer_1_92_linux64.tar.xz",
+  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.94/gminer_1_94_linux64.tar.xz",
   "Type": "AMD",
   "Arguments": [
     "--server #Server#:#Port#",
