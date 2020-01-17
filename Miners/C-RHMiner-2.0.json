@@ -1,5 +1,5 @@
 {
-  "Path": "rhminer.exe",
+  "Path": "rhminer.2.0.Windows.CPU/rhminer.exe",
   "Uri": "https://github.com/polyminer1/rhminer/releases/download/2.0/rhminer.2.0.Windows.CPU.zip",
   "Type": "CPU",
   "Arguments": [

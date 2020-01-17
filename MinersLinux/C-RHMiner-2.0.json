@@ -1,5 +1,5 @@
 {
-  "Path": "rhminer",
+  "Path": "rhminer.2.0.Linux.CPU/rhminer",
   "Uri": "https://github.com/polyminer1/rhminer/releases/download/2.0/rhminer.2.0.Linux.CPU.zip",
   "Type": "CPU",
   "Arguments": [
