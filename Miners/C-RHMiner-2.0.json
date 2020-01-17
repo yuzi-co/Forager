@@ -1,7 +1,6 @@
 {
-  "Path": "rhminer",
-  "Uri": "https://github.com/polyminer1/rhminer/releases/download/1.5.3/rhminer.1.5.3.Linux.CPU.zip",
-  "SHA256": "9CAC3EC81D43C9ADE15DF2D8246D0A3DC61DA4A04DE7D42EB52507F7671F7B88",
+  "Path": "rhminer.exe",
+  "Uri": "https://github.com/polyminer1/rhminer/releases/download/2.0/rhminer.2.0.Windows.CPU.zip",
   "Type": "CPU",
   "Arguments": [
     "-s #Protocol#://#Server#:#Port#",
@@ -9,6 +8,7 @@
     "-pw #Password#",
     "-r 5",
     "-cpu",
+    "-processpriority 2",
     "-cputhreads $(if ($CpuThreads -ne $null){$CpuThreads} else {$SystemInfo.CpuFeatures.threads})",
     "-apiport #ApiPort#",
     "#CustomParameters#"
@@ -16,6 +16,6 @@
   "API": "Claymore",
   "Fee": 0.01,
   "Algorithms": {
-    "_RandomHash": ""
+    "RandomHash2": ""
   }
 }

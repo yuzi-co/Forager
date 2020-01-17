@@ -1,0 +1,20 @@
+{
+  "Path": "rhminer",
+  "Uri": "https://github.com/polyminer1/rhminer/releases/download/2.0/rhminer.2.0.Linux.CPU.zip",
+  "Type": "CPU",
+  "Arguments": [
+    "-s #Protocol#://#Server#:#Port#",
+    "-su #Login#",
+    "-pw #Password#",
+    "-r 5",
+    "-cpu",
+    "-cputhreads $(if ($CpuThreads -ne $null){$CpuThreads} else {$SystemInfo.CpuFeatures.threads})",
+    "-apiport #ApiPort#",
+    "#CustomParameters#"
+  ],
+  "API": "Claymore",
+  "Fee": 0.01,
+  "Algorithms": {
+    "RandomHash2": ""
+  }
+}
