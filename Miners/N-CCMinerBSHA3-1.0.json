@@ -1,0 +1,22 @@
+{
+  "Path": "ccminer-bsha3-win64/ccminer.exe",
+  "Uri": "https://github.com/brian112358/ccminer-bsha3/releases/download/v1.0/ccminer-bsha3-v1.0-win64.zip",
+  "Type": "NVIDIA",
+  "CUDA": 9.0,
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-R 3",
+    "-r 10",
+    "-d #Devices#",
+    "-b #APIPort#",
+    "--submit-stale",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "API": "Ccminer",
+  "Algorithms": {
+    "SHA3d": "-a keccak"
+  }
+}
