@@ -22,15 +22,15 @@
       "Params": "--coin BEAM-II",
       "Mem": 3.5
     },
-    "Cuckaroo29d": {
+    "_Cuckaroo29d": {
       "Params": "--coin GRIN-C29D",
       "Mem": 3.6
     },
-    "Cuckaroo29m": {
+    "_Cuckaroo29m": {
       "Params": "--coin GRIN-C29M",
       "Mem": 3.6
     },
-    "Cuckatoo31": {
+    "_Cuckatoo31": {
       "Params": "--coin GRIN-C31",
       "Mem": 3.6
     },
