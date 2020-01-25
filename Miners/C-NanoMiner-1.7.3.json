@@ -1,0 +1,14 @@
+{
+  "Path": "nanominer-windows-1.7.3/nanominer.exe",
+  "Uri": "https://github.com/nanopool/nanominer/releases/download/v1.7.3/nanominer-windows-1.7.3.zip",
+  "Type": "CPU",
+  "GenerateConfigFile": "nanominer-windows-1.7.3/#GroupName#-#Algorithm#.conf",
+  "PatternConfigFile": "NanoMiner.txt",
+  "Arguments": "#GroupName#-#Algorithm#.conf",
+  "API": "Claymore",
+  "Fee": 0.05,
+  "Algorithms": {
+    "_RandomX": "RandomX",
+    "RandomHash2": "RandomHash2"
+  }
+}
