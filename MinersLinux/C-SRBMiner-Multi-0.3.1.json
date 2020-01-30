@@ -24,7 +24,7 @@
     "CnTalleo": "--algorithm cntalleo",
     "CpuPower": "--algorithm cpupower",
     "DefyX": "--algorithm defyx",
-    "K12": "--algorithm k12",
+    "_K12": "--algorithm k12",
     "M7Mv2": "--algorithm m7mv2",
     "RandomArq": "--algorithm randomarq",
     "RandomSfx": "--algorithm randomsfx",
