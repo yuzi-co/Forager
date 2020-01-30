@@ -29,7 +29,7 @@
     "CnFast": "-a cn/fast",
     "_CnGpu": "-a cn/gpu",
     "_CnHalf": "-a cn/half",
-    "CnHaven": "-a cn-heavy/xhv",
+    "_CnHaven": "-a cn-heavy/xhv",
     "_CnHeavy": "-a cn-heavy/0",
     "CnLiteV7": "-a cn-lite/1",
     "CnR": "-a cn/r",

@@ -20,7 +20,7 @@
     "Fee": 0.01,
     "Algorithms": {
         "_Eaglesong": "-a Eaglesong",
-        "Ethash": {
+        "_Ethash": {
             "Params": "-a ETHASH",
             "Mem": 3
         },

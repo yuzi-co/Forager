@@ -25,7 +25,7 @@
     "CnFast": "--currency cryptonight_masari",
     "_CnGpu": "--currency cryptonight_gpu",
     "_CnHalf": "--currency cryptonight_v8_half",
-    "CnHaven": "--currency cryptonight_haven",
+    "_CnHaven": "--currency cryptonight_haven",
     "_CnHeavy": "--currency cryptonight_heavy",
     "CnLiteV7": "--currency cryptonight_lite_v7",
     "CnR": "--currency cryptonight_r",

@@ -27,9 +27,9 @@ $M = @{
     Fee        = "`$(if (`$DeviceGroup.MemoryGB -gt 3){0.01}else{0})"
     Mem        = 3
     Algorithms = [PSCustomObject]@{
-        Ethash         = "-mode 1"
-        Ethash_Blake2s = "-dcoin blake2s -mode 0"
-        Ethash_Keccak  = "-dcoin Keccak -mode 0"
+        Ethash = "-mode 1"
+        # Ethash_Blake2s = "-dcoin blake2s -mode 0"
+        # Ethash_Keccak  = "-dcoin Keccak -mode 0"
     }
 }
 
