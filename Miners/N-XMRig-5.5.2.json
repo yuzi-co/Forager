@@ -1,16 +1,19 @@
 {
-  "Path": "xmrig-5.5.1/xmrig",
-  "Uri": "https://github.com/xmrig/xmrig/releases/download/v5.5.1/xmrig-5.5.1-xenial-x64.tar.gz",
-  "Type": "CPU",
+  "Path": "xmrig-5.5.2/xmrig.exe",
+  "Uri": "https://github.com/xmrig/xmrig/releases/download/v5.5.2/xmrig-5.5.2-msvc-cuda10_1-win64.zip",
+  "Type": "NVIDIA",
+  "CUDA": 10.1,
   "Arguments": [
     "-o #Server#:#Port#",
     "-u #Login#",
     "-p #Password#",
     "$(if ($Pool.PoolName -eq 'NiceHash'){'--nicehash'})",
     "$(if ($EnableSSL){'--tls'})",
+    "--no-cpu",
+    "--cuda",
+    "--cuda-devices=#Devices#",
     "--donate-level 1",
     "--http-port #APIPort#",
-    "--no-color",
     "#AlgorithmParameters#",
     "#CustomParameters#"
   ],
@@ -19,13 +22,13 @@
   "Fee": 0.01,
   "Algorithms": {
     "_Argon2d512": "-a argon2/chukwa",
-    "Argon2d256": "-a argon2/wrkz",
+    "_Argon2d256": "-a argon2/wrkz",
     "CnAlloy": "-a cn/xao",
     "CnArto": "-a cn/rto",
     "CnDouble": "-a cn/double",
     "CnFast": "-a cn/fast",
     "_CnGpu": "-a cn/gpu",
-    "CnHalf": "-a cn/half",
+    "_CnHalf": "-a cn/half",
     "_CnHaven": "-a cn-heavy/xhv",
     "_CnHeavy": "-a cn-heavy/0",
     "CnLiteV7": "-a cn-lite/1",
@@ -35,10 +38,10 @@
     "CnTurtle": "-a cn-pico/trtl",
     "CnTlo": "-a cn-pico/tlo",
     "CnZls": "-a cn/zls",
-    "RandomSfx": "-a rx/sfx",
-    "RandomX": "-a rx/0",
-    "RandomXArq": "-a rx/arq",
-    "RandomXL": "-a rx/loki",
-    "RandomXWow": "-a rx/wow"
+    "_RandomSfx": "-a rx/sfx",
+    "_RandomX": "-a rx",
+    "_RandomXArq": "-a rx/arq",
+    "_RandomXL": "-a rx/loki",
+    "_RandomXWow": "-a rx/wow"
   }
 }

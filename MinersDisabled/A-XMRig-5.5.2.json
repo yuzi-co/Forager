@@ -1,6 +1,6 @@
 {
-  "Path": "xmrig-5.5.1/xmrig",
-  "Uri": "https://github.com/xmrig/xmrig/releases/download/v5.5.1/xmrig-5.5.1-xenial-x64.tar.gz",
+  "Path": "xmrig-5.5.2/xmrig.exe",
+  "Uri": "https://github.com/xmrig/xmrig/releases/download/v5.5.2/xmrig-5.5.2-gcc-win64.zip",
   "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",
@@ -14,7 +14,6 @@
     "--opencl-platform=#GPUPlatform#",
     "--donate-level 1",
     "--http-port #APIPort#",
-    "--no-color",
     "#AlgorithmParameters#",
     "#CustomParameters#"
   ],
@@ -39,10 +38,10 @@
     "CnTurtle": "-a cn-pico/trtl",
     "CnTlo": "-a cn-pico/tlo",
     "CnZls": "-a cn/zls",
-    "_RandomSfx": "-a rx/sfx",
-    "_RandomX": "-a rx",
-    "_RandomXArq": "-a rx/arq",
-    "_RandomXL": "-a rx/loki",
-    "_RandomXWow": "-a rx/wow"
+    "_RandomSfx": "-a Rx/sfx",
+    "_RandomX": "-a Rx",
+    "_RandomXArq": "-a Rx/arq",
+    "_RandomXL": "-a Rx/loki",
+    "_RandomXWow": "-a Rx/wow"
   }
 }
