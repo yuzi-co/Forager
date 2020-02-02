@@ -1,6 +1,6 @@
 {
-  "Path": "xmrig-5.5.2/xmrig.exe",
-  "Uri": "https://github.com/xmrig/xmrig/releases/download/v5.5.2/xmrig-5.5.2-msvc-cuda10_1-win64.zip",
+  "Path": "xmrig-5.5.3/xmrig.exe",
+  "Uri": "https://github.com/xmrig/xmrig/releases/download/v5.5.3/xmrig-5.5.3-msvc-cuda10_1-win64.zip",
   "Type": "NVIDIA",
   "CUDA": 10.1,
   "Arguments": [
