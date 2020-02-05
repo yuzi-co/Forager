@@ -17,8 +17,8 @@
   "SSL": true,
   "Fee": 0.01,
   "Algorithms": {
-    "_Argon2d512": "-a argon2/chukwa",
-    "Argon2d256": "-a argon2/wrkz",
+    "_Chukwa": "-a argon2/chukwa",
+    "ChukwaWrkz": "-a argon2/wrkz",
     "CnAlloy": "-a cn/xao",
     "CnArto": "-a cn/rto",
     "CnDouble": "-a cn/double",

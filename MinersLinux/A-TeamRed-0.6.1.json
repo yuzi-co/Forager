@@ -19,7 +19,7 @@
   "Fee": 0.025,
   "Mem": 1.1,
   "Algorithms": {
-    "Argon2d512": "-a trtl_chukwa",
+    "Chukwa": "-a trtl_chukwa",
     "CnConceal": "-a cn_conceal",
     "CnDouble": "-a cnv8_dbl",
     "CnHalf": "-a cnv8_half",
