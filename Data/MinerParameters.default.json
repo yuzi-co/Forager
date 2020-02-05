@@ -1,28 +1,16 @@
 {
-  "A-ClayEth-12.0": {
+  "A-ClayDual-15.0": {
     "Ethash_Blake2s": "-dcri 50",
     "Ethash_Keccak": "-dcri 6"
   },
-  "A-Multiminer-1.1.0": {
-    "Argon2ad": "--gpu-batchsize=1024 -t 1",
-    "Argon2d250": "--gpu-batchsize=2048 -t 1",
-    "Argon2d500": "--gpu-batchsize=1024 -t 1",
-    "Argon2d4096": "--gpu-batchsize=256 -t 1"
-  },
-  "A-Multiminer-1.2.0": {
-    "Argon2ad": "--gpu-batchsize=1024 --gpu-threads 1",
-    "Argon2d250": "--gpu-batchsize=2048 --gpu-threads 1",
-    "Argon2d500": "--gpu-batchsize=1024 --gpu-threads 1",
-    "Argon2d4096": "--gpu-batchsize=256 --gpu-threads 1"
-  },
-  "A-Phoenix-4.2c": {
+  "A-Phoenix-4.9c": {
     "Ethash": "-clKernel 3",
     "Ubqhash": "-clKernel 3"
   },
   "A-SGMinerDallar": {
     "Throestl": "-g 2 -w 256 -X 256"
   },
-  "A-SGMinerFancyIX-0.6": {
+  "A-SGMinerFancyIX-0.6.0.1": {
     "Allium": "-g 1 -w 256 -I 18",
     "Argon2d500": "-g 2 -w 64",
     "Ethash": "-w 64 -X 1024",
@@ -46,20 +34,7 @@
     "X17": "-g 2 -w 64 -X 256",
     "Xevan": "-g 2 -w 64 -X 256"
   },
-  "N-BMiner-15.5.1": {
-    "Cuckoo29": "--fast",
-    "Cuckaroo29": "--fast"
-  },
-  "N-Multiminer-1.1.0": {
-    "Argon2ad": "--gpu-batchsize=1024 -t 1",
-    "Argon2d250": "--gpu-batchsize=2048 -t 1",
-    "Argon2d500": "--gpu-batchsize=1024 -t 1",
-    "Argon2d4096": "--gpu-batchsize=256 -t 1"
-  },
-  "N-Multiminer-1.2.0": {
-    "Argon2ad": "--gpu-batchsize=1024 --gpu-threads 1",
-    "Argon2d250": "--gpu-batchsize=2048 --gpu-threads 1",
-    "Argon2d500": "--gpu-batchsize=1024 --gpu-threads 1",
-    "Argon2d4096": "--gpu-batchsize=256 --gpu-threads 1"
+  "N-NBMiner-26.2": {
+    "Eaglesong_Ethash": "-di 10"
   }
 }
