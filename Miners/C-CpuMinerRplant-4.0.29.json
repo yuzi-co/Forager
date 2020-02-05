@@ -30,7 +30,6 @@
     "Lyra2z330": "-a lyra2z330",
     "Power2b": "-a power2b",
     "SHA256csm": "-a sha256csm",
-    "Verium": "-a scrypt:1048576",
     "YescryptR8": "-a yescryptr8",
     "YescryptR8g": "-a yescryptr8g",
     "YescryptR8glt": "-a yescryptr8glt",
