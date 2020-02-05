@@ -1,0 +1,21 @@
+{
+  "Path": "xmrig-upx-v0.2.0-win64/xmrig.exe",
+  "Uri": "https://github.com/uPlexa/xmrig-upx/releases/download/v0.2.0/xmrig-upx-v0.2.0-win64.zip",
+  "Type": "CPU",
+  "Arguments": [
+    "-o #Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "$(if ($Pool.PoolName -eq 'NiceHash'){'--nicehash'})",
+    "$(if ($EnableSSL){'--tls'})",
+    "--donate-level 1",
+    "--api-port #APIPort#",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "API": "XMRig",
+  "SSL": true,
+  "Algorithms": {
+    "CnUplexa": "-a cryptonight-upx/2"
+  }
+}
