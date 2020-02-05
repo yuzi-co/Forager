@@ -1,0 +1,26 @@
+{
+  "Path": "ninjarig_v1.0.3_08.09.2019_windows_10/ninjarig.exe",
+  "Uri": "https://github.com/turtlecoin/ninjarig/releases/download/v1.0.3/ninjarig_v1.0.3_08.09.2019_windows_10.zip",
+  "Type": "NVIDIA",
+  "CUDA": 10.1,
+  "Arguments": [
+    "-o #Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "$(if ($Pool.PoolName -eq 'NiceHash'){'--nicehash'})",
+    "$(if ($EnableSSL){'--tls'})",
+    "--cpu-threads=0",
+    "--use-gpu=CUDA",
+    "--gpu-filter=#Devices#",
+    "--donate-level 1",
+    "--api-port #APIPort#",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "API": "XMRig",
+  "SSL": true,
+  "Fee": 0.01,
+  "Algorithms": {
+    "Chukwa": "-a chukwa"
+  }
+}
