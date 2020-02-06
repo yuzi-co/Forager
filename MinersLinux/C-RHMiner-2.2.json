@@ -1,6 +1,6 @@
 {
   "Path": "rhminer",
-  "Uri": "https://github.com/polyminer1/rhminer/releases/download/2.1/rhminer.2.1b.Linux.CPU.zip",
+  "Uri": "https://github.com/polyminer1/rhminer/releases/download/2.2/rhminer.2.2.Windows.CPU.zip",
   "Type": "CPU",
   "Arguments": [
     "-s #Protocol#://#Server#:#Port#",
