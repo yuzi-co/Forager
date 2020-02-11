@@ -1,6 +1,6 @@
 {
-  "Path": "cpuminer-$($f=$SystemInfo.CpuFeatures;$(if($f.avx2 -and $f.sha){'zen'}elseif($f.avx2){'avx2'}elseif($f.avx){'avx'}elseif($f.aes -and $f.sse42){'aes-sse42'}else{'sse2'})).exe",
-  "Uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.12.1/cpuminer-opt-3.12.1-windows.zip",
+  "Path": "cpuminer-$($f=$SystemInfo.CpuFeatures;$(if($f.avx512){'avx512'}elseif($f.avx2 -and $f.sha){'zen'}elseif($f.avx2){'avx2'}elseif($f.avx){'avx'}elseif($f.aes -and $f.sse42){'aes-sse42'}else{'sse2'})).exe",
+  "Uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.12.2/cpuminer-opt-3.12.2-windows.zip",
   "Type": "CPU",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
@@ -21,6 +21,7 @@
     "Lyra2z330": "-a lyra2z330",
     "Power2b": "-a yespower-b2b -N 2048 -R 32 -K \"Now I am become Death, the destroyer of worlds\"",
     "ScryptN": "-a scrypt -N 2048",
+    "ScryptN2": "-a scrypt -N 1048576",
     "_SHA3d": "-a sha3d",
     "Yescrypt": "-a yescrypt",
     "YescryptR8": "-a yescrypt -N 2048 -R 8 -K \"Client Key\"",
