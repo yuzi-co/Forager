@@ -1,6 +1,6 @@
 {
-  "Path": "bminer-v16.0.5-21104ec/bminer",
-  "Uri": "https://www.bminercontent.com/releases/bminer-v16.0.5-21104ec-amd64.tar.xz",
+  "Path": "bminer-v16.0.6-137dbe6/bminer",
+  "Uri": "https://www.bminercontent.com/releases/bminer-v16.0.6-137dbe6-amd64.tar.xz",
   "Type": "AMD",
   "Arguments": [
     "#AlgorithmParameters#$(if($enableSSL){'+ssl'})://$([System.Web.HttpUtility]::UrlEncode('#Login#')):$([System.Web.HttpUtility]::UrlEncode('#Password#'))@#Server#:#Port#",
