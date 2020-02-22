@@ -1,6 +1,6 @@
 {
   "Path": "cpuminer-$($f=$SystemInfo.CpuFeatures;$(if($f.avx2 -and $f.sha){'ryzen'}elseif($f.avx2){'avx2'}elseif($f.avx){'avx'}elseif($f.aes){'aes'}else{'sse2'})).exe",
-  "Uri": "https://github.com/rplant8/cpuminer-opt-rplant/releases/download/4.0.29/cpuminer-opt-win.zip",
+  "Uri": "https://github.com/rplant8/cpuminer-opt-rplant/releases/download/4.5.5/cpuminer-opt-win.zip",
   "Type": "CPU",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
@@ -22,12 +22,13 @@
     "Argon2dGlt": "-a argon2dglt",
     "Argon2iGlt": "-a argon2iglt",
     "Argon2m": "-a argon2m",
-    "Binarium": "-a Binarium_hash_v1",
     "CpuPower": "-a CpuPower",
     "Cryptovantaa": "-a cryptovantaa",
     "Lyra2cz": "-a lyra2cz",
     "Lyra2h": "-a lyra2h",
+    "Lyra2tdc": "-a lyra2tdc",
     "Lyra2z330": "-a lyra2z330",
+    "Minotaur": "-a minotaur",
     "Power2b": "-a power2b",
     "SHA256csm": "-a sha256csm",
     "YescryptR8": "-a yescryptr8",
