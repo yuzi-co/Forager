@@ -1,6 +1,6 @@
 {
-  "Path": "NBMiner_Win/nbminer.exe",
-  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v26.2/NBMiner_26.2_Win.zip",
+  "Path": "NBMiner_Linux/nbminer",
+  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v27.2/NBMiner_27.2_Linux.tgz",
   "Type": "NVIDIA",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
@@ -49,6 +49,11 @@
       "Params": "-a ethash -o $(if ($Pool.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#Server#:#Port#",
       "Mem": 3,
       "Fee": 0.0065
+    },
+    "Handshake": "-a hns",
+    "Handshake_Ethash": {
+      "Params": "-a hns_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#",
+      "Mem": 3
     },
     "Tensority_Ethash": {
       "Params": "-a tensority_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#",
