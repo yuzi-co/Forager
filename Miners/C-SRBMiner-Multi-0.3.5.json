@@ -1,6 +1,6 @@
 {
-  "Path": "SRBMiner-Multi-0-3-3/SRBMiner-MULTI.exe",
-  "Uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/0.3.3/SRBMiner-Multi-0-3-3-win64.zip",
+  "Path": "SRBMiner-Multi-0-3-5/SRBMiner-MULTI.exe",
+  "Uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/0.3.5/SRBMiner-Multi-0-3-5-win64.zip",
   "Type": "CPU",
   "Arguments": [
     "--pool #Server#:#Port#",
@@ -20,18 +20,40 @@
   "Fee": 0.0085,
   "SSL": true,
   "Algorithms": {
-    "bl2bsha3": "--algorithm bl2bsha3",
+    "CnBBC": {
+      "Params": "--algorithm cryptonight_bbc",
+      "Fee": 0.025
+    },
     "CnCatalans": "--algorithm cncatalans",
     "CnTalleo": "--algorithm cntalleo",
     "CpuPower": "--algorithm cpupower",
     "DefyX": "--algorithm defyx",
+    "Handshake": {
+      "Params": "--algorithm bl2bsha3",
+      "Fee": 0.02
+    },
     "_K12": "--algorithm k12",
     "M7Mv2": "--algorithm m7mv2",
-    "RandomArq": "--algorithm randomarq --randomx-use-1gb-pages",
-    "RandomSfx": "--algorithm randomsfx --randomx-use-1gb-pages",
-    "RandomWow": "--algorithm randomwow --randomx-use-1gb-pages",
-    "RandomX": "--algorithm randomx --randomx-use-1gb-pages",
-    "RandomXl": "--algorithm randomxl --randomx-use-1gb-pages",
+    "RandomArq": {
+      "Params": "--algorithm randomarq",
+      "Custom": "--randomx-use-1gb-pages"
+    },
+    "RandomSfx": {
+      "Params": "--algorithm randomsfx",
+      "Custom": "--randomx-use-1gb-pages"
+    },
+    "RandomWow": {
+      "Params": "--algorithm randomwow",
+      "Custom": "--randomx-use-1gb-pages"
+    },
+    "RandomX": {
+      "Params": "--algorithm randomx",
+      "Custom": "--randomx-use-1gb-pages"
+    },
+    "RandomXl": {
+      "Params": "--algorithm randomxl",
+      "Custom": "--randomx-use-1gb-pages"
+    },
     "Yescrypt": "--algorithm yescrypt",
     "YescryptR8": "--algorithm yescryptr8",
     "YescryptR16": "--algorithm yescryptr16",
