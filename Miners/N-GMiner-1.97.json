@@ -1,6 +1,6 @@
 {
   "Path": "miner.exe",
-  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.96/gminer_1_96_windows64.zip",
+  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.97/gminer_1_97_windows64.zip",
   "Type": "NVIDIA",
   "CUDA": 9.0,
   "Arguments": [
@@ -68,6 +68,11 @@
       "NoCpu": true,
       "Mem": 7.4
     },
+    "Cuckatoo32": {
+      "Params": "--algo grin32",
+      "NoCpu": true,
+      "Mem": 7.4
+    },
     "Eaglesong": "--algo eaglesong",
     "Equihash96": "--algo 96_5 --pers auto",
     "Equihash125": "--algo 125_4",
@@ -99,6 +104,7 @@
       "Mem": 3,
       "Fee": 0.03
     },
+    "Handshake": "--algo Handshake",
     "Kadena": "--algo Blake2s",
     "Vds": "--algo vds"
   }
