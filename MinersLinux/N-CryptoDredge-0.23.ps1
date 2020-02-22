@@ -1,6 +1,6 @@
 
 $M = @{
-    Path       = "CryptoDredge_0.22.0/CryptoDredge.exe"
+    Path       = "CryptoDredge_0.23.0/CryptoDredge"
     Type       = "NVIDIA"
     Arguments  = @(
         "-o #Protocol#://#Server#:#Port#"
@@ -32,9 +32,10 @@ $M = @{
         CnHalf      = "-a cnfast2"
         CnHaven     = "-a cnhaven"
         CnHeavy     = "-a cnheavy"
-        CnLiteV7    = "-a aeon"
         CnSaber     = "-a cnsaber"
         CnTurtle    = "-a cnturtle"
+        CnUplexa    = "-a cnupx2"
+        CnZls       = "-a cnzls"
         # Cuckoo29   = @{
         #     Params = "-a aeternity"
         #     Mem    = 5.3
@@ -54,6 +55,11 @@ $M = @{
             Mem    = 4.5
             Fee    = 0.02
         }
+        MTPtcr      = @{
+            Params = "-a mtp-tcr"
+            Mem    = 4.5
+            Fee    = 0.02
+        }
         NeoScrypt   = "-a neoscrypt"
         Phi2        = "-a phi2"
         Pipe        = "-a pipe"
@@ -70,17 +76,17 @@ $M = @{
 }
 
 if ($SystemInfo.CudaVersion -ge [version]"10.1") {
-    $M.Uri = "https://github.com/technobyl/CryptoDredge/releases/download/v0.22.0/CryptoDredge_0.22.0_cuda_10.1_windows.zip"
-    $M.SHA256 = "983EEF6A09274E12BC42B7D49AD1EA67078626CCD425EC55B7426D4838C00288"
+    $M.Uri = "https://github.com/technobyl/CryptoDredge/releases/download/v0.23.0/CryptoDredge_0.23.0_cuda_10.1_linux.tar.gz"
     $M.CUDA = 10.1
 } elseif ($SystemInfo.CudaVersion -ge [version]"10.0") {
-    $M.Uri = "https://github.com/technobyl/CryptoDredge/releases/download/v0.22.0/CryptoDredge_0.22.0_cuda_10.0_windows.zip"
-    $M.SHA256 = "E40116E3E656C1376C149B7D50818EBCCE7E4F3CC862FA13534EF45F278843E5"
+    $M.Uri = "https://github.com/technobyl/CryptoDredge/releases/download/v0.23.0/CryptoDredge_0.23.0_cuda_10.0_linux.tar.gz"
     $M.CUDA = 10
 } elseif ($SystemInfo.CudaVersion -ge [version]"9.2") {
-    $M.Uri = "https://github.com/technobyl/CryptoDredge/releases/download/v0.22.0/CryptoDredge_0.22.0_cuda_9.2_windows.zip"
-    $M.SHA256 = "D7F31CB8CC4AD46592CA7122F5C73B49603AE37B2C2FF04EAE3A55FF2F8E1A58"
+    $M.Uri = "https://github.com/technobyl/CryptoDredge/releases/download/v0.23.0/CryptoDredge_0.23.0_cuda_9.2_linux.tar.gz"
     $M.CUDA = 9.2
+} elseif ($SystemInfo.CudaVersion -ge [version]"9.1") {
+    $M.Uri = "https://github.com/technobyl/CryptoDredge/releases/download/v0.23.0/CryptoDredge_0.23.0_cuda_9.1_linux.tar.gz"
+    $M.CUDA = 9.1
 } else {
     return
 }
