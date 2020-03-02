@@ -34,7 +34,7 @@
     "X17": "-g 2 -w 64 -X 256",
     "Xevan": "-g 2 -w 64 -X 256"
   },
-  "N-NBMiner-26.2": {
+  "N-NBMiner-27.4": {
     "Eaglesong_Ethash": "-di 10"
   }
 }
