@@ -1,6 +1,6 @@
 {
-  "Path": "SRBMiner-Multi-0-3-5/SRBMiner-MULTI.exe",
-  "Uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/0.3.5/SRBMiner-Multi-0-3-5-win64.zip",
+  "Path": "SRBMiner-Multi-0-3-8/SRBMiner-MULTI.exe",
+  "Uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/0.3.8/SRBMiner-Multi-0-3-8-win64.zip",
   "Type": "AMD",
   "Arguments": [
     "--pool #Server#:#Port#",
@@ -21,11 +21,20 @@
   "Algorithms": {
     "Blake2b": "--algorithm blake2b",
     "Blake2s": "--algorithm blake2s",
+    "CnBBC": {
+      "Params": "--algorithm cryptonight_bbc",
+      "Fee": 0.025
+    },
+    "CnCatalans": "--algorithm cncatalans",
+    "CnTalleo": "--algorithm cntalleo",
     "Eaglesong": "--algorithm eaglesong",
+    "Handshake": {
+      "Params": "--algorithm bl2bsha3",
+      "Fee": 0.02
+    },
     "K12": "--algorithm k12",
     "Kadena": "--algorithm kadena",
     "Keccak": "--algorithm keccak",
-    "M7Mv2": "--algorithm m7mv2",
     "MTP": "--algorithm mtp",
     "Yescrypt": "--algorithm yescrypt"
   }

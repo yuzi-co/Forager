@@ -1,6 +1,6 @@
 {
-  "Path": "SRBMiner-Multi-0-3-5/SRBMiner-MULTI",
-  "Uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/0.3.5/SRBMiner-Multi-0-3-5-Linux.tar.xz",
+  "Path": "SRBMiner-Multi-0-3-8/SRBMiner-MULTI.exe",
+  "Uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/0.3.8/SRBMiner-Multi-0-3-8-win64.zip",
   "Type": "CPU",
   "Arguments": [
     "--pool #Server#:#Port#",
@@ -32,7 +32,6 @@
       "Params": "--algorithm bl2bsha3",
       "Fee": 0.02
     },
-    "_K12": "--algorithm k12",
     "M7Mv2": "--algorithm m7mv2",
     "RandomArq": {
       "Params": "--algorithm randomarq",
