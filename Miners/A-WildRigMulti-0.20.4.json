@@ -1,6 +1,6 @@
 {
   "Path": "wildrig.exe",
-  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.20.1/wildrig-multi-windows-0.20.1.7z",
+  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.20.4/wildrig-multi-windows-0.20.4.7z",
   "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",
@@ -45,6 +45,7 @@
     "Jeonghash": "--algo glt-jeonghash",
     "Lyra2v3": "--algo lyra2v3",
     "Lyra2vc0ban": "--algo lyra2vc0ban",
+    "Lyra2tdc": "--algo lyra2tdc",
     "MTP": "--algo mtp",
     "MTPtcr": "--algo mtp-tcr",
     "Padihash": "--algo glt-padihash",
