@@ -40,7 +40,7 @@
     "YescryptR24": "-a yescryptr24",
     "YescryptR24glt": "-a yescryptr24glt",
     "YescryptR32": "-a yescryptr32",
-    "Yespower": "-a yespower",
+    "_Yespower": "-a yespower",
     "YespowerIC": "-a yespowerIC",
     "YespowerIOTS": "-a yespowerIOTS",
     "YespowerITC": "-a yespowerITC",
