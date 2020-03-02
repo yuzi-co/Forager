@@ -1,6 +1,6 @@
 {
-  "Path": "miner",
-  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.98/gminer_1_98_linux64.tar.xz",
+  "Path": "miner.exe",
+  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.99/gminer_1_99_windows64.zip",
   "Type": "NVIDIA",
   "CUDA": 9.0,
   "Arguments": [
@@ -13,7 +13,6 @@
     "--devices #DevicesETHMode#",
     "--cuda 1",
     "--opencl 0",
-    "--color 0",
     "#AlgorithmParameters#",
     "#CustomParameters#"
   ],
@@ -102,6 +101,11 @@
     },
     "Ethash_Kadena": {
       "Params": "--algo eth+kda --proto stratum --dserver #ServerDual#:#PortDual# --duser #LoginDual# --dpass #PasswordDual#",
+      "Mem": 3,
+      "Fee": 0.03
+    },
+    "Ethash_Handshake": {
+      "Params": "--algo eth+hns --proto stratum --dserver #ServerDual#:#PortDual# --duser #LoginDual# --dpass #PasswordDual#",
       "Mem": 3,
       "Fee": 0.03
     },
