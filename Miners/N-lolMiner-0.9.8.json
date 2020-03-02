@@ -1,6 +1,6 @@
 {
-  "Path": "0.9.7/lolMiner.exe",
-  "Uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.97/lolMiner_v097_Win64.zip",
+  "Path": "0.9.8/lolMiner.exe",
+  "Uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.98/lolMiner_v098_Win64.zip",
   "Type": "NVIDIA",
   "Arguments": [
     "--pool #Server#:#Port#",
@@ -23,7 +23,7 @@
       "Mem": 3.5
     },
     "_Cuckaroo29d": {
-      "Params": "--coin GRIN-C29D",
+      "Params": "--coin MWC-C29D",
       "Mem": 3.6
     },
     "_Cuckaroo29m": {
