@@ -1,0 +1,40 @@
+{
+  "Path": "cpuminer-$($f=$SystemInfo.CpuFeatures;$(if($f.avx512){'avx512'}elseif($f.avx2 -and $f.sha){'zen'}elseif($f.avx2){'avx2'}elseif($f.avx){'avx'}elseif($f.aes -and $f.sse42){'aes-sse42'}else{'sse2'})).exe",
+  "Uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.12.5/cpuminer-opt-3.12.5-windows.zip",
+  "Type": "CPU",
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "--retry-pause 5",
+    "-r 10",
+    "--api-bind 127.0.0.1:#APIPort#",
+    "$(if ($CpuThreads -ne $null){'-t ' + $CpuThreads})",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "API": "Ccminer",
+  "Algorithms": {
+    "CpuPower": "--algo yespower --param-n 2048 --param-r 32 --param-key \"CPUpower: The number of CPU working or available for proof-of-work mining\"",
+    "HOdl": "--algo hodl",
+    "Lyra2h": "--algo lyra2h",
+    "Lyra2z330": "--algo lyra2z330",
+    "Power2b": "--algo yespower-b2b --param-n 2048 --param-r 32 --param-key \"Now I am become Death, the destroyer of worlds\"",
+    "ScryptN": "--algo scrypt --param-n 2048",
+    "ScryptN2": "--algo scrypt --param-n 1048576",
+    "_SHA3d": "--algo sha3d",
+    "Yescrypt": "--algo yescrypt",
+    "YescryptR8": "--algo yescrypt --param-n 2048 --param-r 8 --param-key \"Client Key\"",
+    "YescryptR8g": "--algo yescryptr8g",
+    "YescryptR16": "--algo yescrypt --param-n 4096 --param-r 16 --param-key \"Client Key\"",
+    "YescryptR32": "--algo yescrypt --param-n 4096 --param-r 32 --param-key \"WaviBanana\"",
+    "Yespower": "--algo yespower --param-n 2048 --param-r 32",
+    "YespowerR16": "--algo yespower --param-n 4096 --param-r 16",
+    "YespowerIC": "--algo yespower --param-n 2048 --param-r 32 --param-key \"IsotopeC\"",
+    "YespowerIOTS": "--algo yespower --param-n 2048 --param-key \"Iots is committed to the development of IOT\"",
+    "YespowerLitb": "--algo yespower --param-n 2048 --param-r 32 --param-key \"LITBpower: The number of LITB working or available for proof-of-work mini\"",
+    "YespowerLtncg": "--algo yespower --param-n 2048 --param-r 32 --param-key \"LTNCGYES\"",
+    "YespowerSugar": "--algo yespower --param-n 2048 -param-r 32 --param-key \"Satoshi Nakamoto 31/Oct/2008 Proof-of-work is essentially one-CPU-one-vote\"",
+    "YespowerUrx": "--algo yespower --param-n 2048 --param-r 32 --param-key \"UraniumX\""
+  }
+}
