@@ -1,6 +1,6 @@
 {
-  "Path": "bminer-lite-v16.0.6-137dbe6/bminer.exe",
-  "Uri": "https://www.bminercontent.com/releases/bminer-lite-v16.0.6-137dbe6-amd64.zip",
+  "Path": "bminer-v16.0.7-6e99817/bminer",
+  "Uri": "https://www.bminercontent.com/releases/bminer-v16.0.7-6e99817-amd64.tar.xz",
   "Type": "NVIDIA",
   "CUDA": 9.2,
   "Arguments": [
@@ -15,21 +15,21 @@
   "SSL": true,
   "Fee": 0.02,
   "Algorithms": {
-    "_BeamV2": {
+    "BeamV2": {
       "Params": "-uri beamhash2",
       "Mem": 4
     },
     "_Cuckoo29": {
       "Params": "-uri aeternity",
       "NoCpu": true,
-      "Mem": 5.3
+      "Mem": 5.6
     },
     "_Cuckaroo29": {
       "Params": "-uri cuckaroo29",
       "NoCpu": true,
-      "Mem": 5.3
+      "Mem": 5.6
     },
-    "_Cuckaroo29d": {
+    "Cuckaroo29d": {
       "Params": "-uri cuckaroo29d",
       "NoCpu": true,
       "Mem": 3.5

@@ -1,6 +1,6 @@
 {
-  "Path": "bminer-lite-v16.0.6-137dbe6/bminer.exe",
-  "Uri": "https://www.bminercontent.com/releases/bminer-lite-v16.0.6-137dbe6-amd64.zip",
+  "Path": "bminer-v16.0.7-6e99817/bminer",
+  "Uri": "https://www.bminercontent.com/releases/bminer-v16.0.7-6e99817-amd64.tar.xz",
   "Type": "NVIDIA",
   "CUDA": 9.2,
   "Arguments": [
@@ -17,10 +17,7 @@
   "Fee": 0.02,
   "Mem": 3,
   "Algorithms": {
-    "Ethash_Blake2s": "blake2s",
-    "_Ethash_Blake14r": "blake14r",
     "Ethash_Eaglesong": "ckb",
-    "Ethash_Tensority": "tensority",
-    "Ethash_Vbk": "vbk"
+    "Ethash_Tensority": "tensority"
   }
 }
