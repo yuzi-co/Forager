@@ -1,6 +1,6 @@
 {
-  "Path": "xmrig-5.7.0/xmrig.exe",
-  "Uri": "https://github.com/xmrig/xmrig/releases/download/v5.7.0/xmrig-5.7.0-gcc-win64.zip",
+  "Path": "xmrig-5.8.0/xmrig",
+  "Uri": "https://github.com/xmrig/xmrig/releases/download/v5.8.0/xmrig-5.8.0-xenial-x64.tar.gz",
   "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",
@@ -14,6 +14,7 @@
     "--opencl-platform=#GPUPlatform#",
     "--donate-level 1",
     "--http-port #APIPort#",
+    "--no-color",
     "#AlgorithmParameters#",
     "#CustomParameters#"
   ],
@@ -21,6 +22,7 @@
   "SSL": true,
   "Fee": 0.01,
   "Algorithms": {
+    "AstroBWT": "-a astrobwt",
     "_Chukwa": "-a argon2/chukwa",
     "_ChukwaWrkz": "-a argon2/wrkz",
     "CnAlloy": "-a cn/xao",
@@ -38,10 +40,10 @@
     "CnTurtle": "-a cn-pico/trtl",
     "CnTlo": "-a cn-pico/tlo",
     "CnZls": "-a cn/zls",
-    "_RandomSfx": "-a Rx/sfx",
-    "_RandomX": "-a Rx",
-    "_RandomXArq": "-a Rx/arq",
-    "_RandomXL": "-a Rx/loki",
-    "_RandomXWow": "-a Rx/wow"
+    "_RandomSfx": "-a rx/sfx",
+    "_RandomX": "-a rx",
+    "_RandomXArq": "-a rx/arq",
+    "_RandomXL": "-a rx/loki",
+    "_RandomXWow": "-a rx/wow"
   }
 }

@@ -1,6 +1,6 @@
 {
-  "Path": "xmrig-5.7.0/xmrig",
-  "Uri": "https://github.com/xmrig/xmrig/releases/download/v5.7.0/xmrig-5.7.0-xenial-x64.tar.gz",
+  "Path": "xmrig-5.8.0/xmrig",
+  "Uri": "https://github.com/xmrig/xmrig/releases/download/v5.8.0/xmrig-5.8.0-xenial-x64.tar.gz",
   "Type": "CPU",
   "Arguments": [
     "-o #Server#:#Port#",
@@ -18,6 +18,7 @@
   "SSL": true,
   "Fee": 0.01,
   "Algorithms": {
+    "AstroBWT": "-a astrobwt",
     "_Chukwa": "-a argon2/chukwa",
     "ChukwaWrkz": "-a argon2/wrkz",
     "CnAlloy": "-a cn/xao",
