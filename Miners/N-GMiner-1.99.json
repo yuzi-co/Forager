@@ -25,10 +25,6 @@
       "Params": "--algo bfc",
       "Fee": 0.03
     },
-    "CnBBC": {
-      "Params": "--algo CnBBC",
-      "Fee": 0.05
-    },
     "Cortex": {
       "Params": "--algo cortex",
       "Fee": 0.05
