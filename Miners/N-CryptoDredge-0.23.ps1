@@ -45,10 +45,7 @@ $M = @{
         #     NoCpu  = true
         #     Mem    = 5.3
         # }
-        Hmq1725     = @{
-            Params = "-hmq1725"
-            NoCpu  = $true
-        }
+        Hmq1725     = "-a hmq1725"
         # Lyra2v3    = "-a lyra2rev3"
         Lyra2vc0ban = "-a lyra2vc0banhash"
         # Lyra2z     = "-a lyra2z"
