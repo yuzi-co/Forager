@@ -16,6 +16,7 @@
     "#CustomParameters#"
   ],
   "API": "Ccminer",
+  "Fee": 0.01,
   "Algorithms": {
     "SHA3d": "-a keccak"
   }
