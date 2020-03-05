@@ -1,6 +1,6 @@
 
 $M = @{
-    Path       = "miniZ.exe"
+    Path       = "miniZ"
     Type       = "NVIDIA"
     Arguments  = @(
         "--server `$(if (`$EnableSSL){'ssl://'})#Server#"
@@ -9,6 +9,7 @@ $M = @{
         "--pass #Password#"
         "--gpu-line"
         "--extra"
+        "--nocolor"
         "--cuda-devices #DevicesETHMode#"
         "--telemetry 0.0.0.0:#APIPort#"
         "#AlgorithmParameters#"
@@ -19,7 +20,11 @@ $M = @{
     Fee        = 0.02
     Algorithms = [PSCustomObject]@{
         Beam        = @{
-            Params = "--par=Beam"
+            Params = "--par=beam"
+            Mem    = 3
+        }
+        BeamV2      = @{
+            Params = "--par=beam2"
             Mem    = 3
         }
         Equihash96  = @{
@@ -50,10 +55,10 @@ $M = @{
 }
 
 if ($SystemInfo.CudaVersion -ge [version]"10.0") {
-    $M.Uri = "https://github.com/yuzi-co/miners/releases/download/2020.01/miniZ_v1.5t_cuda10_win-x64.zip"
+    $M.Uri = "https://github.com/yuzi-co/miners-linux/releases/download/2020.03/miniZ_v1.5t2_cuda10_linux-x64.tar.gz"
     $M.CUDA = 10
 } elseif ($SystemInfo.CudaVersion -ge [version]"8.0") {
-    $M.Uri = "https://github.com/yuzi-co/miners/releases/download/2020.01/miniZ_v1.5t_cuda8_win-x64.zip"
+    $M.Uri = "https://github.com/yuzi-co/miners-linux/releases/download/2020.03/miniZ_v1.5t2_cuda8_linux-x64.tar.gz"
     $M.CUDA = 8.0
 } else {
     return
