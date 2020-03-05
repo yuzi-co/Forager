@@ -11,6 +11,7 @@ $M = @{
         "--retry-pause 10"
         "--timeout 60"
         "--no-watchdog"
+        "--no-color"
         "-b 127.0.0.1:#APIPort#"
         "#AlgorithmParameters#"
         "#CustomParameters#"
