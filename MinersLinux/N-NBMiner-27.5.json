@@ -1,6 +1,6 @@
 {
-  "Path": "NBMiner_Win/nbminer.exe",
-  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v27.4/NBMiner_27.4_Win.zip",
+  "Path": "NBMiner_Linux/nbminer",
+  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v27.5/NBMiner_27.5_Linux.tgz",
   "Type": "NVIDIA",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
@@ -43,6 +43,7 @@
     "Eaglesong": "-a eaglesong",
     "Eaglesong_Ethash": {
       "Params": "-a eaglesong_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#",
+      "Custom": "-di 10",
       "Mem": 3
     },
     "Ethash": {
