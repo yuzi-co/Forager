@@ -249,9 +249,9 @@ while ($Quit -ne $true) {
         $Global:Config.UserName = "ffwd"
         $Global:Config.WorkerName = "Donate"
         $Global:Wallets = @{
-            BTC = "3NoVvkGSNjPX8xBMWbP2HioWYK395wSzGL"
+            BTC    = "3NoVvkGSNjPX8xBMWbP2HioWYK395wSzGL"
             BTC_NH = "37YdKzKSibrEmE3XmsgmV14Mey3gmy4wGg"
-            LTC = "MXCsACfauv4zAub3jcM64weqEpG979uArm"
+            LTC    = "MXCsACfauv4zAub3jcM64weqEpG979uArm"
         }
         $Global:Config.Currency_Zergpool = "LTC"
 
@@ -326,13 +326,13 @@ while ($Quit -ne $true) {
     }
 
     $PoolsFiltered = $Pools |
-    Group-Object -Property Algorithm |
-    Where-Object { $null -eq $AlgoList -or $AlgoList -contains $_.Name } |
-    ForEach-Object {
+        Group-Object -Property Algorithm |
+        Where-Object { $null -eq $AlgoList -or $AlgoList -contains $_.Name } |
+        ForEach-Object {
         $NeedPool = $true
         # Order by price (profitability)
         $_.Group | Select-Object *, @{Name = "Estimate"; Expression = { if ($MiningMode -eq 'Automatic24h' -and $_.Price24h) { [decimal]$_.Price24h } else { [decimal]$_.Price } } } |
-        Sort-Object -Property `
+            Sort-Object -Property `
         @{Expression = "Estimate"; Descending = $true },
         @{Expression = "LocationPriority"; Ascending = $true } | ForEach-Object {
             if ($NeedPool) {
@@ -354,7 +354,7 @@ while ($Quit -ne $true) {
     # Call API for local currenry convertion rates
     try {
         $CDKResponse = Invoke-APIRequest -Url "https://api.coindesk.com/v1/bpi/currentprice/$($Config.LocalCurrency).json" -MaxAge 60 |
-        Select-Object -ExpandProperty BPI
+            Select-Object -ExpandProperty BPI
         $LocalBTCvalue = $CDKResponse.$($Config.LocalCurrency).rate_float
         Log "CoinDesk API was responsive"
     } catch {
@@ -511,9 +511,9 @@ while ($Quit -ne $true) {
                         # Search for DualMining pool
                         if ($AlgoNameDual) {
                             $PoolDual = $Pools |
-                            Where-Object Algorithm -eq $AlgoNameDual |
-                            Sort-Object Estimate -Descending |
-                            Select-Object -First 1
+                                Where-Object Algorithm -eq $AlgoNameDual |
+                                Sort-Object Estimate -Descending |
+                                Select-Object -First 1
 
                             # Set flag if both Miner and Pool support SSL
                             $EnableDualSSL = ($Miner.SSL -and $PoolDual.SSL)
@@ -702,12 +702,12 @@ while ($Quit -ne $true) {
 
     # Launch download of miners
     $Miners |
-    Where-Object {
+        Where-Object {
         -not [string]::IsNullOrEmpty($_.Uri) -and
         -not [string]::IsNullOrEmpty($_.ExtractionPath) -and
         -not [string]::IsNullOrEmpty($_.Path) } |
-    Select-Object Uri, ExtractionPath, Path -Unique |
-    ForEach-Object {
+        Select-Object Uri, ExtractionPath, Path -Unique |
+        ForEach-Object {
         if (-not (Test-Path $_.Path)) {
             Start-Downloader -Uri $_.Uri -ExtractionPath $_.ExtractionPath -Path $_.Path
         }
@@ -855,7 +855,7 @@ while ($Quit -ne $true) {
 
     # Select miners that need Benchmark, or if running in Manual mode, or highest Profit above zero.
     $BestNowCandidates = $ActiveMiners | Where-Object { $_.IsValid -and $_.UserName -and $_.DeviceGroup.Enabled } |
-    Group-Object { $_.DeviceGroup.GroupName } | ForEach-Object {
+        Group-Object { $_.DeviceGroup.GroupName } | ForEach-Object {
         $_.Group.Subminers | Where-Object {
             $_.Status -ne 'Failed' -and
             (
@@ -954,7 +954,7 @@ while ($Quit -ne $true) {
             @{Name = "IntervalRevenue"      ; Expression = { [decimal]$_.Revenue * $Interval.LastTime.TotalSeconds / (24 * 60 * 60) } },
             @{Name = "IntervalRevenueDual"  ; Expression = { [decimal]$_.RevenueDual * $Interval.LastTime.TotalSeconds / (24 * 60 * 60) } },
             @{Name = "Interval"             ; Expression = { [int]$Interval.LastTime.TotalSeconds } } |
-            Export-Csv -Path $("./Logs/Stats-" + (Get-Process -PID $PID).StartTime.tostring('yyyy-MM-dd_HH-mm-ss') + ".csv") -Append -NoTypeInformation
+                Export-Csv -Path $("./Logs/Stats-" + (Get-Process -PID $PID).StartTime.tostring('yyyy-MM-dd_HH-mm-ss') + ".csv") -Append -NoTypeInformation
         }
 
         # Check for best for next interval
@@ -1338,9 +1338,9 @@ while ($Quit -ne $true) {
 
             $CurrentAlgos = (
                 $ActiveMiners.SubMiners |
-                Where-Object Best |
-                Sort-Object { $ActiveMiners[$_.IdF].DeviceGroup.GroupType -eq 'CPU' } |
-                ForEach-Object {
+                    Where-Object Best |
+                    Sort-Object { $ActiveMiners[$_.IdF].DeviceGroup.GroupType -eq 'CPU' } |
+                    ForEach-Object {
                     @($ActiveMiners[$_.IdF].Pool.Symbol, $ActiveMiners[$_.IdF].PoolDual.Symbol) -ne $null -join "_"
                 }
             ) -join '/'
@@ -1372,16 +1372,16 @@ while ($Quit -ne $true) {
             $PoolsSpeed = @(
                 @(
                     $ActiveMiners |
-                    Where-Object { $Candidates -contains $_.Id } |
-                    Select-Object @{Name = "PoolName"; Expression = { $_.Pool.PoolName } },
+                        Where-Object { $Candidates -contains $_.Id } |
+                        Select-Object @{Name = "PoolName"; Expression = { $_.Pool.PoolName } },
                     @{Name = "WalletSymbol"; Expression = { $_.Pool.WalletSymbol } },
                     @{Name = "Coin"; Expression = { $_.Pool.Info } },
                     UserName, WorkerName -Unique
 
                     #Dual miners
                     $ActiveMiners |
-                    Where-Object { $_.PoolDual.PoolName -and $Candidates -contains $_.Id } |
-                    Select-Object @{Name = "PoolName"; Expression = { $_.PoolDual.PoolName } },
+                        Where-Object { $_.PoolDual.PoolName -and $Candidates -contains $_.Id } |
+                        Select-Object @{Name = "PoolName"; Expression = { $_.PoolDual.PoolName } },
                     @{Name = "WalletSymbol"; Expression = { $_.PoolDual.WalletSymbol } },
                     @{Name = "Coin"; Expression = { $_.PoolDual.Info } },
                     @{Name = "UserName"; Expression = { $_.UserNameDual } },
@@ -1424,10 +1424,10 @@ while ($Quit -ne $true) {
         if ($SwitchLoop -gt 5) { $SwitchLoop = 0 } # Reduces ratio of execution
 
         $ScreenOut = $ActiveMiners.Subminers |
-        Where-Object Best | Sort-Object `
+            Where-Object Best | Sort-Object `
         @{expression = { $ActiveMiners[$_.IdF].DeviceGroup.GroupName -eq 'CPU' }; Ascending = $true },
         @{expression = { $ActiveMiners[$_.IdF].DeviceGroup.GroupName }; Ascending = $true } |
-        ForEach-Object {
+            ForEach-Object {
             $M = $ActiveMiners[$_.IdF]
             [PSCustomObject]@{
                 Group       = $M.DeviceGroup.GroupName
@@ -1552,7 +1552,7 @@ while ($Quit -ne $true) {
             @{expression = { if ($LocalBTCvalue) { $_.Profits } else { $_.Revenue } }; Descending = $true },
             @{expression = "HashRate"; Descending = $true },
             @{expression = "HashRateDual"; Descending = $true } |
-            Format-Table (
+                Format-Table (
                 @{Label = "Algorithm"                    ; Expression = { @($_.Algorithms, $_.AlgoLabel) -ne $null -join "|" } },
                 @{Label = "Coin"                         ; Expression = { @($_.Pool.Symbol, $_.PoolDual.Symbol) -ne $null -join "_" } },
                 @{Label = "Miner"                        ; Expression = { $_.Name } },
@@ -1592,9 +1592,9 @@ while ($Quit -ne $true) {
 
                 $WalletsToCheck = @(
                     $AllPools |
-                    Where-Object { $_.WalletMode -eq 'Wallet' -and $_.User } |
-                    Select-Object PoolName, User, WalletMode, WalletSymbol -Unique |
-                    ForEach-Object {
+                        Where-Object { $_.WalletMode -eq 'Wallet' -and $_.User } |
+                        Select-Object PoolName, User, WalletMode, WalletSymbol -Unique |
+                        ForEach-Object {
                         [PSCustomObject]@{
                             PoolName   = $_.PoolName
                             WalletMode = $_.WalletMode
@@ -1606,9 +1606,9 @@ while ($Quit -ne $true) {
                     }
 
                     $AllPools |
-                    Where-Object { $_.WalletMode -eq 'ApiKey' -and $Config.("ApiKey_" + $_.PoolName) } |
-                    Select-Object PoolName, Algorithm, WalletMode, WalletSymbol, @{Name = "ApiKey"; Expression = { $Config.("ApiKey_" + $_.PoolName) } } -Unique |
-                    ForEach-Object {
+                        Where-Object { $_.WalletMode -eq 'ApiKey' -and $Config.("ApiKey_" + $_.PoolName) } |
+                        Select-Object PoolName, Algorithm, WalletMode, WalletSymbol, @{Name = "ApiKey"; Expression = { $Config.("ApiKey_" + $_.PoolName) } } -Unique |
+                        ForEach-Object {
                         [PSCustomObject]@{
                             PoolName   = $_.PoolName
                             WalletMode = $_.WalletMode
@@ -1662,8 +1662,8 @@ while ($Quit -ne $true) {
                 Write-Message -Message "{green}U{white}pdate wallets" -AlignRight -Line $YToWriteMessages
 
                 $WalletStatus | Where-Object Balance |
-                Sort-Object @{expression = "PoolName"; Ascending = $true }, @{expression = "balance"; Descending = $true } |
-                Format-Table -Wrap -GroupBy PoolName (
+                    Sort-Object @{expression = "PoolName"; Ascending = $true }, @{expression = "balance"; Descending = $true } |
+                    Format-Table -Wrap -GroupBy PoolName (
                     @{Label = "Coin"; Expression = { if ($_.WalletSymbol -ne $null) { $_.WalletSymbol } else { $_.wallet } } },
                     @{Label = "Balance"; Expression = { $_.Balance.tostring("n5") }; Align = 'right' },
                     @{Label = "Session"; Expression = { ($_.Balance - $_.BalanceAtStart).tostring("n5") }; Align = 'right' }
@@ -1680,11 +1680,11 @@ while ($Quit -ne $true) {
 
             # Display activated miners list
             $ActiveMiners.SubMiners |
-            Where-Object { $_.Stats.ActivatedTimes -gt 0 } | Sort-Object `
+                Where-Object { $_.Stats.ActivatedTimes -gt 0 } | Sort-Object `
             @{expression = { $ActiveMiners[$_.IdF].DeviceGroup.GroupName -eq 'CPU' }; Ascending = $true },
             @{expression = { $ActiveMiners[$_.IdF].DeviceGroup.GroupName }; Ascending = $true },
             @{expression = { $_.Stats.LastTimeActive }; Descending = $true } |
-            Format-Table -Wrap -GroupBy @{Label = "Group"; Expression = { $ActiveMiners[$_.IdF].DeviceGroup.GroupName } } (
+                Format-Table -Wrap -GroupBy @{Label = "Group"; Expression = { $ActiveMiners[$_.IdF].DeviceGroup.GroupName } } (
                 @{Label = "LastTimeActive"; Expression = { $($_.Stats.LastTimeActive).tostring("dd/MM/yy H:mm") } },
                 @{Label = "Command"; Expression = { "$($ActiveMiners[$_.IdF].Path.TrimStart((Convert-Path $BinPath))) $($ActiveMiners[$_.IdF].Arguments)" } }
             ) | Out-Host
@@ -1699,12 +1699,12 @@ while ($Quit -ne $true) {
 
             # Display activated miners list
             $ActiveMiners.SubMiners |
-            Where-Object { $_.Stats.ActivatedTimes -gt 0 } |
-            Sort-Object `
+                Where-Object { $_.Stats.ActivatedTimes -gt 0 } |
+                Sort-Object `
             @{expression = { $ActiveMiners[$_.IdF].DeviceGroup.GroupName -eq 'CPU' }; Ascending = $true },
             @{expression = { $ActiveMiners[$_.IdF].DeviceGroup.GroupName }; Ascending = $true },
             @{expression = { $_.Stats.Activetime }; Descending = $true } |
-            Format-Table -Wrap -GroupBy @{Label = "Group"; Expression = { $ActiveMiners[$_.IdF].DeviceGroup.GroupName } }(
+                Format-Table -Wrap -GroupBy @{Label = "Group"; Expression = { $ActiveMiners[$_.IdF].DeviceGroup.GroupName } }(
                 @{Label = "Algorithm"; Expression = { $ActiveMiners[$_.IdF].Algorithms + $(if ($ActiveMiners[$_.IdF].AlgoLabel) { "|$($ActiveMiners[$_.IdF].AlgoLabel)" }) } },
                 @{Label = "Coin"; Expression = { $ActiveMiners[$_.IdF].Pool.Symbol + $(if ($ActiveMiners[$_.IdF].AlgorithmDual) { "_$($ActiveMiners[$_.IdF].PoolDual.Symbol)" }) } },
                 @{Label = "Pool"; Expression = { $ActiveMiners[$_.IdF].Pool.PoolName + $(if ($ActiveMiners[$_.IdF].AlgorithmDual) { "/$($ActiveMiners[$_.IdF].PoolDual.PoolName)" }) } },

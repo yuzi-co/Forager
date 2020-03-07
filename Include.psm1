@@ -966,8 +966,8 @@ function Get-LiveHashRate {
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
                     $HashRate = $Data.miners |
-                    Get-Member -MemberType NoteProperty |
-                    ForEach-Object {
+                        Get-Member -MemberType NoteProperty |
+                        ForEach-Object {
                         @(
                             $Data.miners.($_.name).solver.solution_rate
                             $Data.miners.($_.name).solver.hash_rate
@@ -987,11 +987,11 @@ function Get-LiveHashRate {
                 if ($Request) {
                     $Data = $Request | ConvertFrom-Json
                     $HashRate = $Data.devices |
-                    Get-Member -MemberType NoteProperty |
-                    ForEach-Object { $Data.devices.($_.name).solvers } |
-                    Group-Object algorithm |
-                    Sort-Object { $_.name -like 'ethash' } -Descending |
-                    ForEach-Object {
+                        Get-Member -MemberType NoteProperty |
+                        ForEach-Object { $Data.devices.($_.name).solvers } |
+                        Group-Object algorithm |
+                        Sort-Object { $_.name -like 'ethash' } -Descending |
+                        ForEach-Object {
                         @(
                             $_.group.speed_info.hash_rate | Measure-Object -Sum | Select-Object -ExpandProperty Sum
                             $_.group.speed_info.solution_rate | Measure-Object -Sum | Select-Object -ExpandProperty Sum
@@ -1003,9 +1003,9 @@ function Get-LiveHashRate {
                     if ($Request) {
                         $Data = $Request | ConvertFrom-Json
                         $Shares = $Data.stratums |
-                        Get-Member -MemberType NoteProperty |
-                        Sort-Object { $_.name -like 'ethash' } -Descending |
-                        ForEach-Object {
+                            Get-Member -MemberType NoteProperty |
+                            Sort-Object { $_.name -like 'ethash' } -Descending |
+                            ForEach-Object {
                             @(
                                 $Data.stratums.($_.name).accepted_shares
                                 $Data.stratums.($_.name).rejected_shares
@@ -1914,7 +1914,7 @@ function Update-UriHash {
         $Hashes | Where-Object uri -eq $Uri | ForEach-Object {$_.sha256 = $Hash}
     } else {
         $Hashes += New-Object psobject -Property @{
-            uri = $Uri
+            uri    = $Uri
             sha256 = $Hash
         }
     }
