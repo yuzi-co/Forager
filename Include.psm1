@@ -1210,42 +1210,42 @@ function Test-TCPPort {
     }
 }
 
+function Get-SubProcs {
+    param(
+        [Parameter(Mandatory = $true)]
+        $Process
+    )
+
+    @($Process) + (Get-Process | Where-Object { $_.Parent.Id -eq $Process.Id })
+}
+
+function Get-ProcessCpuUsage {
+    param(
+        [Parameter(Mandatory = $true)]
+        $Process
+    )
+
+    Get-SubProcs -Process $Process | ForEach-Object {
+        $_.TotalProcessorTime / ((Get-Date) - $_.StartTime)
+    } | Measure-Object -Sum | Select-Object -ExpandProperty Sum
+}
+
 function Stop-SubProcess {
     param(
         [Parameter(Mandatory = $true)]
         $Process
     )
 
-    $SubProcs = Get-Process | Where-Object { $_.Parent.Id -eq $Process.Id }
+    $SubProcs = Get-SubProcs -Process $Process
 
-    @($Process, $SubProcs) | ForEach-Object {
+    $SubProcs | ForEach-Object {
         $_.CloseMainWindow() | Out-Null
     }
     Start-Sleep -Seconds 1
 
-    @($Process, $SubProcs) | Where-Object HasExited -eq $false | ForEach-Object {
+    $SubProcs | Where-Object HasExited -eq $false | ForEach-Object {
         Stop-Process -InputObject $_ -Force
     }
-
-    # $sw = [Diagnostics.Stopwatch]::new()
-    # try {
-    #     $Process.CloseMainWindow() | Out-Null
-    #     $sw.Start()
-    #     do {
-    #         if ($sw.Elapsed.TotalSeconds -gt 1) {
-    #             Stop-Process -InputObject $Process -Force
-    #         }
-    #         if (-not $Process.HasExited) {
-    #             Start-Sleep -Milliseconds 1
-    #         }
-    #     } while (-not $Process.HasExited)
-    # } finally {
-    #     $sw.Stop()
-    #     if (-not $Process.HasExited) {
-    #         Stop-Process -InputObject $Process -Force
-    #     }
-    # }
-    # Remove-Variable sw
 }
 
 function Invoke-TcpRequest {

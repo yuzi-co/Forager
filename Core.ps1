@@ -641,6 +641,7 @@ while ($Quit -ne $true) {
                                     Id                     = $SubMiners.Count
                                     Best                   = $false
                                     BestBySwitch           = ""
+                                    CpuLoad                = 0
                                     HashRate               = $HashRateValue
                                     HashRateDual           = $HashRateValueDual
                                     NeedBenchmark          = [bool]($HashRateValue -eq 0 -or ($AlgorithmDual -and $HashRateValueDual -eq 0))
@@ -1181,6 +1182,7 @@ while ($Quit -ne $true) {
                 $_.Stats.BenchmarkedTimes++
                 $_.StatsHistory.BenchmarkedTimes++
             }
+            $_.CpuLoad = Get-ProcessCpuUsage -Process $ActiveMiners[$_.IdF].Process
             $_.SpeedLive = 0
             $_.SpeedLiveDual = 0
             $_.ProfitsLive = 0
@@ -1386,6 +1388,7 @@ while ($Quit -ne $true) {
                 Shares      = @($_.SharesLive) -ne $null -join '/'
                 PLim        = $(if ($_.PowerLimit -ne 0) { $_.PowerLimit })
                 Watt        = if ($_.PowerLive -gt 0) { [string]$_.PowerLive + 'W' } else { $null }
+                CpuLoad     = ($_.CpuLoad).tostring("n2")
                 mbtcDay     = (($_.RevenueLive + $_.RevenueLiveDual) * 1000).tostring("n5")
                 RevDay      = (($_.RevenueLive + $_.RevenueLiveDual) * $localBTCvalue ).tostring("n2")
                 ProfitDay   = ($_.ProfitsLive).tostring("n2")
@@ -1439,10 +1442,11 @@ while ($Quit -ne $true) {
                 @{Label = "Algorithm"                   ; Expression = { $_.Algorithm } },
                 @{Label = "Coin"                        ; Expression = { $_.Coin } },
                 @{Label = "Miner"                       ; Expression = { $_.Miner } },
-                @{Label = "LocalSpeed"                  ; Expression = { $_.LocalSpeed } ; Align = 'right' },
+                @{Label = "Speed"                       ; Expression = { $_.LocalSpeed } ; Align = 'right' },
                 @{Label = "Acc/Rej"                     ; Expression = { $_.Shares } ; Align = 'right' },
                 @{Label = "PLim"                        ; Expression = { $_.PLim } ; Align = 'right' },
                 @{Label = "Watt"                        ; Expression = { $_.Watt } ; Align = 'right' },
+                @{Label = "Cpu"                         ; Expression = { $_.CpuLoad } ; Align = 'right' },
                 @{Label = "mBTC/Day"                    ; Expression = { $_.mbtcDay } ; Align = 'right' },
                 @{Label = $Config.LocalCurrency + "/Day"; Expression = { $_.RevDay } ; Align = 'right' },
                 @{Label = "Profit/Day"                  ; Expression = { $_.ProfitDay } ; Align = 'right' },
