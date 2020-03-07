@@ -1366,58 +1366,6 @@ while ($Quit -ne $true) {
                     }
                 }
             }
-
-            # Get pool speed
-            $Candidates = ($ActiveMiners.SubMiners | Where-Object Best | Select-Object IdF).IdF
-            $PoolsSpeed = @(
-                @(
-                    $ActiveMiners |
-                        Where-Object { $Candidates -contains $_.Id } |
-                        Select-Object @{Name = "PoolName"; Expression = { $_.Pool.PoolName } },
-                    @{Name = "WalletSymbol"; Expression = { $_.Pool.WalletSymbol } },
-                    @{Name = "Coin"; Expression = { $_.Pool.Info } },
-                    UserName, WorkerName -Unique
-
-                    #Dual miners
-                    $ActiveMiners |
-                        Where-Object { $_.PoolDual.PoolName -and $Candidates -contains $_.Id } |
-                        Select-Object @{Name = "PoolName"; Expression = { $_.PoolDual.PoolName } },
-                    @{Name = "WalletSymbol"; Expression = { $_.PoolDual.WalletSymbol } },
-                    @{Name = "Coin"; Expression = { $_.PoolDual.Info } },
-                    @{Name = "UserName"; Expression = { $_.UserNameDual } },
-                    WorkerName -Unique
-
-                ) | ForEach-Object {
-                    [PSCustomObject]@{
-                        User       = $_.UserName
-                        PoolName   = $_.PoolName
-                        ApiKey     = $PoolConfig.($_.PoolName).ApiKey
-                        Symbol     = $_.WalletSymbol
-                        Coin       = $_.Coin
-                        WorkerName = $_.WorkerName
-                    }
-                }
-            ) | ForEach-Object { Get-Pools -Querymode "Speed" -PoolsFilterList $_.PoolName -Info $_ }
-
-            foreach ($Candidate in $Candidates) {
-                $Me = $PoolsSpeed | Where-Object { $_.PoolName -eq $ActiveMiners[$Candidate].Pool.PoolName -and $_.WorkerName -eq $ActiveMiners[$Candidate].WorkerName }
-                if ($Me) {
-                    if ($null -eq $ActiveMiners[$Candidate].Pool.HashRate) {
-                        $ActiveMiners[$Candidate].Pool | Add-Member HashRate ($Me.HashRate | Measure-Object -Maximum).Maximum -Force
-                    } else {
-                        $ActiveMiners[$Candidate].Pool.HashRate = ($Me.HashRate | Measure-Object -Maximum).Maximum
-                    }
-                }
-
-                $MeDual = $PoolsSpeed | Where-Object { $_.PoolName -eq $ActiveMiners[$Candidate].PoolDual.PoolName -and $_.WorkerName -eq $ActiveMiners[$Candidate].WorkerNameDual }
-                if ($MeDual) {
-                    if ($null -eq $ActiveMiners[$Candidate].PoolDual.HashRate) {
-                        $ActiveMiners[$Candidate].PoolDual | Add-Member HashRate ($MeDual.HashRate | Measure-Object -Maximum).Maximum -Force
-                    } else {
-                        $ActiveMiners[$Candidate].PoolDual.HashRate = ($MeDual.HashRate | Measure-Object -Maximum).Maximum
-                    }
-                }
-            }
         } # End Switchloop
 
         $SwitchLoop++
@@ -1441,8 +1389,6 @@ while ($Quit -ne $true) {
                 mbtcDay     = (($_.RevenueLive + $_.RevenueLiveDual) * 1000).tostring("n5")
                 RevDay      = (($_.RevenueLive + $_.RevenueLiveDual) * $localBTCvalue ).tostring("n2")
                 ProfitDay   = ($_.ProfitsLive).tostring("n2")
-                PoolSpeed   = (@($M.Pool.HashRate, $M.PoolDual.HashRate) -gt 0 | ForEach-Object { ConvertTo-Hash $_ }) -join "/"
-                Workers     = @($M.Pool.PoolWorkers, $M.PoolDual.PoolWorkers) -ne $null -join "/"
                 Pool        = @(($M.Pool.PoolName + "-" + $M.Pool.Location), ($M.PoolDual.PoolName + "-" + $M.PoolDual.Location)) -ne "-" -join "/"
             }
         }
@@ -1500,8 +1446,6 @@ while ($Quit -ne $true) {
                 @{Label = "mBTC/Day"                    ; Expression = { $_.mbtcDay } ; Align = 'right' },
                 @{Label = $Config.LocalCurrency + "/Day"; Expression = { $_.RevDay } ; Align = 'right' },
                 @{Label = "Profit/Day"                  ; Expression = { $_.ProfitDay } ; Align = 'right' },
-                @{Label = "PoolSpeed"                   ; Expression = { $_.PoolSpeed } ; Align = 'right' },
-                @{Label = "Workers"                     ; Expression = { $_.Workers } ; Align = 'right' },
                 @{Label = "Pool"                        ; Expression = { $_.Pool } ; Align = 'left' }
             ) | Out-Host
         } else {
