@@ -1438,7 +1438,6 @@ while ($Quit -ne $true) {
                 Shares      = @($_.SharesLive) -ne $null -join '/'
                 PLim        = $(if ($_.PowerLimit -ne 0) { $_.PowerLimit })
                 Watt        = if ($_.PowerLive -gt 0) { [string]$_.PowerLive + 'W' } else { $null }
-                EfficiencyW = if ($_.PowerLive -gt 0) { ($_.ProfitsLive / $_.PowerLive).tostring("n4") } else { $null }
                 mbtcDay     = (($_.RevenueLive + $_.RevenueLiveDual) * 1000).tostring("n5")
                 RevDay      = (($_.RevenueLive + $_.RevenueLiveDual) * $localBTCvalue ).tostring("n2")
                 ProfitDay   = ($_.ProfitsLive).tostring("n2")
@@ -1498,7 +1497,6 @@ while ($Quit -ne $true) {
                 @{Label = "Acc/Rej"                     ; Expression = { $_.Shares } ; Align = 'right' },
                 @{Label = "PLim"                        ; Expression = { $_.PLim } ; Align = 'right' },
                 @{Label = "Watt"                        ; Expression = { $_.Watt } ; Align = 'right' },
-                @{Label = $Config.LocalCurrency + "/W"  ; Expression = { $_.EfficiencyW }  ; Align = 'right' },
                 @{Label = "mBTC/Day"                    ; Expression = { $_.mbtcDay } ; Align = 'right' },
                 @{Label = $Config.LocalCurrency + "/Day"; Expression = { $_.RevDay } ; Align = 'right' },
                 @{Label = "Profit/Day"                  ; Expression = { $_.ProfitDay } ; Align = 'right' },
