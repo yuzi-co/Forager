@@ -21,7 +21,7 @@
     "Lyra2z330": "--algo lyra2z330",
     "Power2b": "--algo yespower-b2b --param-n 2048 --param-r 32 --param-key \"Now I am become Death, the destroyer of worlds\"",
     "_ScryptN11": "--algo scrypt --param-n 2048",
-    "ScryptN2": "--algo scrypt --param-n 1048576",
+    "_ScryptN2": "--algo scrypt --param-n 1048576",
     "_SHA3d": "--algo sha3d",
     "Yescrypt": "--algo yescrypt",
     "YescryptR8": "--algo yescrypt --param-n 2048 --param-r 8 --param-key \"Client Key\"",
