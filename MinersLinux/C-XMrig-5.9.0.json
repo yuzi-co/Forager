@@ -1,6 +1,6 @@
 {
-  "Path": "xmrig-5.8.1/xmrig.exe",
-  "Uri": "https://github.com/xmrig/xmrig/releases/download/v5.8.1/xmrig-5.8.1-gcc-win64.zip",
+  "Path": "xmrig-5.9.0/xmrig",
+  "Uri": "https://github.com/xmrig/xmrig/releases/download/v5.9.0/xmrig-5.9.0-xenial-x64.tar.gz",
   "Type": "CPU",
   "Arguments": [
     "-o #Server#:#Port#",
@@ -10,6 +10,7 @@
     "$(if ($EnableSSL){'--tls'})",
     "--donate-level 1",
     "--http-port #APIPort#",
+    "--no-color",
     "#AlgorithmParameters#",
     "#CustomParameters#"
   ],
@@ -35,9 +36,10 @@
     "CnTurtle": "-a cn-pico/trtl",
     "CnTlo": "-a cn-pico/tlo",
     "CnZls": "-a cn/zls",
+    "RandomArq": "-a rx/arq",
+    "RandomKeva": "-a rx/keva",
     "RandomSfx": "-a rx/sfx",
     "RandomX": "-a rx/0",
-    "RandomXArq": "-a rx/arq",
     "RandomXL": "-a rx/loki",
     "RandomXWow": "-a rx/wow"
   }
