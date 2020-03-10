@@ -26,10 +26,10 @@ $M = @{
             Params = "--par=beam2"
             Mem    = 3
         }
-        Equihash96  = @{
-            Params = "--par=96,5 --pers auto"
-            Mem    = 1.75
-        }
+        # Equihash96  = @{
+        #     Params = "--par=96,5 --pers auto"
+        #     Mem    = 1.75
+        # }
         Equihash125 = @{
             Params = "--par=125,4"
             Mem    = 2
