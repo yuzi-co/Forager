@@ -1,12 +1,14 @@
 {
-  "Path": "SRBMiner-Multi-0-3-8/SRBMiner-MULTI",
-  "Uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/0.3.8/SRBMiner-Multi-0-3-8-Linux.tar.xz",
+  "Path": "SRBMiner-Multi-0-3-9/SRBMiner-MULTI",
+  "Uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/0.3.9/SRBMiner-Multi-0-3-9-Linux.tar.xz",
   "Type": "AMD",
   "Arguments": [
     "--pool #Server#:#Port#",
     "--wallet #Login#",
     "--password #Password#",
     "--disable-cpu",
+    "--gpu-platform #GPUPlatform#",
+    "--gpu-id #Devices#",
     "--send-stales",
     "--api-enable",
     "--api-port #ApiPort#",
