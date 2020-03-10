@@ -19,20 +19,11 @@
       "Params": "-uri beamhash2",
       "Mem": 4
     },
-    "_Cuckoo29": {
+    "Cuckoo29": {
       "Params": "-uri aeternity",
+      "NH": false,
       "NoCpu": true,
       "Mem": 5.3
-    },
-    "_Cuckaroo29": {
-      "Params": "-uri cuckaroo29",
-      "NoCpu": true,
-      "Mem": 5.3
-    },
-    "_Cuckaroo29d": {
-      "Params": "-uri cuckaroo29d",
-      "NoCpu": true,
-      "Mem": 3.5
     },
     "Cuckaroo29m": {
       "Params": "-uri cuckaroo29m",
