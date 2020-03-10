@@ -27,30 +27,6 @@ if ($Querymode -eq "Info") {
     }
 }
 
-if ($Querymode -eq "Speed") {
-    $Info.user = $Info.user.split('.')[0]
-    $Request = Invoke-APIRequest -Url $("https://api.nicehash.com/api?method=stats.provider.workers&addr=" + $Info.user) -Retry 1
-
-    if ($Request.Result.Workers) {
-        $Request.Result.Workers | ForEach-Object {
-            $Multiplier = switch ($_[6]) {
-                { @(16, 17, 18, 21, 23, 25, 28) -contains $PSItem } { 1e9 } #GH
-                { @(5, 7, 8, 9, 10, 14, 20, 26, 29, 32) -contains $PSItem } { 1e6 } #MH
-                { @(19, 22, 30, 31) -contains $PSItem } { 1e3 } #KH
-                { @(24, 37) -contains $PSItem } { 1 }
-                Default { 1 }
-            }
-            $Result += [PSCustomObject]@{
-                PoolName   = $name
-                WorkerName = $_[0]
-                Rejected   = $_[4]
-                HashRate   = [double]$_[1].a * $Multiplier
-            }
-        }
-        Remove-Variable Request
-    }
-}
-
 if ($Querymode -eq "Wallet") {
     $Info.user = ($Info.user -split '\.')[0]
     $Request = Invoke-APIRequest -Url $("https://api.nicehash.com/api?method=stats.provider&addr=" + $Info.user) -Retry 3 |

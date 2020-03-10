@@ -46,27 +46,6 @@ if ($Querymode -eq "ApiKey") {
     }
 }
 
-if ($Querymode -eq "Speed") {
-
-    $Request = Invoke-APIRequest -Url "https://$($Info.Symbol).miningpoolhub.com/index.php?page=api&action=getuserworkers&api_key=$($Info.ApiKey)&$(Get-Date -Format "yyyy-MM-dd_HH-mm")" -Retry 1
-
-    if ($Request.getuserworkers.data) {
-        $Data = $Request.getuserworkers.data
-        $Result = $Data | ForEach-Object {
-            if ($_.HashRate -gt 0) {
-                [PSCustomObject]@{
-                    PoolName   = $name
-                    Diff       = $_.difficulty
-                    WorkerName = $_.UserName.split('.')[1]
-                    HashRate   = $_.HashRate
-                }
-            }
-        }
-        Remove-Variable Request
-        Remove-Variable Data
-    }
-}
-
 if ($Querymode -eq "Core") {
 
     if (-not $Config.UserName -and -not $Config.("UserName_" + $Name)) {

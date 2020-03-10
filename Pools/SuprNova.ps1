@@ -38,22 +38,6 @@ if ($Querymode -eq "ApiKey") {
     }
 }
 
-if ($Querymode -eq "Speed") {
-    $Request = Invoke-APIRequest -Url $("https://" + $Info.Symbol + ".suprnova.cc/index.php?page=api&action=getuserworkers&api_key=" + $Info.ApiKey) -Retry 1 |
-    Select-Object -ExpandProperty getuserworkers | Select-Object -ExpandProperty data
-
-    if ($Request) {
-        $Request | ForEach-Object {
-            $Result += [PSCustomObject]@{
-                PoolName   = $name
-                Diff       = $_.difficulty
-                WorkerName = ($_.UserName -split "\.")[1]
-                HashRate   = $_.HashRate
-            }
-        }
-    }
-}
-
 if ($Querymode -eq "Core") {
 
     if (-not $Config.UserName -and -not $PoolConfig.$Name.UserName) {

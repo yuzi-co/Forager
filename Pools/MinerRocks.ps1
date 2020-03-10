@@ -23,21 +23,6 @@ if ($Querymode -eq "Info") {
     }
 }
 
-if ($Querymode -eq "Speed") {
-    $Request = Invoke-APIRequest -Url $("https://" + $Info.Symbol + ".miner.rocks/api/stats_address?address=" + $Info.User + "&longpoll=false") -Retry 3 -MaxAge 1
-
-    if ($Request -and $Request.stats.workers) {
-        $Request.stats.workers | Get-Member -Type NoteProperty | ForEach-Object {
-            $Result += [PSCustomObject]@{
-                PoolName   = $Name
-                WorkerName = $_.name
-                HashRate   = $Request.stats.workers.($_.name).hashrate
-            }
-        }
-        Remove-Variable Request
-    }
-}
-
 if ($Querymode -eq "Wallet") {
     $Request = Invoke-APIRequest -Url $("https://" + $Info.Symbol + ".miner.rocks/api/stats_address?address=" + $Info.User + "&longpoll=false") -Retry 3
     $Divisor = switch ($Info.Symbol) {

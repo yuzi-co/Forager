@@ -23,21 +23,6 @@ if ($Querymode -eq "Info") {
     }
 }
 
-if ($Querymode -eq "Speed") {
-    $Request = Invoke-APIRequest -Url $("https://" + $Info.Symbol + ".fairpool.xyz/api/stats?login=" + ($Info.user -split "\+")[0]) -Retry 1
-
-    if ($Request -and $Request.Workers) {
-        $Request.Workers | ForEach-Object {
-            $Result += [PSCustomObject]@{
-                PoolName   = $name
-                WorkerName = $_[0]
-                HashRate   = $_[1]
-            }
-        }
-        Remove-Variable Request
-    }
-}
-
 if ($Querymode -eq "Wallet") {
     $Request = Invoke-APIRequest -Url $("https://" + $Info.Symbol + ".fairpool.xyz/api/stats?login=" + ($Info.User -split "\+")[0]) -Retry 3
     if ($Request) {

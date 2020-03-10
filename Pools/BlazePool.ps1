@@ -30,25 +30,6 @@ if ($Querymode -eq "Info") {
     }
 }
 
-if ($Querymode -eq "Speed") {
-    $Request = Invoke-APIRequest -Url $($ApiUrl + "/wallet/" + $Info.user) -Retry 1
-
-    if ($Request) {
-        $Result = $Request.Miners | ForEach-Object {
-            [PSCustomObject]@{
-                PoolName   = $Name
-                Version    = $_.version
-                Algorithm  = Get-AlgoUnifiedName $_.Algo
-                WorkerName = (($_.password -split 'ID=')[1] -split ',')[0]
-                Diff       = $_.difficulty
-                Rejected   = $_.rejected
-                HashRate   = $_.accepted
-            }
-        }
-        Remove-Variable Request
-    }
-}
-
 if ($Querymode -eq "Wallet") {
     $Request = Invoke-APIRequest -Url $($ApiUrl + "/wallet/" + $Info.user) -Retry 3
 

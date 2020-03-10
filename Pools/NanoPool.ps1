@@ -27,17 +27,6 @@ if ($Querymode -eq "Info") {
     }
 }
 
-if ($Querymode -eq "Speed") {
-    $Request = Invoke-APIRequest -Url $("https://api.nanopool.org/v1/" + $Info.Symbol.ToLower() + "/history/" + $Info.User) -Retry 1
-    if ($Request) {
-        $Result = [PSCustomObject]@{
-            PoolName   = $Name
-            WorkerName = $Info.WorkerName
-            HashRate   = ($Request.data)[0].HashRate
-        }
-    }
-}
-
 if ($Querymode -eq "Wallet") {
     $Request = Invoke-APIRequest -Url $("https://api.nanopool.org/v1/" + $Info.Symbol.ToLower() + "/balance/" + $Info.User) -Retry 3
     if ($Request) {
