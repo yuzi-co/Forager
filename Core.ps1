@@ -481,7 +481,7 @@ while ($Quit -ne $true) {
                             '#Algorithm#'           = $AlgoName
 
                             '#Protocol#'            = $(if ($EnableSSL) { $Pool.ProtocolSSL } else { $Pool.Protocol })
-                            '#Server#'              = $(if ($EnableSSL) { $Pool.HostSSL } else { $Pool.Host })
+                            '#Server#'              = $(if ($EnableSSL -and $null -ne $Pool.HostSSL) { $Pool.HostSSL } else { $Pool.Host })
                             '#Port#'                = $(if ($EnableSSL) { $Pool.PortSSL } else { $Pool.Port })
                             '#Login#'               = $PoolUser
                             '#Password#'            = $PoolPass
@@ -530,7 +530,7 @@ while ($Quit -ne $true) {
 
                             $Params = @{
                                 '#PortDual#'       = $(if ($EnableDualSSL) { $PoolDual.PortSSL } else { $PoolDual.Port })
-                                '#ServerDual#'     = $(if ($EnableDualSSL) { $PoolDual.HostSSL } else { $PoolDual.Host })
+                                '#ServerDual#'     = $(if ($EnableDualSSL -and $null -ne $PoolDual.HostSSL) { $PoolDual.HostSSL } else { $PoolDual.Host })
                                 '#ProtocolDual#'   = $(if ($EnableDualSSL) { $PoolDual.ProtocolSSL } else { $PoolDual.Protocol })
                                 '#LoginDual#'      = $PoolUserDual
                                 '#PasswordDual#'   = $PoolPassDual
@@ -1226,6 +1226,8 @@ while ($Quit -ne $true) {
                             SpeedDual = [decimal]$_.SpeedLiveDual
                             Power     = [int]$_.PowerLive
                             Date      = (Get-Date).DateTime
+                            RunTime   = [int]((Get-Date) - $ActiveMiners[$_.IdF].Process.StartTime).TotalSeconds
+                            CpuLoad   = [math]::Round($_.CpuLoad, 2)
                         }
                     }
                     if ($_.SpeedReads.Count -gt 100) {
@@ -1380,19 +1382,19 @@ while ($Quit -ne $true) {
             ForEach-Object {
             $M = $ActiveMiners[$_.IdF]
             [PSCustomObject]@{
-                Group       = $M.DeviceGroup.GroupName
-                Algorithm   = (@($M.Algorithms, $M.AlgoLabel) -ne $null -join "|") + $_.BestBySwitch
-                Coin        = @($M.Pool.Symbol, $M.PoolDual.Symbol) -ne $null -join "_"
-                Miner       = $M.Name
-                LocalSpeed  = (@($_.SpeedLive, $_.SpeedLiveDual) -gt 0 | ForEach-Object { ConvertTo-Hash $_ }) -join "/"
-                Shares      = @($_.SharesLive) -ne $null -join '/'
-                PLim        = $(if ($_.PowerLimit -ne 0) { $_.PowerLimit })
-                Watt        = if ($_.PowerLive -gt 0) { [string]$_.PowerLive + 'W' } else { $null }
-                CpuLoad     = ($_.CpuLoad).tostring("n2")
-                mbtcDay     = (($_.RevenueLive + $_.RevenueLiveDual) * 1000).tostring("n5")
-                RevDay      = (($_.RevenueLive + $_.RevenueLiveDual) * $localBTCvalue ).tostring("n2")
-                ProfitDay   = ($_.ProfitsLive).tostring("n2")
-                Pool        = @(($M.Pool.PoolName + "-" + $M.Pool.Location), ($M.PoolDual.PoolName + "-" + $M.PoolDual.Location)) -ne "-" -join "/"
+                Group      = $M.DeviceGroup.GroupName
+                Algorithm  = (@($M.Algorithms, $M.AlgoLabel) -ne $null -join "|") + $_.BestBySwitch
+                Coin       = @($M.Pool.Symbol, $M.PoolDual.Symbol) -ne $null -join "_"
+                Miner      = $M.Name
+                LocalSpeed = (@($_.SpeedLive, $_.SpeedLiveDual) -gt 0 | ForEach-Object { ConvertTo-Hash $_ }) -join "/"
+                Shares     = @($_.SharesLive) -ne $null -join '/'
+                PLim       = $(if ($_.PowerLimit -ne 0) { $_.PowerLimit })
+                Watt       = if ($_.PowerLive -gt 0) { [string]$_.PowerLive + 'W' } else { $null }
+                CpuLoad    = ($_.CpuLoad).tostring("n2")
+                mbtcDay    = (($_.RevenueLive + $_.RevenueLiveDual) * 1000).tostring("n5")
+                RevDay     = (($_.RevenueLive + $_.RevenueLiveDual) * $localBTCvalue ).tostring("n2")
+                ProfitDay  = ($_.ProfitsLive).tostring("n2")
+                Pool       = @(($M.Pool.PoolName + "-" + $M.Pool.Location), ($M.PoolDual.PoolName + "-" + $M.PoolDual.Location)) -ne "-" -join "/"
             }
         }
 
@@ -1505,7 +1507,6 @@ while ($Quit -ne $true) {
                 @{Label = "StatsSpeed"                   ; Expression = { if ($_.NeedBenchmark) { "Bench" } else { (@($_.SubMiner.HashRate, $_.SubMiner.HashRateDual) -gt 0 | ForEach-Object { ConvertTo-Hash $_ }) -join "/" } }; Align = 'right' },
                 @{Label = "PLim"                         ; Expression = { if ($_.SubMiner.PowerLimit -ne 0) { $_.SubMiner.PowerLimit } }; Align = 'right' },
                 @{Label = "Watt"                         ; Expression = { if ($_.SubMiner.PowerAvg -gt 0) { $_.SubMiner.PowerAvg.tostring("n0") } }; Align = 'right' },
-                @{Label = $Config.LocalCurrency + "/W"   ; Expression = { if ($_.SubMiner.PowerAvg -gt 0) { ($_.SubMiner.Profits / $_.SubMiner.PowerAvg).tostring("n4") } }; Align = 'right' },
                 @{Label = "mBTC/Day"                     ; Expression = { if ($_.Revenue) { ($_.Revenue * 1000).tostring("n3") } } ; Align = 'right' },
                 @{Label = $Config.LocalCurrency + "/Day" ; Expression = { if ($_.Revenue) { ($_.Revenue * [decimal]$LocalBTCvalue).tostring("n2") } } ; Align = 'right' },
                 @{Label = "Profit/Day"                   ; Expression = { if ($_.Profits) { ($_.Profits).tostring("n2") + " $($Config.LocalCurrency)" } }; Align = 'right' },
