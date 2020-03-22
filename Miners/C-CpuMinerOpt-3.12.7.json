@@ -1,9 +1,9 @@
 {
   "Path": "cpuminer-$($f=$SystemInfo.CpuFeatures;$(if($f.avx512){'avx512'}elseif($f.avx2 -and $f.sha){'zen'}elseif($f.avx2){'avx2'}elseif($f.avx){'avx'}elseif($f.aes -and $f.sse42){'aes-sse42'}else{'sse2'})).exe",
-  "Uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.12.6.1/cpuminer-opt-3.12.6.1-windows.zip",
+  "Uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.12.7/cpuminer-opt-3.12.7-windows.zip",
   "Type": "CPU",
   "Arguments": [
-    "-o #Protocol#://#Server#:#Port#",
+    "-o stratum+$(if($EnableSSL){'tcps'}else{'tcp'})://#Server#:#Port#",
     "-u #Login#",
     "-p #Password#",
     "--retry-pause 5",
@@ -14,6 +14,7 @@
     "#CustomParameters#"
   ],
   "API": "Ccminer",
+  "SSL": true,
   "Algorithms": {
     "CpuPower": "--algo yespower --param-n 2048 --param-r 32 --param-key \"CPUpower: The number of CPU working or available for proof-of-work mining\"",
     "HOdl": "--algo hodl",
