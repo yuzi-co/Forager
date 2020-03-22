@@ -1,6 +1,6 @@
 {
-  "Path": "miner",
-  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.01/gminer_2_01_linux64.tar.xz",
+  "Path": "miner.exe",
+  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.02/gminer_2_02_windows64.zip",
   "Type": "NVIDIA",
   "CUDA": 9.0,
   "Arguments": [
@@ -13,7 +13,6 @@
     "--devices #DevicesETHMode#",
     "--cuda 1",
     "--opencl 0",
-    "--color 0",
     "#AlgorithmParameters#",
     "#CustomParameters#"
   ],
@@ -22,14 +21,23 @@
   "Fee": 0.02,
   "Algorithms": {
     "BeamV2": "--algo BeamHashII",
-    "BFC": {
-      "Params": "--algo bfc",
-      "Fee": 0.03
+    "CnBBC": {
+      "Params": "--algo bbc",
+      "NoCpu": true
     },
-    "CnBBC":  "--algo bbc",
     "Cortex": {
       "Params": "--algo cortex",
       "Fee": 0.05
+    },
+    "CuckooBFC": {
+      "Params": "--algo bfc",
+      "NoCpu": true,
+      "Fee": 0.03
+    },
+    "Cuckoo24": {
+      "Params": "--algo cuckoo24",
+      "NoCpu": true,
+      "Fee": 0.03
     },
     "Cuckoo29": {
       "Params": "--algo cuckoo29",
@@ -87,6 +95,7 @@
       "Mem": 2.75
     },
     "Equihash210": "--algo 210_9 --pers AION0PoW",
+    "EquihashVds": "--algo vds",
     "_Ethash": {
       "Params": "--algo ethash --proto stratum",
       "Mem": 3,
@@ -109,7 +118,6 @@
     },
     "Handshake": "--algo Handshake",
     "Kadena": "--algo Blake2s",
-    "ProgPowSero": "--algo sero",
-    "Vds": "--algo vds"
+    "ProgPowSero": "--algo sero"
   }
 }
