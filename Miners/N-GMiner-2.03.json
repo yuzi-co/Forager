@@ -1,7 +1,8 @@
 {
-  "Path": "miner",
-  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.02/gminer_2_02_linux64.tar.xz",
-  "Type": "AMD",
+  "Path": "miner.exe",
+  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.03/gminer_2_03_windows64.zip",
+  "Type": "NVIDIA",
+  "CUDA": 9.0,
   "Arguments": [
     "--server #Server#:#Port#",
     "--user #Login#",
@@ -10,9 +11,8 @@
     "--watchdog 0",
     "--ssl $(if($EnableSSL){1}else{0})",
     "--devices #DevicesETHMode#",
-    "--cuda 0",
-    "--opencl 1",
-    "--color 0",
+    "--cuda 1",
+    "--opencl 0",
     "#AlgorithmParameters#",
     "#CustomParameters#"
   ],
@@ -21,6 +21,14 @@
   "Fee": 0.02,
   "Algorithms": {
     "BeamV2": "--algo BeamHashII",
+    "CnBBC": {
+      "Params": "--algo bbc",
+      "NoCpu": true
+    },
+    "Cortex": {
+      "Params": "--algo cortex",
+      "Fee": 0.05
+    },
     "CuckooBFC": {
       "Params": "--algo bfc",
       "NoCpu": true,
@@ -61,7 +69,18 @@
       "NoCpu": true,
       "Mem": 3.8
     },
+    "Cuckatoo31": {
+      "Params": "--algo grin31",
+      "NoCpu": true,
+      "Mem": 7.4
+    },
+    "Cuckatoo32": {
+      "Params": "--algo grin32",
+      "NoCpu": true,
+      "Mem": 7.4
+    },
     "Eaglesong": "--algo eaglesong",
+    "Equihash96": "--algo 96_5 --pers auto",
     "Equihash125": "--algo 125_4",
     "Equihash144": {
       "Params": "--algo 144_5 --pers auto",
@@ -75,6 +94,30 @@
       "Params": "--algo 192_7 --pers auto",
       "Mem": 2.75
     },
-    "Kadena": "--algo Blake2s"
+    "Equihash210": "--algo 210_9 --pers AION0PoW",
+    "EquihashVds": "--algo vds",
+    "_Ethash": {
+      "Params": "--algo ethash --proto stratum",
+      "Mem": 3,
+      "Fee": 0.0065
+    },
+    "_Ethash_Eaglesong": {
+      "Params": "--algo eth+ckb --proto stratum --dserver #ServerDual#:#PortDual# --duser #LoginDual# --dpass #PasswordDual#",
+      "Mem": 3,
+      "Fee": 0.03
+    },
+    "Ethash_Kadena": {
+      "Params": "--algo eth+kda --proto stratum --dserver #ServerDual#:#PortDual# --duser #LoginDual# --dpass #PasswordDual#",
+      "Mem": 3,
+      "Fee": 0.03
+    },
+    "Ethash_Handshake": {
+      "Params": "--algo eth+hns --proto stratum --dserver #ServerDual#:#PortDual# --duser #LoginDual# --dpass #PasswordDual#",
+      "Mem": 3,
+      "Fee": 0.03
+    },
+    "Handshake": "--algo Handshake",
+    "Kadena": "--algo Blake2s",
+    "ProgPowSero": "--algo sero"
   }
 }
