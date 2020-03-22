@@ -16,6 +16,7 @@ $M = @{
         "#CustomParameters#"
     )
     API        = "Ccminer"
+    SSL        = $true
     Fee        = 0.01
     Algorithms = [PSCustomObject]@{
         C11    = "-a c11"
