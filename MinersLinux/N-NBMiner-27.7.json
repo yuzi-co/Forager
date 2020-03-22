@@ -14,7 +14,7 @@
   "SSL": true,
   "Fee": 0.02,
   "Algorithms": {
-    "BFC": "-a bfc",
+    "CuckooBFC": "-a bfc",
     "_Cuckoo29": {
       "Params": "-a cuckoo_ae",
       "NoCpu": true,

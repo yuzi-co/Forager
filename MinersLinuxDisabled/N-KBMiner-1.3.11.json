@@ -1,7 +1,6 @@
 {
   "Path": "kbminer_1.3.11/kbminer",
   "Uri": "https://github.com/mcarloai/minerbabe-kbminer/releases/download/1.3.11/kbminer_1.3.11.tar.gz",
-  "SHA256": "1FED924CE72DC3F8527EA5B8D2A3F104F428201A9D36678949370A506F1CA066",
   "Type": "NVIDIA",
   "Arguments": [
     "--pool #Server#:#Port#",
@@ -20,6 +19,6 @@
   "NoCpu": true,
   "Fee": 0.02,
   "Algorithms": {
-    "VDS": "--algorithm vds"
+    "EquihashVds": "--algorithm vds"
   }
 }

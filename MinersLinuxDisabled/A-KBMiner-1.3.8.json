@@ -1,7 +1,6 @@
 {
   "Path": "kbminer_1.3.8/kbminer",
   "Uri": "https://github.com/mcarloai/minerbabe-kbminer/releases/download/1.3.8/kbminer_vds_linux_1.3.8.tar.gz",
-  "SHA256": "294FA166FB8D5B5AA33A7A66B81A429A0AB00A317B146CE21D993D92135C1E48",
   "Type": "AMD",
   "Arguments": [
     "--pool #Server#:#Port#",
@@ -20,6 +19,6 @@
   "NoCpu": true,
   "Fee": 0.02,
   "Algorithms": {
-    "VDS": "--algorithm vds"
+    "EquihashVds": "--algorithm vds"
   }
 }
