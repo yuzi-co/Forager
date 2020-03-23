@@ -9,6 +9,7 @@ $M = @{
         "--pass #Password#"
         "--gpu-line"
         "--extra"
+        "--nonvml"
         "--nocolor"
         "--cuda-devices #DevicesETHMode#"
         "--telemetry 0.0.0.0:#APIPort#"

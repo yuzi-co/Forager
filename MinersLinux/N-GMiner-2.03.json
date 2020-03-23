@@ -9,7 +9,7 @@
     "--pass #Password#",
     "--api #APIPort#",
     "--watchdog 0",
-    "--ssl $(if($EnableSSL){1}else{0})",
+    "$(if($EnableSSL){'--ssl 1'})",
     "--devices #DevicesETHMode#",
     "--cuda 1",
     "--opencl 0",
@@ -107,12 +107,12 @@
       "Mem": 3,
       "Fee": 0.03
     },
-    "Ethash_Kadena": {
+    "_Ethash_Kadena": {
       "Params": "--algo eth+kda --proto stratum --dserver #ServerDual#:#PortDual# --duser #LoginDual# --dpass #PasswordDual#",
       "Mem": 3,
       "Fee": 0.03
     },
-    "Ethash_Handshake": {
+    "_Ethash_Handshake": {
       "Params": "--algo eth+hns --proto stratum --dserver #ServerDual#:#PortDual# --duser #LoginDual# --dpass #PasswordDual#",
       "Mem": 3,
       "Fee": 0.03

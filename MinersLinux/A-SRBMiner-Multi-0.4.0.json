@@ -10,6 +10,7 @@
     "--gpu-platform #GPUPlatform#",
     "--gpu-id #Devices#",
     "--send-stales",
+    "--disable-startup-monitor",
     "--api-enable",
     "--api-port #ApiPort#",
     "$(if ($enableSSL){'--tls true'})",

@@ -10,6 +10,7 @@ $M = @{
         "-R 3"
         "-r 10"
         "--no-watchdog"
+        "--no-nvml"
         "-b 127.0.0.1:#APIPort#"
         "#AlgorithmParameters#"
         "#CustomParameters#"

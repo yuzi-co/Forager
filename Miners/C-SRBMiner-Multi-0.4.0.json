@@ -9,6 +9,7 @@
     "--disable-gpu",
     "--cpu-threads $(if ($CpuThreads -ne $null){$CpuThreads} else {$SystemInfo.CpuFeatures.threads})",
     "--send-stales",
+    "--disable-startup-monitor",
     "--api-enable",
     "--api-port #ApiPort#",
     "$(if ($enableSSL){'--tls true'})",
