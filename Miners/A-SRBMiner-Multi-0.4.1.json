@@ -1,6 +1,6 @@
 {
-  "Path": "SRBMiner-Multi-0-4-0/SRBMiner-MULTI.exe",
-  "Uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/0.4.0/SRBMiner-Multi-0-4-0-win64.zip",
+  "Path": "SRBMiner-Multi-0-4-1/SRBMiner-MULTI.exe",
+  "Uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/0.4.1/SRBMiner-Multi-0-4-1-win64.zip",
   "Type": "AMD",
   "Arguments": [
     "--pool #Server#:#Port#",
