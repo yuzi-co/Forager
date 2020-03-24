@@ -1,14 +1,13 @@
 {
   "Path": "NBMiner_Win/nbminer.exe",
   "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v27.7/NBMiner_27.7_Win.zip",
-  "Type": "NVIDIA",
+  "Type": "AMD",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
     "-u #Login#",
     "-d #Devices#",
-    "--platform 1",
+    "--platform 2",
     "--no-watchdog",
-    "--no-nvml",
     "--api 127.0.0.1:#ApiPort#",
     "#AlgorithmParameters#",
     "#CustomParameters#"
@@ -17,36 +16,6 @@
   "SSL": true,
   "Fee": 0.02,
   "Algorithms": {
-    "CuckooBFC": {
-      "Params": "-a bfc",
-      "NoCpu": true,
-      "Mem": 5
-    },
-    "_Cuckoo29": {
-      "Params": "-a cuckoo_ae",
-      "NoCpu": true,
-      "Mem": 5
-    },
-    "_Cuckaroo29": {
-      "Params": "-a cuckaroo",
-      "NoCpu": true,
-      "Mem": 5
-    },
-    "_Cuckaroo29d": {
-      "Params": "-a cuckarood",
-      "NoCpu": true,
-      "Mem": 5
-    },
-    "Cuckaroo29s": {
-      "Params": "-a cuckaroo_swap",
-      "NoCpu": true,
-      "Mem": 5
-    },
-    "Cuckatoo31": {
-      "Params": "-a cuckatoo",
-      "NoCpu": true,
-      "Mem": 7.4
-    },
     "Eaglesong": "-a eaglesong",
     "Eaglesong_Ethash": {
       "Params": "-a eaglesong_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#",
@@ -62,14 +31,6 @@
     "Handshake_Ethash": {
       "Params": "-a hns_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#",
       "Mem": 3
-    },
-    "Tensority_Ethash": {
-      "Params": "-a tensority_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#",
-      "Mem": 3,
-      "Fee": 0.03
-    },
-    "ProgPOWSero": "-a progpow_sero",
-    "ScryptSIPC": "-a sipc",
-    "Tensority": "-a tensority"
+    }
   }
 }
