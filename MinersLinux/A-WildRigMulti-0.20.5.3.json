@@ -1,6 +1,6 @@
 {
   "Path": "wildrig-multi",
-  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.20.1/wildrig-multi-linux-0.20.1.tar.gz",
+  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.20.5b/wildrig-multi-linux-0.20.5.3.tar.gz",
   "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",
@@ -21,7 +21,7 @@
   "Fee": 0.01,
   "Mem": 1.1,
   "BenchmarkArg": "$(if ($AlgoName -in @('bitcore', 'x16r', 'x16rt', 'x16s', 'x21s', 'hex', 'timetravel')){'--benchmark'})",
-  "Custom": " --opencl-threads auto --opencl-launch auto",
+  "Custom": "--opencl-threads auto --opencl-launch auto",
   "Algorithms": {
     "Aergo": "--algo aergo",
     "Anime": "--algo anime",
@@ -46,6 +46,7 @@
     "Jeonghash": "--algo glt-jeonghash",
     "Lyra2v3": "--algo lyra2v3",
     "Lyra2vc0ban": "--algo lyra2vc0ban",
+    "Lyra2tdc": "--algo lyra2tdc",
     "MTP": "--algo mtp",
     "MTPtcr": "--algo mtp-tcr",
     "Padihash": "--algo glt-padihash",
@@ -68,6 +69,8 @@
     "X16rt": "--algo x16rt",
     "X16s": "--algo x16s",
     "X17": "--algo x17",
+    "X17r": "--algo x17r",
+    "X17rprotocol2": "--algo x17r-protocol2",
     "X18": "--algo x18",
     "X20r": "--algo x20r",
     "X21s": "--algo x21s",
