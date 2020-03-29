@@ -1,6 +1,6 @@
 {
   "Path": "NBMiner_Linux/nbminer",
-  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v27.7/NBMiner_27.7_Linux.tgz",
+  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v28.0/NBMiner_28.0_Linux.tgz",
   "Type": "NVIDIA",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
@@ -71,6 +71,12 @@
     },
     "ProgPOWSero": "-a progpow_sero",
     "ScryptSIPC": "-a sipc",
-    "Tensority": "-a tensority"
+    "Tensority": "-a tensority",
+    "Trb": "-a trb",
+    "Trb_Ethash": {
+      "Params": "-a trb_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#",
+      "Mem": 3,
+      "Fee": 0.03
+    }
   }
 }
