@@ -1,6 +1,6 @@
 {
   "Path": "miner",
-  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.03/gminer_2_03_linux64.tar.xz",
+  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.04/gminer_2_04_linux64.tar.xz",
   "Type": "NVIDIA",
   "CUDA": 9.0,
   "Arguments": [
@@ -119,6 +119,7 @@
     },
     "Handshake": "--algo Handshake",
     "Kadena": "--algo Blake2s",
+    "KawPow": "--algo kawpow",
     "ProgPowSero": "--algo sero"
   }
 }
