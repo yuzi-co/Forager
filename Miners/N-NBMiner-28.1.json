@@ -1,13 +1,12 @@
 {
-  "Path": "NBMiner_Linux/nbminer",
-  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v28.0/NBMiner_28.0_Linux.tgz",
+  "Path": "NBMiner_Win/nbminer.exe",
+  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v28.1/NBMiner_28.1_Win.zip",
   "Type": "NVIDIA",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
     "-u #Login#",
     "-d #Devices#",
     "--platform 1",
-    "--no-color",
     "--no-watchdog",
     "--no-nvml",
     "--api 127.0.0.1:#ApiPort#",
@@ -62,6 +61,7 @@
     "Handshake": "-a hns",
     "Handshake_Ethash": {
       "Params": "-a hns_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#",
+      "Custom": "-di 3",
       "Mem": 3
     },
     "Tensority_Ethash": {
