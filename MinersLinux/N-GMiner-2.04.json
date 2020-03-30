@@ -115,9 +115,13 @@
     "_Ethash_Handshake": {
       "Params": "--algo eth+hns --proto stratum --dserver #ServerDual#:#PortDual# --duser #LoginDual# --dpass #PasswordDual#",
       "Mem": 3,
+      "NH": false,
       "Fee": 0.03
     },
-    "Handshake": "--algo Handshake",
+    "Handshake": {
+      "Params": "--algo Handshake",
+      "NH": false
+    },
     "Kadena": "--algo Blake2s",
     "KawPow": "--algo kawpow",
     "ProgPowSero": "--algo sero"

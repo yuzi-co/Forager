@@ -29,7 +29,7 @@
     "CnTalleo": "--algorithm cntalleo",
     "CpuPower": "--algorithm cpupower",
     "DefyX": "--algorithm defyx",
-    "Handshake": {
+    "_Handshake": {
       "Params": "--algorithm bl2bsha3",
       "Fee": 0.02
     },
