@@ -1,6 +1,6 @@
 {
-  "Path": "ccminer.exe",
-  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.12/ccminer.rev.d.verus2.1.prefetch.7z",
+  "Path": "ccminer3_7.exe",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2020.03/ccminer3_7.7z",
   "Type": "CPU",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
