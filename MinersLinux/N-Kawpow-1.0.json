@@ -1,0 +1,18 @@
+{
+  "Path": "kawpowminer",
+  "Uri": "https://github.com/RavenCommunity/kawpowminer/releases/download/1.0.0/kawpowminer-linux-cuda10_2.zip",
+  "Type": "NVIDIA",
+  "CUDA": 10.2,
+  "Arguments": [
+    "-P stratum$(if($EnableSSL){'s'})://#Login#:#Password#@#Server#:#Port#",
+    "--cuda",
+    "--cuda-devices #DevicesClayMode#",
+    "--api-port -#APIPort#",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "API": "Claymore",
+  "Algorithms": {
+    "KawPow": ""
+  }
+}
