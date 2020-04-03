@@ -1,6 +1,6 @@
 {
-  "Path": "miner.exe",
-  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.04/gminer_2_04_windows64.zip",
+  "Path": "miner",
+  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.05/gminer_2_05_linux64.tar.xz",
   "Type": "AMD",
   "Arguments": [
     "--server #Server#:#Port#",
@@ -12,6 +12,7 @@
     "--devices #DevicesETHMode#",
     "--cuda 0",
     "--opencl 1",
+    "--color 0",
     "#AlgorithmParameters#",
     "#CustomParameters#"
   ],
