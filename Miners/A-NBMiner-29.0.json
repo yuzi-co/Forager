@@ -1,6 +1,6 @@
 {
   "Path": "NBMiner_Win/nbminer.exe",
-  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v28.1/NBMiner_28.1_Win.zip",
+  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v29.0/NBMiner_29.0_Win.zip",
   "Type": "AMD",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
@@ -31,6 +31,7 @@
     "Handshake_Ethash": {
       "Params": "-a hns_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#",
       "Mem": 3
-    }
+    },
+    "KawPow": "-a kawpow"
   }
 }
