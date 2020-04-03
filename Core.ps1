@@ -53,7 +53,7 @@ $ErrorActionPreference = "Continue"
 
 $Global:Release = @{
     Application = "Forager"
-    Version     = "20.01"
+    Version     = "20.04"
 }
 Log "$($Release.Application) v$($Release.Version)"
 
