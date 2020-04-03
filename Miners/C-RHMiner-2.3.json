@@ -1,6 +1,6 @@
 {
-  "Path": "rhminer",
-  "Uri": "https://github.com/polyminer1/rhminer/releases/download/2.2b/rhminer.2.2b.Linux.CPU.zip",
+  "Path": "rhminer.exe",
+  "Uri": "https://github.com/polyminer1/rhminer/releases/download/2.3/rhminer.2.3.Windows.CPU.zip",
   "Type": "CPU",
   "Arguments": [
     "-s #Protocol#://#Server#:#Port#",
@@ -8,6 +8,7 @@
     "-pw #Password#",
     "-r 5",
     "-cpu",
+    "-processpriority 2",
     "-cputhreads $(if ($CpuThreads -ne $null){$CpuThreads} else {$SystemInfo.CpuFeatures.threads})",
     "-apiport #ApiPort#",
     "#CustomParameters#"
