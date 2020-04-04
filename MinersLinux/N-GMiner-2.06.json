@@ -1,6 +1,6 @@
 {
-  "Path": "miner.exe",
-  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.05/gminer_2_05_windows64.zip",
+  "Path": "miner",
+  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.06/gminer_2_06_linux64.tar.xz",
   "Type": "NVIDIA",
   "CUDA": 9.0,
   "Arguments": [
@@ -13,6 +13,7 @@
     "--devices #DevicesETHMode#",
     "--cuda 1",
     "--opencl 0",
+    "--color 0",
     "#AlgorithmParameters#",
     "#CustomParameters#"
   ],
