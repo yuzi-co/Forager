@@ -1226,7 +1226,7 @@ function Get-ProcessCpuUsage {
     )
 
     Get-SubProcs -Process $Process | ForEach-Object {
-        $_.TotalProcessorTime / ((Get-Date) - $_.StartTime)
+        $_.TotalProcessorTime.TotalSeconds / ((Get-Date) - $_.StartTime).TotalSeconds
     } | Measure-Object -Sum | Select-Object -ExpandProperty Sum
 }
 
