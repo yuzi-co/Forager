@@ -1,6 +1,6 @@
 {
   "Path": "NBMiner_Linux/nbminer",
-  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v29.0/NBMiner_29.0_Linux.tgz",
+  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v29.1/NBMiner_29.1_Linux.tgz",
   "Type": "AMD",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
