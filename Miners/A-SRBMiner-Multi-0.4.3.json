@@ -1,6 +1,6 @@
 {
-  "Path": "SRBMiner-Multi-0-4-2/SRBMiner-MULTI.exe",
-  "Uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/0.4.2/SRBMiner-Multi-0-4-2-win64.zip",
+  "Path": "SRBMiner-Multi-0-4-3/SRBMiner-MULTI.exe",
+  "Uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/0.4.3/SRBMiner-Multi-0-4-3-win64.zip",
   "Type": "AMD",
   "Arguments": [
     "--pool #Server#:#Port#",
@@ -39,6 +39,7 @@
     "Kadena": "--algorithm kadena",
     "Keccak": "--algorithm keccak",
     "MTP": "--algorithm mtp",
+    "Tellor": "--algorithm tellor",
     "Yescrypt": "--algorithm yescrypt"
   }
 }

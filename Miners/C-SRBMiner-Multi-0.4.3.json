@@ -1,6 +1,6 @@
 {
-  "Path": "SRBMiner-Multi-0-4-2/SRBMiner-MULTI",
-  "Uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/0.4.2/SRBMiner-Multi-0-4-2-Linux.tar.xz",
+  "Path": "SRBMiner-Multi-0-4-3/SRBMiner-MULTI.exe",
+  "Uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/0.4.3/SRBMiner-Multi-0-4-3-win64.zip",
   "Type": "CPU",
   "Arguments": [
     "--pool #Server#:#Port#",
@@ -59,6 +59,7 @@
       "Params": "--algorithm randomxl",
       "Custom": "--randomx-use-1gb-pages"
     },
+    "Tellor": "--algorithm tellor",
     "Yescrypt": "--algorithm yescrypt",
     "YescryptR8": "--algorithm yescryptr8",
     "YescryptR16": "--algorithm yescryptr16",
