@@ -1,6 +1,6 @@
 {
-  "Path": "xmrig-5.10.0/xmrig.exe",
-  "Uri": "https://github.com/xmrig/xmrig/releases/download/v5.10.0/xmrig-5.10.0-gcc-win64.zip",
+  "Path": "xmrig-5.11.0/xmrig",
+  "Uri": "https://github.com/xmrig/xmrig/releases/download/v5.11.0/xmrig-5.11.0-xenial-x64.tar.gz",
   "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",
@@ -14,6 +14,7 @@
     "--opencl-platform=#GPUPlatform#",
     "--donate-level 1",
     "--http-port #APIPort#",
+    "--no-color",
     "#AlgorithmParameters#",
     "#CustomParameters#"
   ],
