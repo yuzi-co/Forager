@@ -1,6 +1,6 @@
 {
-  "Path": "bminer-v16.1.0-f55fff0/bminer",
-  "Uri": "https://www.bminercontent.com/releases/bminer-v16.1.0-f55fff0-amd64.tar.xz",
+  "Path": "bminer-lite-v16.1.1-4cf17ad/bminer.exe",
+  "Uri": "https://www.bminercontent.com/releases/bminer-lite-v16.1.1-4cf17ad-amd64.zip",
   "Type": "NVIDIA",
   "CUDA": 9.2,
   "Arguments": [
@@ -32,11 +32,13 @@
     "Cuckaroo29m": {
       "Params": "-uri cuckaroo29m",
       "NoCpu": true,
+      "Fee": 0.01,
       "Mem": 3.5
     },
     "Cuckatoo31": {
       "Params": "-uri cuckatoo31",
       "NoCpu": true,
+      "Fee": 0.01,
       "Mem": 7.4
     },
     "Cuckatoo32": {
@@ -45,10 +47,12 @@
       "Mem": 7.4
     },
     "_Equihash144": "-pers auto -uri equihash1445",
-    "_Ethash": {
+    "Ethash": {
       "Params": "-uri ethstratum",
+      "Fee": 0.0065,
       "Mem": 3
     },
+    "Qitmeer": "-uri qitmeer",
     "Tensority": "-uri tensority"
   }
 }
