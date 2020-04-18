@@ -4,7 +4,7 @@
   "Type": "NVIDIA",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
-    "-u #Login#",
+    "-u #Login#:#Password#",
     "-d #Devices#",
     "--platform 1",
     "--no-color",
@@ -50,7 +50,7 @@
     },
     "Eaglesong": "-a eaglesong",
     "Eaglesong_Ethash": {
-      "Params": "-a eaglesong_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#",
+      "Params": "-a eaglesong_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#:#PasswordDual#",
       "Custom": "-di 10",
       "Mem": 3
     },
@@ -61,13 +61,13 @@
     },
     "Handshake": "-a hns",
     "Handshake_Ethash": {
-      "Params": "-a hns_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#",
+      "Params": "-a hns_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#:#PasswordDual#",
       "Custom": "-di 5",
       "Mem": 3
     },
     "KawPow": "-a kawpow",
     "Tensority_Ethash": {
-      "Params": "-a tensority_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#",
+      "Params": "-a tensority_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#:#PasswordDual#",
       "Mem": 3,
       "Fee": 0.03
     },
@@ -76,7 +76,7 @@
     "Tensority": "-a tensority",
     "Trb": "-a trb",
     "Trb_Ethash": {
-      "Params": "-a trb_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#",
+      "Params": "-a trb_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#:#PasswordDual#",
       "Mem": 3,
       "Fee": 0.03
     }

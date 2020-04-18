@@ -4,7 +4,7 @@
   "Type": "AMD",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
-    "-u #Login#",
+    "-u #Login#:#Password#",
     "-d #Devices#",
     "--platform 2",
     "--no-watchdog",
@@ -18,7 +18,7 @@
   "Algorithms": {
     "Eaglesong": "-a eaglesong",
     "Eaglesong_Ethash": {
-      "Params": "-a eaglesong_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#",
+      "Params": "-a eaglesong_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#:#PasswordDual#",
       "Custom": "-di 10",
       "Mem": 3
     },
@@ -29,7 +29,7 @@
     },
     "Handshake": "-a hns",
     "Handshake_Ethash": {
-      "Params": "-a hns_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#",
+      "Params": "-a hns_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#:#PasswordDual#",
       "Mem": 3
     },
     "KawPow": "-a kawpow"
