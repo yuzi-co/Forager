@@ -1,6 +1,6 @@
 {
-  "Path": "0.9.8/lolMiner.exe",
-  "Uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.98/lolMiner_v098_Win64.zip",
+  "Path": "1.0_alpha1/lolMiner.exe",
+  "Uri": "https://github.com/Lolliedieb/lolMiner-preview/releases/download/1.0a1/lolMiner_v1_0_a1_Win64.zip",
   "Type": "AMD",
   "Arguments": [
     "--pool #Server#:#Port#",
@@ -29,6 +29,11 @@
     "Cuckaroo29m": {
       "Params": "--coin GRIN-C29M",
       "Mem": 3.6
+    },
+    "Cuckaroo30": {
+      "Params": "--coin CTXC",
+      "Mem": 7.6,
+      "Fee": 0.025
     },
     "Cuckatoo31": {
       "Params": "--coin GRIN-C31",
