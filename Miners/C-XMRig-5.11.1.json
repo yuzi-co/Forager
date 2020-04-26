@@ -1,6 +1,6 @@
 {
-  "Path": "xmrig-5.11.0/xmrig.exe",
-  "Uri": "https://github.com/xmrig/xmrig/releases/download/v5.11.0/xmrig-5.11.0-gcc-win64.zip",
+  "Path": "xmrig-5.11.1/xmrig.exe",
+  "Uri": "https://github.com/xmrig/xmrig/releases/download/v5.11.1/xmrig-5.11.1-gcc-win64.zip",
   "Type": "CPU",
   "Arguments": [
     "-o #Server#:#Port#",
