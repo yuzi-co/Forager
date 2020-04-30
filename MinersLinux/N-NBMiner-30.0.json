@@ -1,6 +1,6 @@
 {
   "Path": "NBMiner_Linux/nbminer",
-  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v29.1/NBMiner_29.1_Linux.tgz",
+  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v30.0/NBMiner_30.0_Linux.tgz",
   "Type": "NVIDIA",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
@@ -46,29 +46,29 @@
     "Cuckatoo31": {
       "Params": "-a cuckatoo",
       "NoCpu": true,
-      "Mem": 7.4
+      "Mem": 8
     },
     "Eaglesong": "-a eaglesong",
     "Eaglesong_Ethash": {
       "Params": "-a eaglesong_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#:#PasswordDual#",
       "Custom": "-di 10",
-      "Mem": 3
+      "Mem": 4
     },
     "Ethash": {
       "Params": "-a ethash -o $(if ($Pool.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#Server#:#Port#",
-      "Mem": 3,
+      "Mem": 4,
       "Fee": 0.0065
     },
     "Handshake": "-a hns",
     "Handshake_Ethash": {
       "Params": "-a hns_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#:#PasswordDual#",
-      "Custom": "-di 5",
-      "Mem": 3
+      "Custom": "-di 4",
+      "Mem": 4
     },
     "KawPow": "-a kawpow",
     "Tensority_Ethash": {
       "Params": "-a tensority_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#:#PasswordDual#",
-      "Mem": 3,
+      "Mem": 4,
       "Fee": 0.03
     },
     "ProgPOWSero": "-a progpow_sero",
@@ -77,7 +77,7 @@
     "Trb": "-a trb",
     "Trb_Ethash": {
       "Params": "-a trb_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#:#PasswordDual#",
-      "Mem": 3,
+      "Mem": 4,
       "Fee": 0.03
     }
   }

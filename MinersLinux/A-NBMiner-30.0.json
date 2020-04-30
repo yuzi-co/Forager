@@ -1,6 +1,6 @@
 {
   "Path": "NBMiner_Linux/nbminer",
-  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v29.1/NBMiner_29.1_Linux.tgz",
+  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v30.0/NBMiner_30.0_Linux.tgz",
   "Type": "AMD",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
@@ -21,17 +21,17 @@
     "Eaglesong_Ethash": {
       "Params": "-a eaglesong_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#:#PasswordDual#",
       "Custom": "-di 10",
-      "Mem": 3
+      "Mem": 4
     },
     "Ethash": {
       "Params": "-a ethash -o $(if ($Pool.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#Server#:#Port#",
-      "Mem": 3,
+      "Mem": 4,
       "Fee": 0.0065
     },
     "Handshake": "-a hns",
     "Handshake_Ethash": {
       "Params": "-a hns_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#:#PasswordDual#",
-      "Mem": 3
+      "Mem": 4
     },
     "KawPow": "-a kawpow"
   }
