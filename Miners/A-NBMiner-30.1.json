@@ -1,6 +1,6 @@
 {
   "Path": "NBMiner_Win/nbminer.exe",
-  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v30.0/NBMiner_30.0_Win.zip",
+  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v30.1/NBMiner_30.1_Win.zip",
   "Type": "AMD",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
