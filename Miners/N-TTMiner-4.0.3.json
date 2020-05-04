@@ -1,0 +1,44 @@
+{
+    "Path": "TT-Miner.exe",
+    "Uri": "https://tradeproject.de/download/Miner/TT-Miner-4.0.3.zip",
+    "Type": "NVIDIA",
+    "CUDA": 9.2,
+    "Arguments": [
+        "-pool $(if($EnableSSL){'stratum+ssl://'})#Server#:#Port#",
+        "-user #Login#",
+        "-pass #Password#",
+        "-worker #WorkerName#",
+        "-devices #Devices#",
+        "-poolinfo",
+        "-luck",
+        "-PRHRI 1",
+        "--api-bind 0.0.0.0:#APIPort#",
+        "#AlgorithmParameters#",
+        "#CustomParameters#"
+    ],
+    "API": "Claymore",
+    "Fee": 0.01,
+    "SSL": true,
+    "Algorithms": {
+        "_Eaglesong": "-a Eaglesong",
+        "_Ethash": {
+            "Params": "-a Ethash",
+            "Mem": 3
+        },
+        "Kadena": "-coin KDA",
+        "KawPow": "-coin RVN",
+        "_Lyra2v3": "-a Lyra2v3",
+        "MTP": {
+            "Params": "-a MTP",
+            "Mem": 4.5
+        },
+        "ProgPOWZ": "-coin ZANO",
+        "ProgPOWEpic": "-coin EPIC",
+        "ProgPOWHora": "-coin HORA",
+        "ProgPOWSero": "-coin SERO",
+        "Ubqhash": {
+            "Params": "-a Ubqhash",
+            "Mem": 3
+        }
+    }
+}

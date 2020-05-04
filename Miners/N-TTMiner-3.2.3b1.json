@@ -20,29 +20,6 @@
     "API": "Claymore",
     "Fee": 0.01,
     "Algorithms": {
-        "_Eaglesong": "-a Eaglesong",
-        "_Ethash": {
-            "Params": "-a ETHASH",
-            "Mem": 3
-        },
-        "Kadena": "-a Blake2s -coin kda",
-        "_Lyra2v3": "-a LYRA2V3",
-        "MTP": {
-            "Params": "-a MTP",
-            "Mem": 4.5
-        },
-        "MTPtcr": {
-            "Params": "-a MTP-TCR",
-            "Mem": 4.5
-        },
-        "ProgPOW": "-a PROGPOW",
-        "ProgPOWZ": "-a PROGPOWZ",
-        "ProgPOW092": "-a PROGPOW092",
-        "ProgPOWHora": "-a PROGPOW092 -coin hora",
-        "ProgPOWSero": "-a PROGPOW092 -coin sero",
-        "Ubqhash": {
-            "Params": "-a UBQHASH",
-            "Mem": 3
-        }
+        "ProgPOW": "-a PROGPOW"
     }
 }
