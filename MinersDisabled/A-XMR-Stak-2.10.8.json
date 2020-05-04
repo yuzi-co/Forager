@@ -10,6 +10,7 @@
     "--noNVIDIA",
     "--noCPU",
     "--noUAC",
+    "--amdGpus #Devices#",
     "--openCLVendor AMD",
     "$(if ($Pool.PoolName -eq 'NiceHash'){'--use-nicehash'})",
     "--httpd #APIPort#",
