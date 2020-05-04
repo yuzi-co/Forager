@@ -60,7 +60,7 @@
       "NoCpu": true,
       "Mem": 3.8
     },
-    "Eaglesong": "--algo eaglesong",
+    "_Eaglesong": "--algo eaglesong",
     "Equihash125": "--algo 125_4",
     "Equihash144": {
       "Params": "--algo 144_5 --pers auto",

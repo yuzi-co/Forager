@@ -30,7 +30,7 @@
     },
     "CnCatalans": "--algorithm cncatalans",
     "CnTalleo": "--algorithm cntalleo",
-    "Eaglesong": "--algorithm eaglesong",
+    "_Eaglesong": "--algorithm eaglesong",
     "Handshake": {
       "Params": "--algorithm bl2bsha3",
       "Fee": 0.02

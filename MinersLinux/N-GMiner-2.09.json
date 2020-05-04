@@ -80,7 +80,7 @@
       "NoCpu": true,
       "Mem": 7.4
     },
-    "Eaglesong": "--algo eaglesong",
+    "_Eaglesong": "--algo eaglesong",
     "Equihash96": "--algo 96_5 --pers auto",
     "Equihash125": "--algo 125_4",
     "Equihash144": {
