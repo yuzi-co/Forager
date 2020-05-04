@@ -8,6 +8,7 @@
     "-p #Password#",
     "$(if ($Pool.PoolName -eq 'NiceHash'){'--nicehash'})",
     "$(if ($EnableSSL){'--tls'})",
+    "--max-cpu-usage=$(if ($CpuThreads -ne $null){$CpuThreads/$SystemInfo.CpuFeatures.threads*100} else {100})",
     "--donate-level 1",
     "--api-port #APIPort#",
     "#AlgorithmParameters#",
@@ -15,6 +16,7 @@
   ],
   "API": "XMRig",
   "SSL": true,
+  "Fee": 0.01,
   "Algorithms": {
     "CnUplexa": "-a cryptonight-upx/2"
   }
