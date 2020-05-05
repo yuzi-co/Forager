@@ -1,6 +1,6 @@
 {
-  "Path": "kawpowminer-windows-1.2.1/kawpowminer.exe",
-  "Uri": "https://github.com/RavenCommunity/kawpowminer/releases/download/1.2.1/kawpowminer-windows-1.2.1.zip",
+  "Path": "kawpowminer",
+  "Uri": "https://github.com/RavenCommunity/kawpowminer/releases/download/1.2.2/kawpowminer-ubuntu18-1.2.2.zip",
   "Type": "NVIDIA",
   "CUDA": 10.2,
   "Arguments": [

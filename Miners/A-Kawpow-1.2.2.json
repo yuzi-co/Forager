@@ -1,6 +1,6 @@
 {
-  "Path": "kawpowminer",
-  "Uri": "https://github.com/RavenCommunity/kawpowminer/releases/download/1.0.0/kawpowminer-linux-opencl.zip",
+  "Path": "kawpowminer-windows-1.2.2/kawpowminer.exe",
+  "Uri": "https://github.com/RavenCommunity/kawpowminer/releases/download/1.2.2/kawpowminer-windows-1.2.2.zip",
   "Type": "AMD",
   "Arguments": [
     "-P stratum$(if($EnableSSL){'s'})://#Login#:#Password#@#Server#:#Port#",
