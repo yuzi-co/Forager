@@ -1,12 +1,13 @@
 {
-  "Path": "NBMiner_Win/nbminer.exe",
-  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v30.1/NBMiner_30.1_Win.zip",
+  "Path": "NBMiner_Linux/nbminer",
+  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v30.2/NBMiner_30.2_Linux.tgz",
   "Type": "NVIDIA",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
     "-u #Login#:#Password#",
     "-d #Devices#",
     "--platform 1",
+    "--no-color",
     "--no-watchdog",
     "--no-nvml",
     "--api 127.0.0.1:#ApiPort#",
