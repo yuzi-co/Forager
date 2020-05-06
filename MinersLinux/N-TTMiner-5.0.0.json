@@ -1,6 +1,6 @@
 {
     "Path": "TT-Miner",
-    "Uri": "https://tradeproject.de/download/Miner/TT-Miner-4.0.3.tar.xz",
+    "Uri": "https://tradeproject.de/download/Miner/TT-Miner-5.0.0.tar.xz",
     "Type": "NVIDIA",
     "CUDA": 9.2,
     "Arguments": [
@@ -18,7 +18,6 @@
         "#CustomParameters#"
     ],
     "API": "Claymore",
-    "Fee": 0.01,
     "SSL": true,
     "Algorithms": {
         "_Eaglesong": "-a Eaglesong",
