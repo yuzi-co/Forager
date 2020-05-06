@@ -21,6 +21,7 @@ $M = @{
         # Bitcore    = "-a bitcore"
         # C11        = "-a c11"
         Hex        = "-a hex"
+        KawPow     = "-a kawpow"
         # Polytimos  = "-a poly"
         # Phi2       = "-a phi2"
         Renesis    = "-a renesis"
@@ -38,16 +39,16 @@ $M = @{
 }
 
 if ($SystemInfo.CudaVersion -ge [version]"10.1") {
-    $M.Uri = "https://github.com/yuzi-co/miners/releases/download/2020.01/z-enemy-2.4-win-cuda10.1.zip"
+    $M.Uri = "https://github.com/yuzi-co/miners/releases/download/2020.05/z-enemy-2.5-win-cuda10.1.zip"
     $M.CUDA = 10.1
 } elseif ($SystemInfo.CudaVersion -ge [version]"10.0") {
-    $M.Uri = "https://github.com/yuzi-co/miners/releases/download/2020.01/z-enemy-2.4-win-cuda10.0.zip"
+    $M.Uri = "https://github.com/yuzi-co/miners/releases/download/2020.05/z-enemy-2.5-win-cuda10.0.zip"
     $M.CUDA = 10.0
 } elseif ($SystemInfo.CudaVersion -ge [version]"9.2") {
-    $M.Uri = "https://github.com/yuzi-co/miners/releases/download/2020.01/z-enemy-2.4-win-cuda9.2.zip"
+    $M.Uri = "https://github.com/yuzi-co/miners/releases/download/2020.05/z-enemy-2.5-win-cuda9.2.zip"
     $M.CUDA = 9.2
 } elseif ($SystemInfo.CudaVersion -ge [version]"9.1") {
-    $M.Uri = "https://github.com/yuzi-co/miners/releases/download/2020.01/z-enemy-2.4-win-cuda9.1.zip"
+    $M.Uri = "https://github.com/yuzi-co/miners/releases/download/2020.05/z-enemy-2.5-win-cuda9.1.zip"
     $M.CUDA = 9.1
 } else {
     return
