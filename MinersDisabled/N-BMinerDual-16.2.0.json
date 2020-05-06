@@ -1,6 +1,6 @@
 {
-  "Path": "bminer-lite-v16.1.1-4cf17ad/bminer.exe",
-  "Uri": "https://www.bminercontent.com/releases/bminer-lite-v16.1.1-4cf17ad-amd64.zip",
+  "Path": "bminer-lite-v16.2.0-d0b21b5/bminer.exe",
+  "Uri": "https://www.bminercontent.com/releases/bminer-lite-v16.2.0-d0b21b5-amd64.zip",
   "Type": "NVIDIA",
   "CUDA": 9.2,
   "Arguments": [

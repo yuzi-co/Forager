@@ -1,6 +1,6 @@
 {
-  "Path": "bminer-v16.1.1-4cf17ad/bminer",
-  "Uri": "https://www.bminercontent.com/releases/bminer-v16.1.1-4cf17ad-amd64.tar.xz",
+  "Path": "bminer-v16.2.0-d0b21b5/bminer",
+  "Uri": "https://www.bminercontent.com/releases/bminer-v16.2.0-d0b21b5-amd64.tar.xz",
   "Type": "NVIDIA",
   "CUDA": 9.2,
   "Arguments": [
@@ -49,7 +49,9 @@
       "Params": "-uri ethstratum",
       "Mem": 3
     },
+    "KawPow": "-uri raven",
     "Qitmeer": "-uri qitmeer",
+    "ProgPowSero": "-uri sero",
     "Tensority": "-uri tensority"
   }
 }

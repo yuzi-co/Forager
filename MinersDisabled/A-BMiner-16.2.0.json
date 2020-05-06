@@ -1,6 +1,6 @@
 {
-  "Path": "bminer-v16.1.1-4cf17ad/bminer",
-  "Uri": "https://www.bminercontent.com/releases/bminer-v16.1.1-4cf17ad-amd64.tar.xz",
+  "Path": "bminer-lite-v16.2.0-d0b21b5/bminer.exe",
+  "Uri": "https://www.bminercontent.com/releases/bminer-lite-v16.2.0-d0b21b5-amd64.zip",
   "Type": "AMD",
   "Arguments": [
     "#AlgorithmParameters#$(if($enableSSL){'+ssl'})://$([System.Web.HttpUtility]::UrlEncode('#Login#')):$([System.Web.HttpUtility]::UrlEncode('#Password#'))@#Server#:#Port#",
