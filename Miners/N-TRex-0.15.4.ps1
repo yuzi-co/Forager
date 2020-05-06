@@ -64,13 +64,13 @@ $M = @{
 }
 
 if ($SystemInfo.CudaVersion -ge [version]"10.0") {
-    $M.Uri = "https://github.com/trexminer/T-Rex/releases/download/0.15.3/t-rex-0.15.3-win-cuda10.0.zip"
+    $M.Uri = "https://github.com/trexminer/T-Rex/releases/download/0.15.4/t-rex-0.15.4-win-cuda10.0.zip"
     $M.CUDA = 10
 } elseif ($SystemInfo.CudaVersion -ge [version]"9.2") {
-    $M.Uri = "https://github.com/trexminer/T-Rex/releases/download/0.15.3/t-rex-0.15.3-win-cuda9.2.zip"
+    $M.Uri = "https://github.com/trexminer/T-Rex/releases/download/0.15.4/t-rex-0.15.4-win-cuda9.2.zip"
     $M.CUDA = 9.2
 } elseif ($SystemInfo.CudaVersion -ge [version]"9.1") {
-    $M.Uri = "https://github.com/trexminer/T-Rex/releases/download/0.15.3/t-rex-0.15.3-win-cuda9.1.zip"
+    $M.Uri = "https://github.com/trexminer/T-Rex/releases/download/0.15.4/t-rex-0.15.4-win-cuda9.1.zip"
     $M.CUDA = 9.1
 } else {
     return
