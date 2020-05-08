@@ -1,6 +1,6 @@
 {
     "Path": "TT-Miner",
-    "Uri": "https://tradeproject.de/download/Miner/TT-Miner-5.0.0.tar.xz",
+    "Uri": "https://tradeproject.de/download/Miner/TT-Miner-5.0.1.tar.xz",
     "Type": "NVIDIA",
     "CUDA": 9.2,
     "Arguments": [
@@ -26,7 +26,10 @@
             "Mem": 3
         },
         "Kadena": "-coin KDA",
-        "KawPow": "-coin RVN",
+        "KawPow": {
+            "Params": "-coin RVN",
+            "Mem": 3
+        },
         "_Lyra2v3": "-a Lyra2v3",
         "MTP": {
             "Params": "-a MTP",
