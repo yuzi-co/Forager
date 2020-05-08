@@ -57,7 +57,7 @@
     "Ethash": {
       "Params": "-a ethash -o $(if ($Pool.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#Server#:#Port#",
       "Mem": 4,
-      "Fee": 0.0065
+      "Fee": 0.01
     },
     "Handshake": "-a hns",
     "Handshake_Ethash": {
