@@ -52,17 +52,15 @@ if ($Querymode -eq "Core") {
         [PSCustomObject]@{ Coin = "BitcoinZ"        ; Symbol = "BTCZ"  ; Algo = "Equihash144" ; WalletSymbol = "btcz"     ; Port = 6586 }
         [PSCustomObject]@{ Coin = "BitCore"         ; Symbol = "BTX"   ; Algo = "Bitcore"     ; WalletSymbol = "btx"      ; Port = 3629 }
         [PSCustomObject]@{ Coin = "BitSend"         ; Symbol = "BSD"   ; Algo = "Xevan"       ; WalletSymbol = "bsd"      ; Port = 8686 }
-        # [PSCustomObject]@{ Coin = "Credits"         ; Symbol = "CRDS"  ; Algo = "Argon2d250"  ; WalletSymbol = "crds"     ; Port = 2771 }
         [PSCustomObject]@{ Coin = "Dynamic"         ; Symbol = "DYN"   ; Algo = "Argon2d500"  ; WalletSymbol = "dyn"      ; Port = 5960 }
         [PSCustomObject]@{ Coin = "Garlicoin"       ; Symbol = "GRLC"  ; Algo = "Allium"      ; WalletSymbol = "grlc"     ; Port = 8600 }
         [PSCustomObject]@{ Coin = "GenX"            ; Symbol = "GENX"  ; Algo = "Equihash192" ; WalletSymbol = "genx"     ; Port = 9983 }
         [PSCustomObject]@{ Coin = "HODLcoin"        ; Symbol = "HODL"  ; Algo = "HOdl"        ; WalletSymbol = "hodl"     ; Port = 4693 }
         [PSCustomObject]@{ Coin = "Pigeon"          ; Symbol = "PGN"   ; Algo = "X16s"        ; WalletSymbol = "pign"     ; Port = 4096 }
         [PSCustomObject]@{ Coin = "Polytimos"       ; Symbol = "POLY"  ; Algo = "Polytimos"   ; WalletSymbol = "poly"     ; Port = 7935 }
-        [PSCustomObject]@{ Coin = "Raven"           ; Symbol = "RVN"   ; Algo = "X16r"        ; WalletSymbol = "rvn"      ; Port = 6666 }
+        [PSCustomObject]@{ Coin = "Raven"           ; Symbol = "RVN"   ; Algo = "KawPow"      ; WalletSymbol = "rvn"      ; Port = 8888 }
         [PSCustomObject]@{ Coin = "ROIcoin"         ; Symbol = "ROI"   ; Algo = "HOdl"        ; WalletSymbol = "roi"      ; Port = 4699 }
         [PSCustomObject]@{ Coin = "SafeCash"        ; Symbol = "SCASH" ; Algo = "Equihash144" ; WalletSymbol = "scash"    ; Port = 8983 }
-        [PSCustomObject]@{ Coin = "UBIQ"            ; Symbol = "UBQ"   ; Algo = "Ethash"      ; WalletSymbol = "ubiq"     ; Port = 3030 }
         [pscustomobject]@{ Coin = "Veil"            ; Symbol = "VEIL"  ; Algo = "X16rt"       ; WalletSymbol = "veil"     ; Port = 7220 }
         [pscustomobject]@{ Coin = "Verge"           ; Symbol = "XVG"   ; Algo = "X17"         ; WalletSymbol = "xvg-x17"  ; Port = 7477 }
         [PSCustomObject]@{ Coin = "Vertcoin"        ; Symbol = "VTC"   ; Algo = "Lyra2v3"     ; WalletSymbol = "vtc"      ; Port = 5778 }
