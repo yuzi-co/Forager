@@ -1,6 +1,6 @@
 
 $M = @{
-    Path       = "t-rex"
+    Path       = "t-rex.exe"
     Type       = "NVIDIA"
     Arguments  = @(
         "-o #Protocol#://#Server#:#Port#"
@@ -28,7 +28,10 @@ $M = @{
         Honeycomb   = "-a honeycomb"
         HSR         = "-a hsr"
         Jeonghash   = "-a jeonghash"
-        KawPow      = "-a kawpow"
+        KawPow      = @{
+            Params = "-a kawpow"
+            Mem    = 3
+        }
         MTP         = @{
             Params = "-a mtp"
             Mem    = 4.5
@@ -40,7 +43,10 @@ $M = @{
         Padihash    = "-a padihash"
         Pawelhash   = "-a pawelhash"
         Polytimos   = "-a polytimos"
-        ProgPOWSero = "-a progpow --coin sero"
+        ProgPOWSero = @{
+            Params = "-a progpow --coin sero"
+            Mem    = 3
+        }
         Renesis     = "-a renesis"
         SHA256t     = "-a sha256t"
         SHA256q     = "-a sha256q"
@@ -64,13 +70,13 @@ $M = @{
 }
 
 if ($SystemInfo.CudaVersion -ge [version]"10.0") {
-    $M.Uri = "https://github.com/trexminer/T-Rex/releases/download/0.15.4/t-rex-0.15.4-linux-cuda10.0.tar.gz"
+    $M.Uri = "https://github.com/trexminer/T-Rex/releases/download/0.15.5/t-rex-0.15.5-win-cuda10.0.zip"
     $M.CUDA = 10
 } elseif ($SystemInfo.CudaVersion -ge [version]"9.2") {
-    $M.Uri = "https://github.com/trexminer/T-Rex/releases/download/0.15.4/t-rex-0.15.4-linux-cuda9.2.tar.gz"
+    $M.Uri = "https://github.com/trexminer/T-Rex/releases/download/0.15.5/t-rex-0.15.5-win-cuda9.2.zip"
     $M.CUDA = 9.2
 } elseif ($SystemInfo.CudaVersion -ge [version]"9.1") {
-    $M.Uri = "https://github.com/trexminer/T-Rex/releases/download/0.15.4/t-rex-0.15.4-linux-cuda9.1.tar.gz"
+    $M.Uri = "https://github.com/trexminer/T-Rex/releases/download/0.15.5/t-rex-0.15.5-win-cuda9.1.zip"
     $M.CUDA = 9.1
 } else {
     return
