@@ -67,13 +67,13 @@ $M = @{
 }
 
 if ($SystemInfo.CudaVersion -ge [version]"10.0") {
-    $M.Uri = "https://github.com/trexminer/T-Rex/releases/download/0.15.5/t-rex-0.15.5-linux-cuda10.0.tar.gz"
+    $M.Uri = "https://github.com/trexminer/T-Rex/releases/download/0.15.6/t-rex-0.15.6-linux-cuda10.0.tar.gz"
     $M.CUDA = 10
 } elseif ($SystemInfo.CudaVersion -ge [version]"9.2") {
-    $M.Uri = "https://github.com/trexminer/T-Rex/releases/download/0.15.5/t-rex-0.15.5-linux-cuda9.2.tar.gz"
+    $M.Uri = "https://github.com/trexminer/T-Rex/releases/download/0.15.6/t-rex-0.15.6-linux-cuda9.2.tar.gz"
     $M.CUDA = 9.2
 } elseif ($SystemInfo.CudaVersion -ge [version]"9.1") {
-    $M.Uri = "https://github.com/trexminer/T-Rex/releases/download/0.15.5/t-rex-0.15.5-linux-cuda9.1.tar.gz"
+    $M.Uri = "https://github.com/trexminer/T-Rex/releases/download/0.15.6/t-rex-0.15.6-linux-cuda9.1.tar.gz"
     $M.CUDA = 9.1
 } else {
     return
