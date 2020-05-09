@@ -56,10 +56,10 @@ $M = @{
 }
 
 if ($SystemInfo.CudaVersion -ge [version]"10.0") {
-    $M.Uri = "https://github.com/yuzi-co/miners-linux/releases/download/2020.03/miniZ_v1.5t2_cuda10_linux-x64.tar.gz"
+    $M.Uri = "https://github.com/yuzi-co/miners-linux/releases/download/2020.05/miniZ_v1.5t3_cuda10_linux-x64.7z"
     $M.CUDA = 10
 } elseif ($SystemInfo.CudaVersion -ge [version]"8.0") {
-    $M.Uri = "https://github.com/yuzi-co/miners-linux/releases/download/2020.03/miniZ_v1.5t2_cuda8_linux-x64.tar.gz"
+    $M.Uri = "https://github.com/yuzi-co/miners-linux/releases/download/2020.05/miniZ_v1.5t3_cuda8_linux-x64.7z"
     $M.CUDA = 8.0
 } else {
     return
