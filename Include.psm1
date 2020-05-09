@@ -904,6 +904,7 @@ function Get-LiveHashRate {
                         switch -wildcard ($Miner.Algorithm) {
                             Ethash* { $Multiplier *= 1000 }
                             NeoScrypt* { $Multiplier *= 1000 }
+                            KawPow* { $Multiplier *= 1000 }
                             ProgPOW* { $Multiplier *= 1000 }
                             Ubqhash* { $Multiplier *= 1000 }
                         }
