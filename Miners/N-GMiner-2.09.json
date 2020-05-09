@@ -20,7 +20,7 @@
   "SSL": true,
   "Fee": 0.02,
   "Algorithms": {
-    "BeamV2": "--algo BeamHashII",
+    "_BeamV2": "--algo BeamHashII",
     "CnBBC": {
       "Params": "--algo bbc",
       "NoCpu": true
@@ -81,8 +81,8 @@
     },
     "_Eaglesong": "--algo eaglesong",
     "Equihash96": "--algo 96_5 --pers auto",
-    "Equihash125": "--algo 125_4",
-    "Equihash144": {
+    "_Equihash125": "--algo 125_4",
+    "_Equihash144": {
       "Params": "--algo 144_5 --pers auto",
       "Mem": 1.75
     },
