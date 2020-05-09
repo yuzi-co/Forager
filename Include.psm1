@@ -497,12 +497,11 @@ function Get-MiningTypes () {
 
     if ($Devices | Where-Object { $_.GroupType -eq 'CPU' }) {
 
-        $Features = Get-CpuFeatures
         $Devices | Where-Object { $_.GroupType -eq 'CPU' } | ForEach-Object {
             $_ | Add-Member Devices "0" -Force
-            $_ | Add-Member Features $Features
-            if ($Features.cpu_name -and (-not $_.Name -or $_.Name -eq 'CPU')) {
-                $_ | Add-Member Name $Features.cpu_name -Force
+            $_ | Add-Member Features $(Get-CpuFeatures)
+            if (-not $_.Name) {
+                $_ | Add-Member Name 'CPU' -Force
             }
         }
     }
@@ -688,16 +687,13 @@ function Get-CudaVersion {
 }
 
 function Get-SystemInfo () {
-    $Features = Get-CpuFeatures
-    $CudaVersion = Get-CudaVersion
-
     $SystemInfo = [PSCustomObject]@{
         OSName       = [System.Environment]::OSVersion.Platform
         OSVersion    = [System.Environment]::OSVersion.Version
         ComputerName = [System.Environment]::MachineName
         Processors   = [System.Environment]::ProcessorCount
-        CpuFeatures  = $Features
-        CudaVersion  = $CudaVersion
+        CpuFeatures  = Get-CpuFeatures
+        CudaVersion  = Get-CudaVersion
     }
     if ($IsWindows) {
         $SystemInfo.ComputerName = (Get-Culture).TextInfo.ToTitleCase($SystemInfo.ComputerName.ToLower()) #Windows capitalizes this
