@@ -54,11 +54,8 @@ if ($Querymode -eq "Core") {
     $Result = $RequestCurrencies | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | Where-Object {
         $Wallets.(($_ -split '-')[0]) -ne $null -and
         (
-            $RequestCurrencies.$_.'24h_blocks_shared' -gt 0 -and
             $RequestCurrencies.$_.hashrate_shared -gt 0
         ) -or (
-            $RequestCurrencies.$_.'24h_blocks_shared' -eq $null -and
-            $RequestCurrencies.$_.'24h_blocks' -gt 0 -and
             $RequestCurrencies.$_.hashrate_shared -eq $null -and
             $RequestCurrencies.$_.hashrate -gt 0
         )
@@ -70,6 +67,7 @@ if ($Querymode -eq "Core") {
         $Pool_Coin = Get-CoinUnifiedName $Coin.name
         $Pool_Symbol = ($_ -split '-')[0]
 
+        $Algo = $Request.($Coin.algo)
         if ($Coin.algo -like 'cryptonight_*') {
             $MineHost = $MineUrl
             if ($Coin.algo -eq 'cryptonight_fast') {
@@ -79,7 +77,6 @@ if ($Querymode -eq "Core") {
             $MineHost = $Algo.name + "." + $MineUrl
         }
 
-        $Algo = $Request.($Coin.algo)
         $Divisor = 1e9 * [decimal]$Coin.mbtc_mh_factor
 
         [PSCustomObject]@{
@@ -110,5 +107,6 @@ if ($Querymode -eq "Core") {
     Remove-Variable RequestCurrencies
 }
 
+$Result | ConvertTo-Json | Set-Content pool.json
 $Result
 Remove-Variable Result
