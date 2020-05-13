@@ -1,13 +1,13 @@
 {
-  "Path": "nanominer-linux-1.9.2/nanominer",
-  "Uri": "https://github.com/nanopool/nanominer/releases/download/v1.9.2/nanominer-linux-1.9.2.tar.gz",
+  "Path": "nanominer-windows-1.9.3/nanominer.exe",
+  "Uri": "https://github.com/nanopool/nanominer/releases/download/v1.9.3/nanominer-windows-1.9.3.zip",
   "Type": "NVIDIA",
   "CUDA": 10.0,
-  "GenerateConfigFile": "nanominer-linux-1.9.2/#GroupName#-#Algorithm#.conf",
+  "GenerateConfigFile": "nanominer-windows-1.9.3/#GroupName#-#Algorithm#.conf",
   "PatternConfigFile": "NanoMiner.txt",
   "Arguments": "#GroupName#-#Algorithm#.conf",
   "API": "Claymore",
-  "Fee": 0.02,
+  "Fee": 0.01,
   "Algorithms": {
     "CnR": "CryptoNightR",
     "CnRwz": "CryptoNightReverseWaltz",
