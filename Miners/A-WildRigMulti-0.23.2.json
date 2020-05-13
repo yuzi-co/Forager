@@ -1,6 +1,6 @@
 {
-  "Path": "wildrig-multi",
-  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.20.5b/wildrig-multi-linux-0.20.5.3.tar.gz",
+  "Path": "wildrig.exe",
+  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.23.2/wildrig-multi-windows-0.23.2.7z",
   "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",
@@ -12,7 +12,6 @@
     "--opencl-devices #Devices#",
     "--send-stale",
     "--donate-level 1",
-    "--no-color",
     "--api-port #ApiPort#",
     "#AlgorithmParameters#",
     "#CustomParameters#"
@@ -45,6 +44,7 @@
     "Honeycomb": "--algo honeycomb",
     "Jeonghash": "--algo glt-jeonghash",
     "Lyra2v3": "--algo lyra2v3",
+    "KawPow": "--algo kawpow",
     "Lyra2vc0ban": "--algo lyra2vc0ban",
     "Lyra2tdc": "--algo lyra2tdc",
     "MTP": "--algo mtp",
@@ -53,11 +53,15 @@
     "Pawelhash": "--algo glt-pawelhash",
     "Phi": "--algo phi",
     "Polytimos": "--algo polytimos",
+    "ProgPowEther": "--algo progpow-ethercore",
+    "ProgPowSero": "--algo progpow-sero",
+    "ProgPowZ": "--algo progpowz",
     "Purk": {
       "Params": "--algo wildkeccak --scratchpad-url http://purk.miner.rocks:8008/scratchpad.bin --scratchpad-file scratchpad-#Algorithm#.bin",
       "Fee": 0.02
     },
     "Renesis": "--algo renesis",
+    "SHA256csm": "--algo sha256csm",
     "SHA256q": "--algo sha256q",
     "SHA256t": "--algo sha256t",
     "Skein2": "--algo skein2",
