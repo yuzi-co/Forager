@@ -1544,9 +1544,14 @@ function Get-Pools {
     $AllPools | Add-Member LocationPriority 9999 -Force
 
     #Apply filters
-    $AllPools2 = @()
-    if ($Querymode -eq "Core" -or $Querymode -eq "Menu" ) {
-        foreach ($Pool in ($AllPools | Where-Object User)) {
+    if (@("Core", "Menu") -contains $Querymode) {
+        $AllPools2 = foreach ($Pool in (
+                $AllPools | Where-Object {
+                    $_.User -and
+                    ( -not $AlgoFilterList -or $AlgoFilterList -contains $_.Algorithm ) -and
+                    ( -not $CoinFilterList -or $CoinFilterList -contains $_.Info )
+                }
+            )) {
 
             # Include pool algos and coins
             if (
@@ -1571,42 +1576,33 @@ function Get-Pools {
                 continue
             }
 
-            #must be in algo filter list or no list
-            if ($AlgoFilterList) { $Algofilter = Compare-Object $AlgoFilterList $Pool.Algorithm -IncludeEqual -ExcludeDifferent }
-            if ($AlgoFilterList.count -eq 0 -or $Algofilter) {
+            if ($Pool.Location -eq $Location) { $Pool.LocationPriority = 1 }
+            elseif ($Pool.Location -eq 'EU' -and $Location -eq 'US') { $Pool.LocationPriority = 2 }
+            elseif ($Pool.Location -eq 'US' -and $Location -eq 'EU') { $Pool.LocationPriority = 2 }
 
-                #must be in coin filter list or no list
-                if ($CoinFilterList) { $CoinFilter = Compare-Object $CoinFilterList $Pool.info -IncludeEqual -ExcludeDifferent }
-                if ($CoinFilterList.count -eq 0 -or $CoinFilter) {
-                    if ($Pool.Location -eq $Location) { $Pool.LocationPriority = 1 }
-                    elseif ($Pool.Location -eq 'EU' -and $Location -eq 'US') { $Pool.LocationPriority = 2 }
-                    elseif ($Pool.Location -eq 'US' -and $Location -eq 'EU') { $Pool.LocationPriority = 2 }
-
-                    ## factor actual24h if price differs by factor of 10
-                    if ($Pool.Actual24h) {
-                        $factor = 0.2
-                        if ($Pool.Price -gt ($Pool.Actual24h * 10)) { $Pool.Price = $Pool.Price * $factor + $Pool.Actual24h * (1 - $factor) }
-                        if ($Pool.Price24h -gt ($Pool.Actual24h * 10)) { $Pool.Price24h = $Pool.Price24h * $factor + $Pool.Actual24h * (1 - $factor) }
-                    }
-                    ## Apply pool fees and pool factors
-                    if ($Pool.Price) {
-                        $Pool.Price *= 1 - [double]$Pool.Fee
-                        $Pool.Price *= $(if ($Config."PoolProfitFactor_$($Pool.Name)") { [double]$Config."PoolProfitFactor_$($Pool.Name)" } else { 1 })
-                    }
-                    if ($Pool.Price24h) {
-                        $Pool.Price24h *= 1 - [double]$Pool.Fee
-                        $Pool.Price24h *= $(if ($Config."PoolProfitFactor_$($Pool.Name)") { [double]$Config."PoolProfitFactor_$($Pool.Name)" } else { 1 })
-                    }
-                    $AllPools2 += $Pool
-                }
+            ## factor actual24h if price differs by factor of 10
+            if ($Pool.Actual24h) {
+                $factor = 0.2
+                if ($Pool.Price -gt ($Pool.Actual24h * 10)) { $Pool.Price = $Pool.Price * $factor + $Pool.Actual24h * (1 - $factor) }
+                if ($Pool.Price24h -gt ($Pool.Actual24h * 10)) { $Pool.Price24h = $Pool.Price24h * $factor + $Pool.Actual24h * (1 - $factor) }
             }
+            ## Apply pool fees and pool factors
+            if ($Pool.Price) {
+                $Pool.Price *= 1 - [double]$Pool.Fee
+                $Pool.Price *= $(if ($Config."PoolProfitFactor_$($Pool.Name)") { [double]$Config."PoolProfitFactor_$($Pool.Name)" } else { 1 })
+            }
+            if ($Pool.Price24h) {
+                $Pool.Price24h *= 1 - [double]$Pool.Fee
+                $Pool.Price24h *= $(if ($Config."PoolProfitFactor_$($Pool.Name)") { [double]$Config."PoolProfitFactor_$($Pool.Name)" } else { 1 })
+            }
+            $Pool
         }
         $Return = $AllPools2
-    } else { $Return = $AllPools }
-
-    Remove-Variable AllPools
-    Remove-Variable AllPools2
-
+        Remove-Variable AllPools2
+    } else {
+        $Return = $AllPools
+        Remove-Variable AllPools
+    }
     $Return
 }
 
