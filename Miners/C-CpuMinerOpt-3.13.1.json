@@ -1,6 +1,6 @@
 {
   "Path": "cpuminer-$($f=$SystemInfo.CpuFeatures;$(if($f.avx512){'avx512'}elseif($f.avx2 -and $f.sha){'zen'}elseif($f.avx2){'avx2'}elseif($f.avx){'avx'}elseif($f.aes -and $f.sse42){'aes-sse42'}else{'sse2'})).exe",
-  "Uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.13.0.1/cpuminer-opt-3.13.0.1-windows.zip",
+  "Uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.13.1/cpuminer-opt-3.13.1-windows.zip",
   "Type": "CPU",
   "Arguments": [
     "-o stratum+$(if($EnableSSL){'tcps'}else{'tcp'})://#Server#:#Port#",
@@ -20,6 +20,7 @@
     "HOdl": "--algo hodl",
     "Lyra2h": "--algo lyra2h",
     "Lyra2z330": "--algo lyra2z330",
+    "Minotaur": "--algo minotaur",
     "Power2b": "--algo yespower-b2b --param-n 2048 --param-r 32 --param-key \"Now I am become Death, the destroyer of worlds\"",
     "_ScryptN11": "--algo scrypt --param-n 2048",
     "_ScryptN2": "--algo scrypt --param-n 1048576",
