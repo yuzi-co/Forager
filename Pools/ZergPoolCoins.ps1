@@ -107,6 +107,5 @@ if ($Querymode -eq "Core") {
     Remove-Variable RequestCurrencies
 }
 
-$Result | ConvertTo-Json | Set-Content pool.json
 $Result
 Remove-Variable Result
