@@ -1,6 +1,6 @@
 {
-  "Path": "wildrig-multi",
-  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.23.2/wildrig-multi-linux-0.23.2.tar.gz",
+  "Path": "wildrig.exe",
+  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.24.0/wildrig-multi-windows-0.24.0.7z",
   "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",
@@ -12,7 +12,6 @@
     "--opencl-devices #Devices#",
     "--send-stale",
     "--donate-level 1",
-    "--no-color",
     "--api-port #ApiPort#",
     "#AlgorithmParameters#",
     "#CustomParameters#"
