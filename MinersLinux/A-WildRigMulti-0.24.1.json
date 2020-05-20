@@ -1,6 +1,6 @@
 {
   "Path": "wildrig-multi",
-  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.24.0/wildrig-multi-linux-0.24.0.tar.gz",
+  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.24.1/wildrig-multi-linux-0.24.1.tar.gz",
   "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",

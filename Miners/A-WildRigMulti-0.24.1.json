@@ -1,6 +1,6 @@
 {
   "Path": "wildrig.exe",
-  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.24.0/wildrig-multi-windows-0.24.0.7z",
+  "Uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.24.1/wildrig-multi-windows-0.24.1.7z",
   "Type": "AMD",
   "Arguments": [
     "-o #Server#:#Port#",
