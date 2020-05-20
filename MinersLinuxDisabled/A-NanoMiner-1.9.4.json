@@ -1,8 +1,8 @@
 {
-  "Path": "nanominer-windows-1.9.3/nanominer.exe",
-  "Uri": "https://github.com/nanopool/nanominer/releases/download/v1.9.3/nanominer-windows-1.9.3.zip",
+  "Path": "nanominer-linux-1.9.4/nanominer",
+  "Uri": "https://github.com/nanopool/nanominer/releases/download/v1.9.4/nanominer-linux-1.9.4.tar.gz",
   "Type": "AMD",
-  "GenerateConfigFile": "nanominer-windows-1.9.3/#GroupName#-#Algorithm#.conf",
+  "GenerateConfigFile": "nanominer-linux-1.9.4/#GroupName#-#Algorithm#.conf",
   "PatternConfigFile": "NanoMiner.txt",
   "Arguments": "#GroupName#-#Algorithm#.conf",
   "API": "Claymore",
