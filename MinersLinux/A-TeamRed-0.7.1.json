@@ -1,6 +1,6 @@
 {
-  "Path": "teamredminer-v0.6.1-win/teamredminer.exe",
-  "Uri": "https://github.com/todxx/teamredminer/releases/download/0.6.1/teamredminer-v0.6.1-win.zip",
+  "Path": "teamredminer-v0.7.1-linux/teamredminer",
+  "Uri": "https://github.com/todxx/teamredminer/releases/download/0.7.1/teamredminer-v0.7.1-linux.tgz",
   "Type": "AMD",
   "Arguments": [
     "-o stratum+$(if($EnableSSL){'ssl'}else{'tcp'})://#Server#:#Port#",
@@ -8,7 +8,9 @@
     "-p #Password#",
     "-d #Devices#",
     "--platform=#GPUPlatform#",
+    "--opencl_order",
     "--watchdog_script",
+    "--disable_colors",
     "--api_listen=#ApiPort#",
     "#AlgorithmParameters#",
     "#CustomParameters#"
@@ -42,6 +44,7 @@
       "Mem": 3,
       "Fee": 0.01
     },
+    "Kawpow": "-a kawpow",
     "Lyra2v3": "-a lyra2rev3",
     "MTP": {
       "Params": "-a mtp",
