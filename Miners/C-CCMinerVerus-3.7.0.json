@@ -1,7 +1,7 @@
 {
   "Path": "ccminer.exe",
-  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.12/ccminer2.3.5_19.12.21_REV_D.7z",
-  "Type": "NVIDIA",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2020.06/ccminer_CPU_3.7.7z",
+  "Type": "CPU",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
     "-u #Login#",
@@ -10,6 +10,7 @@
     "-r 10",
     "-d #Devices#",
     "-b #APIPort#",
+    "-t $(if ($CpuThreads -ne $null) {$CpuThreads} else {$SystemInfo.CpuFeatures.threads})",
     "#AlgorithmParameters#",
     "#CustomParameters#"
   ],

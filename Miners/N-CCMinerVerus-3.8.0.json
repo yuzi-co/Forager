@@ -1,0 +1,21 @@
+{
+  "Path": "ccminer.exe",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2020.06/ccminer_GPU_3_8.7z",
+  "Type": "NVIDIA",
+  "CUDA": 10.2,
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-R 3",
+    "-r 10",
+    "-d #Devices#",
+    "-b #APIPort#",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "API": "Ccminer",
+  "Algorithms": {
+    "Verushash": "-a verus"
+  }
+}

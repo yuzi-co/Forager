@@ -1,6 +1,6 @@
 {
-  "Path": "ccminer3_7.exe",
-  "Uri": "https://github.com/yuzi-co/miners/releases/download/2020.03/ccminer3_7.7z",
+  "Path": "ccminer",
+  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2020.06/ccminer_3_7_ubuntu_18.04.7z",
   "Type": "CPU",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
