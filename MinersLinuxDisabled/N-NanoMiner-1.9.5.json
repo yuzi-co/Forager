@@ -1,9 +1,9 @@
 {
-  "Path": "nanominer-linux-1.9.4/nanominer",
-  "Uri": "https://github.com/nanopool/nanominer/releases/download/v1.9.4/nanominer-linux-1.9.4.tar.gz",
+  "Path": "nanominer-linux-1.9.5/nanominer",
+  "Uri": "https://github.com/nanopool/nanominer/releases/download/v1.9.5/nanominer-linux-1.9.5.tar.gz",
   "Type": "NVIDIA",
   "CUDA": 10.0,
-  "GenerateConfigFile": "nanominer-linux-1.9.4/#GroupName#-#Algorithm#.conf",
+  "GenerateConfigFile": "nanominer-linux-1.9.5/#GroupName#-#Algorithm#.conf",
   "PatternConfigFile": "NanoMiner.txt",
   "Arguments": "#GroupName#-#Algorithm#.conf",
   "API": "Claymore",
