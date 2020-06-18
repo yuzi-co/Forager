@@ -1,6 +1,6 @@
 {
   "Path": "miner",
-  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.09/gminer_2_09_linux64.tar.xz",
+  "Uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.10/gminer_2_10_linux64.tar.xz",
   "Type": "NVIDIA",
   "CUDA": 9.0,
   "Arguments": [
