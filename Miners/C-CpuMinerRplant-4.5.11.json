@@ -1,6 +1,6 @@
 {
-  "Path": "cpuminer-$($f=$SystemInfo.CpuFeatures;$(if($f.avx2 -and $f.sha){'ryzen'}elseif($f.avx2){'avx2'}elseif($f.avx){'avx'}elseif($f.sse42){'sse42'}else{'sse2'}))",
-  "Uri": "https://github.com/rplant8/cpuminer-opt-rplant/releases/download/4.5.5/cpuminer-opt-linux.tar.gz",
+  "Path": "cpuminer-$($f=$SystemInfo.CpuFeatures;$(if($f.avx2 -and $f.sha){'ryzen'}elseif($f.avx2){'avx2'}elseif($f.avx){'avx'}elseif($f.sse42){'sse42'}else{'sse2'})).exe",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2020.06/cpuminer-rplant-win-4.5.11.7z",
   "Type": "CPU",
   "Arguments": [
     "-o #Protocol#://#Server#:#Port#",
@@ -8,7 +8,6 @@
     "-p #Password#",
     "-R 3",
     "-r 10",
-    "--no-color",
     "-b #APIPort#",
     "$(if ($CpuThreads -ne $null){'-t ' + $CpuThreads})",
     "#AlgorithmParameters#",
@@ -25,6 +24,8 @@
     "Argon2m": "-a argon2m",
     "CpuPower": "-a CpuPower",
     "Cryptovantaa": "-a cryptovantaa",
+    "Curvehash": "-a curvehash",
+    "HOdl": "-a hodl",
     "Lyra2cz": "-a lyra2cz",
     "Lyra2h": "-a lyra2h",
     "Lyra2tdc": "-a lyra2tdc",
@@ -32,7 +33,6 @@
     "Minotaur": "-a minotaur",
     "Power2b": "-a power2b",
     "SHA256csm": "-a sha256csm",
-    "Verium": "-a scrypt:1048576",
     "YescryptR8": "-a yescryptr8",
     "YescryptR8g": "-a yescryptr8g",
     "YescryptR8glt": "-a yescryptr8glt",
