@@ -1,6 +1,6 @@
 {
-  "Path": "1.0_alpha1/lolMiner",
-  "Uri": "https://github.com/Lolliedieb/lolMiner-preview/releases/download/1.0a1/lolMiner_v1_0_a1_Lin64.tar.gz",
+  "Path": "1.0_alpha2/lolMiner.exe",
+  "Uri": "https://github.com/Lolliedieb/lolMiner-preview/releases/download/1.0a2/lolMiner_v1_0_a2_Win64.zip",
   "Type": "AMD",
   "Arguments": [
     "--pool #Server#:#Port#",
@@ -16,11 +16,14 @@
   ],
   "API": "LOL",
   "SSL": true,
-  "Custom": "--asm 1",
   "Fee": 0.02,
   "Algorithms": {
     "BeamV2": {
       "Params": "--coin BEAM-II",
+      "Mem": 3.5
+    },
+    "BeamV3": {
+      "Params": "--coin BEAM-III",
       "Mem": 3.5
     },
     "Cuckaroo29d": {
