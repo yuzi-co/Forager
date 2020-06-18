@@ -1,6 +1,6 @@
 {
   "Path": "nheqminer/nheqminer",
-  "Uri": "https://github.com/VerusCoin/nheqminer/releases/download/v0.8.0/nheqminer-Linux-v0.8.0.tar.gz",
+  "Uri": "https://github.com/VerusCoin/nheqminer/releases/download/v0.8.2/nheqminer-Linux-v0.8.2.tgz",
   "Type": "CPU",
   "Arguments": [
     "-l #Server#:#Port#",
