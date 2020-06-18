@@ -1,6 +1,6 @@
 {
-  "Path": "SRBMiner-Multi-0-4-4/SRBMiner-MULTI.exe",
-  "Uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/0.4.4/SRBMiner-Multi-0-4-4-win64.zip",
+  "Path": "SRBMiner-Multi-0-4-7/SRBMiner-MULTI",
+  "Uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/0.4.7/SRBMiner-Multi-0-4-7-Linux.tar.xz",
   "Type": "CPU",
   "Arguments": [
     "--pool #Server#:#Port#",
@@ -25,18 +25,31 @@
       "Params": "--algorithm cryptonight_bbc",
       "Fee": 0.025
     },
-    "CnCatalans": "--algorithm cncatalans",
-    "CnTalleo": "--algorithm cntalleo",
+    "CnCatalans": {
+      "Params": "--algorithm cryptonight_catalans",
+      "Fee": 0
+    },
+    "CnTalleo": {
+      "Params": "--algorithm cryptonight_talleo",
+      "Fee": 0
+    },
     "CpuPower": "--algorithm cpupower",
     "DefyX": "--algorithm defyx",
-    "_Handshake": {
-      "Params": "--algorithm bl2bsha3",
+    "_Handshake": "--algorithm bl2bsha3",
+    "M7Mv2": {
+      "Params": "--algorithm m7mv2",
+      "Fee": 0
+    },
+    "Minotaur": {
+      "Params": "--algorithm minotaur",
       "Fee": 0.02
     },
-    "M7Mv2": "--algorithm m7mv2",
-    "Minotaur": "--algorithm minotaur",
     "RandomArq": {
       "Params": "--algorithm randomarq",
+      "Custom": "--randomx-use-1gb-pages"
+    },
+    "RandomEpic": {
+      "Params": "--algorithm randomepic",
       "Custom": "--randomx-use-1gb-pages"
     },
     "RandomKeva": {
@@ -68,7 +81,10 @@
     "Yespower2b": "--algorithm yespower2b",
     "YespowerIC": "--algorithm yespowerIC",
     "YespowerIOTS": "--algorithm yespowerIOTS",
-    "YespowerITC": "--algorithm yespowerItc",
+    "YespowerITC": {
+      "Params": "--algorithm yespowerItc",
+      "Fee": 0
+    },
     "YespowerLitb": "--algorithm yespowerlitb",
     "YespowerLtncg": "--algorithm yespowerltncg",
     "YespowerR16": "--algorithm yespowerr16",
