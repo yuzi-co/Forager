@@ -1,0 +1,33 @@
+{
+  "Path": "EthDcrMiner64.exe",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.09/ClaymoreDual-v15.0.7z",
+  "Type": "AMD",
+  "Arguments": [
+    "-epool #Protocol#://#Server#:#Port#",
+    "-ewal #Login#",
+    "-epsw #Password#",
+    "-esm #EthStMode#",
+    "-dpool #ProtocolDual#://#ServerDual#:#PortDual#",
+    "-dwal #LoginDual#",
+    "-dpsw #PasswordDual#",
+    "-wd 1",
+    "-r -1",
+    "-logfile #GroupName#_log.txt",
+    "-logsmaxsize 10",
+    "-platform 1",
+    "-di #DevicesClayMode#",
+    "-mport -#APIPort#",
+    "-allpools 1",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "API": "Claymore",
+  "Fee": "$(if ($DeviceGroup.MemoryGB -gt 3){0.01}else{0})",
+  "SSL": true,
+  "Mem": 3,
+  "Algorithms": {
+    "Ethash": "-mode 1",
+    "Ethash_Blake2s": "-dcoin blake2s -mode 0",
+    "Ethash_Keccak": "-dcoin keccak -mode 0"
+  }
+}

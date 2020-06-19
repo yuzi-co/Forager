@@ -1,0 +1,33 @@
+{
+  "Path": "sgminer.exe",
+  "Uri": "https://github.com/KL0nLutiy/sgminer-kl/releases/download/kl-1.0.9/sgminer-kl-1.0.9-windows.zip",
+  "SHA256": "E6E928B435130E00D4C22F38BA9B042B34BD2D250E5BE5204A14E6027322A30A",
+  "Type": "AMD",
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "--gpu-platform #GPUPlatform#",
+    "--device #Devices#",
+    "--api-listen",
+    "--api-port #APIPort#",
+    "--extranonce",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "BenchmarkArg": "$(if ($AlgoName -in @('x16r')){'--benchmark'})",
+  "API": "Xgminer",
+  "Fee": 0.01,
+  "Algorithms": {
+    // "Aergo": "-k aergo",
+    "Geek": "-k geek",
+    // "Phi": "-k phi",
+    // "Polytimos": "-k polytimos",
+    // "Skunk": "-k skunk",
+    // "Tribus": "-k tribus",
+    // "X16r": "-k x16r",
+    // "X16s": "-k x16s",
+    // "X17": "-k x17",
+    "Xevan": "-k xevan"
+  }
+}

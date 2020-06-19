@@ -1,0 +1,59 @@
+{
+  "Path": "0.9.8/lolMiner.exe",
+  "Uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.98/lolMiner_v098_Win64.zip",
+  "Type": "NVIDIA",
+  "Arguments": [
+    "--pool #Server#:#Port#",
+    "--user #Login#",
+    "--pass #Password#",
+    "--devices #Devices#",
+    "--apiport #ApiPort#",
+    "--digits 2",
+    "--connectattempts 3",
+    "--tls $(if($enableSSL){1}else{0})",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "API": "LOL",
+  "SSL": true,
+  "Fee": 0.02,
+  "Algorithms": {
+    // "BeamV2": {
+    //   "Params": "--coin BEAM-II",
+    //   "Mem": 3.5
+    // },
+    // "Cuckaroo29d": {
+    //   "Params": "--coin MWC-C29D",
+    //   "Mem": 3.6
+    // },
+    // "Cuckaroo29m": {
+    //   "Params": "--coin GRIN-C29M",
+    //   "Mem": 3.6
+    // },
+    // "Cuckatoo31": {
+    //   "Params": "--coin GRIN-C31",
+    //   "Mem": 3.6
+    // },
+    "Cuckatoo32": {
+      "Params": "--coin GRIN-C32",
+      "Mem": 3.6
+    },
+    "Equihash96": {
+      "Params": "--coin MNX",
+      "Mem": 1
+    },
+    // "Equihash125": {
+    //   "Params": "--coin ZEL",
+    //   "Mem": 2.9
+    // },
+    // "Equihash144": {
+    //   "Params": "--coin AUTO144_5",
+    //   "Mem": 1.8
+    // },
+    // "Equihash192": {
+    //   "Params": "--coin AUTO192_7",
+    //   "Mem": 2.8
+    // },
+    "Equihash210": "--coin AION"
+  }
+}

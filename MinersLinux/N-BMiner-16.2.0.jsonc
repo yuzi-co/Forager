@@ -1,0 +1,57 @@
+{
+  "Path": "bminer-v16.2.0-d0b21b5/bminer",
+  "Uri": "https://www.bminercontent.com/releases/bminer-v16.2.0-d0b21b5-amd64.tar.xz",
+  "Type": "NVIDIA",
+  "CUDA": 9.2,
+  "Arguments": [
+    "#AlgorithmParameters#$(if($enableSSL){'+ssl'})://$([System.Web.HttpUtility]::UrlEncode('#Login#')):$([System.Web.HttpUtility]::UrlEncode('#Password#'))@#Server#:#Port#",
+    "-devices #Devices#",
+    "-max-network-failures=3",
+    "-watchdog=false",
+    "-api 127.0.0.1:#APIPort#",
+    "#CustomParameters#"
+  ],
+  "API": "BMiner",
+  "SSL": true,
+  "Fee": 0.02,
+  "Algorithms": {
+    // "BeamV2": {
+    //   "Params": "-uri beamhash2",
+    //   "Mem": 4
+    // },
+    "CuckooBFC": {
+      "Params": "-uri bfc",
+      "NoCpu": true
+    },
+    "Cuckoo29": {
+      "Params": "-uri aeternity",
+      "NH": false,
+      "NoCpu": true,
+      "Mem": 5.3
+    },
+    "Cuckaroo29m": {
+      "Params": "-uri cuckaroo29m",
+      "NoCpu": true,
+      "Mem": 3.5
+    },
+    "Cuckatoo31": {
+      "Params": "-uri cuckatoo31",
+      "NoCpu": true,
+      "Mem": 7.4
+    },
+    "Cuckatoo32": {
+      "Params": "-uri cuckatoo32",
+      "NoCpu": true,
+      "Mem": 7.4
+    },
+    // "Equihash144": "-pers auto -uri equihash1445",
+    // "Ethash": {
+    //   "Params": "-uri ethstratum",
+    //   "Mem": 3
+    // },
+    "KawPow": "-uri raven",
+    "Qitmeer": "-uri qitmeer",
+    "ProgPowSero": "-uri sero",
+    "Tensority": "-uri tensority"
+  }
+}

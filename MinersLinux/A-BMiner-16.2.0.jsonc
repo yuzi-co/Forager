@@ -1,0 +1,26 @@
+{
+  "Path": "bminer-v16.2.0-d0b21b5/bminer",
+  "Uri": "https://www.bminercontent.com/releases/bminer-v16.2.0-d0b21b5-amd64.tar.xz",
+  "Type": "AMD",
+  "Arguments": [
+    "#AlgorithmParameters#$(if($enableSSL){'+ssl'})://$([System.Web.HttpUtility]::UrlEncode('#Login#')):$([System.Web.HttpUtility]::UrlEncode('#Password#'))@#Server#:#Port#",
+    "-devices amd:$('#Devices#' -replace ',',',amd:')",
+    "-max-network-failures=3",
+    "-watchdog=false",
+    "-api 127.0.0.1:#APIPort#",
+    "#CustomParameters#"
+  ],
+  "API": "BMiner",
+  "SSL": true,
+  "Fee": 0.02,
+  "Algorithms": {
+    "Equihash150": {
+      "Params": "-uri beam",
+      "Mem": 7
+    }
+    // "Ethash": {
+    //   "Params": "-uri ethstratum",
+    //   "Mem": 3
+    // }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "Path": "SRBMiner-Multi-0-4-7/SRBMiner-MULTI.exe",
+  "Uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/0.4.7/SRBMiner-Multi-0-4-7-win64.zip",
+  "Type": "AMD",
+  "Arguments": [
+    "--pool #Server#:#Port#",
+    "--wallet #Login#",
+    "--password #Password#",
+    "--disable-cpu",
+    "--gpu-platform #GPUPlatform#",
+    "--gpu-id #Devices#",
+    "--send-stales",
+    "--disable-startup-monitor",
+    "--api-enable",
+    "--api-port #ApiPort#",
+    "$(if ($enableSSL){'--tls true'})",
+    "$(if ($Pool.PoolName -eq 'NiceHash'){'--nicehash true'})",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "API": "SRB",
+  "Fee": 0.0085,
+  "SSL": true,
+  "Algorithms": {
+    "Blake2b": "--algorithm blake2b",
+    "Blake2s": {
+      "Params": "--algorithm blake2s",
+      "Fee": 0
+    },
+    "CnBBC": {
+      "Params": "--algorithm cryptonight_bbc",
+      "Fee": 0.025
+    },
+    "CnCatalans": {
+      "Params": "--algorithm cryptonight_catalans",
+      "Fee": 0
+    },
+    "CnTalleo": {
+      "Params": "--algorithm cryptonight_talleo",
+      "Fee": 0
+    },
+    // "Eaglesong": "--algorithm eaglesong",
+    "Ethash": "--algorithm ethash",
+    "Handshake": "--algorithm bl2bsha3",
+    "K12": "--algorithm k12",
+    "Kadena": "--algorithm kadena",
+    "Keccak": {
+      "Params": "--algorithm keccak",
+      "Fee": 0
+    },
+    "MTP": {
+      "Params": "--algorithm mtp",
+      "Fee": 0
+    },
+    "Tellor": "--algorithm tellor",
+    "Ubqhash": "--algorithm ubqhash",
+    "Yescrypt": "--algorithm yescrypt"
+  }
+}

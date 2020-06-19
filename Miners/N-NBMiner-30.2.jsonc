@@ -1,0 +1,83 @@
+{
+  "Path": "NBMiner_Win/nbminer.exe",
+  "Uri": "https://github.com/NebuTech/NBMiner/releases/download/v30.2/NBMiner_30.2_Win.zip",
+  "Type": "NVIDIA",
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#:#Password#",
+    "-d #Devices#",
+    "--platform 1",
+    "--no-watchdog",
+    "--no-nvml",
+    "--api 127.0.0.1:#ApiPort#",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "API": "NBMiner",
+  "SSL": true,
+  "Fee": 0.02,
+  "Algorithms": {
+    "CuckooBFC": {
+      "Params": "-a bfc",
+      "NoCpu": true,
+      "Mem": 5
+    },
+    // "Cuckoo29": {
+    //   "Params": "-a cuckoo_ae",
+    //   "NoCpu": true,
+    //   "Mem": 5
+    // },
+    // "Cuckaroo29": {
+    //   "Params": "-a cuckaroo",
+    //   "NoCpu": true,
+    //   "Mem": 5
+    // },
+    // "Cuckaroo29d": {
+    //   "Params": "-a cuckarood",
+    //   "NoCpu": true,
+    //   "Mem": 5
+    // },
+    "Cuckaroo29s": {
+      "Params": "-a cuckaroo_swap",
+      "NoCpu": true,
+      "Mem": 5
+    },
+    "Cuckatoo31": {
+      "Params": "-a cuckatoo",
+      "NoCpu": true,
+      "Mem": 8
+    },
+    // "Eaglesong": "-a eaglesong",
+    "Eaglesong_Ethash": {
+      "Params": "-a eaglesong_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#:#PasswordDual#",
+      "Custom": "-di 10",
+      "Mem": 4
+    },
+    "Ethash": {
+      "Params": "-a ethash -o $(if ($Pool.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#Server#:#Port#",
+      "Mem": 4,
+      "Fee": 0.01
+    },
+    "Handshake": "-a hns",
+    "Handshake_Ethash": {
+      "Params": "-a hns_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#:#PasswordDual#",
+      "Custom": "-di 4",
+      "Mem": 4
+    },
+    "KawPow": "-a kawpow",
+    "Tensority_Ethash": {
+      "Params": "-a tensority_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#:#PasswordDual#",
+      "Mem": 4,
+      "Fee": 0.03
+    },
+    "ProgPOWSero": "-a progpow_sero",
+    "ScryptSIPC": "-a sipc",
+    "Tensority": "-a tensority",
+    "Trb": "-a trb",
+    "Trb_Ethash": {
+      "Params": "-a trb_ethash -do $(if ($PoolDual.PoolName -eq 'NiceHash') {'nicehash'} else {'ethproxy'})+tcp://#ServerDual#:#PortDual# -du #LoginDual#:#PasswordDual#",
+      "Mem": 4,
+      "Fee": 0.03
+    }
+  }
+}

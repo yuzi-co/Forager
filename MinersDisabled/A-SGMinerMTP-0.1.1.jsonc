@@ -1,0 +1,36 @@
+{
+  "Path": "sgminer.exe",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2019.02/sgminerMTP-0.1.1.zip",
+  "SHA256": "E975EC5FEA15889C7E7CE49AB9496454EDD8A4E72AF26974F7BC0B0924E0B8AF",
+  "Type": "AMD",
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "--gpu-platform #GPUPlatform#",
+    "--device #Devices#",
+    "--api-listen",
+    "--api-port #APIPort#",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "API": "Xgminer",
+  "Custom": "-w 64 -I 20",
+  "Algorithms": {
+    "MTP": {
+      "Params": "-k mtp",
+      "NH": false,
+      "Mem": 4.5
+    },
+    "MTP|vega": {
+      "Params": "-k mtp_vega",
+      "NH": false,
+      "Mem": 4.5
+    }
+    // "MTP|nvidia": {
+    //   "Params": "-k mtp_nvidia4",
+    //   "NH": false,
+    //   "Mem": 4.5
+    // }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "Path": "jce_cn_cpu_miner64.exe",
+  "Uri": "https://github.com/jceminer/cn_cpu_miner/raw/master/jce_cn_cpu_miner.windows.033q.zip",
+  "SHA256": "CFD59A13FF66E28D0B8166CD1F5590F071EB6D20EE1DCBCAF6DA542C51DD74A3",
+  "Type": "CPU",
+  "Arguments": [
+    "-o #Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "$(if ($enableSSL){'--ssl'})",
+    "$(if ($Pool.PoolName -eq 'NiceHash'){'--nicehash'})",
+    "--low",
+    "--any",
+    "--auto",
+    "--mport #APIPort#",
+    "--stakjson",
+    "$(if ($CpuThreads -ne $null){'-t ' + $CpuThreads})",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "API": "XMRig",
+  "Fee": "$(if($SystemInfo.CpuFeatures.aes){0.015}else{0.03})",
+  "SSL": true,
+  "Algorithms": {
+    "CnAlloy": "--variation 8",
+    "CnArto": "--variation 10",
+    "CnDark": "--variation 17",
+    "CnFast": "--variation 11",
+    "CnFreeHaven": "--variation 18",
+    "CnHalf": "--variation 21",
+    // "CnHaven": "--variation 12",
+    // "CnHeavy": "--variation 5",
+    "CnLiteV7": "--variation 4",
+    "CnMkt": "--variation 9",
+    "CnRed": "--variation 14",
+    // "CnSaber": "--variation 13",
+    "CnTurtle": "--variation 20",
+    // "CnUplexa": "--variation 19",
+    "CnWaltz": "--variation 22",
+    "CnXTL": "--variation 7"
+  }
+}

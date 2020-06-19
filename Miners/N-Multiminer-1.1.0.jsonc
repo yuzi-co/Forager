@@ -1,0 +1,27 @@
+{
+  "Path": "multiminer_v1.1.0_24.01.2019/multiminer.exe",
+  "Uri": "https://github.com/bogdanadnan/multiminer/releases/download/v1.1.0/multiminer_v1.1.0_24.01.2019.zip",
+  "SHA256": "8C021634C2319F3253832FF3B2A413B849DACBC89D555FB287C5C772D7F0C0F1",
+  "Type": "NVIDIA",
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-R 3",
+    "-r 10",
+    "--use-gpu=CUDA",
+    "--gpu-id=$(($DeviceGroup.OCLDeviceId | % {[int]$_+1}) -join ',')",
+    "-b #APIPort#",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "API": "Ccminer",
+  "Fee": 0.01,
+  "NoCPU": true,
+  "Algorithms": {
+    "Argon2ad": "-a argon2ad",
+    "Argon2d250": "-a argon2d250"
+    // "Argon2d500": "-a argon2d500",
+    // "Argon2d4096": "-a argon2d4096"
+  }
+}

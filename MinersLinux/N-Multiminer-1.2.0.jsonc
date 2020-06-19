@@ -1,0 +1,28 @@
+{
+  "Path": "multiminer",
+  "Uri": "https://github.com/yuzi-co/miners-linux/releases/download/2019.4/multiminer-cuda91-1.2.0.tar.gz",
+  "SHA256": "9016B27A9AECEEF4F8E4D73BD1E74294E70DDA1C0039B8ACEF88E97696BD2B39",
+  "Type": "NVIDIA",
+  "CUDA": 9.1,
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-R 3",
+    "-r 10",
+    "--use-gpu=CUDA",
+    "--gpu-id=$(('#Devices#' -split ',' | % {[int]$_+1}) -join ',')",
+    "-b #APIPort#",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "API": "Ccminer",
+  "Fee": 0.01,
+  // "NoCPU": true,
+  "Algorithms": {
+    "Argon2ad": "-a argon2ad",
+    "Argon2d250": "-a argon2d250",
+    // "Argon2d500": "-a argon2d500",
+    "Argon2d4096": "-a argon2d4096"
+  }
+}

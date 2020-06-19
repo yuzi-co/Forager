@@ -1,0 +1,25 @@
+{
+  "Path": "ccmineryescryptrv4/ccminer.exe",
+  "Uri": "https://github.com/Minerx117/ccmineryescryptr8g/releases/download/v4/ccmineryescryptrv4.zip",
+  "Type": "NVIDIA",
+  "CUDA": 10.0,
+  "Arguments": [
+    "-o #Protocol#://#Server#:#Port#",
+    "-u #Login#",
+    "-p #Password#",
+    "-R 3",
+    "-r 10",
+    "-d #Devices#",
+    "-b #APIPort#",
+    "#AlgorithmParameters#",
+    "#CustomParameters#"
+  ],
+  "API": "Ccminer",
+  "Algorithms": {
+    "Lyra2z330": "-a lyra2z330",
+    // "YescryptR8": "-a yescryptr8",
+    "YescryptR8g": "-a yescrypt"
+    // "YescryptR16": "-a yescryptr16",
+    // "YescryptR32": "-a yescryptr32"
+  }
+}
