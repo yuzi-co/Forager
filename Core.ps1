@@ -366,7 +366,7 @@ while ($Quit -ne $true) {
 
     $Params = @{
         Path    = $MinersPath + "*"
-        Include = "*.json", "*.ps1"
+        Include = "*.json*", "*.ps1"
     }
     $MinersFolderContent = Get-ChildItem @Params
 
@@ -374,18 +374,8 @@ while ($Quit -ne $true) {
     Log "Number of device groups: $(($DeviceGroups | Where-Object Enabled).Count)/$($DeviceGroups.Count)" -Severity Debug
 
     foreach ($MinerFile in $MinersFolderContent) {
-        try {
-            switch ($MinerFile.Extension) {
-                '.json' {
-                    $Miner = $MinerFile | Get-Content | ConvertFrom-Json
-                }
-                '.ps1' {
-                    $Miner = . $MinerFile
-                }
-            }
-        } catch {
-            Log "Badly formed miner definition: $MinerFile" -Severity Warn
-            Start-Sleep -Seconds 10
+        $Miner = Get-MinerFile -MinerFile $MinerFile
+        if (-not $Miner) {
             Continue
         }
 

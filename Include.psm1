@@ -1882,6 +1882,30 @@ function Set-Stats {
     $Value | ConvertTo-Json | Set-Content -Path $Path
 }
 
+function Get-MinerFile {
+    param (
+        [Parameter(Mandatory = $true)]
+        $MinerFile
+    )
+
+    if ($MinerFile.Extension -eq '.ps1') {
+        $Miner = . $MinerFile
+    } elseif ($MinerFile.Extension -like ".json*") {
+        $Content = if ($PSVersionTable.PSVersion.Major -ge 6) {
+            -join (Get-Content -Raw $MinerFile)
+        } else {
+            -join (Get-Content -Raw $MinerFile) -replace '(?m)(?<=^([^"]|"[^"]*")*)//.*' -replace '(?ms)/\*.*?\*/'
+        }
+        try {
+            $Miner = $Content | ConvertFrom-Json
+        } catch {
+            Log "Badly formed miner definition: $MinerFile" -Severity Warn
+            Start-Sleep -Seconds 10
+        }
+    }
+    return $Miner
+}
+
 function Get-UriHash {
     param (
         [Parameter(Mandatory = $true)]
