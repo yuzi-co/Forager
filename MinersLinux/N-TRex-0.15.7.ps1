@@ -28,10 +28,10 @@ $M = @{
         Honeycomb   = "-a honeycomb"
         HSR         = "-a hsr"
         Jeonghash   = "-a jeonghash"
-        KawPow      = @{
-            Params = "-a kawpow"
-            Mem    = 3
-        }
+        # KawPow      = @{
+        #     Params = "-a kawpow"
+        #     Mem    = 3
+        # }
         MTP         = @{
             Params = "-a mtp"
             Mem    = 4.5

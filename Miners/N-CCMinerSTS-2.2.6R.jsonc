@@ -18,7 +18,7 @@
     "HSR": "-a hsr",
     "KeccakC": "-a keccakc",
     "ScryptN11": "-a scrypt:10",
-    "Skein2": "-a skein2",
+    // "Skein2": "-a skein2",
     "X11evo": "-a x11evo",
     "X12": "-a x12"
   }
