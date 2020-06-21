@@ -1,6 +1,6 @@
 {
   "Path": "nheqminer/nheqminer.exe",
-  "Uri": "https://github.com/VerusCoin/nheqminer/releases/download/v0.8.2/nheqminer-Windows-v0.8.2.zip",
+  "Uri": "https://github.com/yuzi-co/miners/releases/download/2020.06/nheqminer-Windows-v0.8.2.zip",
   "Type": "CPU",
   "Arguments": [
     "-l #Server#:#Port#",
