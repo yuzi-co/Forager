@@ -149,7 +149,7 @@ if (Test-Path $SampleFile) {
 
     Out-HorizontalLine "Sample $Autostart"
 
-    $Sample = Get-Content $SampleFile -Raw
+    $Sample = Get-FileContent $SampleFile
 
     Write-Host ""
     Write-Host $ExecutionContext.InvokeCommand.ExpandString($Sample)

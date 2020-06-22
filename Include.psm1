@@ -61,7 +61,7 @@ function Get-DevicesInfoADL {
         $Result = & $Command | Where-Object { $_ -notlike "*&???" -and $_ -notlike "*failed" } | ConvertFrom-Csv @CsvParams
 
         if (-not $global:AmdCardsTDP) {
-            $global:AmdCardsTDP = Get-Content ./Data/amd-cards-tdp.json | ConvertFrom-Json
+            $global:AmdCardsTDP = Get-FileContent ./Data/amd-cards-tdp.json | ConvertFrom-Json
         }
 
         $DeviceId = 0
@@ -185,7 +185,7 @@ function Get-DevicesInfoCPU {
             }
             if (-not $CpuData.PowerDraw) {
                 if (-not $global:CpuTDP) {
-                    $global:CpuTDP = Get-Content ./Data/cpu-tdp.json | ConvertFrom-Json
+                    $global:CpuTDP = Get-FileContent ./Data/cpu-tdp.json | ConvertFrom-Json
                 }
                 $CpuData.PowerDraw = $CpuTDP.($_.Name.Trim()) * $CpuData.Utilization / 100
             }
@@ -208,7 +208,7 @@ function Get-DevicesInfoCPU {
         $Features = Get-CpuFeatures
 
         if (-not $global:CpuTDP) {
-            $global:CpuTDP = Get-Content ./Data/cpu-tdp.json | ConvertFrom-Json
+            $global:CpuTDP = Get-FileContent ./Data/cpu-tdp.json | ConvertFrom-Json
         }
 
         [int]$CpuData.Utilization = [math]::min((((& ps -A -o pcpu) -match "\d" | Measure-Object -Sum).Sum / $Features.threads), 100)
@@ -459,7 +459,7 @@ function Get-CpuFeatures {
         }
         $Features.l3 = $Features.l3 -replace "[^\d]"
     } elseif ($IsLinux) {
-        $Data = Get-Content /proc/cpuinfo
+        $Data = Get-FileContent /proc/cpuinfo
         (($Data | Where-Object { $_ -like "flags*" })[0] -split ":")[1].Trim() -split " " | ForEach-Object { $Features.$_ = 1 }
         $Features.threads = [int]($Data | Where-Object { $_ -like 'processor*' }).count
         $Features.cores = [int](($Data | Where-Object { $_ -like 'cpu cores*' })[0] -split ":")[1].Trim()
@@ -925,7 +925,7 @@ function Get-LiveHashRate {
             "wrapper" {
                 $Path = "./Wrapper_$($Miner.ApiPort)"
                 if (Test-Path "$Path.json") {
-                    $Data = Get-Content "$Path.json" | ConvertFrom-Json
+                    $Data = Get-FileContent "$Path.json" | ConvertFrom-Json
                     $HashRate = [double]$Data.HashRate
                     $Shares = $Data.Shares
                 }
@@ -1350,7 +1350,7 @@ function Invoke-APIRequest {
 
     if (-not (Test-Path -Path $CachePath)) { New-Item -Path $CachePath -ItemType directory -Force | Out-Null }
     if (Test-Path $CacheFile -NewerThan (Get-Date).AddMinutes( - $Age)) {
-        $Response = Get-Content -Path $CacheFile | ConvertFrom-Json
+        $Response = Get-FileContent -Path $CacheFile | ConvertFrom-Json
     } else {
         while ($Retry -gt 0) {
             try {
@@ -1365,7 +1365,7 @@ function Invoke-APIRequest {
         if ($Response) {
             $Response | ConvertTo-Json -Depth 100 | Set-Content -Path $CacheFile
         } elseif (Test-Path -Path $CacheFile -NewerThan (Get-Date).AddMinutes( - $MaxAge)) {
-            $Response = Get-Content -Path $CacheFile | ConvertFrom-Json
+            $Response = Get-FileContent -Path $CacheFile | ConvertFrom-Json
         } else {
             $Response = $null
         }
@@ -1685,8 +1685,8 @@ function Get-MinerParameters {
         Copy-Item ./Data/MinerParameters.default.json ./Config/MinerParameters.json -Force -ErrorAction Ignore
     }
 
-    $DefaultParams = Get-Content ./Data/MinerParameters.default.json | ConvertFrom-Json
-    $CustomParams = Get-Content ./Config/MinerParameters.json | ConvertFrom-Json
+    $DefaultParams = Get-FileContent ./Data/MinerParameters.default.json | ConvertFrom-Json
+    $CustomParams = Get-FileContent ./Config/MinerParameters.json | ConvertFrom-Json
 
     # Populate Config/MinerParameters.json with new miners/algos
     $DefaultParams | Get-Member -MemberType NoteProperty -PipelineVariable Miner | ForEach-Object {
@@ -1714,7 +1714,7 @@ function Get-BestHashRateAlgo {
     $Pattern = "*_" + $Algorithm + "_*_HashRate.csv"
 
     Get-ChildItem ./Stats -File | Where-Object Name -ilike $Pattern | ForEach-Object {
-        $Content = Get-Content $_.FullName | ConvertFrom-Csv
+        $Content = Get-FileContent $_.FullName | ConvertFrom-Csv
         [PSCustomObject]@{
             HashRate = $Content.Speed | Measure-Object -Average | Select-Object -ExpandProperty Average
             Miner    = ($_.BaseName -split '_')[0]
@@ -1728,7 +1728,7 @@ function Get-AlgoUnifiedName ([string]$Algo) {
     if ($Algo) {
 
         if (-not $global:AlgosTable) {
-            $global:AlgosTable = Get-Content -Path ./Data/algorithms.json | ConvertFrom-Json
+            $global:AlgosTable = Get-FileContent -Path ./Data/algorithms.json | ConvertFrom-Json
         }
         if ($AlgosTable.$Algo) { $AlgosTable.$Algo }
         else { $Algo }
@@ -1779,9 +1779,9 @@ function Get-HashRates {
     if ($AlgoLabel -eq "") { $AlgoLabel = 'X' }
     $Pattern = "./Stats/" + $MinerName + "_" + $Algorithm + "_" + $GroupName + "_" + $AlgoLabel + "_PL" + $PowerLimit + "_HashRate"
 
-    if (Test-Path -path "$Pattern.csv") {
+    if (Test-Path -Path "$Pattern.csv") {
         try {
-            $Content = Get-Content -path "$Pattern.csv" | ConvertFrom-Csv
+            $Content = Get-FileContent -Path "$Pattern.csv" | ConvertFrom-Csv
         } catch {
             # If error - delete file
             Log "Corrupted file $Pattern.csv, deleting" -Severity Warn
@@ -1846,8 +1846,8 @@ function Get-Stats {
     if ($AlgoLabel -eq "") { $AlgoLabel = 'X' }
     $Pattern = "./Stats/" + $MinerName + "_" + $Algorithm + "_" + $GroupName + "_" + $AlgoLabel + "_PL" + $PowerLimit + "_stats"
 
-    if (Test-Path -path "$Pattern.json") {
-        $Content = (Get-Content -path "$Pattern.json")
+    if (Test-Path -Path "$Pattern.json") {
+        $Content = (Get-FileContent -Path "$Pattern.json")
         try {
             $Content = $Content | ConvertFrom-Json
         } catch {
@@ -1882,6 +1882,21 @@ function Set-Stats {
     $Value | ConvertTo-Json | Set-Content -Path $Path
 }
 
+
+function Get-FileContent {
+    param (
+        [Parameter(Mandatory = $true)]
+        $Path
+    )
+    if ( Test-Path $Path ) {
+        $stream = [System.IO.StreamReader]::new($Path)
+        $stream.ReadToEnd()
+        $stream.Dispose()
+
+        # -join (Get-Content -Path $Path -Raw)
+    }
+}
+
 function Get-MinerFile {
     param (
         [Parameter(Mandatory = $true)]
@@ -1892,9 +1907,9 @@ function Get-MinerFile {
         $Miner = . $MinerFile
     } elseif ($MinerFile.Extension -like ".json*") {
         $Content = if ($PSVersionTable.PSVersion.Major -ge 6) {
-            -join (Get-Content -Raw $MinerFile)
+            -join (Get-FileContent $MinerFile)
         } else {
-            -join (Get-Content -Raw $MinerFile) -replace '(?m)(?<=^([^"]|"[^"]*")*)//.*' -replace '(?ms)/\*.*?\*/'
+            -join (Get-FileContent $MinerFile) -replace '(?m)(?<=^([^"]|"[^"]*")*)//.*' -replace '(?ms)/\*.*?\*/'
         }
         try {
             $Miner = $Content | ConvertFrom-Json
@@ -1912,7 +1927,7 @@ function Get-UriHash {
         [String]$Uri
     )
     $HashFile = "./Data/sha256.csv"
-    $Hashes = Get-Content $HashFile | ConvertFrom-Csv
+    $Hashes = Get-FileContent $HashFile | ConvertFrom-Csv
     $Hashes | Where-Object uri -eq $Uri | Select-Object -ExpandProperty sha256
 }
 
@@ -1925,7 +1940,7 @@ function Update-UriHash {
     )
 
     $HashFile = "./Data/sha256.csv"
-    $Hashes = Get-Content $HashFile | ConvertFrom-Csv
+    $Hashes = Get-FileContent $HashFile | ConvertFrom-Csv
 
     if ($Hashes | Where-Object uri -eq $Uri) {
         $Hashes | Where-Object uri -eq $Uri | ForEach-Object {$_.sha256 = $Hash}
@@ -2098,7 +2113,7 @@ function Get-CoinSymbol ([string]$Coin) {
     $Coin = $Coin -ireplace '[^\w]'
     if ($Coin) {
         if (-not $global:CoinsTable) {
-            $global:CoinsTable = Get-Content -Path ./Data/coins.json | ConvertFrom-Json
+            $global:CoinsTable = Get-FileContent -Path ./Data/coins.json | ConvertFrom-Json
         }
         if ($CoinsTable.$Coin) { $CoinsTable.$Coin }
         else { $Coin }
@@ -2120,7 +2135,7 @@ function Start-Autoexec {
         Copy-Item ./Data/Autoexec.default.txt ./Config/Autoexec.txt -Force -ErrorAction Ignore
     }
     [System.Collections.ArrayList]$Script:AutoexecCommands = @()
-    foreach ($cmd in @(Get-Content ./Config/Autoexec.txt -ErrorAction Ignore | Select-Object)) {
+    foreach ($cmd in @(Get-FileContent ./Config/Autoexec.txt -ErrorAction Ignore | Select-Object)) {
         if ($cmd -match "^[\s\t]*`"(.+?)`"(.*)$") {
             try {
                 $Params = @{
@@ -2196,7 +2211,7 @@ function Get-WhatToMineFactor {
     $f = 10
     if ($Algo) {
         if (-not $global:WTMFactorTable) {
-            $global:WTMFactorTable = Get-Content -Path ./Data/wtm_factor.json | ConvertFrom-Json
+            $global:WTMFactorTable = Get-FileContent -Path ./Data/wtm_factor.json | ConvertFrom-Json
         }
         if ($WTMFactorTable.$Algo) {
             $WTMFactorTable.$Algo * $f

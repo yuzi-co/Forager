@@ -225,7 +225,7 @@ while ($Quit -ne $true) {
 
     # Donation
     $DonationsFile = "./Data/donations.json"
-    $DonationStat = if (Test-Path $DonationsFile) { Get-Content $DonationsFile | ConvertFrom-Json } else { @(0, 0) }
+    $DonationStat = if (Test-Path $DonationsFile) { Get-FileContent $DonationsFile | ConvertFrom-Json } else { @(0, 0) }
     $Config.DonateMinutes = [math]::Max($Config.DonateMinutes, 10)
     $MiningTime = $DonationStat[0]
     $DonatedTime = $DonationStat[1]
@@ -493,7 +493,7 @@ while ($Quit -ne $true) {
                         foreach ($P in $Params.Keys) { $Arguments = $Arguments -replace $P, $Params.$P }
                         $PatternConfigFile = $Miner.PatternConfigFile -replace '#Algorithm#', $AlgoName -replace '#GroupName#', $DeviceGroup.GroupName
                         if ($PatternConfigFile -and (Test-Path -Path "./Data/Patterns/$PatternConfigFile")) {
-                            $ConfigFileArguments = Edit-ForEachDevice (Get-Content "./Data/Patterns/$PatternConfigFile" -raw) -Devices $DeviceGroup
+                            $ConfigFileArguments = Edit-ForEachDevice (Get-FileContent "./Data/Patterns/$PatternConfigFile") -Devices $DeviceGroup
                             foreach ($P in $Params.Keys) { $ConfigFileArguments = $ConfigFileArguments -replace $P, $Params.$P }
                             foreach ($P in $Params.Keys) { $ConfigFileArguments = $ConfigFileArguments -replace $P, $Params.$P }
                         } else { $ConfigFileArguments = $null }
