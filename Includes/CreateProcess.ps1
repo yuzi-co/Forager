@@ -116,9 +116,9 @@ function Invoke-CreateProcess {
     $ArgumentList = '"' + $FilePath + '" ' + $ArgumentList
 
     # Call CreateProcess
-    [Kernel32]::CreateProcess($FilePath, $ArgumentList, [ref]$SecAttr, [ref]$SecAttr, $false, $CreationFlags, [IntPtr]::Zero, $WorkingDirectory, [ref]$StartupInfo, [ref]$ProcessInfo) | Out-Null
+    $null = [Kernel32]::CreateProcess($FilePath, $ArgumentList, [ref]$SecAttr, [ref]$SecAttr, $false, $CreationFlags, [IntPtr]::Zero, $WorkingDirectory, [ref]$StartupInfo, [ref]$ProcessInfo)
 
     $Process = Get-Process -Id $ProcessInfo.dwProcessId
-    $Process.Handle | Out-Null
+    $null = $Process.Handle
     $Process
 }

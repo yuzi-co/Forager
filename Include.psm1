@@ -665,7 +665,7 @@ function Invoke-NvidiaSmi {
         $SMIProcess = New-Object System.Diagnostics.ProcessStartInfo $NVSMI
         $SMIProcess.Verb = "runas"
         $SMIProcess.Arguments = $Arguments -join " "
-        [System.Diagnostics.Process]::Start($SMIProcess) | Out-Null
+        $null = [System.Diagnostics.Process]::Start($SMIProcess)
         if ($SMIProcess) { Remove-Variable SMIProcess }
     } else {
         & $NVSMI $Arguments
@@ -1197,7 +1197,7 @@ function Test-TCPPort {
     try {
         $Connection.SendTimeout = $Timeout
         $Connection.ReceiveTimeout = $Timeout
-        $Connection.Connect($Server, $Port) | Out-Null
+        $null = $Connection.Connect($Server, $Port)
         $Connection.Close
         $Connection.Dispose
         return $true #port is occupied
@@ -1236,7 +1236,7 @@ function Stop-SubProcess {
     $SubProcs = Get-SubProcs -Process $Process
 
     $SubProcs | ForEach-Object {
-        $_.CloseMainWindow() | Out-Null
+        $null = $_.CloseMainWindow()
     }
     Start-Sleep -Seconds 1
 
@@ -1348,7 +1348,7 @@ function Invoke-APIRequest {
     $CacheFile = $CacheFile.subString(0, [math]::min(200, $CacheFile.Length)) + '.json'
     $Response = $null
 
-    if (-not (Test-Path -Path $CachePath)) { New-Item -Path $CachePath -ItemType directory -Force | Out-Null }
+    if (-not (Test-Path -Path $CachePath)) { $null = New-Item -Path $CachePath -ItemType directory -Force }
     if (Test-Path $CacheFile -NewerThan (Get-Date).AddMinutes( - $Age)) {
         $Response = Get-FileContent -Path $CacheFile | ConvertFrom-Json
     } else {
@@ -1445,7 +1445,7 @@ function Start-SubProcess {
                 $ProcessParams.RedirectStandardError = $WorkingDirectory + "/error.log"
 
                 # Fix executable permissions
-                & chmod +x $FilePath | Out-Null
+                $null = & chmod +x $FilePath
 
                 # Set lib path to local
                 $env:LD_LIBRARY_PATH = $env:LD_LIBRARY_PATH + ":./"
@@ -1466,12 +1466,12 @@ function Start-SubProcess {
             ProcessHandle = $Process.Handle
         }
 
-        $ControllerProcess.Handle | Out-Null
-        $Process.Handle | Out-Null
+        $null = $ControllerProcess.Handle
+        $null = $Process.Handle
 
         do {
             if ($ControllerProcess.WaitForExit(1000)) {
-                $Process.CloseMainWindow() | Out-Null
+                $null = $Process.CloseMainWindow()
             }
         } until ($Process.HasExited)
     } # End job definition
@@ -1483,7 +1483,7 @@ function Start-SubProcess {
 
     if ($JobOutput.ProcessId -gt 0) {
         $Process = Get-Process | Where-Object Id -eq $JobOutput.ProcessId
-        $Process.Handle | Out-Null
+        $null = $Process.Handle
         $Process
 
         if ($Process) { $Process.PriorityClass = $PriorityNames.$Priority }
@@ -2151,7 +2151,7 @@ function Start-Autoexec {
                     $Job | Add-Member Arguments $Params.ArgumentList -Force
                     $Job | Add-Member HasOwnMinerWindow $true -Force
                     Log "Autoexec command started: $($Params.FilePath) $($Params.ArgumentList)" -Severity Info
-                    $Script:AutoexecCommands.Add($Job) | Out-Null
+                    $null = $Script:AutoexecCommands.Add($Job)
                 }
             } catch { }
         }

@@ -30,10 +30,10 @@ if ($IsWindows) {
 
 # Start log file
 $LogPath = "./Logs/"
-if (-not (Test-Path $LogPath)) { New-Item -Path $LogPath -ItemType directory | Out-Null }
+if (-not (Test-Path $LogPath)) { $null = New-Item -Path $LogPath -ItemType directory}
 $LogName = $LogPath + "forager-$(Get-Date -Format "yyyyMMdd-HHmmss").log"
 Start-Transcript $LogName  #for start log msg
-Stop-Transcript | Out-Null
+$null = Stop-Transcript
 $global:LogFile = [System.IO.StreamWriter]::new( $LogName, $true )
 $LogFile.AutoFlush = $true
 
@@ -159,8 +159,8 @@ $Screen = 'Profits'
 $StatsPath = "./Stats/"
 $BinPath = $(if ($IsLinux) { "./BinLinux/" } else { "./Bin/" })
 $MinersPath = $(if ($IsLinux) { "./MinersLinux/" } else { "./Miners/" })
-if (-not (Test-Path $BinPath)) { New-Item -Path $BinPath -ItemType directory -Force | Out-Null }
-if (-not (Test-Path $StatsPath)) { New-Item -Path $StatsPath -ItemType directory -Force | Out-Null }
+if (-not (Test-Path $BinPath)) { $null = New-Item -Path $BinPath -ItemType directory -Force }
+if (-not (Test-Path $StatsPath)) { $null = New-Item -Path $StatsPath -ItemType directory -Force }
 
 Send-ErrorsToLog $LogFile
 
@@ -1680,7 +1680,7 @@ while ($Quit -ne $true) {
                 'X' { try { Set-WindowSize 170 50 } catch { }; Log "Reset screen size" }
                 'Q' { $Quit = $true; $ExitLoop = $true; Log "Exit by Q key" }
                 'D' {
-                    if (-not (Test-Path "./Dump")) { New-Item -Path ./Dump -ItemType directory -Force | Out-Null }
+                    if (-not (Test-Path "./Dump")) { $null = New-Item -Path ./Dump -ItemType directory -Force }
                     $Pools | ConvertTo-Json -Depth 10 | Set-Content ./Dump/Pools.json
                     $ActiveMiners | ConvertTo-Json -Depth 10 | Set-Content ./Dump/Miners.json
                     $DeviceGroups | ConvertTo-Json -Depth 10 | Set-Content ./Dump/DeviceGroups.json

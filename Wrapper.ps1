@@ -23,13 +23,13 @@ Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 
 $PowerShell = [PowerShell]::Create()
 if ($WorkingDirectory) {
-    $PowerShell.AddScript("Set-Location '$WorkingDirectory'") | Out-Null
+    $null = $PowerShell.AddScript("Set-Location '$WorkingDirectory'")
 }
 $Command = ". '$FilePath'"
 if ($ArgumentList) {
     $Command += " $ArgumentList"
 }
-$PowerShell.AddScript("$Command 2>&1 | Write-Verbose -Verbose") | Out-Null
+$null = $PowerShell.AddScript("$Command 2>&1 | Write-Verbose -Verbose")
 $Result = $PowerShell.BeginInvoke()
 
 Write-Host "Wrapper Started" -BackgroundColor Yellow -ForegroundColor Black
@@ -98,7 +98,7 @@ do {
 
         }
     }
-    if (-not (Get-Process | Where-Object Id -EQ $ControllerProcessID)) { $PowerShell.Stop() | Out-Null }
+    if (-not (Get-Process | Where-Object Id -EQ $ControllerProcessID)) { $null = $PowerShell.Stop() }
     Start-Sleep -Seconds 1
 } until($Result.IsCompleted)
 

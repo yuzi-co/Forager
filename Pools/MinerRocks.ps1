@@ -61,7 +61,7 @@ if ($Querymode -eq "Core") {
 
     $Regex = "^{name:'([a-zA-Z0-9+]+)',host:'(\S+)',lastStats:null,kind:`"(\S*)`""
     $Pools = $Response.Content -split "`n" -replace "\s" -match $Regex | ForEach-Object {
-        $_ -match $Regex | Out-Null
+        $null = $_ -match $Regex
 
         [PSCustomObject]@{
             Coin            = $Matches[1]

@@ -36,4 +36,4 @@ $Params = @{
 }
 
 $ErrorActionPreference = 'SilentlyContinue'
-Invoke-RestMethod @Params | Out-Null
+$null = Invoke-RestMethod @Params
